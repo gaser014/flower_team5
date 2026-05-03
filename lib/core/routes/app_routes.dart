@@ -9,7 +9,7 @@ import 'package:go_router/go_router.dart';
 
 final RouteObserver<ModalRoute> routeObserver = RouteObserver<ModalRoute>();
 
-// Animation Types Enum
+// Animation Type Enum
 enum AnimationType {
   fade,
   slide,
