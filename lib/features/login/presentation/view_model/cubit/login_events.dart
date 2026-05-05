@@ -1,9 +1,10 @@
+import 'package:flowers_app/config/uses_cases/login_params.dart';
+
 sealed class LoginEvents {}
 
 class LoginEvent extends LoginEvents {
-  final String email;
-  final String password;
-  LoginEvent({required this.email, required this.password});
+  final LoginParams params;
+  LoginEvent({required this.params});
 }
 
 class RememberMeEvent extends LoginEvents {

@@ -1,6 +1,9 @@
 import 'dart:async';
 import 'package:equatable/equatable.dart';
 import 'package:flowers_app/config/base_state/base_state.dart';
+import 'package:flowers_app/config/uses_cases/login_params.dart';
+import 'package:flowers_app/features/login/domain/use_cases/login_use_case.dart';
+import 'package:flowers_app/features/login/domain/use_cases/save_user_use_case.dart';
 import 'package:flowers_app/features/login/presentation/view_model/cubit/login_events.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
@@ -9,12 +12,15 @@ part 'login_states.dart';
 
 @injectable
 class LoginCubit extends Cubit<LoginStates> {
-  LoginCubit() : super(const LoginStates());
+  LoginCubit(this.loginUseCase, this.saveUserUseCase) : super(const LoginStates());
+
+  final LoginUseCase loginUseCase;
+  final SaveUserUseCase saveUserUseCase;
 
   void doIndented(LoginEvents event) {
     switch (event) {
       case LoginEvent():
-        _login(event.email, event.password);
+        _login(event.params);
       case RememberMeEvent():
         _rememberMe(event.rememberMe);
       case ShowPasswordEvent():
@@ -22,7 +28,21 @@ class LoginCubit extends Cubit<LoginStates> {
     }
   }
 
-  Future<void> _login(String email, String password) async {}
+  Future<void> _login(LoginParams params) async {
+    emit(state.copyWith(loginState: BaseState.loading()));
+    final result = await loginUseCase.call(params);
+    result.when(
+      success: (response) async {
+        if (params.remember == true && response?.user != null) {
+          await saveUserUseCase.call(response!.user!);
+        }
+        emit(state.copyWith(loginState: BaseState.success(response)));
+      },
+      error: (Exception? exception) {
+        emit(state.copyWith(loginState: BaseState.error(exception)));
+      },
+    );
+  }
 
   Future<void> _rememberMe(bool rememberMe) async {
     emit(state.copyWith(rememberMeState: BaseState.success(rememberMe)));

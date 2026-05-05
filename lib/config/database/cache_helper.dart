@@ -1,9 +1,9 @@
 import 'dart:developer';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-/// Shared Preferences Helper
 class AppSharedPreferences {
-  static late FlutterSecureStorage  flutterSecureStorage;
+  const AppSharedPreferences._();
+  static late FlutterSecureStorage flutterSecureStorage;
 
   /// Initialize SharedPreferences
   static Future<void> initialSharedPreference() async {
@@ -66,10 +66,7 @@ class AppSharedPreferences {
   }
 
   /// Save Int value
-  static Future<bool> setInt({
-    required String key,
-    required int value,
-  }) async {
+  static Future<bool> setInt({required String key, required int value}) async {
     try {
       await flutterSecureStorage.write(key: key, value: value.toString());
       return true;

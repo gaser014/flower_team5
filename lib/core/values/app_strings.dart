@@ -114,6 +114,7 @@ class AppStrings {
   static const String noAccount = "Don't have an account? ";
   static const String signUp = "Sign up";
   static const String passwordHint = "Enter your password";
+  static const String loginSuccessfully = "Login successfully";
 
   // Register
   static const String registerTitle = "Sign up";
@@ -182,6 +183,9 @@ class AppStrings {
   static const String sessionExpired = "Session expired, please login again";
   static const String somethingWentWrong =
       "Something went wrong, please try again";
+
+  static const String token = "token";
+  static const String user = "user";
 
   static String questionOf({required int current, required int total}) =>
       "question $current of $total";
