@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'package:equatable/equatable.dart';
 import 'package:flowers_app/config/base_state/base_state.dart';
+import 'package:flowers_app/config/database/cache_helper.dart';
 import 'package:flowers_app/config/uses_cases/login_params.dart';
+import 'package:flowers_app/core/values/app_strings.dart';
 import 'package:flowers_app/features/login/domain/use_cases/login_use_case.dart';
 import 'package:flowers_app/features/login/domain/use_cases/save_user_use_case.dart';
 import 'package:flowers_app/features/login/presentation/view_model/cubit/login_events.dart';
@@ -12,7 +14,8 @@ part 'login_states.dart';
 
 @injectable
 class LoginCubit extends Cubit<LoginStates> {
-  LoginCubit(this.loginUseCase, this.saveUserUseCase) : super(const LoginStates());
+  LoginCubit(this.loginUseCase, this.saveUserUseCase)
+    : super(const LoginStates());
 
   final LoginUseCase loginUseCase;
   final SaveUserUseCase saveUserUseCase;
@@ -35,6 +38,10 @@ class LoginCubit extends Cubit<LoginStates> {
       success: (response) async {
         if (params.remember == true && response?.user != null) {
           await saveUserUseCase.call(response!.user!);
+          await AppSharedPreferences.setString(
+            key: AppStrings.token,
+            value: response.token ?? '',
+          );
         }
         emit(state.copyWith(loginState: BaseState.success(response)));
       },
