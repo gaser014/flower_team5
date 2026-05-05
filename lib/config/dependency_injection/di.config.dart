@@ -18,6 +18,14 @@ import 'package:internet_connection_checker_plus/internet_connection_checker_plu
 
 import '../../core/api/datasources/auth_local_data_source_impl.dart' as _i424;
 import '../../core/data/data_sources/auth_local_data_source.dart' as _i759;
+import '../../features/auth/sign_up/data/data_sources/sign_up_remote_data_source.dart'
+    as _i897;
+import '../../features/auth/sign_up/data/repos/sign_up_repo_impl.dart' as _i565;
+import '../../features/auth/sign_up/domain/repos/sign_up_repo.dart' as _i1067;
+import '../../features/auth/sign_up/domain/use_cases/sign_up_use_case.dart'
+    as _i45;
+import '../../features/auth/sign_up/presentation/cubit/sign_up_cubit.dart'
+    as _i809;
 import '../api/app_interceptor.dart' as _i449;
 import '../api/dio_module.dart' as _i784;
 
@@ -37,6 +45,12 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i161.InternetConnection>(
       () => dioModule.internetConnection(),
     );
+    gh.lazySingleton<_i897.SignUpRemoteDataSource>(
+      () => _i897.SignUpRemoteDataSourceImpl(gh<_i361.Dio>()),
+    );
+    gh.lazySingleton<_i1067.SignUpRepo>(
+      () => _i565.SignUpRepoImpl(gh<_i897.SignUpRemoteDataSource>()),
+    );
     gh.singleton<_i449.AppInterceptors>(
       () => _i449.AppInterceptors(
         dio: gh<_i361.Dio>(),
@@ -46,6 +60,15 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i759.AuthLocalDataSourceContract>(
       () =>
           _i424.AuthLocalDataSourceImpl(fss: gh<_i558.FlutterSecureStorage>()),
+    );
+    gh.lazySingleton<_i45.SignUpUseCase>(
+      () => _i45.SignUpUseCase(gh<_i1067.SignUpRepo>()),
+    );
+    gh.factory<_i809.SignUpCubit>(
+      () => _i809.SignUpCubit(
+        gh<_i45.SignUpUseCase>(),
+        gh<_i759.AuthLocalDataSourceContract>(),
+      ),
     );
     return this;
   }
