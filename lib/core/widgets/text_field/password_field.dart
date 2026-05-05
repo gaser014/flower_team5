@@ -1,4 +1,5 @@
 import 'package:flowers_app/core/values/app_colors.dart';
+import 'package:flowers_app/core/values/app_font_style.dart';
 import 'package:flutter/material.dart';
 import '../../validations/validations.dart';
 import '../../values/app_strings.dart';
@@ -39,6 +40,7 @@ class PasswordField extends StatelessWidget {
       obscureText: obscureText,
       keyboardType: TextInputType.visiblePassword,
       obscuringCharacter: '★',
+
       textInputAction: textInputAction ?? TextInputAction.done,
       inputFormatters: AppInputFormatters.strongPassword,
       validator: validator ?? Validations.validateLoginPassword,
@@ -47,7 +49,12 @@ class PasswordField extends StatelessWidget {
       style: obscureText
           ? const TextStyle(letterSpacing: 2, color: AppColors.grayA6)
           : null,
-      decoration: InputDecoration(labelText: labelText ?? AppStrings.password),
+      decoration: InputDecoration(
+        suffixIcon: suffixIcon,
+        labelText: labelText ?? AppStrings.password,
+        hintText: AppStrings.passwordHint,
+        hintStyle: AppFontStyle.regular14().copyWith(color: AppColors.grayA6),
+      ),
     );
   }
 }

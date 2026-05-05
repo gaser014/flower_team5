@@ -113,6 +113,7 @@ class AppStrings {
   static const String continueAsGuest = "Continue as guest";
   static const String noAccount = "Don't have an account? ";
   static const String signUp = "Sign up";
+  static const String passwordHint = "Enter your password";
 
   // Register
   static const String registerTitle = "Sign up";

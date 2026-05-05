@@ -18,6 +18,8 @@ import 'package:internet_connection_checker_plus/internet_connection_checker_plu
 
 import '../../core/api/datasources/auth_local_data_source_impl.dart' as _i424;
 import '../../core/data/data_sources/auth_local_data_source.dart' as _i759;
+import '../../features/login/presentation/view_model/cubit/login_cubit.dart'
+    as _i753;
 import '../api/app_interceptor.dart' as _i449;
 import '../api/dio_module.dart' as _i784;
 
@@ -29,6 +31,7 @@ extension GetItInjectableX on _i174.GetIt {
   }) {
     final gh = _i526.GetItHelper(this, environment, environmentFilter);
     final dioModule = _$DioModule();
+    gh.factory<_i753.LoginCubit>(() => _i753.LoginCubit());
     gh.singleton<_i361.Dio>(() => dioModule.dio());
     gh.lazySingleton<_i558.FlutterSecureStorage>(
       () => dioModule.secureStorage(),
