@@ -115,6 +115,7 @@ class AppStrings {
   static const String signUp = "Sign up";
   static const String passwordHint = "Enter your password";
   static const String loginSuccessfully = "Login successfully";
+  static const String loginError = "Invalid Phone Number or Password";
 
   // Register
   static const String registerTitle = "Sign up";
