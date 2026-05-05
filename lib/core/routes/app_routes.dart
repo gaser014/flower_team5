@@ -7,6 +7,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../features/forget_password/presentation/view/pages/forget_password_page.dart';
+
 final RouteObserver<ModalRoute> routeObserver = RouteObserver<ModalRoute>();
 
 // Animation Type Enum
@@ -203,7 +205,15 @@ class _PageBasedPageRoute<T> extends PageRoute<T> {
 abstract class AppRoutes {
   static final GoRouter router = GoRouter(
     initialLocation: Routes.splash,
-    routes: [],
+    routes: [
+      GoRoute(
+        path: Routes.forgetPassword,
+        name: Routes.forgetPassword,
+        builder: (BuildContext context, GoRouterState state) {
+          return const ForgetPasswordPage();
+        },
+      ),
+    ],
     redirect: (context, state) async {
       final currentLocation = state.matchedLocation;
 
