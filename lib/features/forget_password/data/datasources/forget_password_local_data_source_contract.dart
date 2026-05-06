@@ -1,1 +1,3 @@
-// TODO: data Forget_passwordLocalDataSourceContract
+abstract class ForgetPasswordLocalDataSourceContract {
+  // Add local data source methods if needed
+}
