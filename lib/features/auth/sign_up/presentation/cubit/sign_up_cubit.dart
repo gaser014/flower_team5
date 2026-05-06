@@ -15,14 +15,23 @@ class SignUpCubit extends Cubit<SignUpState> {
 
   SignUpCubit(this._signUpUseCase) : super(const SignUpState());
 
-  // Controllers
-  final firstNameController = TextEditingController();
-  final lastNameController = TextEditingController();
-  final emailController = TextEditingController();
-  final passwordController = TextEditingController();
-  final confirmPasswordController = TextEditingController();
-  final phoneController = TextEditingController();
-  final formKey = GlobalKey<FormState>();
+  // Private Controllers
+  final TextEditingController _firstNameController = TextEditingController();
+  final TextEditingController _lastNameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _confirmPasswordController = TextEditingController();
+  final TextEditingController _phoneController = TextEditingController();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  // Getters for controllers and form key
+  TextEditingController get firstNameController => _firstNameController;
+  TextEditingController get lastNameController => _lastNameController;
+  TextEditingController get emailController => _emailController;
+  TextEditingController get passwordController => _passwordController;
+  TextEditingController get confirmPasswordController => _confirmPasswordController;
+  TextEditingController get phoneController => _phoneController;
+  GlobalKey<FormState> get formKey => _formKey;
 
   void doIntent(SignUpEvents event) {
     if (event is SignUpUserEvent) {
@@ -35,9 +44,8 @@ class SignUpCubit extends Cubit<SignUpState> {
   }
 
   void toggleConfirmPasswordVisibility() {
-    emit(
-      state.copyWith(isConfirmPasswordVisible: !state.isConfirmPasswordVisible),
-    );
+    emit(state.copyWith(
+        isConfirmPasswordVisible: !state.isConfirmPasswordVisible));
   }
 
   void changeGender(Gender gender) {
@@ -53,40 +61,41 @@ class SignUpCubit extends Cubit<SignUpState> {
     result.when(
       success: (data) async {
         debugPrint("Sign up success: ${data?.message}");
-        emit(state.copyWith(status: SignUpStatus.success, data: data));
+        emit(state.copyWith(
+          status: SignUpStatus.success,
+          data: data,
+        ));
       },
       error: (exception) {
         debugPrint("Sign up error: $exception");
-        emit(
-          state.copyWith(
-            status: SignUpStatus.error,
-            errorMessage:
-                exception?.toString() ?? AppStrings.anUnexpectedErrorOccurred,
-          ),
-        );
+        emit(state.copyWith(
+          status: SignUpStatus.error,
+          errorMessage: exception?.toString() ??
+              AppStrings.anUnexpectedErrorOccurred,
+        ));
       },
     );
   }
 
   // Helper method for the view
   void signUp() {
-    if (!formKey.currentState!.validate()) {
+    if (!_formKey.currentState!.validate()) {
       debugPrint("Validation failed");
       return;
     }
 
-    String phoneNumber = phoneController.text.trim();
+    String phoneNumber = _phoneController.text.trim();
     if (phoneNumber.startsWith('0')) {
       phoneNumber = phoneNumber.substring(1);
     }
     phoneNumber = "+20$phoneNumber";
 
     final params = SignUpParams(
-      firstName: firstNameController.text.trim(),
-      lastName: lastNameController.text.trim(),
-      email: emailController.text.trim(),
-      password: passwordController.text,
-      rePassword: confirmPasswordController.text,
+      firstName: _firstNameController.text.trim(),
+      lastName: _lastNameController.text.trim(),
+      email: _emailController.text.trim(),
+      password: _passwordController.text,
+      rePassword: _confirmPasswordController.text,
       phone: phoneNumber,
       gender: state.gender.value,
     );
@@ -96,12 +105,12 @@ class SignUpCubit extends Cubit<SignUpState> {
 
   @override
   Future<void> close() {
-    firstNameController.dispose();
-    lastNameController.dispose();
-    emailController.dispose();
-    passwordController.dispose();
-    confirmPasswordController.dispose();
-    phoneController.dispose();
+    _firstNameController.dispose();
+    _lastNameController.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+    _confirmPasswordController.dispose();
+    _phoneController.dispose();
     return super.close();
   }
 }

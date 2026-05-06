@@ -17,6 +17,8 @@ import 'package:flowers_app/features/auth/sign_up/presentation/widgets/terms_and
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:flowers_app/core/values/app_assets.dart';
 
 class SignUpView extends StatelessWidget {
   const SignUpView({super.key});
@@ -66,6 +68,13 @@ class _SignUpViewBody extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
+                  Center(
+                    child: SvgPicture.asset(
+                      AppIcons.flower.path,
+                      height: 80,
+                    ),
+                  ),
+                  const SizedBox(height: 24),
                   Row(
                     children: [
                       Expanded(
