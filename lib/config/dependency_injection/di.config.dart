@@ -21,8 +21,8 @@ import '../../core/data/data_sources/auth_local_data_source.dart' as _i759;
 import '../../features/login/api/api_client/login_api_client.dart' as _i395;
 import '../../features/login/api/datasources/login_local_data_source_impl.dart'
     as _i438;
-import '../../features/login/api/datasources/login_remote_data_source_impl.dart.dart'
-    as _i539;
+import '../../features/login/api/datasources/login_remote_data_source_impl.dart'
+    as _i904;
 import '../../features/login/data/datasources/login_local_data_source_contract.dart'
     as _i325;
 import '../../features/login/data/datasources/login_remote_data_source_contract.dart'
@@ -72,7 +72,7 @@ extension GetItInjectableX on _i174.GetIt {
           _i424.AuthLocalDataSourceImpl(fss: gh<_i558.FlutterSecureStorage>()),
     );
     gh.factory<_i736.LoginRemoteDataSourceContract>(
-      () => _i539.LoginRemoteDataSourceImpl(gh<_i395.LoginApiClient>()),
+      () => _i904.LoginRemoteDataSourceImpl(gh<_i395.LoginApiClient>()),
     );
     gh.lazySingleton<_i902.LoginRepositoryContract>(
       () => _i1066.LoginRepositoryImpl(
