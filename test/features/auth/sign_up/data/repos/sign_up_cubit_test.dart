@@ -3,7 +3,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:flowers_app/config/base_response/result.dart';
 import 'package:flowers_app/features/auth/sign_up/domain/entities/sign_up_entity.dart';
 import 'package:flowers_app/features/auth/sign_up/domain/use_cases/sign_up_use_case.dart';
-import 'package:flowers_app/core/data/data_sources/auth_local_data_source.dart';
 import 'package:flowers_app/features/auth/sign_up/presentation/cubit/sign_up_cubit.dart';
 import 'package:flowers_app/features/auth/sign_up/presentation/cubit/sign_up_state.dart';
 
@@ -18,24 +17,13 @@ class MockSignUpUseCase implements SignUpUseCase {
   }
 }
 
-class MockAuthLocalDataSource implements AuthLocalDataSourceContract {
-  @override
-  Future<void> saveUserToken(String token) async {}
-  @override
-  Future<String?> getUserToken() async => null;
-  @override
-  Future<void> deleteUserToken() async {}
-}
-
 void main() {
   late SignUpCubit signUpCubit;
   late MockSignUpUseCase mockSignUpUseCase;
-  late MockAuthLocalDataSource mockAuthLocalDataSource;
 
   setUp(() {
     mockSignUpUseCase = MockSignUpUseCase();
-    mockAuthLocalDataSource = MockAuthLocalDataSource();
-    signUpCubit = SignUpCubit(mockSignUpUseCase, mockAuthLocalDataSource);
+    signUpCubit = SignUpCubit(mockSignUpUseCase);
   });
 
   tearDown(() {

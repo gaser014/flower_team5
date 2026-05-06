@@ -2,12 +2,12 @@ import 'package:equatable/equatable.dart';
 import 'package:flowers_app/config/base_response/result.dart';
 import 'package:flowers_app/config/uses_cases/use_cases.dart';
 import 'package:flowers_app/features/auth/sign_up/domain/entities/sign_up_entity.dart';
-import 'package:flowers_app/features/auth/sign_up/domain/repos/sign_up_repo.dart';
+import 'package:flowers_app/features/auth/sign_up/domain/repositories/sign_up_repository_contract.dart';
 import 'package:injectable/injectable.dart';
 
 @lazySingleton
 class SignUpUseCase extends UseCase<SignUpEntity, SignUpParams> {
-  final SignUpRepo _signUpRepo;
+  final SignUpRepositoryContract _signUpRepo;
 
   const SignUpUseCase(this._signUpRepo);
 

@@ -1,5 +1,4 @@
 import 'package:equatable/equatable.dart';
-import 'package:flowers_app/core/values/app_strings.dart';
 import 'package:flowers_app/config/helper/enum/gender.dart';
 import 'package:flowers_app/features/auth/sign_up/domain/entities/sign_up_entity.dart';
 
