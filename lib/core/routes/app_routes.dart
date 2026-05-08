@@ -3,12 +3,14 @@ import 'dart:io';
 import 'package:flowers_app/config/api/api_key.dart';
 import 'package:flowers_app/config/dependency_injection/di.dart';
 import 'package:flowers_app/core/routes/routes.dart';
-import 'package:flowers_app/features/auth/login/presentation/screens/login_view.dart';
-import 'package:flowers_app/features/auth/sign_up/presentation/screens/sign_up_view.dart';
-import 'package:flowers_app/features/auth/sign_up/presentation/screens/terms_and_conditions_view.dart';
+import 'package:flowers_app/features/login/presentation/view/pages/login_page.dart';
+import 'package:flowers_app/features/main/presentation/screens/main_view.dart';
+import 'package:flowers_app/features/spalsh/splash_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:go_router/go_router.dart';
+import 'package:flowers_app/features/auth/sign_up/presentation/screens/sign_up_view.dart';
+import 'package:flowers_app/features/auth/sign_up/presentation/screens/terms_and_conditions_view.dart';
 
 import '../../features/forget_password/presentation/view/pages/forget_password_page.dart';
 import '../../features/forget_password/presentation/view/pages/verify_code_page.dart';
@@ -223,7 +225,9 @@ abstract class AppRoutes {
         path: Routes.verifyCode,
         name: Routes.verifyCode,
         builder: (BuildContext context, GoRouterState state) {
-          final cubit = state.extra as ForgetPasswordCubit? ?? getIt<ForgetPasswordCubit>();
+          final cubit =
+              state.extra as ForgetPasswordCubit? ??
+              getIt<ForgetPasswordCubit>();
           return VerifyCodePage(cubit: cubit);
         },
       ),
@@ -231,7 +235,9 @@ abstract class AppRoutes {
         path: Routes.resetPassword,
         name: Routes.resetPassword,
         builder: (BuildContext context, GoRouterState state) {
-          final cubit = state.extra as ForgetPasswordCubit? ?? getIt<ForgetPasswordCubit>();
+          final cubit =
+              state.extra as ForgetPasswordCubit? ??
+              getIt<ForgetPasswordCubit>();
           return ResetPasswordPage(cubit: cubit);
         },
       ),
