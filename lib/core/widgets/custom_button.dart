@@ -154,7 +154,7 @@ class _OutlinedButton extends StatelessWidget {
         onPressed: onPressed,
         style: OutlinedButton.styleFrom(
           foregroundColor: color,
-          side: BorderSide(color: borderColor ?? color, width: 2),
+          side: BorderSide(color: borderColor ?? color, width: 1),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(radius),
           ),
