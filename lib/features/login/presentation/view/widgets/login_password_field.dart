@@ -20,10 +20,10 @@ class LoginPasswordField extends StatelessWidget {
       builder: (context, state) {
         return PasswordField(
           controller: passwordController,
-          obscureText: state.showPasswordState.data ?? false,
+          obscureText: state.showPasswordState.data ?? true,
           suffixIcon: IconButton(
             icon: SvgPicture.asset(
-              (state.showPasswordState.data ?? false)
+              (state.showPasswordState.data ?? true)
                   ? AppAssets.iconsOpenEye
                   : AppAssets.iconsClosedEye,
               colorFilter: const ColorFilter.mode(
