@@ -28,7 +28,7 @@ class LoginSubmitButton extends StatelessWidget {
           previous.loginState != current.loginState,
       listener: (context, state) {
         if (state.loginState.isSuccess) {
-          context.go(Routes.splash);
+          context.go(Routes.main);
           CustomToast(
             context: context,
             message: AppStrings.loginSuccessfully,
