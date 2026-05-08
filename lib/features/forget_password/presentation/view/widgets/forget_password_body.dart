@@ -13,8 +13,21 @@ import '../../view_model/bloc/forget_password_bloc.dart';
 import '../../view_model/bloc/forget_password_events.dart';
 import '../../view_model/bloc/forget_password_states.dart';
 
-class ForgetPasswordBody extends StatelessWidget {
+class ForgetPasswordBody extends StatefulWidget {
   const ForgetPasswordBody({super.key});
+
+  @override
+  State<ForgetPasswordBody> createState() => _ForgetPasswordBodyState();
+}
+
+class _ForgetPasswordBodyState extends State<ForgetPasswordBody> {
+  late final GlobalKey<FormState> _formKey;
+
+  @override
+  void initState() {
+    _formKey = GlobalKey<FormState>();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,15 +36,15 @@ class ForgetPasswordBody extends StatelessWidget {
     return BlocListener<ForgetPasswordBloc, ForgetPasswordState>(
       listener: (context, state) {
         if (state is SendCodeSuccess) {
-          context.push(Routes.verifyCode, extra: bloc);
+          if (!state.isResend) context.push(Routes.verifyCode, extra: bloc);
         } else if (state is ForgetPasswordError) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(state.message)),
-          );
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text(state.message)));
         }
       },
       child: Form(
-        key: bloc.forgetPasswordFormKey,
+        key: _formKey,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
@@ -54,7 +67,11 @@ class ForgetPasswordBody extends StatelessWidget {
                 return CustomButton(
                   text: AppStrings.confirmForgetPassword,
                   isLoading: state is ForgetPasswordLoading,
-                  onPressed: () => bloc.add(SendCodeEvent()),
+                  onPressed: () {
+                    if (_formKey.currentState?.validate() ?? false) {
+                      bloc.add(SendCodeEvent());
+                    }
+                  },
                 );
               },
             ),

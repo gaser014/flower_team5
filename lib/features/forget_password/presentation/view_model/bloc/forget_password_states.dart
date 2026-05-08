@@ -13,7 +13,8 @@ class ForgetPasswordLoading extends ForgetPasswordState {}
 
 class SendCodeSuccess extends ForgetPasswordState {
   final String message;
-  const SendCodeSuccess(this.message);
+  final bool isResend;
+  const SendCodeSuccess(this.message, {this.isResend = false});
 
   @override
   List<Object?> get props => [message];

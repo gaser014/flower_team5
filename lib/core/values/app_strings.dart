@@ -18,7 +18,9 @@ class AppStrings {
 
   // Custom Widgets
   static const String loadingAccessibilityLabel = "Loading...";
+  static const String otpRequired = "otp is required";
   static const String retryButton = "Retry...";
+  static const String otpMustBe4Digits = "otp must be 4 digits";
   static const String invalidCode = "Invalid code";
   static const String enterUserName = "Enter first name";
   static const String codeNotReceived = "Didn't receive the code?";
@@ -148,7 +150,8 @@ class AppStrings {
   static const String genderLabel = "Gender";
   static const String maleLabel = "Male";
   static const String femaleLabel = "Female";
-  static const String termsAndConditionsView =  'By creating an account, you agree to use the application in a lawful manner, provide accurate information, and respect all applicable rules. We may update these terms from time to time, and your continued use of the app means you accept those updates.';
+  static const String termsAndConditionsView =
+      'By creating an account, you agree to use the application in a lawful manner, provide accurate information, and respect all applicable rules. We may update these terms from time to time, and your continued use of the app means you accept those updates.';
   static const String termsConditionsPart1 =
       "By creating an account, you agree to our ";
   static const String termsConditionsPart2 = "Terms & Conditions";

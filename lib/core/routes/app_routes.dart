@@ -6,6 +6,7 @@ import 'package:flowers_app/config/database/cache_helper.dart';
 import 'package:flowers_app/config/dependency_injection/di.dart';
 import 'package:flowers_app/core/data/data_sources/auth_local_data_source.dart';
 import 'package:flowers_app/core/routes/routes.dart';
+import 'package:flowers_app/features/forget_password/presentation/view_model/bloc/forget_password_bloc.dart';
 import 'package:flowers_app/features/login/presentation/view/pages/login_page.dart';
 import 'package:flowers_app/features/main/presentation/screens/main_view.dart';
 import 'package:flowers_app/features/spalsh/splash_page.dart';
@@ -229,9 +230,8 @@ abstract class AppRoutes {
         name: Routes.verifyCode,
         builder: (BuildContext context, GoRouterState state) {
           final cubit =
-              state.extra as ForgetPasswordCubit? ??
-              getIt<ForgetPasswordCubit>();
-          return VerifyCodePage(cubit: cubit);
+              state.extra as ForgetPasswordBloc? ?? getIt<ForgetPasswordBloc>();
+          return VerifyCodePage(bloc: cubit);
         },
       ),
       GoRoute(
@@ -239,9 +239,8 @@ abstract class AppRoutes {
         name: Routes.resetPassword,
         builder: (BuildContext context, GoRouterState state) {
           final cubit =
-              state.extra as ForgetPasswordCubit? ??
-              getIt<ForgetPasswordCubit>();
-          return ResetPasswordPage(cubit: cubit);
+              state.extra as ForgetPasswordBloc? ?? getIt<ForgetPasswordBloc>();
+          return ResetPasswordPage(bloc: cubit);
         },
       ),
       GoRoute(

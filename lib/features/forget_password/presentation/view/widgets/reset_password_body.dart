@@ -13,8 +13,22 @@ import '../../view_model/bloc/forget_password_bloc.dart';
 import '../../view_model/bloc/forget_password_events.dart';
 import '../../view_model/bloc/forget_password_states.dart';
 
-class ResetPasswordBody extends StatelessWidget {
+class ResetPasswordBody extends StatefulWidget {
   const ResetPasswordBody({super.key});
+
+  @override
+  State<ResetPasswordBody> createState() => _ResetPasswordBodyState();
+}
+
+class _ResetPasswordBodyState extends State<ResetPasswordBody> {
+  late final GlobalKey<FormState> _formKey;
+
+  @override
+  void initState() {
+    _formKey = GlobalKey<FormState>();
+    // TODO: implement initState
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,17 +38,17 @@ class ResetPasswordBody extends StatelessWidget {
       listener: (context, state) {
         if (state is ResetPasswordSuccess) {
           context.go(Routes.login);
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(state.message)),
-          );
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text(state.message)));
         } else if (state is ForgetPasswordError) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(state.message)),
-          );
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text(state.message)));
         }
       },
       child: Form(
-        key: bloc.resetPasswordFormKey,
+        key: _formKey,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
@@ -71,7 +85,11 @@ class ResetPasswordBody extends StatelessWidget {
                 return CustomButton(
                   text: AppStrings.confirm,
                   isLoading: state is ForgetPasswordLoading,
-                  onPressed: () => bloc.add(ResetPasswordEvent()),
+                  onPressed: () {
+                    if (_formKey.currentState?.validate() ?? false) {
+                      bloc.add(ResetPasswordEvent());
+                    }
+                  },
                 );
               },
             ),

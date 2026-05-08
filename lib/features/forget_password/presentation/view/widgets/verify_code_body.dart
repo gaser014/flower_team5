@@ -14,8 +14,21 @@ import '../../view_model/bloc/forget_password_bloc.dart';
 import '../../view_model/bloc/forget_password_events.dart';
 import '../../view_model/bloc/forget_password_states.dart';
 
-class VerifyCodeBody extends StatelessWidget {
+class VerifyCodeBody extends StatefulWidget {
   const VerifyCodeBody({super.key});
+
+  @override
+  State<VerifyCodeBody> createState() => _VerifyCodeBodyState();
+}
+
+class _VerifyCodeBodyState extends State<VerifyCodeBody> {
+  late final GlobalKey<FormState> _formKey;
+
+  @override
+  void initState() {
+    _formKey = GlobalKey<FormState>();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,13 +39,13 @@ class VerifyCodeBody extends StatelessWidget {
         if (state is VerifyCodeSuccess) {
           context.push(Routes.resetPassword, extra: bloc);
         } else if (state is ForgetPasswordError) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(state.message)),
-          );
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text(state.message)));
         }
       },
       child: Form(
-        key: bloc.verifyCodeFormKey,
+        key: _formKey,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
@@ -56,6 +69,14 @@ class VerifyCodeBody extends StatelessWidget {
                       controller: bloc.otpController,
                       length: 4,
                       hasError: state is ForgetPasswordError,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return AppStrings.otpRequired;
+                        } else if (value.length < 4) {
+                          return AppStrings.otpMustBe4Digits;
+                        }
+                        return null;
+                      },
                       onCompleted: (pin) => bloc.add(VerifyCodeEvent()),
                     ),
                     if (state is ForgetPasswordError) ...[
@@ -67,14 +88,20 @@ class VerifyCodeBody extends StatelessWidget {
               },
             ),
             Gap(16.h),
-            ResendTimerWidget(onResend: () => bloc.add(SendCodeEvent())),
+            ResendTimerWidget(
+              onResend: () => bloc.add(SendCodeEvent(isReSend: true)),
+            ),
             Gap(32.h),
             BlocBuilder<ForgetPasswordBloc, ForgetPasswordState>(
               builder: (context, state) {
                 return CustomButton(
                   text: AppStrings.confirm,
                   isLoading: state is ForgetPasswordLoading,
-                  onPressed: () => bloc.add(VerifyCodeEvent()),
+                  onPressed: () {
+                    if (_formKey.currentState?.validate() ?? false) {
+                      bloc.add(VerifyCodeEvent());
+                    }
+                  },
                 );
               },
             ),

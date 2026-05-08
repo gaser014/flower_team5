@@ -24,7 +24,8 @@ class ForgetPasswordCubit extends Cubit<ForgetPasswordState> {
 
   // Step 3: Reset Password
   final TextEditingController newPasswordController = TextEditingController();
-  final TextEditingController confirmPasswordController = TextEditingController();
+  final TextEditingController confirmPasswordController =
+      TextEditingController();
   final GlobalKey<FormState> resetPasswordFormKey = GlobalKey<FormState>();
 
   ForgetPasswordCubit(
@@ -34,14 +35,13 @@ class ForgetPasswordCubit extends Cubit<ForgetPasswordState> {
   ) : super(ForgetPasswordInitial());
 
   Future<void> sendCode() async {
-    if (forgetPasswordFormKey.currentState!.validate()) {
-      emit(ForgetPasswordLoading());
-      
-      // MOCK API CALL
-      await Future.delayed(const Duration(seconds: 1));
-      emit(const SendCodeSuccess("Mock: Code sent successfully"));
-      
-      /*
+    emit(ForgetPasswordLoading());
+
+    // MOCK API CALL
+    await Future.delayed(const Duration(seconds: 1));
+    emit(const SendCodeSuccess("Mock: Code sent successfully"));
+
+    /*
       final result = await _sendForgetPasswordCodeUseCase.execute(
         ForgetPasswordParams(email: emailController.text),
       );
@@ -51,18 +51,16 @@ class ForgetPasswordCubit extends Cubit<ForgetPasswordState> {
         error: (exception) => emit(ForgetPasswordError(exception?.toString() ?? "An error occurred")),
       );
       */
-    }
   }
 
   Future<void> verifyCode() async {
-    if (verifyCodeFormKey.currentState!.validate()) {
-      emit(ForgetPasswordLoading());
-      
-      // MOCK API CALL
-      await Future.delayed(const Duration(seconds: 1));
-      emit(const VerifyCodeSuccess("Mock: Code verified successfully"));
+    emit(ForgetPasswordLoading());
 
-      /*
+    // MOCK API CALL
+    await Future.delayed(const Duration(seconds: 1));
+    emit(const VerifyCodeSuccess("Mock: Code verified successfully"));
+
+    /*
       final result = await _verifyForgetPasswordCodeUseCase.execute(
         ForgetPasswordParams(
           email: emailController.text,
@@ -75,18 +73,16 @@ class ForgetPasswordCubit extends Cubit<ForgetPasswordState> {
         error: (exception) => emit(ForgetPasswordError(exception?.toString() ?? "An error occurred")),
       );
       */
-    }
   }
 
   Future<void> resetPassword() async {
-    if (resetPasswordFormKey.currentState!.validate()) {
-      emit(ForgetPasswordLoading());
-      
-      // MOCK API CALL
-      await Future.delayed(const Duration(seconds: 1));
-      emit(const ResetPasswordSuccess("Mock: Password reset successfully"));
+    emit(ForgetPasswordLoading());
 
-      /*
+    // MOCK API CALL
+    await Future.delayed(const Duration(seconds: 1));
+    emit(const ResetPasswordSuccess("Mock: Password reset successfully"));
+
+    /*
       final result = await _resetPasswordUseCase.execute(
         ForgetPasswordParams(
           email: emailController.text,
@@ -99,7 +95,6 @@ class ForgetPasswordCubit extends Cubit<ForgetPasswordState> {
         error: (exception) => emit(ForgetPasswordError(exception?.toString() ?? "An error occurred")),
       );
       */
-    }
   }
 
   @override
