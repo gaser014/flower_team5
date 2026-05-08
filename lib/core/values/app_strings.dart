@@ -89,6 +89,7 @@ class AppStrings {
   static const String appName = "Flowers";
   static const String appSlogan = "The most beautiful flowers to your doorstep";
   static const String tryAgain = "Try again";
+  static const String appTitle = "Flowery";
 
   // Validations
   static const String emailRequired = "Email is required";

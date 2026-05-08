@@ -3,10 +3,7 @@ import 'dart:io';
 import 'package:flowers_app/config/api/api_key.dart';
 import 'package:flowers_app/config/dependency_injection/di.dart';
 import 'package:flowers_app/core/routes/routes.dart';
-import 'package:flowers_app/features/login/presentation/view/pages/login_page.dart';
-import 'package:flowers_app/features/spalsh/splash_page.dart';
 import 'package:flutter/cupertino.dart';
-
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:go_router/go_router.dart';
 
@@ -207,6 +204,14 @@ abstract class AppRoutes {
   static final GoRouter router = GoRouter(
     initialLocation: Routes.splash,
     routes: [
+      GoRoute(
+        path: Routes.main,
+        pageBuilder: (context, state) => buildAnimatedPage(
+          key: state.pageKey,
+          child: const MainView(),
+          animationType: AnimationType.fade,
+        ),
+      ),
       GoRoute(
         path: Routes.login,
         name: Routes.login,
