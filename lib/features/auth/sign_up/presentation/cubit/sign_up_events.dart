@@ -5,7 +5,7 @@ sealed class SignUpEvents {
 }
 
 class SignUpUserEvent extends SignUpEvents {
-  final SignUpParams params;
+  final UserEntity params;
 
   const SignUpUserEvent({required this.params});
 }

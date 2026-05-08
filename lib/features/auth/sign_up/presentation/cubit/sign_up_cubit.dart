@@ -1,5 +1,6 @@
 import 'package:flowers_app/config/helper/enum/gender.dart';
 import 'package:flowers_app/core/values/app_strings.dart';
+import 'package:flowers_app/features/auth/sign_up/domain/entities/user_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flowers_app/features/auth/sign_up/domain/use_cases/sign_up_use_case.dart';
@@ -20,7 +21,8 @@ class SignUpCubit extends Cubit<SignUpState> {
   final TextEditingController _lastNameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
@@ -29,7 +31,8 @@ class SignUpCubit extends Cubit<SignUpState> {
   TextEditingController get lastNameController => _lastNameController;
   TextEditingController get emailController => _emailController;
   TextEditingController get passwordController => _passwordController;
-  TextEditingController get confirmPasswordController => _confirmPasswordController;
+  TextEditingController get confirmPasswordController =>
+      _confirmPasswordController;
   TextEditingController get phoneController => _phoneController;
   GlobalKey<FormState> get formKey => _formKey;
 
@@ -44,15 +47,16 @@ class SignUpCubit extends Cubit<SignUpState> {
   }
 
   void toggleConfirmPasswordVisibility() {
-    emit(state.copyWith(
-        isConfirmPasswordVisible: !state.isConfirmPasswordVisible));
+    emit(
+      state.copyWith(isConfirmPasswordVisible: !state.isConfirmPasswordVisible),
+    );
   }
 
   void changeGender(Gender gender) {
     emit(state.copyWith(gender: gender));
   }
 
-  Future<void> _signUp(SignUpParams params) async {
+  Future<void> _signUp(UserEntity params) async {
     emit(state.copyWith(status: SignUpStatus.loading));
     debugPrint("Signing up with: ${params.firstName}, ${params.email}");
 
@@ -61,18 +65,17 @@ class SignUpCubit extends Cubit<SignUpState> {
     result.when(
       success: (data) async {
         debugPrint("Sign up success: ${data?.message}");
-        emit(state.copyWith(
-          status: SignUpStatus.success,
-          data: data,
-        ));
+        emit(state.copyWith(status: SignUpStatus.success, data: data));
       },
       error: (exception) {
         debugPrint("Sign up error: $exception");
-        emit(state.copyWith(
-          status: SignUpStatus.error,
-          errorMessage: exception?.toString() ??
-              AppStrings.anUnexpectedErrorOccurred,
-        ));
+        emit(
+          state.copyWith(
+            status: SignUpStatus.error,
+            errorMessage:
+                exception?.toString() ?? AppStrings.anUnexpectedErrorOccurred,
+          ),
+        );
       },
     );
   }
@@ -90,7 +93,7 @@ class SignUpCubit extends Cubit<SignUpState> {
     }
     phoneNumber = "+20$phoneNumber";
 
-    final params = SignUpParams(
+    final params = UserEntity(
       firstName: _firstNameController.text.trim(),
       lastName: _lastNameController.text.trim(),
       email: _emailController.text.trim(),

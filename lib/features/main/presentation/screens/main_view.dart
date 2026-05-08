@@ -1,8 +1,13 @@
+import 'package:flowers_app/config/dependency_injection/di.dart';
+import 'package:flowers_app/core/data/data_sources/auth_local_data_source.dart';
+import 'package:flowers_app/core/routes/routes.dart';
 import 'package:flowers_app/core/values/app_assets.dart';
 import 'package:flowers_app/core/values/app_colors.dart';
+import 'package:flowers_app/core/widgets/custom_button.dart';
 import 'package:flowers_app/features/home/presentation/screens/home_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:go_router/go_router.dart';
 
 class MainView extends StatefulWidget {
   const MainView({super.key});
@@ -14,11 +19,11 @@ class MainView extends StatefulWidget {
 class _MainViewState extends State<MainView> {
   int _selectedIndex = 0;
 
-  static const List<Widget> _pages = <Widget>[
+  static final List<Widget> _pages = <Widget>[
     HomeView(),
     Center(child: Text('Categories')),
     Center(child: Text('Cart')),
-    Center(child: Text('Profile')),
+    _Profile(),
   ];
 
   void _onItemTapped(int index) {
@@ -30,10 +35,7 @@ class _MainViewState extends State<MainView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: IndexedStack(
-        index: _selectedIndex,
-        children: _pages,
-      ),
+      body: IndexedStack(index: _selectedIndex, children: _pages),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
@@ -82,6 +84,29 @@ class _MainViewState extends State<MainView> {
             label: 'Profile',
           ),
         ],
+      ),
+    );
+  }
+}
+
+class _Profile extends StatelessWidget {
+  const _Profile();
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Padding(
+        padding: EdgeInsetsDirectional.all(16),
+        child: CustomButton(
+          text: "log out",
+          variant: ButtonVariant.outlined,
+          onPressed: () async {
+            await getIt<AuthLocalDataSourceContract>().deleteUserToken();
+            if (context.mounted) {
+              context.go(Routes.login);
+            }
+          },
+        ),
       ),
     );
   }

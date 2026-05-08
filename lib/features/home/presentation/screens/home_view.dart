@@ -18,9 +18,7 @@ class HomeView extends StatelessWidget {
           children: [
             _buildTopBar(context),
             const Expanded(
-              child: SingleChildScrollView(child: Column(children: [
-                  ],
-                )),
+              child: SingleChildScrollView(child: Column(children: [])),
             ),
           ],
         ),
@@ -40,12 +38,7 @@ class HomeView extends StatelessWidget {
                 children: [
                   SvgPicture.asset(AppAssets.iconsFlower, height: 32),
                   const Gap(4),
-                  Text(
-                    AppStrings.appTitle,
-                    style: AppFontStyle.bold20(
-                      context: context,
-                    ).copyWith(color: AppColors.primerColor),
-                  ),
+                  Image.asset(AppAssets.logoTextSplash, height: 24, width: 68),
                 ],
               ),
               const Gap(12),

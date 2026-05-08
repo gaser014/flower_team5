@@ -1,4 +1,6 @@
 import 'package:flowers_app/core/data/data_sources/auth_local_data_source.dart';
+import 'package:flowers_app/features/auth/sign_up/domain/entities/user_entity.dart';
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flowers_app/config/base_response/result.dart';
 import 'package:flowers_app/features/auth/sign_up/data/data_sources/sign_up_remote_data_source.dart';
@@ -39,7 +41,10 @@ void main() {
   setUp(() {
     mockRemoteDataSource = MockSignUpRemoteDataSource();
     mockAuthLocalDataSource = MockAuthLocalDataSource();
-    signUpRepositoryImpl = SignUpRepositoryImpl(mockRemoteDataSource, mockAuthLocalDataSource);
+    signUpRepositoryImpl = SignUpRepositoryImpl(
+      mockRemoteDataSource,
+      mockAuthLocalDataSource,
+    );
   });
 
   const tSignUpResponseDto = SignUpResponseDto(
@@ -60,13 +65,15 @@ void main() {
 
     // act
     final result = await signUpRepositoryImpl.signUp(
-      firstName: 'John',
-      lastName: 'Doe',
-      email: 'test@example.com',
-      password: 'password123',
-      rePassword: 'password123',
-      phone: '0123456789',
-      gender: 'male',
+      userEntity: UserEntity(
+        firstName: 'John',
+        lastName: 'Doe',
+        email: 'test@example.com',
+        password: 'password123',
+        rePassword: 'password123',
+        phone: '0123456789',
+        gender: 'male',
+      ),
     );
 
     // assert
@@ -74,23 +81,28 @@ void main() {
     expect(mockRemoteDataSource.signUpCalled, true);
   });
 
-  test('should return Error when remote data source throws an exception', () async {
-    // arrange
-    mockRemoteDataSource.mockException = Exception('Server Error');
+  test(
+    'should return Error when remote data source throws an exception',
+    () async {
+      // arrange
+      mockRemoteDataSource.mockException = Exception('Server Error');
 
-    // act
-    final result = await signUpRepositoryImpl.signUp(
-      firstName: 'John',
-      lastName: 'Doe',
-      email: 'test@example.com',
-      password: 'password123',
-      rePassword: 'password123',
-      phone: '0123456789',
-      gender: 'male',
-    );
+      // act
+      final result = await signUpRepositoryImpl.signUp(
+        userEntity: UserEntity(
+          firstName: 'John',
+          lastName: 'Doe',
+          email: 'test@example.com',
+          password: 'password123',
+          rePassword: 'password123',
+          phone: '0123456789',
+          gender: 'male',
+        ),
+      );
 
-    // assert
-    expect(result, isA<Error<SignUpEntity>>());
-    expect(mockRemoteDataSource.signUpCalled, true);
-  });
+      // assert
+      expect(result, isA<Error<SignUpEntity>>());
+      expect(mockRemoteDataSource.signUpCalled, true);
+    },
+  );
 }
