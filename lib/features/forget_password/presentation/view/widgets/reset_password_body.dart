@@ -9,20 +9,20 @@ import '../../../../../core/values/app_font_style.dart';
 import '../../../../../core/values/app_strings.dart';
 import '../../../../../core/widgets/custom_button.dart';
 import '../../../../../core/widgets/text_field/password_field.dart';
-import '../../view_model/cubit/forget_password_cubit.dart';
-import '../../view_model/cubit/forget_password_states.dart';
+import '../../view_model/bloc/forget_password_bloc.dart';
+import '../../view_model/bloc/forget_password_events.dart';
+import '../../view_model/bloc/forget_password_states.dart';
 
 class ResetPasswordBody extends StatelessWidget {
   const ResetPasswordBody({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final cubit = context.read<ForgetPasswordCubit>();
+    final bloc = context.read<ForgetPasswordBloc>();
 
-    return BlocListener<ForgetPasswordCubit, ForgetPasswordState>(
+    return BlocListener<ForgetPasswordBloc, ForgetPasswordState>(
       listener: (context, state) {
         if (state is ResetPasswordSuccess) {
-          // Navigate to login or success screen
           context.go(Routes.login);
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text(state.message)),
@@ -34,7 +34,7 @@ class ResetPasswordBody extends StatelessWidget {
         }
       },
       child: Form(
-        key: cubit.resetPasswordFormKey,
+        key: bloc.resetPasswordFormKey,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
@@ -51,27 +51,27 @@ class ResetPasswordBody extends StatelessWidget {
             ),
             Gap(32.h),
             PasswordField(
-              controller: cubit.newPasswordController,
+              controller: bloc.newPasswordController,
               labelText: AppStrings.newPassword,
             ),
             Gap(16.h),
             PasswordField(
-              controller: cubit.confirmPasswordController,
+              controller: bloc.confirmPasswordController,
               labelText: AppStrings.confirmNewPassword,
               validator: (value) {
-                if (value != cubit.newPasswordController.text) {
+                if (value != bloc.newPasswordController.text) {
                   return AppStrings.confirmPasswordMismatch;
                 }
                 return null;
               },
             ),
             Gap(32.h),
-            BlocBuilder<ForgetPasswordCubit, ForgetPasswordState>(
+            BlocBuilder<ForgetPasswordBloc, ForgetPasswordState>(
               builder: (context, state) {
                 return CustomButton(
                   text: AppStrings.confirm,
                   isLoading: state is ForgetPasswordLoading,
-                  onPressed: () => cubit.resetPassword(),
+                  onPressed: () => bloc.add(ResetPasswordEvent()),
                 );
               },
             ),

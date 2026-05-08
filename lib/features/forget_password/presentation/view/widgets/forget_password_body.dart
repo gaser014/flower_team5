@@ -9,20 +9,21 @@ import 'package:flowers_app/core/values/app_font_style.dart';
 import 'package:flowers_app/core/values/app_strings.dart';
 import 'package:flowers_app/core/widgets/custom_button.dart';
 import 'package:flowers_app/core/widgets/text_field/email_field.dart';
-import '../../view_model/cubit/forget_password_cubit.dart';
-import '../../view_model/cubit/forget_password_states.dart';
+import '../../view_model/bloc/forget_password_bloc.dart';
+import '../../view_model/bloc/forget_password_events.dart';
+import '../../view_model/bloc/forget_password_states.dart';
 
 class ForgetPasswordBody extends StatelessWidget {
   const ForgetPasswordBody({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final cubit = context.read<ForgetPasswordCubit>();
+    final bloc = context.read<ForgetPasswordBloc>();
 
-    return BlocListener<ForgetPasswordCubit, ForgetPasswordState>(
+    return BlocListener<ForgetPasswordBloc, ForgetPasswordState>(
       listener: (context, state) {
         if (state is SendCodeSuccess) {
-          context.push(Routes.verifyCode, extra: cubit);
+          context.push(Routes.verifyCode, extra: bloc);
         } else if (state is ForgetPasswordError) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text(state.message)),
@@ -30,7 +31,7 @@ class ForgetPasswordBody extends StatelessWidget {
         }
       },
       child: Form(
-        key: cubit.forgetPasswordFormKey,
+        key: bloc.forgetPasswordFormKey,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
@@ -46,14 +47,14 @@ class ForgetPasswordBody extends StatelessWidget {
               style: AppFontStyle.regular16(context: context),
             ),
             Gap(32.h),
-            EmailField(controller: cubit.emailController),
+            EmailField(controller: bloc.emailController),
             Gap(32.h),
-            BlocBuilder<ForgetPasswordCubit, ForgetPasswordState>(
+            BlocBuilder<ForgetPasswordBloc, ForgetPasswordState>(
               builder: (context, state) {
                 return CustomButton(
                   text: AppStrings.confirmForgetPassword,
                   isLoading: state is ForgetPasswordLoading,
-                  onPressed: () => cubit.sendCode(),
+                  onPressed: () => bloc.add(SendCodeEvent()),
                 );
               },
             ),
