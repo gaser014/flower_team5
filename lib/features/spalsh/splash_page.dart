@@ -20,7 +20,7 @@ class _SplashPageState extends State<SplashPage>
   late Animation<double> _logoFadeAnimation;
   late Animation<double> _textFadeAnimation;
   late Animation<Offset> _textSlideAnimation;
-
+  late Animation<double> _rotationAnimation;
   @override
   void initState() {
     super.initState();
@@ -29,6 +29,10 @@ class _SplashPageState extends State<SplashPage>
       duration: const Duration(milliseconds: 2500),
     );
 
+    _rotationAnimation = Tween<double>(
+      begin: 0.0,
+      end: 1.0,
+    ).animate(_controller);
     _logoScaleAnimation = Tween<double>(
       begin: 0.7,
       end: 1.0,
@@ -98,11 +102,14 @@ class _SplashPageState extends State<SplashPage>
                 AnimatedBuilder(
                   animation: _controller,
                   builder: (context, child) {
-                    return FadeTransition(
-                      opacity: _logoFadeAnimation,
-                      child: ScaleTransition(
-                        scale: _logoScaleAnimation,
-                        child: child,
+                    return RotationTransition(
+                      turns: _rotationAnimation,
+                      child: FadeTransition(
+                        opacity: _logoFadeAnimation,
+                        child: ScaleTransition(
+                          scale: _logoScaleAnimation,
+                          child: child,
+                        ),
                       ),
                     );
                   },
