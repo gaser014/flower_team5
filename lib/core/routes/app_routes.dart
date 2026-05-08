@@ -10,6 +10,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../features/forget_password/presentation/view/pages/forget_password_page.dart';
+import '../../features/forget_password/presentation/view/pages/verify_code_page.dart';
+import '../../features/forget_password/presentation/view/pages/reset_password_page.dart';
+import '../../features/forget_password/presentation/view_model/cubit/forget_password_cubit.dart';
+
 final RouteObserver<ModalRoute> routeObserver = RouteObserver<ModalRoute>();
 
 // Animation Type Enum
@@ -207,6 +212,29 @@ abstract class AppRoutes {
   static final GoRouter router = GoRouter(
     initialLocation: Routes.splash,
     routes: [
+      GoRoute(
+        path: Routes.forgetPassword,
+        name: Routes.forgetPassword,
+        builder: (BuildContext context, GoRouterState state) {
+          return const ForgetPasswordPage();
+        },
+      ),
+      GoRoute(
+        path: Routes.verifyCode,
+        name: Routes.verifyCode,
+        builder: (BuildContext context, GoRouterState state) {
+          final cubit = state.extra as ForgetPasswordCubit? ?? getIt<ForgetPasswordCubit>();
+          return VerifyCodePage(cubit: cubit);
+        },
+      ),
+      GoRoute(
+        path: Routes.resetPassword,
+        name: Routes.resetPassword,
+        builder: (BuildContext context, GoRouterState state) {
+          final cubit = state.extra as ForgetPasswordCubit? ?? getIt<ForgetPasswordCubit>();
+          return ResetPasswordPage(cubit: cubit);
+        },
+      ),
       GoRoute(
         path: Routes.register,
         pageBuilder: (context, state) => buildAnimatedPage(
