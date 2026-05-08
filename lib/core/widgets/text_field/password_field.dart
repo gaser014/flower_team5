@@ -46,6 +46,14 @@ class _PasswordFieldState extends State<PasswordField> {
   }
 
   @override
+  void didUpdateWidget(covariant PasswordField oldWidget) {
+    if (oldWidget.obscureText != widget.obscureText) {
+      isObscure = widget.obscureText;
+    }
+    super.didUpdateWidget(oldWidget);
+  }
+
+  @override
   Widget build(BuildContext context) {
     return TextFormField(
       controller: widget.controller,
