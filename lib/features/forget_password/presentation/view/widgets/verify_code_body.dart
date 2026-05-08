@@ -10,20 +10,21 @@ import '../../../../../core/values/app_strings.dart';
 import '../../../../../core/widgets/custom_button.dart';
 import '../../../../../core/widgets/resend_timer_widget.dart';
 import '../../../../../core/widgets/text_field/otp_input_field.dart';
-import '../../view_model/cubit/forget_password_cubit.dart';
-import '../../view_model/cubit/forget_password_states.dart';
+import '../../view_model/bloc/forget_password_bloc.dart';
+import '../../view_model/bloc/forget_password_events.dart';
+import '../../view_model/bloc/forget_password_states.dart';
 
 class VerifyCodeBody extends StatelessWidget {
   const VerifyCodeBody({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final cubit = context.read<ForgetPasswordCubit>();
+    final bloc = context.read<ForgetPasswordBloc>();
 
-    return BlocListener<ForgetPasswordCubit, ForgetPasswordState>(
+    return BlocListener<ForgetPasswordBloc, ForgetPasswordState>(
       listener: (context, state) {
         if (state is VerifyCodeSuccess) {
-          context.push(Routes.resetPassword, extra: cubit);
+          context.push(Routes.resetPassword, extra: bloc);
         } else if (state is ForgetPasswordError) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text(state.message)),
@@ -31,7 +32,7 @@ class VerifyCodeBody extends StatelessWidget {
         }
       },
       child: Form(
-        key: cubit.verifyCodeFormKey,
+        key: bloc.verifyCodeFormKey,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
@@ -47,15 +48,15 @@ class VerifyCodeBody extends StatelessWidget {
               style: AppFontStyle.regular16(context: context),
             ),
             Gap(32.h),
-            BlocBuilder<ForgetPasswordCubit, ForgetPasswordState>(
+            BlocBuilder<ForgetPasswordBloc, ForgetPasswordState>(
               builder: (context, state) {
                 return Column(
                   children: [
                     OtpInputField(
-                      controller: cubit.otpController,
+                      controller: bloc.otpController,
                       length: 4,
                       hasError: state is ForgetPasswordError,
-                      onCompleted: (pin) => cubit.verifyCode(),
+                      onCompleted: (pin) => bloc.add(VerifyCodeEvent()),
                     ),
                     if (state is ForgetPasswordError) ...[
                       Gap(8.h),
@@ -66,14 +67,14 @@ class VerifyCodeBody extends StatelessWidget {
               },
             ),
             Gap(16.h),
-            ResendTimerWidget(onResend: () => cubit.sendCode()),
+            ResendTimerWidget(onResend: () => bloc.add(SendCodeEvent())),
             Gap(32.h),
-            BlocBuilder<ForgetPasswordCubit, ForgetPasswordState>(
+            BlocBuilder<ForgetPasswordBloc, ForgetPasswordState>(
               builder: (context, state) {
                 return CustomButton(
                   text: AppStrings.confirm,
                   isLoading: state is ForgetPasswordLoading,
-                  onPressed: () => cubit.verifyCode(),
+                  onPressed: () => bloc.add(VerifyCodeEvent()),
                 );
               },
             ),
