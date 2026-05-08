@@ -16,13 +16,20 @@ class LoginRepositoryImpl implements LoginRepositoryContract {
     this._loginRemoteDataSourceContract,
     this._loginLocalDataSourceContract,
   );
-  
+
   @override
   Future<Result<LoginResponseEntity>> login(LoginParams params) async {
     final result = await _loginRemoteDataSourceContract.login(params);
     return result.when(
       success: (response) {
         LoginResponseEntity? loginResponseEntity = response?.toEntity();
+        if (params.remember ?? false) {
+          if (loginResponseEntity?.user != null) {
+            _loginLocalDataSourceContract.saveUser(
+              UserModel.fromUserEntity(loginResponseEntity!.user!),
+            );
+          }
+        }
         return Success<LoginResponseEntity>(data: loginResponseEntity);
       },
       error: (error) {
@@ -35,7 +42,9 @@ class LoginRepositoryImpl implements LoginRepositoryContract {
   Future<Result<UserEntity>> saveUser(UserEntity userEntity) async {
     try {
       final userModel = UserModel.fromUserEntity(userEntity);
-      final savedModel = await _loginLocalDataSourceContract.saveUser(userModel);
+      final savedModel = await _loginLocalDataSourceContract.saveUser(
+        userModel,
+      );
       return Success<UserEntity>(data: savedModel.toUserEntity());
     } on Exception catch (e) {
       return Error(exception: e);
