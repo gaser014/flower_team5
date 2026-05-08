@@ -3,6 +3,9 @@ import 'dart:io';
 import 'package:flowers_app/config/api/api_key.dart';
 import 'package:flowers_app/config/dependency_injection/di.dart';
 import 'package:flowers_app/core/routes/routes.dart';
+import 'package:flowers_app/features/auth/login/presentation/screens/login_view.dart';
+import 'package:flowers_app/features/auth/sign_up/presentation/screens/sign_up_view.dart';
+import 'package:flowers_app/features/auth/sign_up/presentation/screens/terms_and_conditions_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:go_router/go_router.dart';
@@ -204,6 +207,22 @@ abstract class AppRoutes {
   static final GoRouter router = GoRouter(
     initialLocation: Routes.splash,
     routes: [
+      GoRoute(
+        path: Routes.register,
+        pageBuilder: (context, state) => buildAnimatedPage(
+          key: state.pageKey,
+          child: const SignUpView(),
+          animationType: AnimationType.slideFromRight,
+        ),
+      ),
+      GoRoute(
+        path: Routes.termsAndConditions,
+        pageBuilder: (context, state) => buildAnimatedPage(
+          key: state.pageKey,
+          child: const TermsAndConditionsView(),
+          animationType: AnimationType.slideFromRight,
+        ),
+      ),
       GoRoute(
         path: Routes.main,
         pageBuilder: (context, state) => buildAnimatedPage(

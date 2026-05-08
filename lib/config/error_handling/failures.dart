@@ -47,7 +47,7 @@ class ServerFailure extends Failures {
         statusCode == 424 ||
         statusCode == 404) {
       return ServerFailure(
-        errorMessage: response['message'] ?? AppStrings.unknownError,
+        errorMessage: response['message'] ?? response['error'] ?? AppStrings.unknownError,
       );
     } else if (statusCode == 500) {
       return ServerFailure(errorMessage: AppStrings.apiServerError);
