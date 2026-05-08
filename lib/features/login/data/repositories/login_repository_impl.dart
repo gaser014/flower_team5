@@ -1,7 +1,11 @@
+import 'dart:developer';
+
 import 'package:flowers_app/config/api/api_key.dart';
 import 'package:flowers_app/config/base_response/result.dart';
 import 'package:flowers_app/config/database/cache_helper.dart';
+import 'package:flowers_app/config/dependency_injection/di.dart';
 import 'package:flowers_app/config/uses_cases/login_params.dart';
+import 'package:flowers_app/core/data/data_sources/auth_local_data_source.dart';
 import 'package:flowers_app/features/login/data/datasources/login_local_data_source_contract.dart';
 import 'package:flowers_app/features/login/data/datasources/login_remote_data_source_contract.dart';
 import 'package:flowers_app/features/login/data/models/user_model.dart';
@@ -31,9 +35,9 @@ class LoginRepositoryImpl implements LoginRepositoryContract {
               UserModel.fromUserEntity(loginResponseEntity!.user!),
             );
             if (loginResponseEntity.token != null) {
-              await AppSharedPreferences.setString(
-                key: APIkeys.accessToken,
-                value: response?.token ?? '',
+              log('Auth Token saved: ${loginResponseEntity.token}');
+              getIt<AuthLocalDataSourceContract>().saveUserToken(
+                loginResponseEntity.token!,
               );
             }
           }
