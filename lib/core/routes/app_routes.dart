@@ -3,7 +3,11 @@ import 'dart:io';
 import 'package:flowers_app/config/dependency_injection/di.dart';
 import 'package:flowers_app/core/data/data_sources/auth_local_data_source.dart';
 import 'package:flowers_app/core/routes/routes.dart';
+import 'package:flowers_app/features/categories/presentation/cubit/categories_cubit.dart';
+import 'package:flowers_app/features/categories/presentation/screens/categories_view.dart';
+import 'package:flowers_app/features/categories/presentation/screens/product_search_view.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 final RouteObserver<ModalRoute> routeObserver = RouteObserver<ModalRoute>();
@@ -201,8 +205,20 @@ class _PageBasedPageRoute<T> extends PageRoute<T> {
 
 abstract class AppRoutes {
   static final GoRouter router = GoRouter(
-    initialLocation: Routes.splash,
-    routes: [],
+    initialLocation: Routes.main,
+    routes: [
+      GoRoute(
+        path: Routes.main,
+        builder: (context, state) => BlocProvider(
+          create: (context) => getIt<CategoriesCubit>(),
+          child: const CategoriesView(),
+        ),
+      ),
+      GoRoute(
+        path: Routes.productSearch,
+        builder: (context, state) => const ProductSearchView(),
+      ),
+    ],
     redirect: (context, state) async {
       final currentLocation = state.matchedLocation;
 

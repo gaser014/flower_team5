@@ -18,6 +18,16 @@ import 'package:internet_connection_checker_plus/internet_connection_checker_plu
 
 import '../../core/api/datasources/auth_local_data_source_impl.dart' as _i424;
 import '../../core/data/data_sources/auth_local_data_source.dart' as _i759;
+import '../../features/categories/api/api_client/categories_api_client.dart'
+    as _i612;
+import '../../features/categories/data/datasources/categories_remote_data_source.dart'
+    as _i814;
+import '../../features/categories/data/repositories/categories_repository_impl.dart'
+    as _i245;
+import '../../features/categories/domain/repositories/categories_repository.dart'
+    as _i488;
+import '../../features/categories/presentation/cubit/categories_cubit.dart'
+    as _i802;
 import '../api/app_interceptor.dart' as _i449;
 import '../api/dio_module.dart' as _i784;
 
@@ -37,15 +47,30 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i161.InternetConnection>(
       () => dioModule.internetConnection(),
     );
+    gh.factory<_i612.CategoriesApiClient>(
+      () => _i612.CategoriesApiClient(gh<_i361.Dio>()),
+    );
     gh.singleton<_i449.AppInterceptors>(
       () => _i449.AppInterceptors(
         dio: gh<_i361.Dio>(),
         fss: gh<_i558.FlutterSecureStorage>(),
       ),
     );
+    gh.factory<_i814.CategoriesRemoteDataSource>(
+      () =>
+          _i814.CategoriesRemoteDataSourceImpl(gh<_i612.CategoriesApiClient>()),
+    );
     gh.lazySingleton<_i759.AuthLocalDataSourceContract>(
       () =>
           _i424.AuthLocalDataSourceImpl(fss: gh<_i558.FlutterSecureStorage>()),
+    );
+    gh.factory<_i488.CategoriesRepository>(
+      () => _i245.CategoriesRepositoryImpl(
+        gh<_i814.CategoriesRemoteDataSource>(),
+      ),
+    );
+    gh.factory<_i802.CategoriesCubit>(
+      () => _i802.CategoriesCubit(gh<_i488.CategoriesRepository>()),
     );
     return this;
   }
