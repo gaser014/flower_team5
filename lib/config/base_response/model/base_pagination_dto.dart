@@ -16,28 +16,24 @@ class BasePaginationDto<T> {
   @JsonKey(name: 'data')
   final List<T>? data;
 
-  const BasePaginationDto({
-    this.message,
-    this.metadata,
-    this.data,
-  });
+  const BasePaginationDto({this.message, this.metadata, this.data});
 
   factory BasePaginationDto.fromJson(
     Map<String, dynamic> json,
     T Function(Object? json) fromJsonT,
-  ) =>
-      _$BasePaginationDtoFromJson(json, fromJsonT);
+  ) => _$BasePaginationDtoFromJson(json, fromJsonT);
 
   Map<String, dynamic> toJson(Object? Function(T value) toJsonT) =>
       _$BasePaginationDtoToJson(this, toJsonT);
 
-  BasePaginationEntity<E> toEntity<E>(E Function(T) mapper) {
+  BasePaginationEntity<E> mapToEntity<E>(E Function(T) mapper) {
     final meta = metadata?.toEntity() ?? const MetaEntity.empty();
     final items = data?.map(mapper).toList() ?? <E>[];
 
-    return BasePaginationEntity<E>(
-      meta: meta,
-      data: items,
-    );
+    return BasePaginationEntity<E>(meta: meta, data: items);
+  }
+
+  BasePaginationEntity toEntity() {
+    throw UnimplementedError('toEntity() must be overridden in subclasses');
   }
 }
