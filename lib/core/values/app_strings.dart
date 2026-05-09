@@ -20,10 +20,14 @@ class AppStrings {
   static const String loadingAccessibilityLabel = "Loading...";
   static const String retryButton = "Retry...";
   static const String invalidCode = "Invalid code";
+  static const String occasion = "Occasion";
+  static const String occasionSubTitle =
+      "Bloom with our exquisite best sellers";
   static const String enterUserName = "Enter first name";
   static const String codeNotReceived = "Didn't receive the code?";
   static const String resendCodeIn = "Resend in {}";
   static const String resend = "Resend";
+  static const String noProductsFound = "No products found";
   static const String enterEmail = "Enter you email";
   static const String password = "Password";
   static const String phoneNumber = "Phone Number";
