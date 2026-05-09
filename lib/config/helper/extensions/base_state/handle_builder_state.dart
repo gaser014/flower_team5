@@ -53,7 +53,7 @@ extension HandleBuilderStateList on PaginationState {
             Column(
               spacing: 16,
               children: [
-                ?onSuccess,
+                onSuccess ?? SizedBox.shrink(),
                 Center(
                   child: CupertinoActivityIndicator(
                     color: AppColors.primerColor,
