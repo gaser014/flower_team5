@@ -35,6 +35,7 @@ class AppStrings {
   static const String pmLong = "PM";
   static const String ago = "ago";
   static const String seconds = "seconds";
+  static const String passwordHint = "Password is required";
   static const String second = "second";
   static const String twoSeconds = "two seconds";
   static const String hourLabel = "hour";
