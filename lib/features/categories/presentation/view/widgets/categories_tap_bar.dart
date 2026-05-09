@@ -11,16 +11,16 @@ class CategoriesTapBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cubit = context.read<CategoriesCubit>();
-
     return BlocBuilder<CategoriesCubit, CategoriesStates>(
       buildWhen: (previous, current) =>
           previous.categoriesState != current.categoriesState,
       builder: (context, state) {
         return ListFilterTabs(
           onTap: onTap,
-          selectedItem:
-              state.categoriesState.data.firstOrNull ?? CategoryEntity(),
+
+          selectedItem: context.select(
+            (CategoriesCubit cubit) => cubit.state.selectCategoryState,
+          ),
           state: state.categoriesState,
         );
       },

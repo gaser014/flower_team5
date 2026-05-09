@@ -14,3 +14,7 @@ class LoadMoreCategoriesEvent extends CategoriesEvents {
   const LoadMoreCategoriesEvent({required this.params});
 }
 
+class SelectCategoryEvent extends CategoriesEvents {
+  final CategoryEntity category;
+  const SelectCategoryEvent({required this.category});
+}

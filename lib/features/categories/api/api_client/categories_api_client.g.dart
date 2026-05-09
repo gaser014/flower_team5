@@ -52,13 +52,13 @@ class _CategoriesApiClient implements CategoriesApiClient {
   }
 
   @override
-  Future<CategoriesResponseDto> getAllOccasions(CategoriesParams params) async {
+  Future<OccasionsResponseDto> getAllOccasions(CategoriesParams params) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     queryParameters.addAll(params.toJson());
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<CategoriesResponseDto>(
+    final _options = _setStreamType<OccasionsResponseDto>(
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
@@ -69,9 +69,9 @@ class _CategoriesApiClient implements CategoriesApiClient {
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late CategoriesResponseDto _value;
+    late OccasionsResponseDto _value;
     try {
-      _value = CategoriesResponseDto.fromJson(_result.data!);
+      _value = OccasionsResponseDto.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options, response: _result);
       rethrow;

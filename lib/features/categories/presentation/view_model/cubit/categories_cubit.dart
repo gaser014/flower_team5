@@ -1,11 +1,8 @@
-import 'dart:developer';
-
 import 'package:equatable/equatable.dart';
 import 'package:flowers_app/config/base_state/pagination_state.dart';
 import 'package:flowers_app/features/categories/domain/entities/categories_params.dart';
 import 'package:flowers_app/features/categories/domain/entities/category_entity.dart';
 import 'package:flowers_app/features/categories/domain/use_cases/get_all_categories.dart';
-
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 
@@ -28,6 +25,7 @@ class CategoriesCubit extends Cubit<CategoriesStates> {
   Future<void> doIntent(CategoriesEvents event) async => switch (event) {
     GetAllCategoriesEvent() => _getAllCategories(event),
     LoadMoreCategoriesEvent() => _loadMore(event),
+    SelectCategoryEvent() => _selectCategory(event),
   };
 
   Future<void> _getAllCategories(GetAllCategoriesEvent event) async {
@@ -48,6 +46,7 @@ class CategoriesCubit extends Cubit<CategoriesStates> {
           emit(
             state.copyWith(
               categoriesState: state.categoriesState.toSuccessFromEntity(data),
+              selectCategoryState: state.selectCategoryState ?? data.data.first,
             ),
           );
         } else {
@@ -112,8 +111,10 @@ class CategoriesCubit extends Cubit<CategoriesStates> {
   }
 
   Future<void> refreshCategories() async {
-    if (state.categoriesState.isLoading || state.categoriesState.isLoadingMore)
+    if (state.categoriesState.isLoading ||
+        state.categoriesState.isLoadingMore) {
       return;
+    }
 
     final currentQuery = state.categoriesState.query;
     final params = currentQuery is CategoriesParams
@@ -138,6 +139,10 @@ class CategoriesCubit extends Cubit<CategoriesStates> {
         ),
       );
     }
+  }
+
+  void _selectCategory(SelectCategoryEvent event) {
+    emit(state.copyWith(selectCategoryState: event.category));
   }
 
   void reset() {

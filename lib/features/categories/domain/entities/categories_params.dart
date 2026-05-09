@@ -30,4 +30,12 @@ class CategoriesParams extends PaginationParams {
   List<Object?> get props => [...super.props, type];
 }
 
-enum CategoriesType { categories, occasions }
+enum CategoriesType {
+  categories("categories", "category"),
+  occasions("occasions", "occasion");
+
+  final String value;
+  final String parmKey;
+
+  const CategoriesType(this.value, this.parmKey);
+}
