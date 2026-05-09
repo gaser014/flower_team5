@@ -6,6 +6,7 @@ import 'package:flowers_app/features/categories/domain/use_cases/get_all_categor
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 
+
 part 'categories_events.dart';
 part 'categories_states.dart';
 
@@ -46,7 +47,7 @@ class CategoriesCubit extends Cubit<CategoriesStates> {
           emit(
             state.copyWith(
               categoriesState: state.categoriesState.toSuccessFromEntity(data),
-              selectCategoryState: state.selectCategoryState ?? data.data.first,
+              selectCategoryState: state.selectCategoryState ?? const CategoryEntity(id: null, name: 'All'),
             ),
           );
         } else {

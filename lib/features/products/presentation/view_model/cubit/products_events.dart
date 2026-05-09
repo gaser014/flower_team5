@@ -13,3 +13,12 @@ class LoadMoreProductsEvent extends ProductsEvents {
   final ProductsParams params;
   const LoadMoreProductsEvent({required this.params});
 }
+
+class SearchProductsEvent extends ProductsEvents {
+  final ProductsParams params;
+  const SearchProductsEvent({required this.params});
+}
+
+class ClearCategoryEvent extends ProductsEvents {
+  const ClearCategoryEvent();
+}

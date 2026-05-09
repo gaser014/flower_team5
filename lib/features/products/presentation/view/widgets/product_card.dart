@@ -6,6 +6,7 @@ import 'package:flowers_app/core/widgets/custom_cached_image.dart';
 import 'package:flowers_app/features/products/domain/entities/product_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:gap/gap.dart';
 
 class ProductCard extends StatelessWidget {
   final ProductEntity product;
@@ -86,7 +87,6 @@ class _PriceRow extends StatelessWidget {
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
-      spacing: 4,
       children: [
         if (displayPrice != null)
           Text(
@@ -96,6 +96,7 @@ class _PriceRow extends StatelessWidget {
             ).copyWith(color: AppColors.black0C),
           ),
         if (hasDiscount) ...[
+          const Gap(4),
           Text(
             product.price!.toString(),
             style: AppFontStyle.regular12(context: context).copyWith(
@@ -133,14 +134,14 @@ class _AddToCartButton extends StatelessWidget {
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
-          spacing: 8,
           children: [
             SvgPicture.asset(
               AppAssets.iconsCart,
               width: 18,
               height: 18,
-              color: AppColors.whiteF9,
+              colorFilter: const ColorFilter.mode(AppColors.whiteF9, BlendMode.srcIn),
             ),
+            const Gap(8),
             Text(
               AppStrings.addToCart,
               style: AppFontStyle.medium13(

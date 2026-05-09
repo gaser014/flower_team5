@@ -27,6 +27,8 @@ class ProductsCubit extends Cubit<ProductsStates> {
   Future<void> doIntent(ProductsEvents event) async => switch (event) {
     GetAllProductsEvent() => _getAllProducts(event),
     LoadMoreProductsEvent() => _loadMore(event),
+    SearchProductsEvent() => _getAllProducts(GetAllProductsEvent(params: event.params)),
+    ClearCategoryEvent() => _clearCategory(event),
   };
 
   Future<void> _getAllProducts(GetAllProductsEvent event) async {
@@ -135,6 +137,15 @@ class ProductsCubit extends Cubit<ProductsStates> {
         ),
       );
     }
+  }
+
+  Future<void> _clearCategory(ClearCategoryEvent event) async {
+    final currentQuery = state.productsState.query;
+    final params = currentQuery is ProductsParams
+        ? currentQuery.copyWith(category: null, clearCategory: true, page: 1)
+        : const ProductsParams(page: 1);
+
+    await _getAllProducts(GetAllProductsEvent(params: params));
   }
 
   void reset() {

@@ -12,10 +12,11 @@ import 'config/dependency_injection/di.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await AppSharedPreferences.initialSharedPreference();
+  configureDependencies();
+
   await EasyLocalization.ensureInitialized();
   Bloc.observer = MyBlocObserver();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-  configureDependencies();
 
   // Initialize notification badge service
   // await getIt.get<NotificationBadgeService>().initialize();

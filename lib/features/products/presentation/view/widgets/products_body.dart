@@ -42,12 +42,16 @@ class _ProductsBodyState extends State<ProductsBody> {
             mainAxisSpacing: 16,
             mainAxisExtent: 250,
           ),
-          onLoadMore: () => cubit.doIntent(
-            LoadMoreProductsEvent(
-              params:
-                  ps.query.copyWith(page: ps.currentPage + 1) as ProductsParams,
-            ),
-          ),
+          onLoadMore: () {
+            final currentQuery = ps.query;
+            if (currentQuery is ProductsParams) {
+              cubit.doIntent(
+                LoadMoreProductsEvent(
+                  params: currentQuery.copyWith(page: ps.currentPage + 1),
+                ),
+              );
+            }
+          },
           onRefresh: cubit.refreshProducts,
           shimmerBuilder: (context, index) => const _ShimmerItem(),
           emptyWidget: const EmptyProductsWidget(),

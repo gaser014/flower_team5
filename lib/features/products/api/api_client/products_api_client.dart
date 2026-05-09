@@ -8,7 +8,6 @@ import 'package:retrofit/retrofit.dart';
 part 'products_api_client.g.dart';
 
 @lazySingleton
-@lazySingleton
 @RestApi(baseUrl: EndPoints.baseUrl)
 abstract interface class ProductsApiClient {
   @factoryMethod

@@ -4,6 +4,8 @@ import 'package:flowers_app/features/categories/presentation/view_model/cubit/ca
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../../core/widgets/list_filter_tabs.dart';
+
 class CategoriesTapBar extends StatelessWidget {
   final void Function(CategoryEntity item) onTap;
 
@@ -13,14 +15,12 @@ class CategoriesTapBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<CategoriesCubit, CategoriesStates>(
       buildWhen: (previous, current) =>
-          previous.categoriesState != current.categoriesState,
+          previous.categoriesState != current.categoriesState ||
+          previous.selectCategoryState != current.selectCategoryState,
       builder: (context, state) {
         return ListFilterTabs(
           onTap: onTap,
-
-          selectedItem: context.select(
-            (CategoriesCubit cubit) => cubit.state.selectCategoryState,
-          ),
+          selectedItem: state.selectCategoryState,
           state: state.categoriesState,
         );
       },

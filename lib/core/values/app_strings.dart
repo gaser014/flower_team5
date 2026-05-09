@@ -33,6 +33,8 @@ class AppStrings {
   static const String phoneNumber = "Phone Number";
   static const String enterPhoneNumber = "01012345678";
   static const String search = "Search";
+  static const String searchForAnyProduct = "Search For Any Product You Want";
+  static const String filter = "Filter";
 
   // Date Time
   static const String amLong = "AM";

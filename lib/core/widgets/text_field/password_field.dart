@@ -59,7 +59,7 @@ class _PasswordFieldState extends State<PasswordField> {
       controller: widget.controller,
       focusNode: widget.focusNode,
       enabled: widget.enabled,
-      obscureText: widget.obscureText,
+      obscureText: isObscure,
       keyboardType: TextInputType.visiblePassword,
       obscuringCharacter: '★',
 
@@ -68,7 +68,7 @@ class _PasswordFieldState extends State<PasswordField> {
       validator: widget.validator ?? Validations.validateLoginPassword,
       onFieldSubmitted: widget.onFieldSubmitted,
       autofillHints: const [AutofillHints.password],
-      style: widget.obscureText
+      style: isObscure
           ? const TextStyle(letterSpacing: 2, color: AppColors.grayA6)
           : null,
       decoration: InputDecoration(

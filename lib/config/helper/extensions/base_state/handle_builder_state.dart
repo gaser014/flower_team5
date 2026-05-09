@@ -3,6 +3,7 @@ import 'package:flowers_app/config/base_state/pagination_state.dart';
 import 'package:flowers_app/config/base_state/state_types.dart';
 import 'package:flowers_app/core/values/app_colors.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:gap/gap.dart';
 
 extension HandleBuilderState on BaseState {
   Widget? handleBuilderState<T>({
@@ -16,7 +17,7 @@ extension HandleBuilderState on BaseState {
         return onSuccess;
       case BaseStateType.loading:
         return onLoading ??
-            Center(
+            const Center(
               child: CupertinoActivityIndicator(color: AppColors.primerColor),
             );
 
@@ -42,7 +43,7 @@ extension HandleBuilderStateList on PaginationState {
         return isEmpty ? onEmpty : onSuccess;
       case PaginationStateType.loading:
         return onLoading ??
-            Center(
+            const Center(
               child: CupertinoActivityIndicator(color: AppColors.primerColor),
             );
 
@@ -51,15 +52,15 @@ extension HandleBuilderStateList on PaginationState {
       case PaginationStateType.loadingMore:
         return onLoadingMore ??
             Column(
-              spacing: 16,
               children: [
-                ?onSuccess,
-                Center(
+                if (onSuccess != null) onSuccess,
+                const Gap(16),
+                const Center(
                   child: CupertinoActivityIndicator(
                     color: AppColors.primerColor,
                   ),
                 ),
-                SizedBox(height: 16),
+                const Gap(16),
               ],
             );
 

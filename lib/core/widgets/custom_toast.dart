@@ -27,7 +27,7 @@ class CustomToast {
     toastification.show(
       context: context,
       type: _getToastificationType(),
-      primaryColor: _getPrimaryColor().withValues(alpha: .8),
+      primaryColor: _getPrimaryColor().withOpacity(0.8),
       style: style,
       title: title != null
           ? Text(

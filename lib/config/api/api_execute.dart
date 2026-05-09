@@ -1,12 +1,12 @@
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
-import 'package:flowers_app/config/error_handling/failures.dart';
-import 'package:flowers_app/core/values/app_strings.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 
+import '../../core/values/app_strings.dart';
 import '../base_response/result.dart';
 import '../dependency_injection/di.dart';
+import '../error_handling/failures.dart';
 
 Future<Result<T>> executeApi<T>(Future<T> Function() apiCall) async {
   try {

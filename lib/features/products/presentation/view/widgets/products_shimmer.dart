@@ -36,10 +36,11 @@ class ProductsShimmer extends StatelessWidget {
           // Price row
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
-            spacing: 4,
             children: [
               CustomShimmerContainer(height: 14, width: 60, borderRadius: 4),
+              const SizedBox(width: 4),
               CustomShimmerContainer(height: 12, width: 36, borderRadius: 4),
+              const SizedBox(width: 4),
               CustomShimmerContainer(height: 12, width: 28, borderRadius: 4),
             ],
           ),

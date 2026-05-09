@@ -54,7 +54,6 @@ import '../../features/products/domain/use_cases/get_all_products.dart'
     as _i845;
 import '../../features/products/presentation/view_model/cubit/products_cubit.dart'
     as _i593;
-import '../api/app_interceptor.dart' as _i449;
 import '../api/dio_module.dart' as _i784;
 
 extension GetItInjectableX on _i174.GetIt {
@@ -84,12 +83,6 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i41.ProductsApiClient>(
       () => _i41.ProductsApiClient(gh<_i361.Dio>()),
-    );
-    gh.singleton<_i449.AppInterceptors>(
-      () => _i449.AppInterceptors(
-        dio: gh<_i361.Dio>(),
-        fss: gh<_i558.FlutterSecureStorage>(),
-      ),
     );
     gh.lazySingleton<_i759.AuthLocalDataSourceContract>(
       () =>

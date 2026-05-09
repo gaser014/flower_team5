@@ -73,13 +73,13 @@ abstract class AppColors {
   );
   static List<BoxShadow> shadowBox = [
     BoxShadow(
-      color: black.withValues(alpha: 0.2),
+      color: black.withOpacity(0.2),
       blurRadius: 4,
       spreadRadius: 0,
       offset: const Offset(0, 2),
     ),
     BoxShadow(
-      color: black.withValues(alpha: 0.1),
+      color: black.withOpacity(0.1),
       blurRadius: 1,
       spreadRadius: 0,
       offset: const Offset(0, 0),

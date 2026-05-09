@@ -1,5 +1,4 @@
 import 'dart:developer';
-import 'package:flowers_app/config/dependency_injection/di.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 /// Shared Preferences Helper
@@ -9,7 +8,7 @@ class AppSharedPreferences {
   /// Initialize SharedPreferences
   static Future<void> initialSharedPreference() async {
     try {
-      flutterSecureStorage = getIt<FlutterSecureStorage>();
+      flutterSecureStorage = const FlutterSecureStorage();
       log('SharedPreferences initialized successfully');
     } catch (e, s) {
       log('Error initializing SharedPreferences', error: e, stackTrace: s);

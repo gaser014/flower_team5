@@ -24,6 +24,10 @@ class ListFilterTabs extends StatelessWidget {
       case PaginationStateType.loading:
         return SizedBox(height: 72, child: Center(child: LoadingIndicator()));
       case PaginationStateType.success:
+        // Add "All" as the first tab
+        final allCategory = const CategoryEntity(id: null, name: 'All');
+        final items = [allCategory, ...state.data];
+
         return SizedBox(
           height: 72,
           child: ListView.separated(
@@ -31,9 +35,9 @@ class ListFilterTabs extends StatelessWidget {
 
             separatorBuilder: (context, index) => const SizedBox(width: 24),
             padding: EdgeInsets.all(16),
-            itemCount: state.data.length,
+            itemCount: items.length,
             itemBuilder: (context, index) {
-              final item = state.data[index];
+              final item = items[index];
               return FilterTab(
                 label: item.name ?? '',
                 isSelected: item == selectedItem,

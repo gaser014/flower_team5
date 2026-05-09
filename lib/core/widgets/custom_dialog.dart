@@ -66,7 +66,7 @@ class CustomDialog extends StatelessWidget {
             if (title != null && (message != null || content != null))
               const SizedBox(height: 16),
             if (message != null) _DialogMessage(message: message!),
-            ?content,
+            if (content != null) content!,
             if (onConfirm != null || onCancel != null)
               const SizedBox(height: 24),
             if (onConfirm != null || onCancel != null)

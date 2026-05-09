@@ -34,7 +34,7 @@ class CustomCachedImage extends StatelessWidget {
         padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
-          color: AppColors.black.withValues(alpha: 0.1),
+          color: AppColors.black.withOpacity(0.1),
         ),
         child: Center(
           child: SvgPicture.asset(
@@ -70,7 +70,7 @@ class CustomCachedImage extends StatelessWidget {
           padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
-            color: AppColors.grayA6.withValues(alpha: 0.25),
+            color: AppColors.grayA6.withOpacity(0.25),
           ),
           child: Center(
             child: SvgPicture.asset(
@@ -87,7 +87,7 @@ class CustomCachedImage extends StatelessWidget {
             height: height,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
-              color: AppColors.black.withValues(alpha: 0.1),
+              color: AppColors.black.withOpacity(0.1),
             ),
             child: SizedBox(
               width: 30,

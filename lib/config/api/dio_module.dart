@@ -23,7 +23,7 @@ abstract class DioModule {
         connectTimeout: Duration(seconds: AppConstants.timeout),
       ),
     );
-    dio.interceptors.add(AppInterceptors(dio: dio, fss: secureStorage()));
+    dio.interceptors.add(AppInterceptors(fss: secureStorage()));
     dio.interceptors.addAll([
       if (kDebugMode)
         PrettyDioLogger(
