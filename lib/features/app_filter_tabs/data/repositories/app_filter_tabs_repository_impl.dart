@@ -10,7 +10,7 @@ import 'package:flowers_app/features/app_filter_tabs/domain/entities/app_filter_
 import 'package:flowers_app/features/app_filter_tabs/domain/repositories/app_filter_tabs_repository.dart';
 import 'package:injectable/injectable.dart';
 
-@LazySingleton(as: AppFilterTabsRepository)
+@Injectable(as: AppFilterTabsRepository)
 class AppFilterTabsRepositoryImpl implements AppFilterTabsRepository {
   final AppFilterTabsRemoteDataSourceContract
   appFilterTabsRemoteDataSourceContract;

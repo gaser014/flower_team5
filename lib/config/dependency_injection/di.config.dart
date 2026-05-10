@@ -20,12 +20,8 @@ import '../../core/api/datasources/auth_local_data_source_impl.dart' as _i424;
 import '../../core/data/data_sources/auth_local_data_source.dart' as _i759;
 import '../../features/app_filter_tabs/api/api_client/app_filter_tabs_api_client.dart'
     as _i173;
-import '../../features/app_filter_tabs/api/datasources/app_filter_tabs_local_data_source_impl.dart'
-    as _i332;
 import '../../features/app_filter_tabs/api/datasources/app_filter_tabs_remote_data_source_impl.dart'
     as _i849;
-import '../../features/app_filter_tabs/data/datasources/app_filter_tabs_local_data_source_contract.dart'
-    as _i715;
 import '../../features/app_filter_tabs/data/datasources/app_filter_tabs_remote_data_source_contract.dart'
     as _i823;
 import '../../features/app_filter_tabs/data/repositories/app_filter_tabs_repository_impl.dart'
@@ -88,39 +84,36 @@ extension GetItInjectableX on _i174.GetIt {
         fss: gh<_i558.FlutterSecureStorage>(),
       ),
     );
-    gh.lazySingleton<_i715.AppFilterTabsLocalDataSourceContract>(
-      () => _i332.AppFilterTabsLocalDataSourceImpl(),
-    );
     gh.lazySingleton<_i759.AuthLocalDataSourceContract>(
       () =>
           _i424.AuthLocalDataSourceImpl(fss: gh<_i558.FlutterSecureStorage>()),
     );
-    gh.lazySingleton<_i823.AppFilterTabsRemoteDataSourceContract>(
+    gh.factory<_i823.AppFilterTabsRemoteDataSourceContract>(
       () => _i849.AppFilterTabsRemoteDataSourceImpl(
         apiClient: gh<_i173.AppFilterTabsApiClient>(),
       ),
     );
-    gh.lazySingleton<_i106.ProductsRemoteDataSourceContract>(
+    gh.factory<_i106.ProductsRemoteDataSourceContract>(
       () => _i838.ProductsRemoteDataSourceImpl(
         apiClient: gh<_i41.ProductsApiClient>(),
       ),
     );
-    gh.lazySingleton<_i902.AppFilterTabsRepository>(
+    gh.factory<_i902.AppFilterTabsRepository>(
       () => _i539.AppFilterTabsRepositoryImpl(
         appFilterTabsRemoteDataSourceContract:
             gh<_i823.AppFilterTabsRemoteDataSourceContract>(),
       ),
     );
-    gh.lazySingleton<_i27.ProductsRepository>(
+    gh.factory<_i27.ProductsRepository>(
       () => _i1045.ProductsRepositoryImpl(
         productsRemoteDataSourceContract:
             gh<_i106.ProductsRemoteDataSourceContract>(),
       ),
     );
-    gh.lazySingleton<_i845.GetAllProductsUseCase>(
+    gh.factory<_i845.GetAllProductsUseCase>(
       () => _i845.GetAllProductsUseCase(gh<_i27.ProductsRepository>()),
     );
-    gh.lazySingleton<_i313.GetAllAppFilterTabsUseCase>(
+    gh.factory<_i313.GetAllAppFilterTabsUseCase>(
       () =>
           _i313.GetAllAppFilterTabsUseCase(gh<_i902.AppFilterTabsRepository>()),
     );

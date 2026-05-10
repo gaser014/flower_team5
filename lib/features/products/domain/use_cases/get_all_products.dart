@@ -6,14 +6,17 @@ import 'package:flowers_app/features/products/domain/entities/products_params.da
 import 'package:flowers_app/features/products/domain/repositories/products_repository.dart';
 import 'package:injectable/injectable.dart';
 
-@lazySingleton
-class GetAllProductsUseCase extends UseCase<BasePaginationEntity<ProductEntity>, ProductsParams> {
+@Injectable()
+class GetAllProductsUseCase
+    extends UseCase<BasePaginationEntity<ProductEntity>, ProductsParams> {
   final ProductsRepository repository;
 
   GetAllProductsUseCase(this.repository);
 
   @override
-  Future<Result<BasePaginationEntity<ProductEntity>>> call(ProductsParams parm) {
+  Future<Result<BasePaginationEntity<ProductEntity>>> call(
+    ProductsParams parm,
+  ) {
     return repository.getAllProducts(params: parm);
   }
 }

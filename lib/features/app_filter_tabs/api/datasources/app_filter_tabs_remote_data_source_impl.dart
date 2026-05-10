@@ -7,7 +7,7 @@ import 'package:flowers_app/features/app_filter_tabs/data/models/occasions_respo
 import 'package:flowers_app/features/app_filter_tabs/domain/entities/app_filter_tabs_params.dart';
 import 'package:injectable/injectable.dart';
 
-@LazySingleton(as: AppFilterTabsRemoteDataSourceContract)
+@Injectable(as: AppFilterTabsRemoteDataSourceContract)
 class AppFilterTabsRemoteDataSourceImpl
     implements AppFilterTabsRemoteDataSourceContract {
   final AppFilterTabsApiClient apiClient;

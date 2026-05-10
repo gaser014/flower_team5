@@ -7,7 +7,7 @@ import 'package:flowers_app/features/products/domain/entities/products_params.da
 import 'package:flowers_app/features/products/domain/repositories/products_repository.dart';
 import 'package:injectable/injectable.dart';
 
-@LazySingleton(as: ProductsRepository)
+@Injectable(as: ProductsRepository)
 class ProductsRepositoryImpl implements ProductsRepository {
   final ProductsRemoteDataSourceContract productsRemoteDataSourceContract;
 
