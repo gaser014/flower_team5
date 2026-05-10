@@ -1,10 +1,13 @@
+import 'package:flowers_app/core/values/app_assets.dart';
 import 'package:flowers_app/core/values/app_colors.dart';
+import 'package:flowers_app/core/values/app_font_style.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import '../../validations/validations.dart';
 import '../../values/app_strings.dart';
 import '../../values/input_formatters.dart';
 
-class PasswordField extends StatelessWidget {
+class PasswordField extends StatefulWidget {
   final TextEditingController controller;
   final String? Function(String?)? validator;
   final bool enabled;
@@ -31,23 +34,63 @@ class PasswordField extends StatelessWidget {
   });
 
   @override
+  State<PasswordField> createState() => _PasswordFieldState();
+}
+
+class _PasswordFieldState extends State<PasswordField> {
+  late bool isObscure;
+  @override
+  void initState() {
+    isObscure = widget.obscureText;
+    super.initState();
+  }
+
+  @override
+  void didUpdateWidget(covariant PasswordField oldWidget) {
+    if (oldWidget.obscureText != widget.obscureText) {
+      isObscure = widget.obscureText;
+    }
+    super.didUpdateWidget(oldWidget);
+  }
+
+  @override
   Widget build(BuildContext context) {
     return TextFormField(
-      controller: controller,
-      focusNode: focusNode,
-      enabled: enabled,
-      obscureText: obscureText,
+      controller: widget.controller,
+      focusNode: widget.focusNode,
+      enabled: widget.enabled,
+      obscureText: widget.obscureText,
       keyboardType: TextInputType.visiblePassword,
       obscuringCharacter: '★',
-      textInputAction: textInputAction ?? TextInputAction.done,
+
+      textInputAction: widget.textInputAction ?? TextInputAction.done,
       inputFormatters: AppInputFormatters.strongPassword,
-      validator: validator ?? Validations.validateLoginPassword,
-      onFieldSubmitted: onFieldSubmitted,
+      validator: widget.validator ?? Validations.validateLoginPassword,
+      onFieldSubmitted: widget.onFieldSubmitted,
       autofillHints: const [AutofillHints.password],
-      style: obscureText
+      style: widget.obscureText
           ? const TextStyle(letterSpacing: 2, color: AppColors.grayA6)
           : null,
-      decoration: InputDecoration(labelText: labelText ?? AppStrings.password),
+      decoration: InputDecoration(
+        suffixIcon:
+            widget.suffixIcon ??
+            IconButton(
+              onPressed: () {
+                isObscure = !isObscure;
+                setState(() {});
+              },
+              icon: SvgPicture.asset(
+                isObscure ? AppAssets.iconsOpenEye : AppAssets.iconsClosedEye,
+                colorFilter: const ColorFilter.mode(
+                  AppColors.grayA6,
+                  BlendMode.srcIn,
+                ),
+              ),
+            ),
+        labelText: widget.labelText ?? AppStrings.password,
+        hintText: AppStrings.passwordHint,
+        hintStyle: AppFontStyle.regular14().copyWith(color: AppColors.grayA6),
+      ),
     );
   }
 }

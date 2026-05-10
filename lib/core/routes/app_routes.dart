@@ -1,11 +1,10 @@
 import 'dart:io';
 
-import 'package:flowers_app/config/api/api_key.dart';
 import 'package:flowers_app/config/dependency_injection/di.dart';
+import 'package:flowers_app/core/data/data_sources/auth_local_data_source.dart';
 import 'package:flowers_app/core/routes/routes.dart';
 import 'package:flowers_app/features/main/presentation/screens/main_view.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:go_router/go_router.dart';
 
 final RouteObserver<ModalRoute> routeObserver = RouteObserver<ModalRoute>();
@@ -210,6 +209,34 @@ abstract class AppRoutes {
       ),
     ],
     redirect: (context, state) async {
+      final currentLocation = state.matchedLocation;
+
+      final authRoutes = [
+        Routes.login,
+        // Routes.register,
+        // Routes.forgetPassword,
+        // Routes.resetPassword,
+        // AuthRoutes.otpVerification,
+        // AuthRoutes.completeProfile,
+        // AuthRoutes.success,
+      ];
+      //
+      // if (!isLoggedIn && !authRoutes.contains(currentLocation)) {
+      //   // Redirect to account type selection (start of auth flow)
+      //   return Routes.login;
+      // }
+
+      if (authRoutes.contains(currentLocation)) {
+        final token = await getIt<AuthLocalDataSourceContract>().getUserToken();
+        final isLoggedIn = token != null && token.isNotEmpty;
+
+        // Redirect to home screen
+        if (isLoggedIn) {
+          return Routes.main;
+        }
+      }
+
+      // No redirect needed
       return null;
     },
   );
