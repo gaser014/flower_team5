@@ -19,6 +19,7 @@ class AppTheme {
     ),
     splashColor: Colors.transparent,
     highlightColor: Colors.transparent,
+    canvasColor: AppColors.whiteF9,
     datePickerTheme: DatePickerThemeData(
       dayStyle: AppFontStyle.medium16(),
       weekdayStyle: AppFontStyle.medium16(),
