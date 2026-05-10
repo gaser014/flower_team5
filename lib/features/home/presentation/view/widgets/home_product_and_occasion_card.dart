@@ -1,5 +1,6 @@
 import 'package:flowers_app/core/values/app_colors.dart';
 import 'package:flowers_app/core/values/app_font_style.dart';
+import 'package:flowers_app/core/values/app_strings.dart';
 import 'package:flowers_app/core/widgets/custom_cached_image.dart';
 import 'package:flowers_app/features/home/presentation/view/widgets/occasion_section.dart';
 import 'package:flutter/material.dart';
@@ -48,7 +49,7 @@ class HomeProductAndOccasionCard extends StatelessWidget {
             ),
             if (cardType == HomeCardType.product)
               Text(
-                '$price EGP',
+                '$price ${AppStrings.egp}',
                 style: AppFontStyle.semiBold16(
                   context: context,
                 ).copyWith(color: AppColors.black0C),

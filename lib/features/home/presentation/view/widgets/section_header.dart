@@ -1,5 +1,6 @@
 import 'package:flowers_app/core/values/app_colors.dart';
 import 'package:flowers_app/core/values/app_font_style.dart';
+import 'package:flowers_app/core/values/app_strings.dart';
 import 'package:flutter/material.dart';
 
 class SectionHeader extends StatelessWidget {
@@ -29,7 +30,7 @@ class SectionHeader extends StatelessWidget {
               tapTargetSize: MaterialTapTargetSize.shrinkWrap,
             ),
             child: Text(
-              'View All',
+              AppStrings.viewAll,
               style: AppFontStyle.medium14(context: context).copyWith(
                 color: AppColors.primerColor,
                 decoration: TextDecoration.underline,

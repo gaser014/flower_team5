@@ -1,3 +1,4 @@
+import 'package:flowers_app/core/values/app_strings.dart';
 import 'package:flowers_app/features/home/presentation/view/widgets/best_seller_section.dart';
 import 'package:flowers_app/features/home/presentation/view/widgets/category_list_section.dart';
 import 'package:flowers_app/features/home/presentation/view/widgets/occasion_section.dart';
@@ -15,13 +16,13 @@ class HomePageBody extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SectionHeader(title: 'Categories'),
+            SectionHeader(title: AppStrings.categories),
             CategoryListSection(),
             Gap(16),
-            SectionHeader(title: 'Best seller'),
+            SectionHeader(title: AppStrings.bestSeller),
             BestSellerSection(),
             Gap(16),
-            SectionHeader(title: 'Occasion'),
+            SectionHeader(title: AppStrings.occasion),
             OccasionSection(),
           ],
         ),

@@ -1,4 +1,5 @@
 import 'package:flowers_app/core/values/app_assets.dart';
+import 'package:flowers_app/core/values/app_strings.dart';
 import 'package:flowers_app/features/home/presentation/view/widgets/category_card.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
@@ -16,20 +17,14 @@ class CategoryListSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final List<CategoryItemModel> categories = [
-      CategoryItemModel(title: 'Flowers', icon: AppAssets.iconsFlower),
+      CategoryItemModel(title: AppStrings.flowers, icon: AppAssets.iconsFlower),
+      CategoryItemModel(title: AppStrings.gift, icon: AppAssets.iconsAddImage),
+      CategoryItemModel(title: AppStrings.card, icon: AppAssets.iconsCalendar),
       CategoryItemModel(
-        title: 'Gift',
-        icon: AppAssets.iconsAddImage,
-      ), // Placeholder for Gift
-      CategoryItemModel(
-        title: 'Card',
-        icon: AppAssets.iconsCalendar,
-      ), // Placeholder for Card
-      CategoryItemModel(
-        title: 'Jewellery',
+        title: AppStrings.jewellery,
         icon: AppAssets.iconsProfile,
-      ), // Placeholder for Jewellery
-      CategoryItemModel(title: 'Flowers', icon: AppAssets.iconsFlower),
+      ),
+      CategoryItemModel(title: AppStrings.flowers, icon: AppAssets.iconsFlower),
     ];
 
     return SizedBox(

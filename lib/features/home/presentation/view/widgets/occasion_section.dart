@@ -1,3 +1,4 @@
+import 'package:flowers_app/core/values/app_strings.dart';
 import 'package:flowers_app/features/home/presentation/view/widgets/home_product_and_occasion_card.dart';
 import 'package:flutter/material.dart';
 
@@ -19,17 +20,17 @@ class OccasionSection extends StatelessWidget {
   Widget build(BuildContext context) {
     final List<OccasionModel> occasions = [
       OccasionModel(
-        title: 'Wedding',
+        title: AppStrings.wedding,
         imageUrl:
             'https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=1000&auto=format&fit=crop',
       ),
       OccasionModel(
-        title: 'Birthday',
+        title: AppStrings.birthday,
         imageUrl:
             'https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?q=80&w=1000&auto=format&fit=crop',
       ),
       OccasionModel(
-        title: 'Graduation',
+        title: AppStrings.graduation,
         imageUrl:
             'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=1000&auto=format&fit=crop',
       ),

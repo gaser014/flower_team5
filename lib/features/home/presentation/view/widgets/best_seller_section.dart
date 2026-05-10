@@ -1,3 +1,4 @@
+import 'package:flowers_app/core/values/app_strings.dart';
 import 'package:flowers_app/features/home/presentation/view/widgets/home_product_and_occasion_card.dart';
 import 'package:flowers_app/features/home/presentation/view/widgets/occasion_section.dart';
 import 'package:flutter/material.dart';
@@ -23,19 +24,19 @@ class BestSellerSection extends StatelessWidget {
   Widget build(BuildContext context) {
     final List<ProductModel> products = [
       ProductModel(
-        name: 'Sunny',
+        name: AppStrings.sunnyProduct,
         price: 600,
         imageUrl:
             'https://images.unsplash.com/photo-1526047932273-341f2a7631f9?q=80&w=1000&auto=format&fit=crop',
       ),
       ProductModel(
-        name: 'Red roses',
+        name: AppStrings.redRosesProduct,
         price: 1000,
         imageUrl:
             'https://images.unsplash.com/photo-1562690868-60bbe7293e94?q=80&w=1000&auto=format&fit=crop',
       ),
       ProductModel(
-        name: 'Spring vase',
+        name: AppStrings.springVaseProduct,
         price: 1200,
         imageUrl:
             'https://images.unsplash.com/photo-1494972308255-02058699310a?q=80&w=1000&auto=format&fit=crop',

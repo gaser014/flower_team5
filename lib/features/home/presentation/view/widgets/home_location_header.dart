@@ -1,6 +1,7 @@
 import 'package:flowers_app/core/values/app_assets.dart';
 import 'package:flowers_app/core/values/app_colors.dart';
 import 'package:flowers_app/core/values/app_font_style.dart';
+import 'package:flowers_app/core/values/app_strings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
@@ -26,7 +27,7 @@ class HomeLocationHeader extends StatelessWidget {
           const Gap(8),
           Expanded(
             child: Text(
-              'Deliver to 2XVP+XC - Sheikh Zayed',
+              '${AppStrings.deliverTo} 2XVP+XC - Sheikh Zayed',
               style: AppFontStyle.medium14(
                 context: context,
               ).copyWith(color: AppColors.black32),
