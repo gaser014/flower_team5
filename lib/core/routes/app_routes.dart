@@ -1,13 +1,12 @@
 import 'dart:io';
 
-import 'package:flowers_app/config/api/api_key.dart';
 import 'package:flowers_app/config/dependency_injection/di.dart';
+import 'package:flowers_app/core/data/data_sources/auth_local_data_source.dart';
 import 'package:flowers_app/core/routes/routes.dart';
 import 'package:flowers_app/features/auth/login/presentation/screens/login_view.dart';
 import 'package:flowers_app/features/auth/sign_up/presentation/screens/sign_up_view.dart';
 import 'package:flowers_app/features/auth/sign_up/presentation/screens/terms_and_conditions_view.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:go_router/go_router.dart';
 
 final RouteObserver<ModalRoute> routeObserver = RouteObserver<ModalRoute>();
@@ -243,30 +242,29 @@ abstract class AppRoutes {
     redirect: (context, state) async {
       final currentLocation = state.matchedLocation;
 
-      if (currentLocation == Routes.splash) {
-        return null;
-      }
-
-      final token = await getIt<FlutterSecureStorage>().read(
-        key: APIkeys.accessToken,
-      );
-      final isLoggedIn = token != null && token.isNotEmpty;
       final authRoutes = [
-        // AuthRoutes.accountTypeSelection,
-        // AuthRoutes.phoneNumber,
+        Routes.login,
+        // Routes.register,
+        // Routes.forgetPassword,
+        // Routes.resetPassword,
         // AuthRoutes.otpVerification,
         // AuthRoutes.completeProfile,
         // AuthRoutes.success,
       ];
+      //
+      // if (!isLoggedIn && !authRoutes.contains(currentLocation)) {
+      //   // Redirect to account type selection (start of auth flow)
+      //   return Routes.login;
+      // }
 
-      if (!isLoggedIn && !authRoutes.contains(currentLocation)) {
-        // Redirect to account type selection (start of auth flow)
-        // return AuthRoutes.accountTypeSelection;
-      }
+      if (authRoutes.contains(currentLocation)) {
+        final token = await getIt<AuthLocalDataSourceContract>().getUserToken();
+        final isLoggedIn = token != null && token.isNotEmpty;
 
-      if (isLoggedIn && authRoutes.contains(currentLocation)) {
         // Redirect to home screen
-        // return Routes.home;
+        if (isLoggedIn) {
+          return Routes.main;
+        }
       }
 
       // No redirect needed

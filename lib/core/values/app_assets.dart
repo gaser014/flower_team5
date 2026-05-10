@@ -63,6 +63,8 @@ abstract class AppAssets {
   static const String arrowBack = "assets/icons/arrow_back.svg";
   static const String iconsEditProfile = "assets/icons/edit_profile.svg";
   static const String iconsError = "assets/icons/error.svg";
+  static const String errorImage = "assets/icons/error_image.svg";
+
   static const String iconsFilter = "assets/icons/filter.svg";
   static const String iconsFlower = "assets/icons/Flower.svg";
   static const String iconsHome = "assets/icons/home.svg";
