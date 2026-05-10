@@ -9,6 +9,7 @@ import 'package:flowers_app/core/widgets/login_link.dart';
 import 'package:flowers_app/core/widgets/text_field/email_field.dart';
 import 'package:flowers_app/core/widgets/text_field/password_field.dart';
 import 'package:flowers_app/core/widgets/text_field/phone_field.dart';
+import 'package:flowers_app/features/auth/sign_up/domain/use_cases/sign_up_use_case.dart';
 import 'package:flowers_app/features/auth/sign_up/presentation/cubit/sign_up_cubit.dart';
 import 'package:flowers_app/features/auth/sign_up/presentation/cubit/sign_up_state.dart';
 import 'package:flowers_app/features/auth/sign_up/presentation/widgets/gender_selector.dart';
@@ -32,8 +33,57 @@ class SignUpView extends StatelessWidget {
   }
 }
 
-class _SignUpViewBody extends StatelessWidget {
+class _SignUpViewBody extends StatefulWidget {
   const _SignUpViewBody();
+
+  @override
+  State<_SignUpViewBody> createState() => _SignUpViewBodyState();
+}
+
+class _SignUpViewBodyState extends State<_SignUpViewBody> {
+  final TextEditingController _firstNameController = TextEditingController();
+  final TextEditingController _lastNameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _confirmPasswordController = TextEditingController();
+  final TextEditingController _phoneController = TextEditingController();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  @override
+  void dispose() {
+    _firstNameController.dispose();
+    _lastNameController.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+    _confirmPasswordController.dispose();
+    _phoneController.dispose();
+    super.dispose();
+  }
+
+  void _signUp(BuildContext context, SignUpCubit cubit) {
+    if (!_formKey.currentState!.validate()) {
+      debugPrint("Validation failed");
+      return;
+    }
+
+    String phoneNumber = _phoneController.text.trim();
+    if (phoneNumber.startsWith('0')) {
+      phoneNumber = phoneNumber.substring(1);
+    }
+    phoneNumber = "+20$phoneNumber";
+
+    final params = SignUpParams(
+      firstName: _firstNameController.text.trim(),
+      lastName: _lastNameController.text.trim(),
+      email: _emailController.text.trim(),
+      password: _passwordController.text,
+      rePassword: _confirmPasswordController.text,
+      phone: phoneNumber,
+      gender: cubit.state.gender.value,
+    );
+
+    cubit.signUp(params);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -64,7 +114,7 @@ class _SignUpViewBody extends StatelessWidget {
           return SingleChildScrollView(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             child: Form(
-              key: cubit.formKey,
+              key: _formKey,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
@@ -79,7 +129,7 @@ class _SignUpViewBody extends StatelessWidget {
                     children: [
                       Expanded(
                         child: NameField(
-                          controller: cubit.firstNameController,
+                          controller: _firstNameController,
                           labelText: AppStrings.firstName,
                           hintText: AppStrings.firstNameHint,
                           validator: (value) {
@@ -93,7 +143,7 @@ class _SignUpViewBody extends StatelessWidget {
                       const SizedBox(width: 16),
                       Expanded(
                         child: NameField(
-                          controller: cubit.lastNameController,
+                          controller: _lastNameController,
                           labelText: AppStrings.lastName,
                           hintText: AppStrings.lastNameHint,
                           validator: (value) {
@@ -108,13 +158,13 @@ class _SignUpViewBody extends StatelessWidget {
                   ),
                   const SizedBox(height: 16),
 
-                  EmailField(controller: cubit.emailController),
+                  EmailField(controller: _emailController),
                   const SizedBox(height: 16),
                   Row(
                     children: [
                       Expanded(
                         child: PasswordField(
-                          controller: cubit.passwordController,
+                          controller: _passwordController,
                           labelText: AppStrings.password,
                           validator: Validations.validatePassword,
                           textInputAction: TextInputAction.next,
@@ -123,12 +173,12 @@ class _SignUpViewBody extends StatelessWidget {
                       const SizedBox(width: 16),
                       Expanded(
                         child: PasswordField(
-                          controller: cubit.confirmPasswordController,
+                          controller: _confirmPasswordController,
                           labelText: AppStrings.confirmPassword,
                           validator: (value) =>
                               Validations.validatePasswordVerification(
                                 value,
-                                cubit.passwordController.text,
+                                _passwordController.text,
                               ),
                           textInputAction: TextInputAction.next,
                         ),
@@ -137,7 +187,7 @@ class _SignUpViewBody extends StatelessWidget {
                   ),
                   const SizedBox(height: 16),
 
-                  PhoneField(controller: cubit.phoneController),
+                  PhoneField(controller: _phoneController),
                   const SizedBox(height: 24),
 
                   const GenderSelector(),
@@ -151,7 +201,7 @@ class _SignUpViewBody extends StatelessWidget {
                   CustomButton(
                     text: AppStrings.signUp,
                     isLoading: state.status == SignUpStatus.loading,
-                    onPressed: cubit.signUp,
+                    onPressed: () => _signUp(context, cubit),
                   ),
                   const SizedBox(height: 16),
                   Center(
