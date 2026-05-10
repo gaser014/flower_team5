@@ -2,14 +2,14 @@ import 'package:flowers_app/config/base_state/pagination_state.dart';
 import 'package:flowers_app/config/base_state/state_types.dart';
 import 'package:flowers_app/core/widgets/filter_tabs.dart';
 import 'package:flowers_app/core/widgets/loading_indicator.dart';
-import 'package:flowers_app/features/categories/domain/entities/category_entity.dart';
+import 'package:flowers_app/features/app_filter_tabs/domain/entities/app_filter_tab_item_entity.dart';
 import 'package:flutter/material.dart';
 
 class ListFilterTabs extends StatelessWidget {
-  final PaginationState<CategoryEntity> state;
-  final CategoryEntity? selectedItem;
+  final PaginationState<AppFilterTabItemEntity> state;
+  final AppFilterTabItemEntity? selectedItem;
 
-  final void Function(CategoryEntity item) onTap;
+  final void Function(AppFilterTabItemEntity item) onTap;
 
   const ListFilterTabs({
     super.key,

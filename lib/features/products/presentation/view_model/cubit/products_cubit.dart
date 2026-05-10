@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flowers_app/config/base_state/pagination_state.dart';
-import 'package:flowers_app/features/categories/domain/entities/category_entity.dart';
+import 'package:flowers_app/features/app_filter_tabs/domain/entities/app_filter_tab_item_entity.dart';
 import 'package:flowers_app/features/products/domain/entities/product_entity.dart';
 import 'package:flowers_app/features/products/domain/entities/products_params.dart';
 import 'package:flowers_app/features/products/domain/use_cases/get_all_products.dart';

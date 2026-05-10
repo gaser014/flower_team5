@@ -1,14 +1,14 @@
 import 'package:flowers_app/config/uses_cases/pagination_params.dart';
-import 'package:flowers_app/features/categories/domain/entities/categories_params.dart';
-import 'package:flowers_app/features/categories/domain/entities/category_entity.dart';
+import 'package:flowers_app/features/app_filter_tabs/domain/entities/app_filter_tabs_params.dart';
+import 'package:flowers_app/features/app_filter_tabs/domain/entities/app_filter_tab_item_entity.dart';
 
 class ProductsParams extends PaginationParams {
-  final CategoryEntity? category;
-  final CategoriesType type;
+  final AppFilterTabItemEntity? category;
+  final AppFilterTabsType type;
 
   const ProductsParams({
     this.category,
-    this.type = CategoriesType.categories,
+    this.type = AppFilterTabsType.categories,
     super.page,
     super.limit,
     super.filterList,
@@ -16,10 +16,10 @@ class ProductsParams extends PaginationParams {
 
   @override
   ProductsParams copyWith({
-    CategoryEntity? category,
+    AppFilterTabItemEntity? category,
     int? page,
     int? limit,
-    CategoriesType? type,
+    AppFilterTabsType? type,
   }) {
     return ProductsParams(
       category: category ?? this.category,

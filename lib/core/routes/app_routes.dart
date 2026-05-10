@@ -3,9 +3,9 @@ import 'dart:io';
 import 'package:flowers_app/config/dependency_injection/di.dart';
 import 'package:flowers_app/core/data/data_sources/auth_local_data_source.dart';
 import 'package:flowers_app/core/routes/routes.dart';
-import 'package:flowers_app/features/categories/presentation/view/widgets/categories_tap_bar.dart';
-import 'package:flowers_app/features/categories/presentation/view_model/cubit/categories_cubit.dart';
-import 'package:flowers_app/features/products/presentation/view/pages/products_page.dart';
+import 'package:flowers_app/features/app_filter_tabs/presentation/view/widgets/app_filter_tabs_bar.dart';
+import 'package:flowers_app/features/app_filter_tabs/presentation/view_model/cubit/app_filter_tabs_cubit.dart';
+import 'package:flowers_app/features/products/presentation/view/pages/occasion_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -214,7 +214,7 @@ abstract class AppRoutes {
         pageBuilder: (context, state) {
           return buildAnimatedPage(
             key: state.pageKey,
-            child: ProductsPage(),
+            child: OccasionPage(),
             animationType: AnimationType.slideFromRight,
           );
         },
