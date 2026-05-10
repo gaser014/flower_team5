@@ -2,6 +2,7 @@ import 'package:flowers_app/core/values/app_assets.dart';
 import 'package:flowers_app/core/values/app_colors.dart';
 import 'package:flowers_app/core/values/app_font_style.dart';
 import 'package:flowers_app/core/values/app_strings.dart';
+import 'package:flowers_app/features/home/presentation/view/widgets/home_location_header.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
@@ -10,7 +11,7 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
   const AppBarWidget({super.key});
 
   @override
-  Size get preferredSize => const Size.fromHeight(90);
+  Size get preferredSize => const Size.fromHeight(130);
 
   @override
   Widget build(BuildContext context) {
@@ -37,37 +38,42 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
                 const Gap(12),
                 // Search Bar
                 Expanded(
-                  child: Container(
-                    height: 48,
-                    decoration: BoxDecoration(
-                      color: AppColors.whiteF9,
-                      borderRadius: BorderRadius.circular(12),
-                      border: Border.all(color: AppColors.grayEA),
-                    ),
-                    child: Row(
-                      children: [
-                        const Gap(12),
-                        SvgPicture.asset(
-                          AppAssets.iconsSearch,
-                          colorFilter: const ColorFilter.mode(
-                            AppColors.grayA6,
-                            BlendMode.srcIn,
+                  child: InkWell(
+                    onTap: () {},
+                    borderRadius: BorderRadius.circular(12),
+                    child: Container(
+                      height: 48,
+                      decoration: BoxDecoration(
+                        color: AppColors.whiteF9,
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(color: AppColors.grayEA),
+                      ),
+                      child: Row(
+                        children: [
+                          const Gap(12),
+                          SvgPicture.asset(
+                            AppAssets.iconsSearch,
+                            colorFilter: const ColorFilter.mode(
+                              AppColors.grayA6,
+                              BlendMode.srcIn,
+                            ),
                           ),
-                        ),
-                        const Gap(8),
-                        Text(
-                          AppStrings.search,
-                          style: AppFontStyle.regular14(
-                            context: context,
-                          ).copyWith(color: AppColors.grayA6),
-                        ),
-                      ],
+                          const Gap(8),
+                          Text(
+                            AppStrings.search,
+                            style: AppFontStyle.regular14(
+                              context: context,
+                            ).copyWith(color: AppColors.grayA6),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
               ],
             ),
             const Gap(12),
+            const HomeLocationHeader(),
           ],
         ),
       ),
