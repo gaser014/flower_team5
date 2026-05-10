@@ -8,7 +8,7 @@ import 'package:flowers_app/features/login/domain/entities/user_entity.dart';
 import 'package:flowers_app/features/login/domain/repositories/login_repository.dart';
 import 'package:injectable/injectable.dart';
 
-@LazySingleton(as: LoginRepositoryContract)
+@Injectable(as: LoginRepositoryContract)
 class LoginRepositoryImpl implements LoginRepositoryContract {
   final LoginRemoteDataSourceContract _loginRemoteDataSourceContract;
   final LoginLocalDataSourceContract _loginLocalDataSourceContract;
@@ -16,7 +16,7 @@ class LoginRepositoryImpl implements LoginRepositoryContract {
     this._loginRemoteDataSourceContract,
     this._loginLocalDataSourceContract,
   );
-  
+
   @override
   Future<Result<LoginResponseEntity>> login(LoginParams params) async {
     final result = await _loginRemoteDataSourceContract.login(params);
@@ -35,7 +35,9 @@ class LoginRepositoryImpl implements LoginRepositoryContract {
   Future<Result<UserEntity>> saveUser(UserEntity userEntity) async {
     try {
       final userModel = UserModel.fromUserEntity(userEntity);
-      final savedModel = await _loginLocalDataSourceContract.saveUser(userModel);
+      final savedModel = await _loginLocalDataSourceContract.saveUser(
+        userModel,
+      );
       return Success<UserEntity>(data: savedModel.toUserEntity());
     } on Exception catch (e) {
       return Error(exception: e);

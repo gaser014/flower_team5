@@ -114,7 +114,6 @@ class AppStrings {
   static const String continueAsGuest = "Continue as guest";
   static const String noAccount = "Don't have an account? ";
   static const String signUp = "Sign up";
-  static const String passwordHint = "Enter your password";
   static const String loginSuccessfully = "Login successfully";
   static const String loginError = "Invalid Phone Number or Password";
 

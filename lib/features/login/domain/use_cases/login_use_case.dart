@@ -5,7 +5,7 @@ import 'package:flowers_app/features/login/domain/entities/login_response_entity
 import 'package:flowers_app/features/login/domain/repositories/login_repository.dart';
 import 'package:injectable/injectable.dart';
 
-@LazySingleton()
+@Injectable()
 class LoginUseCase extends UseCase<LoginResponseEntity, LoginParams> {
   final LoginRepositoryContract _loginRepositoryContract;
   const LoginUseCase(this._loginRepositoryContract);
