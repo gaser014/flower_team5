@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flowers_app/config/dependency_injection/di.dart';
 import 'package:flowers_app/core/data/data_sources/auth_local_data_source.dart';
 import 'package:flowers_app/core/routes/routes.dart';
+import 'package:flowers_app/features/home/presentation/view/pages/home_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
 
@@ -201,13 +202,25 @@ class _PageBasedPageRoute<T> extends PageRoute<T> {
 
 abstract class AppRoutes {
   static final GoRouter router = GoRouter(
-    initialLocation: Routes.splash,
-    routes: [],
+    initialLocation: Routes.home,
+    routes: [
+      GoRoute(
+        path: Routes.home,
+        pageBuilder: (context, state) {
+          return buildAnimatedPage(
+            key: state.pageKey,
+            animationType: AnimationType.fade,
+            child: const HomePage(),
+          );
+        },
+      ),
+    ],
     redirect: (context, state) async {
       final currentLocation = state.matchedLocation;
 
       final authRoutes = [
         Routes.login,
+        Routes.home,
         // Routes.register,
         // Routes.forgetPassword,
         // Routes.resetPassword,
