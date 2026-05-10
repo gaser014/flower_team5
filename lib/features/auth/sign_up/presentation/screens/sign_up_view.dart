@@ -82,7 +82,7 @@ class _SignUpViewBodyState extends State<_SignUpViewBody> {
       gender: cubit.state.gender.value,
     );
 
-    cubit.signUp(params);
+    cubit.doIntent(SignUpUserEvent(params: params));
   }
 
   @override

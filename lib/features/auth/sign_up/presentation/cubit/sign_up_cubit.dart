@@ -7,6 +7,8 @@ import 'package:injectable/injectable.dart';
 
 import 'sign_up_state.dart';
 
+part 'sign_up_events.dart';
+
 @injectable
 class SignUpCubit extends Cubit<SignUpState> {
   final SignUpUseCase _signUpUseCase;
@@ -14,23 +16,37 @@ class SignUpCubit extends Cubit<SignUpState> {
   SignUpCubit(this._signUpUseCase) : super(const SignUpState());
 
 
+  void doIntent(SignUpEvents event) {
+    switch (event) {
+      case SignUpUserEvent e:
+        _signUp(e.params);
+        break;
+      case TogglePasswordVisibilityEvent():
+        _togglePasswordVisibility();
+        break;
+      case ToggleConfirmPasswordVisibilityEvent():
+        _toggleConfirmPasswordVisibility();
+        break;
+      case ChangeGenderEvent e:
+        _changeGender(e.gender);
+        break;
+    }
+  }
 
-
-
-  void togglePasswordVisibility() {
+  void _togglePasswordVisibility() {
     emit(state.copyWith(isPasswordVisible: !state.isPasswordVisible));
   }
 
-  void toggleConfirmPasswordVisibility() {
+  void _toggleConfirmPasswordVisibility() {
     emit(state.copyWith(
         isConfirmPasswordVisible: !state.isConfirmPasswordVisible));
   }
 
-  void changeGender(Gender gender) {
+  void _changeGender(Gender gender) {
     emit(state.copyWith(gender: gender));
   }
 
-  Future<void> signUp(SignUpParams params) async {
+  Future<void> _signUp(SignUpParams params) async {
     emit(state.copyWith(status: SignUpStatus.loading));
     debugPrint("Signing up with: ${params.firstName}, ${params.email}");
 

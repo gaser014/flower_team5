@@ -9,3 +9,17 @@ class SignUpUserEvent extends SignUpEvents {
 
   const SignUpUserEvent({required this.params});
 }
+
+class TogglePasswordVisibilityEvent extends SignUpEvents {
+  const TogglePasswordVisibilityEvent();
+}
+
+class ToggleConfirmPasswordVisibilityEvent extends SignUpEvents {
+  const ToggleConfirmPasswordVisibilityEvent();
+}
+
+class ChangeGenderEvent extends SignUpEvents {
+  final Gender gender;
+
+  const ChangeGenderEvent(this.gender);
+}

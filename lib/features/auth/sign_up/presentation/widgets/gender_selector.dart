@@ -30,14 +30,14 @@ class GenderSelector extends StatelessWidget {
               label: AppStrings.femaleLabel,
               value: Gender.female,
               groupValue: state.gender,
-              onChanged: (value) => cubit.changeGender(value!),
+              onChanged: (value) => cubit.doIntent(ChangeGenderEvent(value!)),
             ),
             const SizedBox(width: 16),
             _GenderRadio(
               label: AppStrings.maleLabel,
               value: Gender.male,
               groupValue: state.gender,
-              onChanged: (value) => cubit.changeGender(value!),
+              onChanged: (value) => cubit.doIntent(ChangeGenderEvent(value!)),
             ),
           ],
         );
