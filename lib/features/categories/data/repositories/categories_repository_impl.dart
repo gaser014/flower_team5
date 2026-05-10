@@ -10,7 +10,7 @@ import 'package:flowers_app/features/categories/domain/entities/category_entity.
 import 'package:flowers_app/features/categories/domain/repositories/categories_repository.dart';
 import 'package:injectable/injectable.dart';
 
-@LazySingleton(as: CategoriesRepository)
+@Injectable(as: CategoriesRepository)
 class CategoriesRepositoryImpl implements CategoriesRepository {
   final CategoriesRemoteDataSourceContract categoriesRemoteDataSourceContract;
 

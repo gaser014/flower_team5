@@ -7,7 +7,7 @@ import 'package:flowers_app/features/categories/data/models/occasions_response_d
 import 'package:flowers_app/features/categories/domain/entities/categories_params.dart';
 import 'package:injectable/injectable.dart';
 
-@LazySingleton(as: CategoriesRemoteDataSourceContract)
+@Injectable(as: CategoriesRemoteDataSourceContract)
 class CategoriesRemoteDataSourceImpl
     implements CategoriesRemoteDataSourceContract {
   final CategoriesApiClient apiClient;

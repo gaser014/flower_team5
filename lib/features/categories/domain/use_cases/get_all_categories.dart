@@ -6,7 +6,7 @@ import 'package:flowers_app/features/categories/domain/entities/categories_param
 import 'package:flowers_app/features/categories/domain/repositories/categories_repository.dart';
 import 'package:injectable/injectable.dart';
 
-@lazySingleton
+@Injectable()
 class GetAllCategoriesUseCase
     extends UseCase<BasePaginationEntity<CategoryEntity>, CategoriesParams> {
   final CategoriesRepository repository;
