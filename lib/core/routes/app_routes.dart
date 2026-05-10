@@ -3,8 +3,14 @@ import 'dart:io';
 import 'package:flowers_app/config/dependency_injection/di.dart';
 import 'package:flowers_app/core/data/data_sources/auth_local_data_source.dart';
 import 'package:flowers_app/core/routes/routes.dart';
+import 'package:flowers_app/features/login/presentation/view/pages/login_page.dart';
+import 'package:flowers_app/features/spalsh/splash_page.dart';
 import 'package:flowers_app/features/main/presentation/screens/main_view.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flowers_app/features/spalsh/splash_page.dart';
+
+
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:go_router/go_router.dart';
 
 final RouteObserver<ModalRoute> routeObserver = RouteObserver<ModalRoute>();
@@ -197,7 +203,7 @@ class _PageBasedPageRoute<T> extends PageRoute<T> {
 
 abstract class AppRoutes {
   static final GoRouter router = GoRouter(
-    initialLocation: Routes.main,
+    initialLocation: Routes.splash,
     routes: [
       GoRoute(
         path: Routes.main,
@@ -206,6 +212,20 @@ abstract class AppRoutes {
           child: const MainView(),
           animationType: AnimationType.fade,
         ),
+      ),
+       GoRoute(
+        path: Routes.splash,
+        name: Routes.splash,
+        builder: (BuildContext context, GoRouterState state) {
+          return SplashPage();
+        },
+      ),
+       GoRoute(
+        path: Routes.login,
+        name: Routes.login,
+        builder: (BuildContext context, GoRouterState state) {
+          return LoginPage();
+        },
       ),
     ],
     redirect: (context, state) async {
