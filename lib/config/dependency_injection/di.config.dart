@@ -18,6 +18,24 @@ import 'package:internet_connection_checker_plus/internet_connection_checker_plu
 
 import '../../core/api/datasources/auth_local_data_source_impl.dart' as _i424;
 import '../../core/data/data_sources/auth_local_data_source.dart' as _i759;
+import '../../features/login/api/api_client/login_api_client.dart' as _i395;
+import '../../features/login/api/datasources/login_local_data_source_impl.dart'
+    as _i438;
+import '../../features/login/api/datasources/login_remote_data_source_impl.dart'
+    as _i904;
+import '../../features/login/data/datasources/login_local_data_source_contract.dart'
+    as _i325;
+import '../../features/login/data/datasources/login_remote_data_source_contract.dart'
+    as _i736;
+import '../../features/login/data/repositories/login_repository_impl.dart'
+    as _i1066;
+import '../../features/login/domain/repositories/login_repository.dart'
+    as _i902;
+import '../../features/login/domain/use_cases/get_user_use_case.dart' as _i12;
+import '../../features/login/domain/use_cases/login_use_case.dart' as _i191;
+import '../../features/login/domain/use_cases/save_user_use_case.dart' as _i71;
+import '../../features/login/presentation/view_model/cubit/login_cubit.dart'
+    as _i753;
 import '../api/app_interceptor.dart' as _i449;
 import '../api/dio_module.dart' as _i784;
 
@@ -37,6 +55,12 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i161.InternetConnection>(
       () => dioModule.internetConnection(),
     );
+    gh.factory<_i325.LoginLocalDataSourceContract>(
+      () => _i438.LoginLocalDataSourceImpl(),
+    );
+    gh.factory<_i395.LoginApiClient>(
+      () => _i395.LoginApiClient(gh<_i361.Dio>()),
+    );
     gh.singleton<_i449.AppInterceptors>(
       () => _i449.AppInterceptors(
         dio: gh<_i361.Dio>(),
@@ -46,6 +70,30 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i759.AuthLocalDataSourceContract>(
       () =>
           _i424.AuthLocalDataSourceImpl(fss: gh<_i558.FlutterSecureStorage>()),
+    );
+    gh.factory<_i736.LoginRemoteDataSourceContract>(
+      () => _i904.LoginRemoteDataSourceImpl(gh<_i395.LoginApiClient>()),
+    );
+    gh.lazySingleton<_i902.LoginRepositoryContract>(
+      () => _i1066.LoginRepositoryImpl(
+        gh<_i736.LoginRemoteDataSourceContract>(),
+        gh<_i325.LoginLocalDataSourceContract>(),
+      ),
+    );
+    gh.lazySingleton<_i12.GetUserUseCase>(
+      () => _i12.GetUserUseCase(gh<_i902.LoginRepositoryContract>()),
+    );
+    gh.lazySingleton<_i191.LoginUseCase>(
+      () => _i191.LoginUseCase(gh<_i902.LoginRepositoryContract>()),
+    );
+    gh.lazySingleton<_i71.SaveUserUseCase>(
+      () => _i71.SaveUserUseCase(gh<_i902.LoginRepositoryContract>()),
+    );
+    gh.factory<_i753.LoginCubit>(
+      () => _i753.LoginCubit(
+        gh<_i191.LoginUseCase>(),
+        gh<_i71.SaveUserUseCase>(),
+      ),
     );
     return this;
   }

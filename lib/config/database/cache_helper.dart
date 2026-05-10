@@ -2,8 +2,8 @@ import 'dart:developer';
 import 'package:flowers_app/config/dependency_injection/di.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-/// Shared Preferences Helper
 class AppSharedPreferences {
+  const AppSharedPreferences._();
   static late FlutterSecureStorage flutterSecureStorage;
 
   /// Initialize SharedPreferences
