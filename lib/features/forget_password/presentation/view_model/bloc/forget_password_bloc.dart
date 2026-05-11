@@ -24,6 +24,7 @@ class ForgetPasswordBloc extends Bloc<ForgetPasswordEvent, ForgetPasswordState> 
   // Step 3: Reset Password
   final TextEditingController newPasswordController = TextEditingController();
   final TextEditingController confirmPasswordController = TextEditingController();
+  final PageController pageController = PageController();
   final GlobalKey<FormState> resetPasswordFormKey = GlobalKey<FormState>();
 
   ForgetPasswordBloc(
@@ -32,6 +33,7 @@ class ForgetPasswordBloc extends Bloc<ForgetPasswordEvent, ForgetPasswordState> 
     this._resetPasswordUseCase,
   ) : super(ForgetPasswordInitial()) {
     on<SendCodeEvent>(_onSendCode);
+    on<ResendCodeEvent>(_onResendCode);
     on<VerifyCodeEvent>(_onVerifyCode);
     on<ResetPasswordEvent>(_onResetPassword);
   }
@@ -55,6 +57,25 @@ class ForgetPasswordBloc extends Bloc<ForgetPasswordEvent, ForgetPasswordState> 
       );
       */
     }
+  }
+
+  Future<void> _onResendCode(ResendCodeEvent event, Emitter<ForgetPasswordState> emit) async {
+    emit(ForgetPasswordLoading());
+    
+    // MOCK API CALL for testing
+    await Future.delayed(const Duration(seconds: 1));
+    emit(const ResendCodeSuccess("Mock: Code resent successfully"));
+    
+    /*
+    final result = await _sendForgetPasswordCodeUseCase.execute(
+      ForgetPasswordParams(email: emailController.text),
+    );
+
+    result.when(
+      success: (data) => emit(const ResendCodeSuccess("Code resent successfully")),
+      error: (exception) => emit(ForgetPasswordError(exception?.toString() ?? "An error occurred")),
+    );
+    */
   }
 
   Future<void> _onVerifyCode(VerifyCodeEvent event, Emitter<ForgetPasswordState> emit) async {
@@ -111,6 +132,7 @@ class ForgetPasswordBloc extends Bloc<ForgetPasswordEvent, ForgetPasswordState> 
     otpController.dispose();
     newPasswordController.dispose();
     confirmPasswordController.dispose();
+    pageController.dispose();
     return super.close();
   }
 }

@@ -8,6 +8,10 @@ abstract class ForgetPasswordEvent extends Equatable {
 }
 // event to send code
 class SendCodeEvent extends ForgetPasswordEvent {}
+
+// event to resend code
+class ResendCodeEvent extends ForgetPasswordEvent {}
+
 // event to verify code
 class VerifyCodeEvent extends ForgetPasswordEvent {}
 // event to reset password

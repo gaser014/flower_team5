@@ -8,8 +8,6 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../features/forget_password/presentation/view/pages/forget_password_page.dart';
-import '../../features/forget_password/presentation/view/pages/verify_code_page.dart';
-import '../../features/forget_password/presentation/view/pages/reset_password_page.dart';
 import '../../features/forget_password/presentation/view_model/bloc/forget_password_bloc.dart';
 
 final RouteObserver<ModalRoute> routeObserver = RouteObserver<ModalRoute>();
@@ -214,22 +212,6 @@ abstract class AppRoutes {
         name: Routes.forgetPassword,
         builder: (BuildContext context, GoRouterState state) {
           return const ForgetPasswordPage();
-        },
-      ),
-      GoRoute(
-        path: Routes.verifyCode,
-        name: Routes.verifyCode,
-        builder: (BuildContext context, GoRouterState state) {
-          final bloc = state.extra as ForgetPasswordBloc? ?? getIt<ForgetPasswordBloc>();
-          return VerifyCodePage(bloc: bloc);
-        },
-      ),
-      GoRoute(
-        path: Routes.resetPassword,
-        name: Routes.resetPassword,
-        builder: (BuildContext context, GoRouterState state) {
-          final bloc = state.extra as ForgetPasswordBloc? ?? getIt<ForgetPasswordBloc>();
-          return ResetPasswordPage(bloc: bloc);
         },
       ),
     ],

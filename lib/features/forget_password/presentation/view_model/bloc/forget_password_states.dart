@@ -19,6 +19,14 @@ class SendCodeSuccess extends ForgetPasswordState {
   List<Object?> get props => [message];
 }
 
+class ResendCodeSuccess extends ForgetPasswordState {
+  final String message;
+  const ResendCodeSuccess(this.message);
+
+  @override
+  List<Object?> get props => [message];
+}
+
 class VerifyCodeSuccess extends ForgetPasswordState {
   final String message;
   const VerifyCodeSuccess(this.message);

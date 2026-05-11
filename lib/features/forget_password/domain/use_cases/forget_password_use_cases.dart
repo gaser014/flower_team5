@@ -3,7 +3,7 @@ import 'package:injectable/injectable.dart';
 import '../entities/forget_password_params.dart';
 import '../repositories/forget_password_repository.dart';
 
-@LazySingleton()
+@injectable
 class SendForgetPasswordCodeUseCase {
   final ForgetPasswordRepository _repository;
 
@@ -14,7 +14,7 @@ class SendForgetPasswordCodeUseCase {
   }
 }
 
-@LazySingleton()
+@injectable
 class VerifyForgetPasswordCodeUseCase {
   final ForgetPasswordRepository _repository;
 
@@ -25,7 +25,7 @@ class VerifyForgetPasswordCodeUseCase {
   }
 }
 
-@LazySingleton()
+@injectable
 class ResetPasswordUseCase {
   final ForgetPasswordRepository _repository;
 

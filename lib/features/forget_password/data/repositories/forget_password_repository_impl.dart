@@ -5,9 +5,11 @@ import 'package:injectable/injectable.dart';
 import '../../domain/entities/forget_password_params.dart';
 import '../../domain/repositories/forget_password_repository.dart';
 import '../datasources/forget_password_remote_data_source_contract.dart';
-import '../models/forget_password_request_models.dart';
+import '../models/forget_password_request.dart';
+import '../models/verify_code_request.dart';
+import '../models/reset_password_request.dart';
 
-@LazySingleton(as: ForgetPasswordRepository)
+@Injectable(as: ForgetPasswordRepository)
 class ForgetPasswordRepositoryImpl implements ForgetPasswordRepository {
   final ForgetPasswordRemoteDataSourceContract _remoteDataSource;
   final AuthLocalDataSourceContract _localDataSource;
