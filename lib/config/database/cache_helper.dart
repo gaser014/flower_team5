@@ -7,6 +7,7 @@ import 'package:injectable/injectable.dart';
 ///
 @Singleton()
 class AppSharedPreferences {
+  const AppSharedPreferences._();
   static late FlutterSecureStorage flutterSecureStorage;
 
   /// Initialize SharedPreferences

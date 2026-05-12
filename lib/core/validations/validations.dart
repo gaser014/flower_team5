@@ -45,6 +45,23 @@ class Validations {
     if (value == null || value.isEmpty) {
       return AppStrings.passwordRequired;
     }
+    if (value.length < 6 || value.length > 30) {
+      return AppStrings.setPassword5ConditionError;
+    }
+    if (!value.contains(RegExp(r'[a-z]'))) {
+      return AppStrings.setPassword1ConditionError;
+    }
+    if (!value.contains(RegExp(r'[A-Z]'))) {
+      return AppStrings.setPassword2ConditionError;
+    }
+    if (!value.contains(RegExp(r'[0-9]'))) {
+      return AppStrings.setPassword3ConditionError;
+    }
+    if (!value.contains(
+      RegExp(r'[!@#\$%\^&\*\(\)_\-\+=\[\]\{\};:\,<\>.\\/|~`]'),
+    )) {
+      return AppStrings.setPassword4ConditionError;
+    }
     return null;
   }
 
