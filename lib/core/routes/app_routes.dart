@@ -213,7 +213,7 @@ abstract class AppRoutes {
 
       final authRoutes = [
         Routes.login,
-        Routes.home,
+        Routes.main,
         // Routes.register,
         // Routes.forgetPassword,
         // Routes.resetPassword,
