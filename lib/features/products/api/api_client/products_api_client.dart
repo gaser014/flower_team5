@@ -7,8 +7,7 @@ import 'package:flowers_app/features/app_filter_tabs/domain/entities/app_filter_
 import 'package:retrofit/retrofit.dart';
 part 'products_api_client.g.dart';
 
-@lazySingleton
-@lazySingleton
+@Injectable()
 @RestApi(baseUrl: EndPoints.baseUrl)
 abstract interface class ProductsApiClient {
   @factoryMethod
