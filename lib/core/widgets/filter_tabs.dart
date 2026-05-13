@@ -1,5 +1,6 @@
 import 'package:flowers_app/core/values/app_colors.dart';
 import 'package:flowers_app/core/values/app_font_style.dart';
+import 'package:flowers_app/core/widgets/custom_shimmer_container.dart';
 import 'package:flutter/material.dart';
 
 class FilterTab extends StatelessWidget {
@@ -43,6 +44,7 @@ class FilterTab extends StatelessWidget {
 class _Label extends StatelessWidget {
   final String label;
   final bool isSelected;
+
   const _Label({required this.label, required this.isSelected});
 
   @override
@@ -54,6 +56,34 @@ class _Label extends StatelessWidget {
       ),
       textAlign: TextAlign.center,
       overflow: TextOverflow.ellipsis,
+    );
+  }
+}
+
+class FilterTabShimmer extends StatelessWidget {
+  const FilterTabShimmer({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        spacing: 6,
+        children: [
+          CustomShimmerContainer(height: 24, width: 64),
+          Container(
+            height: 3,
+            decoration: BoxDecoration(
+              color: AppColors.grayA6,
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(100),
+                topRight: Radius.circular(100),
+              ),
+            ),
+            child: CustomShimmerContainer(height: 24, width: 64),
+          ),
+        ],
+      ),
     );
   }
 }
