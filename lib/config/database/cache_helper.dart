@@ -1,11 +1,9 @@
 import 'dart:developer';
 import 'package:flowers_app/config/dependency_injection/di.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:injectable/injectable.dart';
 
 /// Shared Preferences Helper
 ///
-@Singleton()
 class AppSharedPreferences {
   const AppSharedPreferences._();
   static late FlutterSecureStorage flutterSecureStorage;

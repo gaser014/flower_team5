@@ -36,6 +36,8 @@ import '../../features/login/domain/use_cases/login_use_case.dart' as _i191;
 import '../../features/login/domain/use_cases/save_user_use_case.dart' as _i71;
 import '../../features/login/presentation/view_model/cubit/login_cubit.dart'
     as _i753;
+import '../../features/main/presentation/view_model/cubit/home_cubit.dart'
+    as _i679;
 import '../api/app_interceptor.dart' as _i449;
 import '../api/dio_module.dart' as _i784;
 
@@ -55,6 +57,7 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i161.InternetConnection>(
       () => dioModule.internetConnection(),
     );
+    gh.lazySingleton<_i679.HomeCubit>(() => _i679.HomeCubit());
     gh.factory<_i325.LoginLocalDataSourceContract>(
       () => _i438.LoginLocalDataSourceImpl(),
     );
@@ -74,19 +77,19 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i736.LoginRemoteDataSourceContract>(
       () => _i904.LoginRemoteDataSourceImpl(gh<_i395.LoginApiClient>()),
     );
-    gh.lazySingleton<_i902.LoginRepositoryContract>(
+    gh.factory<_i902.LoginRepositoryContract>(
       () => _i1066.LoginRepositoryImpl(
         gh<_i736.LoginRemoteDataSourceContract>(),
         gh<_i325.LoginLocalDataSourceContract>(),
       ),
     );
-    gh.lazySingleton<_i12.GetUserUseCase>(
+    gh.factory<_i12.GetUserUseCase>(
       () => _i12.GetUserUseCase(gh<_i902.LoginRepositoryContract>()),
     );
-    gh.lazySingleton<_i191.LoginUseCase>(
+    gh.factory<_i191.LoginUseCase>(
       () => _i191.LoginUseCase(gh<_i902.LoginRepositoryContract>()),
     );
-    gh.lazySingleton<_i71.SaveUserUseCase>(
+    gh.factory<_i71.SaveUserUseCase>(
       () => _i71.SaveUserUseCase(gh<_i902.LoginRepositoryContract>()),
     );
     gh.factory<_i753.LoginCubit>(
