@@ -11,11 +11,11 @@ import 'config/dependency_injection/di.dart';
 //flutter pub run build_runner build --delete-conflicting-outputs
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  configureDependencies();
+  await AppSharedPreferences.initialSharedPreference();
   await EasyLocalization.ensureInitialized();
   Bloc.observer = MyBlocObserver();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-  configureDependencies();
-  await AppSharedPreferences.initialSharedPreference();
 
   // Initialize notification badge service
   // await getIt.get<NotificationBadgeService>().initialize();

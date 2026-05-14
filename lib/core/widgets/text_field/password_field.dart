@@ -1,8 +1,6 @@
-import 'package:flowers_app/core/values/app_assets.dart';
 import 'package:flowers_app/core/values/app_colors.dart';
 import 'package:flowers_app/core/values/app_font_style.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import '../../validations/validations.dart';
 import '../../values/app_strings.dart';
 import '../../values/input_formatters.dart';
@@ -18,12 +16,18 @@ class PasswordField extends StatefulWidget {
   final String? labelText;
   final FocusNode? focusNode;
   final bool obscureText;
+  final String? hintText;
+  final TextStyle? labelStyle;
+  final TextStyle? hintStyle;
 
   const PasswordField({
     super.key,
     required this.controller,
     this.validator,
+    this.hintText,
     this.enabled = true,
+    this.hintStyle,
+    this.labelStyle,
     this.textInputAction,
     this.suffixIcon,
     this.onFieldSubmitted,
@@ -62,6 +66,7 @@ class _PasswordFieldState extends State<PasswordField> {
       obscureText: widget.obscureText,
       keyboardType: TextInputType.visiblePassword,
       obscuringCharacter: '★',
+      autovalidateMode: AutovalidateMode.onUserInteraction,
 
       textInputAction: widget.textInputAction ?? TextInputAction.done,
       inputFormatters: AppInputFormatters.strongPassword,
@@ -72,21 +77,7 @@ class _PasswordFieldState extends State<PasswordField> {
           ? const TextStyle(letterSpacing: 2, color: AppColors.grayA6)
           : null,
       decoration: InputDecoration(
-        suffixIcon:
-            widget.suffixIcon ??
-            IconButton(
-              onPressed: () {
-                isObscure = !isObscure;
-                setState(() {});
-              },
-              icon: SvgPicture.asset(
-                isObscure ? AppAssets.iconsOpenEye : AppAssets.iconsClosedEye,
-                colorFilter: const ColorFilter.mode(
-                  AppColors.grayA6,
-                  BlendMode.srcIn,
-                ),
-              ),
-            ),
+        suffixIcon: widget.suffixIcon,
         labelText: widget.labelText ?? AppStrings.password,
         hintText: AppStrings.passwordHint,
         hintStyle: AppFontStyle.regular14().copyWith(color: AppColors.grayA6),

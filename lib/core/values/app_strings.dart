@@ -94,6 +94,7 @@ class AppStrings {
   static const String appName = "Flowers";
   static const String appSlogan = "The most beautiful flowers to your doorstep";
   static const String tryAgain = "Try again";
+  static const String appTitle = "Flowery";
 
   // Validations
   static const String emailRequired = "Email is required";
@@ -118,6 +119,8 @@ class AppStrings {
   static const String continueAsGuest = "Continue as guest";
   static const String noAccount = "Don't have an account? ";
   static const String signUp = "Sign up";
+  static const String loginSuccessfully = "Login successfully";
+  static const String loginError = "Invalid Phone Number or Password";
 
   // Register
   static const String registerTitle = "Sign up";
@@ -186,6 +189,9 @@ class AppStrings {
   static const String sessionExpired = "Session expired, please login again";
   static const String somethingWentWrong =
       "Something went wrong, please try again";
+
+  static const String token = "token";
+  static const String user = "user";
 
   static String questionOf({required int current, required int total}) =>
       "question $current of $total";

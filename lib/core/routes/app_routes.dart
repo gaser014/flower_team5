@@ -3,17 +3,18 @@ import 'dart:io';
 import 'package:flowers_app/config/dependency_injection/di.dart';
 import 'package:flowers_app/core/data/data_sources/auth_local_data_source.dart';
 import 'package:flowers_app/core/routes/routes.dart';
-import 'package:flowers_app/features/app_filter_tabs/presentation/view/widgets/app_filter_tabs_bar.dart';
-import 'package:flowers_app/features/app_filter_tabs/presentation/view_model/cubit/app_filter_tabs_cubit.dart';
-import 'package:flowers_app/features/products/presentation/view/pages/occasion_page.dart';
+import 'package:flowers_app/features/login/presentation/view/pages/login_page.dart';
+import 'package:flowers_app/features/spalsh/splash_page.dart';
+import 'package:flowers_app/features/main/presentation/screens/main_view.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flowers_app/features/spalsh/splash_page.dart';
+
+
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:go_router/go_router.dart';
 
 final RouteObserver<ModalRoute> routeObserver = RouteObserver<ModalRoute>();
 
-// Animation Type Enum
 enum AnimationType {
   fade,
   slide,
@@ -26,7 +27,6 @@ enum AnimationType {
   cupertino,
 }
 
-// Custom Page Builder with Animation Support
 Page<T> buildAnimatedPage<T extends Object?>({
   required Widget child,
   required LocalKey key,
@@ -34,7 +34,6 @@ Page<T> buildAnimatedPage<T extends Object?>({
   Duration duration = const Duration(milliseconds: 300),
   Curve curve = Curves.easeInOut,
 }) {
-  // Use Cupertino page for iOS
   if (Platform.isIOS && animationType == AnimationType.cupertino) {
     return CupertinoPage<T>(key: key, child: child);
   }
@@ -56,7 +55,6 @@ Page<T> buildAnimatedPage<T extends Object?>({
   );
 }
 
-// Animation Builder Function
 Widget _getAnimationTransition(
   AnimationType type,
   Animation<double> animation,
@@ -124,7 +122,6 @@ Widget _getAnimationTransition(
   }
 }
 
-// Enhanced Custom Transition Page
 class CustomTransitionPage<T> extends Page<T> {
   const CustomTransitionPage({
     required this.child,
@@ -206,17 +203,28 @@ class _PageBasedPageRoute<T> extends PageRoute<T> {
 
 abstract class AppRoutes {
   static final GoRouter router = GoRouter(
-    initialLocation: Routes.categories,
+    initialLocation: Routes.splash,
     routes: [
       GoRoute(
-        path: Routes.categories,
-        name: Routes.categories,
-        pageBuilder: (context, state) {
-          return buildAnimatedPage(
-            key: state.pageKey,
-            child: OccasionPage(),
-            animationType: AnimationType.slideFromRight,
-          );
+        path: Routes.main,
+        pageBuilder: (context, state) => buildAnimatedPage(
+          key: state.pageKey,
+          child: const MainView(),
+          animationType: AnimationType.fade,
+        ),
+      ),
+       GoRoute(
+        path: Routes.splash,
+        name: Routes.splash,
+        builder: (BuildContext context, GoRouterState state) {
+          return SplashPage();
+        },
+      ),
+       GoRoute(
+        path: Routes.login,
+        name: Routes.login,
+        builder: (BuildContext context, GoRouterState state) {
+          return LoginPage();
         },
       ),
     ],
