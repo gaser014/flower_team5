@@ -2,6 +2,7 @@ import 'package:flowers_app/core/values/app_assets.dart';
 import 'package:flowers_app/core/values/app_colors.dart';
 import 'package:flowers_app/features/home/presentation/view/pages/home_page.dart';
 import 'package:flowers_app/features/main/presentation/screens/app_bar_widget.dart';
+import 'package:flowers_app/features/main/presentation/screens/profile_appbar.dart';
 import 'package:flowers_app/features/main/presentation/view_model/cubit/home_cubit.dart';
 import 'package:flowers_app/features/main/presentation/view_model/cubit/home_events.dart';
 import 'package:flutter/material.dart';
@@ -25,7 +26,11 @@ class MainView extends StatelessWidget {
       builder: (context, state) {
         final selectedIndex = state.bottomNavIndex;
         return Scaffold(
-          appBar: const AppBarWidget(),
+          appBar: selectedIndex == 0
+              ? const AppBarWidget()
+              : selectedIndex == 3
+              ? const ProfileAppBarWidget()
+              : null,
           body: IndexedStack(index: selectedIndex, children: _pages),
           bottomNavigationBar: BottomNavigationBar(
             currentIndex: selectedIndex,
