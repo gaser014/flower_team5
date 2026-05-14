@@ -1,48 +1,16 @@
-import 'package:flowers_app/core/values/app_strings.dart';
 import 'package:flowers_app/features/home/presentation/view/widgets/home_product_and_occasion_card.dart';
 import 'package:flowers_app/features/home/presentation/view/widgets/occasion_section.dart';
+import 'package:flowers_app/features/products/domain/entities/product_entity.dart';
 import 'package:flutter/material.dart';
-
 import 'package:gap/gap.dart';
 
-class ProductModel {
-  final String name;
-  final num? price;
-  final String imageUrl;
-
-  ProductModel({
-    required this.name,
-    required this.price,
-    required this.imageUrl,
-  });
-}
-
 class BestSellerSection extends StatelessWidget {
-  const BestSellerSection({super.key});
+  const BestSellerSection({super.key, required this.products});
+
+  final List<ProductEntity> products;
 
   @override
   Widget build(BuildContext context) {
-    final List<ProductModel> products = [
-      ProductModel(
-        name: AppStrings.sunnyProduct,
-        price: 600,
-        imageUrl:
-            'https://images.unsplash.com/photo-1526047932273-341f2a7631f9?q=80&w=1000&auto=format&fit=crop',
-      ),
-      ProductModel(
-        name: AppStrings.redRosesProduct,
-        price: 1000,
-        imageUrl:
-            'https://images.unsplash.com/photo-1562690868-60bbe7293e94?q=80&w=1000&auto=format&fit=crop',
-      ),
-      ProductModel(
-        name: AppStrings.springVaseProduct,
-        price: 1200,
-        imageUrl:
-            'https://images.unsplash.com/photo-1494972308255-02058699310a?q=80&w=1000&auto=format&fit=crop',
-      ),
-    ];
-
     return SizedBox(
       height: 250,
       child: ListView.separated(
@@ -53,8 +21,8 @@ class BestSellerSection extends StatelessWidget {
         itemBuilder: (context, index) {
           final product = products[index];
           return HomeProductAndOccasionCard(
-            name: product.name,
-            imageUrl: product.imageUrl,
+            name: product.title ?? '',
+            imageUrl: product.imgCover ?? '',
             cardType: HomeCardType.product,
             price: product.price,
             onTap: () {},

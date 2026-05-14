@@ -199,7 +199,6 @@ class AppStrings {
   // Home
   static const String categories = "Categories";
   static const String bestSeller = "Best seller";
-  static const String occasion = "Occasion";
   static const String viewAll = "View All";
   static const String deliverTo = "Deliver to";
   static const String egp = "EGP";
