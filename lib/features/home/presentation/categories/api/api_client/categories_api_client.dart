@@ -22,3 +22,4 @@ abstract interface class CategoriesApiClient {
     @Queries() CategoriesParams params,
   );
 }
+// flutter pub run build_runner build --delete-conflicting-outputs
