@@ -21,9 +21,9 @@ class BestSellerRepositoryImpl implements BestSellerRepository {
         page: page,
         limit: limit,
       );
-      return Result.success(result);
+      return Success(data: result);
     } on Exception catch (e) {
-      return Result.failure(e);
+      return Error(exception: e);
     }
   }
 }

@@ -14,9 +14,9 @@ class ProductDetailsRepositoryImpl implements ProductDetailsRepository {
   Future<Result<ProductEntity>> getProductDetails(String id) async {
     try {
       final result = await _remoteDataSource.getProductDetails(id);
-      return Result.success(result);
+      return Success(data: result);
     } on Exception catch (e) {
-      return Result.failure(e);
+      return Error(exception: e);
     }
   }
 }
