@@ -5,8 +5,12 @@ class CategoriesStates extends Equatable {
   final CategoryEntity? selectCategoryState;
 
   const CategoriesStates({
-    this.categoriesState = const PaginationState.initial(),
-    this.selectCategoryState,
+    this.categoriesState = const PaginationState(
+      state: PaginationStateType.initial,
+      data: [],
+      query: CategoriesParams(),
+    ),
+    this.selectCategoryState = const CategoryEntity(id: null, name: 'All'),
   });
 
   CategoriesStates copyWith({

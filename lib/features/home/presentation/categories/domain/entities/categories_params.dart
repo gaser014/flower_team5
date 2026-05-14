@@ -1,3 +1,4 @@
+import 'package:flowers_app/config/uses_cases/filter_param.dart';
 import 'package:flowers_app/config/uses_cases/pagination_params.dart';
 
 class CategoriesParams extends PaginationParams {
@@ -11,12 +12,17 @@ class CategoriesParams extends PaginationParams {
   });
 
   @override
-  CategoriesParams copyWith({CategoriesType? type, int? page, int? limit}) {
+  CategoriesParams copyWith({
+    CategoriesType? type,
+    int? page,
+    int? limit,
+    List<FilterParam>? filterList,
+  }) {
     return CategoriesParams(
       type: type ?? this.type,
       page: page ?? this.page,
       limit: limit ?? this.limit,
-      filterList: filterList,
+      filterList: filterList ?? this.filterList,
     );
   }
 

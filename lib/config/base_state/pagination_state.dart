@@ -5,6 +5,7 @@ import 'package:flowers_app/config/uses_cases/pagination_params.dart';
 
 import 'state_handlers.dart';
 import 'state_mixins.dart';
+export 'state_types.dart';
 import 'state_types.dart';
 
 class PaginationState<T> extends Equatable

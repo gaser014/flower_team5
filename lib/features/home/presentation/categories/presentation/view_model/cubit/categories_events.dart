@@ -9,6 +9,16 @@ class GetAllCategoriesEvent extends CategoriesEvents {
   const GetAllCategoriesEvent({this.params});
 }
 
+class SearchCategoriesEvent extends CategoriesEvents {
+  final String query;
+  const SearchCategoriesEvent({required this.query});
+}
+
+class UpdateSortByEvent extends CategoriesEvents {
+  final String sortBy;
+  const UpdateSortByEvent({required this.sortBy});
+}
+
 class LoadMoreCategoriesEvent extends CategoriesEvents {
   final CategoriesParams params;
   const LoadMoreCategoriesEvent({required this.params});
