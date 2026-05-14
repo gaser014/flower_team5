@@ -4,11 +4,11 @@ import 'package:flowers_app/core/widgets/filter_tabs.dart';
 import 'package:flowers_app/features/app_filter_tabs/domain/entities/app_filter_tab_item_entity.dart';
 import 'package:flutter/material.dart';
 
-class ListFilterTabs extends StatelessWidget {
-  final PaginationState<AppFilterTabItemEntity> state;
-  final AppFilterTabItemEntity? selectedItem;
+class ListFilterTabs<T extends AppFilterTabItemEntity> extends StatelessWidget {
+  final PaginationState<T> state;
+  final T? selectedItem;
 
-  final void Function(AppFilterTabItemEntity item) onTap;
+  final void Function(T item) onTap;
 
   const ListFilterTabs({
     super.key,
