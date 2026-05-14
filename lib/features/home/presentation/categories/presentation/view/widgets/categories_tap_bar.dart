@@ -1,6 +1,6 @@
 import 'package:flowers_app/core/widgets/list_filter_tabs.dart';
-import 'package:flowers_app/features/categories/domain/entities/category_entity.dart';
-import 'package:flowers_app/features/categories/presentation/view_model/cubit/categories_cubit.dart';
+import 'package:flowers_app/features/home/presentation/categories/domain/entities/category_entity.dart';
+import 'package:flowers_app/features/home/presentation/categories/presentation/view_model/cubit/categories_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

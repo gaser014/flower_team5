@@ -3,11 +3,11 @@ import 'dart:developer';
 import 'package:flowers_app/config/base_response/entity/base_pagination_entity.dart';
 import 'package:flowers_app/config/base_response/model/base_pagination_dto.dart';
 import 'package:flowers_app/config/base_response/result.dart';
-import 'package:flowers_app/features/categories/data/datasources/categories_remote_data_source_contract.dart';
-import 'package:flowers_app/features/categories/data/models/category_dto.dart';
-import 'package:flowers_app/features/categories/domain/entities/categories_params.dart';
-import 'package:flowers_app/features/categories/domain/entities/category_entity.dart';
-import 'package:flowers_app/features/categories/domain/repositories/categories_repository.dart';
+import 'package:flowers_app/features/home/presentation/categories/data/datasources/categories_remote_data_source_contract.dart';
+import 'package:flowers_app/features/home/presentation/categories/data/models/category_dto.dart';
+import 'package:flowers_app/features/home/presentation/categories/domain/entities/categories_params.dart';
+import 'package:flowers_app/features/home/presentation/categories/domain/entities/category_entity.dart';
+import 'package:flowers_app/features/home/presentation/categories/domain/repositories/categories_repository.dart';
 import 'package:injectable/injectable.dart';
 
 @LazySingleton(as: CategoriesRepository)

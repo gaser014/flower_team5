@@ -1,4 +1,4 @@
-import 'package:flowers_app/features/categories/domain/entities/category_entity.dart';
+import 'package:flowers_app/features/home/presentation/categories/domain/entities/category_entity.dart';
 
 class CategoryFixtures {
   CategoryFixtures._();

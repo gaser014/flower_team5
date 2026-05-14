@@ -1,4 +1,4 @@
-import 'package:flowers_app/features/categories/domain/entities/category_entity.dart';
+import 'package:flowers_app/features/home/presentation/categories/domain/entities/category_entity.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'category_dto.g.dart';

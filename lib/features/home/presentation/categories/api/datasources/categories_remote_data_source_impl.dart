@@ -1,10 +1,10 @@
 import 'package:flowers_app/config/api/api_execute.dart';
 import 'package:flowers_app/config/base_response/result.dart';
-import 'package:flowers_app/features/categories/api/api_client/categories_api_client.dart';
-import 'package:flowers_app/features/categories/data/datasources/categories_remote_data_source_contract.dart';
-import 'package:flowers_app/features/categories/data/models/categories_response_dto.dart';
-import 'package:flowers_app/features/categories/data/models/occasions_response_dto.dart';
-import 'package:flowers_app/features/categories/domain/entities/categories_params.dart';
+import 'package:flowers_app/features/home/presentation/categories/api/api_client/categories_api_client.dart';
+import 'package:flowers_app/features/home/presentation/categories/data/datasources/categories_remote_data_source_contract.dart';
+import 'package:flowers_app/features/home/presentation/categories/data/models/categories_response_dto.dart';
+import 'package:flowers_app/features/home/presentation/categories/data/models/occasions_response_dto.dart';
+import 'package:flowers_app/features/home/presentation/categories/domain/entities/categories_params.dart';
 import 'package:injectable/injectable.dart';
 
 @LazySingleton(as: CategoriesRemoteDataSourceContract)

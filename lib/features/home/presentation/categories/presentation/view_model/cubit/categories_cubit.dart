@@ -1,8 +1,8 @@
 import 'package:equatable/equatable.dart';
 import 'package:flowers_app/config/base_state/pagination_state.dart';
-import 'package:flowers_app/features/categories/domain/entities/categories_params.dart';
-import 'package:flowers_app/features/categories/domain/entities/category_entity.dart';
-import 'package:flowers_app/features/categories/domain/use_cases/get_all_categories.dart';
+import 'package:flowers_app/features/home/presentation/categories/domain/entities/categories_params.dart';
+import 'package:flowers_app/features/home/presentation/categories/domain/entities/category_entity.dart';
+import 'package:flowers_app/features/home/presentation/categories/domain/use_cases/get_all_categories.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 

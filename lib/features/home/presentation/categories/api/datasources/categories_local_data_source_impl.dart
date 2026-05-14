@@ -1,4 +1,4 @@
-import 'package:flowers_app/features/categories/data/datasources/categories_local_data_source_contract.dart';
+import 'package:flowers_app/features/home/presentation/categories/data/datasources/categories_local_data_source_contract.dart';
 import 'package:injectable/injectable.dart';
 
 @LazySingleton(as: CategoriesLocalDataSourceContract)
