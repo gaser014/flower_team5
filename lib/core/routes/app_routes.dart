@@ -3,6 +3,9 @@ import 'dart:io';
 import 'package:flowers_app/config/dependency_injection/di.dart';
 import 'package:flowers_app/core/data/data_sources/auth_local_data_source.dart';
 import 'package:flowers_app/core/routes/routes.dart';
+import 'package:flowers_app/core/entities/product_entity.dart';
+import 'package:flowers_app/features/best_seller/presentation/view/pages/best_seller_page.dart';
+import 'package:flowers_app/features/product_details/presentation/view/pages/product_details_page.dart';
 import 'package:flowers_app/features/login/presentation/view/pages/login_page.dart';
 import 'package:flowers_app/features/spalsh/splash_page.dart';
 import 'package:flowers_app/features/main/presentation/screens/main_view.dart';
@@ -225,6 +228,27 @@ abstract class AppRoutes {
         name: Routes.login,
         builder: (BuildContext context, GoRouterState state) {
           return LoginPage();
+        },
+      ),
+      GoRoute(
+        path: Routes.bestSeller,
+        name: Routes.bestSeller,
+        pageBuilder: (context, state) => buildAnimatedPage(
+          key: state.pageKey,
+          child: const BestSellerPage(),
+          animationType: AnimationType.slideFromRight,
+        ),
+      ),
+      GoRoute(
+        path: Routes.productDetails,
+        name: Routes.productDetails,
+        pageBuilder: (context, state) {
+          final product = state.extra as ProductEntity;
+          return buildAnimatedPage(
+            key: state.pageKey,
+            child: ProductDetailsPage(product: product),
+            animationType: AnimationType.fade,
+          );
         },
       ),
     ],
