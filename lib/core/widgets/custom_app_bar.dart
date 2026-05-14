@@ -33,7 +33,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     final canPop = context.canPop();
-    final shouldShowBack = showBackButton && canPop;
+    final shouldShowBack = showBackButton && (canPop || onBackPressed != null);
     final isRTL = Directionality.of(context) == TextDirection.rtl;
     return AppBar(
       backgroundColor: backgroundColor ?? Colors.transparent,
