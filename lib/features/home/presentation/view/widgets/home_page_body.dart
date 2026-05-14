@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flowers_app/core/values/app_strings.dart';
 import 'package:flowers_app/features/home/presentation/view/widgets/best_seller_section.dart';
 import 'package:flowers_app/features/home/presentation/view/widgets/category_list_section.dart';
@@ -36,36 +34,41 @@ class _HomePageBodyState extends State<HomePageBody> {
           cubit.doIndented(GetAllHomeDataEvent());
         },
         child: BlocBuilder<HomeCubit, HomeStates>(
-          buildWhen: (previous, current) {
-            return previous.getAllHomeDataState != current.getAllHomeDataState;
-          },
+          buildWhen: (previous, current) =>
+              previous.getAllHomeDataState != current.getAllHomeDataState,
           builder: (context, state) {
-            log("==============TTTTTTTTTTTTTTTTTT");
             return state.getAllHomeDataState.when(
-              initial: () => const HomeShimmer(),
+              initial: () => const SizedBox.shrink(),
               loading: () => const HomeShimmer(),
               error: (error) => Center(child: Text(error.toString())),
               success: (data) {
                 final homeData = data;
+
                 return SingleChildScrollView(
                   physics: const AlwaysScrollableScrollPhysics(),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      SectionHeader(
-                        title: AppStrings.categories,
-                        onViewAllPressed: () =>
-                            cubit.doIndented(ChangeBottomNavIndexEvent(1)),
-                      ),
-                      CategoryListSection(
-                        categories: homeData.categories ?? [],
-                      ),
-                      const Gap(16),
-                      const SectionHeader(title: AppStrings.bestSeller),
-                      BestSellerSection(products: homeData.bestSeller ?? []),
-                      const Gap(16),
-                      const SectionHeader(title: AppStrings.occasion),
-                      OccasionSection(occasions: homeData.occasions ?? []),
+                      if (homeData.categories?.isNotEmpty ?? false) ...[
+                        SectionHeader(
+                          title: AppStrings.categories,
+                          onViewAllPressed: () =>
+                              cubit.doIndented(ChangeBottomNavIndexEvent(1)),
+                        ),
+                        CategoryListSection(
+                          categories: homeData.categories ?? [],
+                        ),
+                        const Gap(16),
+                      ],
+                      if (homeData.bestSeller?.isNotEmpty ?? false) ...[
+                        const SectionHeader(title: AppStrings.bestSeller),
+                        BestSellerSection(products: homeData.bestSeller ?? []),
+                        const Gap(16),
+                      ],
+                      if (homeData.occasions?.isNotEmpty ?? false) ...[
+                        const SectionHeader(title: AppStrings.occasion),
+                        OccasionSection(occasions: homeData.occasions ?? []),
+                      ],
                     ],
                   ),
                 );

@@ -17,12 +17,16 @@ class CategoryCard extends StatelessWidget {
         Container(
           width: 70,
           height: 70,
+          padding: const EdgeInsets.all(16),
           clipBehavior: Clip.antiAlias,
           decoration: const BoxDecoration(
             color: AppColors.pinkF9,
             shape: BoxShape.circle,
           ),
-          child: CustomCachedImage(imagePath: category.image ?? ''),
+          child: CustomCachedImage(
+            imagePath: category.image ?? '',
+            fit: BoxFit.contain,
+          ),
         ),
         const Gap(8),
         Text(
