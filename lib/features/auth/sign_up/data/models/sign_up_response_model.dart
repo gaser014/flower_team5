@@ -23,7 +23,11 @@ class SignUpResponseModel {
   };
 
   SignUpEntity toEntity() {
-    return SignUpEntity(message: message, token: token, user: _mapUser());
+    return SignUpEntity(
+      message: message ?? '',
+      token: token ?? '',
+      user: _mapUser(),
+    );
   }
 
   UserEntity? _mapUser() {

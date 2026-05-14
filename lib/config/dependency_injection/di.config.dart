@@ -18,6 +18,8 @@ import 'package:internet_connection_checker_plus/internet_connection_checker_plu
 
 import '../../core/api/datasources/auth_local_data_source_impl.dart' as _i424;
 import '../../core/data/data_sources/auth_local_data_source.dart' as _i759;
+import '../../features/auth/sign_up/api/api_client/sign_up_api_client.dart'
+    as _i429;
 import '../../features/auth/sign_up/api/data_sources/sign_up_remote_data_source_impl.dart'
     as _i1052;
 import '../../features/auth/sign_up/data/data_sources/sign_up_remote_data_source.dart'
@@ -49,8 +51,8 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i161.InternetConnection>(
       () => dioModule.internetConnection(),
     );
-    gh.lazySingleton<_i897.SignUpRemoteDataSource>(
-      () => _i1052.SignUpRemoteDataSourceImpl(gh<_i361.Dio>()),
+    gh.factory<_i429.SignUpApiClient>(
+      () => _i429.SignUpApiClient(gh<_i361.Dio>()),
     );
     gh.singleton<_i449.AppInterceptors>(
       () => _i449.AppInterceptors(
@@ -62,13 +64,16 @@ extension GetItInjectableX on _i174.GetIt {
       () =>
           _i424.AuthLocalDataSourceImpl(fss: gh<_i558.FlutterSecureStorage>()),
     );
+    gh.lazySingleton<_i897.SignUpRemoteDataSource>(
+      () => _i1052.SignUpRemoteDataSourceImpl(gh<_i429.SignUpApiClient>()),
+    );
     gh.lazySingleton<_i100.SignUpRepositoryContract>(
       () => _i442.SignUpRepositoryImpl(
         gh<_i897.SignUpRemoteDataSource>(),
         gh<_i759.AuthLocalDataSourceContract>(),
       ),
     );
-    gh.lazySingleton<_i45.SignUpUseCase>(
+    gh.factory<_i45.SignUpUseCase>(
       () => _i45.SignUpUseCase(gh<_i100.SignUpRepositoryContract>()),
     );
     gh.factory<_i809.SignUpCubit>(
