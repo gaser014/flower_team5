@@ -2,14 +2,18 @@ import 'package:flowers_app/core/values/app_assets.dart';
 import 'package:flowers_app/core/values/app_colors.dart';
 import 'package:flowers_app/core/values/app_font_style.dart';
 import 'package:flowers_app/core/values/app_strings.dart';
-import 'package:flowers_app/features/categories/presentation/view/widgets/categories_tap_bar.dart';
-import 'package:flowers_app/features/categories/presentation/view_model/cubit/categories_cubit.dart';
+import 'package:flowers_app/features/products/presentation/view/widgets/product_card.dart';
+import 'package:flowers_app/features/home/presentation/categories/presentation/view/widgets/categories_tap_bar.dart';
+import 'package:flowers_app/features/home/presentation/categories/presentation/view_model/cubit/categories_cubit.dart';
 import 'package:flowers_app/config/dependency_injection/di.dart';
 import 'package:flowers_app/core/widgets/pagination_grid_view.dart';
-import 'package:flowers_app/features/categories/presentation/view/widgets/sort_by_bottom_sheet.dart';
-import 'package:flowers_app/features/categories/presentation/view/categories_search_screen.dart';
+import 'package:flowers_app/features/home/presentation/categories/presentation/view/widgets/sort_by_bottom_sheet.dart';
+import 'package:flowers_app/features/home/presentation/categories/presentation/view/categories_search_screen.dart';
 import 'package:flowers_app/config/uses_cases/filter_param.dart';
-import 'package:flowers_app/features/categories/domain/entities/categories_params.dart';
+import 'package:flowers_app/features/home/presentation/categories/domain/entities/categories_params.dart';
+
+import 'package:flowers_app/features/products/presentation/view_model/cubit/products_cubit.dart';
+import 'package:flowers_app/features/products/domain/entities/products_params.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -20,9 +24,17 @@ class CategoriesView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) =>
-          getIt<CategoriesCubit>()..doIntent(const GetAllCategoriesEvent()),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) =>
+              getIt<CategoriesCubit>()..doIntent(const GetAllCategoriesEvent()),
+        ),
+        BlocProvider(
+          create: (context) =>
+              getIt<ProductsCubit>()..doIntent(const GetAllProductsEvent()),
+        ),
+      ],
       child: Builder(
         builder: (context) {
           return Scaffold(
@@ -56,14 +68,14 @@ class CategoriesView extends StatelessWidget {
             child: Builder(
               builder: (context) => GestureDetector(
                 onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (_) => CategoriesSearchScreen(
-                        cubit: context.read<CategoriesCubit>(),
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => CategoriesSearchScreen(
+                          productsCubit: context.read<ProductsCubit>(),
+                        ),
                       ),
-                    ),
-                  );
+                    );
                 },
                 child: Container(
                   height: 48,
@@ -130,31 +142,39 @@ class CategoriesView extends StatelessWidget {
     return CategoriesTapBar(
       onTap: (category) {
         context.read<CategoriesCubit>().doIntent(
-          SelectCategoryEvent(category: category),
-        );
+              SelectCategoryEvent(category: category),
+            );
+        context.read<ProductsCubit>().doIntent(
+              GetAllProductsEvent(
+                params: ProductsParams(
+                  category: category,
+                  page: 1,
+                ),
+              ),
+            );
       },
     );
   }
 
   Widget _buildProductGrid(BuildContext context) {
-    return BlocBuilder<CategoriesCubit, CategoriesStates>(
+    return BlocBuilder<ProductsCubit, ProductsStates>(
       builder: (context, state) {
         return PaginationGridView<dynamic>(
-          items: state.categoriesState.data,
-          isLoading: state.categoriesState.isLoading,
-          isLoadingMore: state.categoriesState.isLoadingMore,
-          hasMore: state.categoriesState.hasMore,
+          items: state.productsState.data,
+          isLoading: state.productsState.isLoading,
+          isLoadingMore: state.productsState.isLoadingMore,
+          hasMore: state.productsState.hasMore,
           itemBuilder: (context, item, index) {
-            return const SizedBox.shrink();
+            return ProductCard(product: item);
           },
           onLoadMore: () {
-            context.read<CategoriesCubit>().doIntent(
-              LoadMoreCategoriesEvent(
-                params: state.categoriesState.query as CategoriesParams,
-              ),
-            );
+            context.read<ProductsCubit>().doIntent(
+                  LoadMoreProductsEvent(
+                    params: state.productsState.query as ProductsParams,
+                  ),
+                );
           },
-          onRefresh: () => context.read<CategoriesCubit>().refreshCategories(),
+          onRefresh: () => context.read<ProductsCubit>().refreshProducts(),
           padding: const EdgeInsets.symmetric(horizontal: 16),
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
@@ -190,8 +210,8 @@ class CategoriesView extends StatelessWidget {
   }
 
   void _showSortBottomSheet(BuildContext context) {
-    final cubit = context.read<CategoriesCubit>();
-    final currentParams = cubit.state.categoriesState.query as CategoriesParams;
+    final cubit = context.read<ProductsCubit>();
+    final currentParams = cubit.state.productsState.query as ProductsParams;
     final currentSortBy = currentParams.filterList
         .firstWhere(
           (f) => f.key == 'sort_by',

@@ -1,3 +1,4 @@
+import 'package:flowers_app/config/uses_cases/filter_param.dart';
 import 'package:flowers_app/config/uses_cases/pagination_params.dart';
 import 'package:flowers_app/features/app_filter_tabs/domain/entities/app_filter_tabs_params.dart';
 import 'package:flowers_app/features/app_filter_tabs/domain/entities/app_filter_tab_item_entity.dart';
@@ -20,13 +21,14 @@ class ProductsParams extends PaginationParams {
     int? page,
     int? limit,
     AppFilterTabsType? type,
+    List<FilterParam>? filterList,
   }) {
     return ProductsParams(
       category: category ?? this.category,
       type: type ?? this.type,
       page: page ?? this.page,
       limit: limit ?? this.limit,
-      filterList: filterList,
+      filterList: filterList ?? this.filterList,
     );
   }
 
