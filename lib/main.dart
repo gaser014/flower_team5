@@ -1,5 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flowers_app/app.dart';
+import 'package:flowers_app/app.dart' as app;
 import 'package:flowers_app/config/database/cache_helper.dart';
 import 'package:flowers_app/config/helper/bloc_observer.dart';
 import 'package:flowers_app/core/constants/app_constants.dart';
@@ -35,7 +35,7 @@ void main() async {
       supportedLocales: const [Locale('en', 'US'), Locale('ar', 'EG')],
       path: AppConstants.translationPath,
       fallbackLocale: const Locale('ar', 'EG'),
-      child: const MyApp(),
+      child: const app.MyApp(),
     ),
   );
 

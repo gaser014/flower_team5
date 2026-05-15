@@ -148,12 +148,20 @@ class AppStrings {
 
   // Register
   static const String registerTitle = "Sign up";
+  static const String confirmPassword = "Confirm password";
+  static const String firstName = "First name";
+  static const String firstNameHint = "Enter first name";
+  static const String lastName = "Last name";
+  static const String lastNameHint = "Enter last name";
   static const String genderLabel = "Gender";
   static const String maleLabel = "Male";
   static const String femaleLabel = "Female";
+  static const String termsAndConditionsView =  'By creating an account, you agree to use the application in a lawful manner, provide accurate information, and respect all applicable rules. We may update these terms from time to time, and your continued use of the app means you accept those updates.';
   static const String termsConditionsPart1 =
       "By creating an account, you agree to our ";
   static const String termsConditionsPart2 = "Terms & Conditions";
+  static const String accountCreatedSuccessfully =
+      "Account created successfully";
 
   // Product Details
   static const String inStock = "In stock";
@@ -194,13 +202,17 @@ class AppStrings {
       "Add a special character to make it more secure";
   static const String setPassword5ConditionError =
       "Password should be between 6 and 30 characters";
-  static const String confirmPassword = "Please confirm your password";
+  static const String pleaseConfirmYourPassword =
+      "Please confirm your password";
   static const String confirmPasswordInvalid =
       "Passwords don't match, please try again";
   static const String phoneInvalid = "Please enter a valid phone number";
+  static const String alreadyHaveAnAccount = "Already have an account?";
   static const String nameRequired = "Please enter your name";
   static const String pinInvalid = "Please enter a valid PIN";
   static const String profileImage = "Please add a profile image";
+  static const String anUnexpectedErrorOccurred =
+      "An unexpected error occurred";
   static const String usernameInvalid =
       "Username can only contain letters, numbers, dots and underscores";
   static const String username = "Username";
