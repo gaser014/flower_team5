@@ -36,12 +36,16 @@ class LoginCubit extends Cubit<LoginStates> {
     final result = await loginUseCase.call(params);
     result.when(
       success: (response) async {
-        if (params.remember == true && response?.user != null) {
-          await saveUserUseCase.call(response!.user!);
-          await AppSharedPreferences.setString(
-            key: AppStrings.token,
-            value: response.token ?? '',
-          );
+        if (response != null) {
+          if (response.user != null) {
+            await saveUserUseCase.call(response.user!);
+          }
+          if (params.remember == true && response.token != null) {
+            await AppSharedPreferences.setString(
+              key: AppStrings.token,
+              value: response.token!,
+            );
+          }
         }
         emit(state.copyWith(loginState: BaseState.success(response)));
       },

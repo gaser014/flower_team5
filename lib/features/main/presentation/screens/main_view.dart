@@ -1,89 +1,98 @@
 import 'package:flowers_app/core/values/app_assets.dart';
 import 'package:flowers_app/core/values/app_colors.dart';
-import 'package:flowers_app/features/home/presentation/screens/home_view.dart';
-import 'package:flowers_app/features/home/presentation/categories/presentation/view/categories_view.dart';
+import 'package:flowers_app/features/home/presentation/view/pages/home_page.dart';
+import 'package:flowers_app/features/main/presentation/screens/app_bar_widget.dart';
+import 'package:flowers_app/features/main/presentation/screens/profile_appbar.dart';
+import 'package:flowers_app/features/main/presentation/view_model/cubit/home_cubit.dart';
+import 'package:flowers_app/features/main/presentation/view_model/cubit/home_events.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class MainView extends StatefulWidget {
+class MainView extends StatelessWidget {
   const MainView({super.key});
 
-  @override
-  State<MainView> createState() => _MainViewState();
-}
-
-class _MainViewState extends State<MainView> {
-  int _selectedIndex = 1;
-
-  static const List<Widget> _pages = <Widget>[
-    HomeView(),
-    CategoriesView(),
+  final List<Widget> _pages = const <Widget>[
+    HomePage(),
+    Center(child: Text('Categories')),
     Center(child: Text('Cart')),
     Center(child: Text('Profile')),
   ];
 
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: IndexedStack(
-        index: _selectedIndex,
-        children: _pages,
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _selectedIndex,
-        onTap: _onItemTapped,
-        type: BottomNavigationBarType.fixed,
-        selectedItemColor: AppColors.primerColor,
-        unselectedItemColor: AppColors.grayA6,
-        items: [
-          BottomNavigationBarItem(
-            icon: SvgPicture.asset(
-              AppAssets.iconsHome,
-              colorFilter: ColorFilter.mode(
-                _selectedIndex == 0 ? AppColors.primerColor : AppColors.grayA6,
-                BlendMode.srcIn,
+    final cubit = context.read<HomeCubit>();
+    return BlocBuilder<HomeCubit, HomeStates>(
+      builder: (context, state) {
+        final selectedIndex = state.bottomNavIndex;
+        return Scaffold(
+          appBar: selectedIndex == 0
+              ? const AppBarWidget()
+              : selectedIndex == 3
+              ? const ProfileAppBarWidget()
+              : null,
+          body: IndexedStack(index: selectedIndex, children: _pages),
+          bottomNavigationBar: BottomNavigationBar(
+            currentIndex: selectedIndex,
+            onTap: (index) {
+              cubit.doIndented(ChangeBottomNavIndexEvent(index));
+            },
+            type: BottomNavigationBarType.fixed,
+            selectedItemColor: AppColors.primerColor,
+            unselectedItemColor: AppColors.grayA6,
+            items: [
+              BottomNavigationBarItem(
+                icon: SvgPicture.asset(
+                  AppAssets.iconsHome,
+                  colorFilter: ColorFilter.mode(
+                    selectedIndex == 0
+                        ? AppColors.primerColor
+                        : AppColors.grayA6,
+                    BlendMode.srcIn,
+                  ),
+                ),
+                label: 'Home',
               ),
-            ),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: SvgPicture.asset(
-              AppAssets.iconsCategory,
-              colorFilter: ColorFilter.mode(
-                _selectedIndex == 1 ? AppColors.primerColor : AppColors.grayA6,
-                BlendMode.srcIn,
+              BottomNavigationBarItem(
+                icon: SvgPicture.asset(
+                  AppAssets.iconsCategory,
+                  colorFilter: ColorFilter.mode(
+                    selectedIndex == 1
+                        ? AppColors.primerColor
+                        : AppColors.grayA6,
+                    BlendMode.srcIn,
+                  ),
+                ),
+                label: 'Categories',
               ),
-            ),
-            label: 'Categories',
-          ),
-          BottomNavigationBarItem(
-            icon: SvgPicture.asset(
-              AppAssets.iconsCart,
-              colorFilter: ColorFilter.mode(
-                _selectedIndex == 2 ? AppColors.primerColor : AppColors.grayA6,
-                BlendMode.srcIn,
+              BottomNavigationBarItem(
+                icon: SvgPicture.asset(
+                  AppAssets.iconsCart,
+                  colorFilter: ColorFilter.mode(
+                    selectedIndex == 2
+                        ? AppColors.primerColor
+                        : AppColors.grayA6,
+                    BlendMode.srcIn,
+                  ),
+                ),
+                label: 'Cart',
               ),
-            ),
-            label: 'Cart',
-          ),
-          BottomNavigationBarItem(
-            icon: SvgPicture.asset(
-              AppAssets.iconsProfile,
-              colorFilter: ColorFilter.mode(
-                _selectedIndex == 3 ? AppColors.primerColor : AppColors.grayA6,
-                BlendMode.srcIn,
+              BottomNavigationBarItem(
+                icon: SvgPicture.asset(
+                  AppAssets.iconsProfile,
+                  colorFilter: ColorFilter.mode(
+                    selectedIndex == 3
+                        ? AppColors.primerColor
+                        : AppColors.grayA6,
+                    BlendMode.srcIn,
+                  ),
+                ),
+                label: 'Profile',
               ),
-            ),
-            label: 'Profile',
+            ],
           ),
-        ],
-      ),
+        );
+      },
     );
   }
 }
