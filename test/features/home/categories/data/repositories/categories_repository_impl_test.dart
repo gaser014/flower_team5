@@ -1,6 +1,7 @@
 import 'package:flowers_app/config/base_response/entity/base_pagination_entity.dart';
 import 'package:flowers_app/config/base_response/model/meta_dto.dart';
 import 'package:flowers_app/config/base_response/result.dart';
+import 'package:flowers_app/features/app_filter_tabs/domain/entities/app_filter_tab_item_entity.dart';
 import 'package:flowers_app/features/categories/data/datasources/categories_remote_data_source_contract.dart';
 import 'package:flowers_app/features/categories/data/models/categories_response_dto.dart';
 import 'package:flowers_app/features/categories/data/models/category_dto.dart';
@@ -62,7 +63,10 @@ void main() {
         final result = await repository.getAllCategories(params: tParams);
 
         // assert
-        expect(result, isA<Success<BasePaginationEntity<CategoryEntity>>>());
+        expect(
+          result,
+          isA<Success<BasePaginationEntity<AppFilterTabItemEntity>>>(),
+        );
         verify(mockRemoteDataSource.getAllCategories(params: tParams));
       },
     );
@@ -81,7 +85,10 @@ void main() {
         );
 
         // assert
-        expect(result, isA<Success<BasePaginationEntity<CategoryEntity>>>());
+        expect(
+          result,
+          isA<Success<BasePaginationEntity<AppFilterTabItemEntity>>>(),
+        );
         verify(mockRemoteDataSource.getAllOccasions(params: tOccasionsParams));
       },
     );
@@ -97,8 +104,12 @@ void main() {
       final result = await repository.getAllCategories(params: tParams);
 
       // assert
-      expect(result, isA<Error<BasePaginationEntity<CategoryEntity>>>());
-      final errorResult = result as Error<BasePaginationEntity<CategoryEntity>>;
+      expect(
+        result,
+        isA<Error<BasePaginationEntity<AppFilterTabItemEntity>>>(),
+      );
+      final errorResult =
+          result as Error<BasePaginationEntity<AppFilterTabItemEntity>>;
       expect(errorResult.exception, tException);
     });
   });

@@ -1,3 +1,4 @@
+import 'package:flowers_app/features/app_filter_tabs/domain/entities/app_filter_tab_item_entity.dart';
 import 'package:flowers_app/features/categories/domain/entities/category_entity.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -45,7 +46,7 @@ class CategoryDto {
 
   Map<String, dynamic> toJson() => _$CategoryDtoToJson(this);
 
-  factory CategoryDto.fromEntity(CategoryEntity entity) {
+  factory CategoryDto.fromEntity(AppFilterTabItemEntity entity) {
     return CategoryDto(
       id: entity.id,
       name: entity.name,
@@ -58,8 +59,8 @@ class CategoryDto {
     );
   }
 
-  CategoryEntity toEntity() {
-    return CategoryEntity(
+  AppFilterTabItemEntity toEntity() {
+    return AppFilterTabItemEntity(
       id: id,
       name: name,
       slug: slug,

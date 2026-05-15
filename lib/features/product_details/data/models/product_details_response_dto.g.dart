@@ -12,7 +12,7 @@ ProductDetailsResponseDto _$ProductDetailsResponseDtoFromJson(
   message: json['message'] as String?,
   product: json['product'] == null
       ? null
-      : ProductModel.fromJson(json['product'] as Map<String, dynamic>),
+      : ProductDto.fromJson(json['product'] as Map<String, dynamic>),
 );
 
 Map<String, dynamic> _$ProductDetailsResponseDtoToJson(

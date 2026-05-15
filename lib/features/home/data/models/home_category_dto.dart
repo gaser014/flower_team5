@@ -1,4 +1,4 @@
-import 'package:flowers_app/features/home/domain/entities/home_category_entity.dart';
+import 'package:flowers_app/features/app_filter_tabs/domain/entities/app_filter_tab_item_entity.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'home_category_dto.g.dart';
@@ -41,7 +41,7 @@ class HomeCategoryDto {
 
   Map<String, dynamic> toJson() => _$HomeCategoryDtoToJson(this);
 
-  factory HomeCategoryDto.fromEntity(HomeCategoryEntity entity) {
+  factory HomeCategoryDto.fromEntity(AppFilterTabItemEntity entity) {
     return HomeCategoryDto(
       id: entity.id,
       name: entity.name,
@@ -53,8 +53,8 @@ class HomeCategoryDto {
     );
   }
 
-  HomeCategoryEntity toEntity() {
-    return HomeCategoryEntity(
+  AppFilterTabItemEntity toEntity() {
+    return AppFilterTabItemEntity(
       id: id,
       name: name,
       slug: slug,

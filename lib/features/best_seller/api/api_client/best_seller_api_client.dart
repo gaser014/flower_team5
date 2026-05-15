@@ -1,7 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flowers_app/config/api/end_points.dart';
 import 'package:flowers_app/features/best_seller/data/models/best_seller_response_dto.dart';
-import 'package:flowers_app/features/best_seller/data/models/product_model.dart';
 import 'package:injectable/injectable.dart';
 import 'package:retrofit/retrofit.dart';
 

@@ -25,6 +25,6 @@ class LoadMoreCategoriesEvent extends CategoriesEvents {
 }
 
 class SelectCategoryEvent extends CategoriesEvents {
-  final CategoryEntity category;
+  final AppFilterTabItemEntity category;
   const SelectCategoryEvent({required this.category});
 }

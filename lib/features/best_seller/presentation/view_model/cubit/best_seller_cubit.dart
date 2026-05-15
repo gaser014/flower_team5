@@ -1,6 +1,6 @@
 import 'package:flowers_app/config/base_state/pagination_state.dart';
 import 'package:flowers_app/config/uses_cases/pagination_params.dart';
-import 'package:flowers_app/core/entities/product_entity.dart';
+import 'package:flowers_app/features/products/domain/entities/product_entity.dart';
 import 'package:flowers_app/features/best_seller/domain/use_cases/get_best_sellers_use_case.dart';
 import 'package:flowers_app/features/best_seller/presentation/view_model/cubit/best_seller_events.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -11,7 +11,7 @@ class BestSellerCubit extends Cubit<PaginationState<ProductEntity>> {
   final GetBestSellersUseCase _getBestSellersUseCase;
 
   BestSellerCubit(this._getBestSellersUseCase)
-      : super(const PaginationState.initial());
+    : super(const PaginationState.initial());
 
   void onEvent(BestSellerEvents event) {
     switch (event) {
@@ -22,9 +22,9 @@ class BestSellerCubit extends Cubit<PaginationState<ProductEntity>> {
 
   Future<void> getBestSellers({bool isRefresh = false}) async {
     if (isRefresh) {
-      emit(state.toLoading(query: const PaginationParams(page: 1, limit: 10)));
+      emit(state.toLoading(query: const PaginationParams()));
     } else if (state.isInitial) {
-      emit(state.toLoading(query: const PaginationParams(page: 1, limit: 10)));
+      emit(state.toLoading(query: const PaginationParams()));
     } else if (state.canLoadMore) {
       emit(state.toLoadingMore());
     } else {

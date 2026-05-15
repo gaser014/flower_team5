@@ -10,7 +10,6 @@ import 'package:flowers_app/features/categories/presentation/view/widgets/sort_b
 import 'package:flowers_app/features/categories/presentation/view/categories_search_screen.dart';
 import 'package:flowers_app/config/uses_cases/filter_param.dart';
 import 'package:flowers_app/features/categories/domain/entities/categories_params.dart';
-import 'package:flowers_app/features/categories/presentation/view/widgets/product_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';

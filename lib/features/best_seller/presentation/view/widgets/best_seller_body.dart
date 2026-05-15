@@ -1,13 +1,11 @@
 import 'package:flowers_app/config/base_state/pagination_state.dart';
 import 'package:flowers_app/core/routes/routes.dart';
-import 'package:flowers_app/core/values/app_font_style.dart';
-import 'package:flowers_app/core/values/app_strings.dart';
 import 'package:flowers_app/core/widgets/pagination_grid_view.dart';
 import 'package:flowers_app/core/widgets/pagination_state_builder.dart';
-import 'package:flowers_app/core/entities/product_entity.dart';
+import 'package:flowers_app/features/products/domain/entities/product_entity.dart';
 import 'package:flowers_app/features/best_seller/presentation/view_model/cubit/best_seller_cubit.dart';
 import 'package:flowers_app/features/best_seller/presentation/view_model/cubit/best_seller_events.dart';
-import 'package:flowers_app/features/best_seller/presentation/view/widgets/product_item.dart';
+import 'package:flowers_app/core/widgets/product_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -22,23 +20,6 @@ class BestSellerBody extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16.w),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                AppStrings.bestSeller,
-                style: AppFontStyle.semiBold24(context: context),
-              ),
-              Gap(4.h),
-              Text(
-                AppStrings.bestSellerSubtitle,
-                style: AppFontStyle.regular14(context: context),
-              ),
-            ],
-          ),
-        ),
         Gap(24.h),
         Expanded(
           child: BlocBuilder<BestSellerCubit, PaginationState<ProductEntity>>(
@@ -49,29 +30,16 @@ class BestSellerBody extends StatelessWidget {
                   return PaginationGridView<ProductEntity>(
                     items: products,
                     padding: EdgeInsets.symmetric(horizontal: 16.w),
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      crossAxisSpacing: 16.w,
-                      mainAxisSpacing: 16.h,
-                      mainAxisExtent: 320.h,
-                    ),
+
                     itemBuilder: (context, product, index) {
-                      return ProductItem(
-                        product: product,
-                        onTap: () {
-                          context.push(
-                            Routes.productDetails,
-                            extra: product,
-                          );
-                        },
-                      );
+                      return ProductCard(product: product);
                     },
-                    onLoadMore: () => context
-                        .read<BestSellerCubit>()
-                        .onEvent(GetBestSellersEvent()),
-                    onRefresh: () => context
-                        .read<BestSellerCubit>()
-                        .onEvent(GetBestSellersEvent(isRefresh: true)),
+                    onLoadMore: () => context.read<BestSellerCubit>().onEvent(
+                      GetBestSellersEvent(),
+                    ),
+                    onRefresh: () => context.read<BestSellerCubit>().onEvent(
+                      GetBestSellersEvent(isRefresh: true),
+                    ),
                     isLoading: state.isLoading,
                     isLoadingMore: state.isLoadingMore,
                     hasMore: state.hasMore,

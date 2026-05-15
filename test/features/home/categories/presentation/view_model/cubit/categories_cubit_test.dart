@@ -4,6 +4,7 @@ import 'package:flowers_app/config/base_response/entity/meta_entity.dart';
 import 'package:flowers_app/config/base_response/result.dart';
 import 'package:flowers_app/config/base_state/pagination_state.dart';
 import 'package:flowers_app/config/base_state/state_types.dart';
+import 'package:flowers_app/features/app_filter_tabs/domain/entities/app_filter_tab_item_entity.dart';
 import 'package:flowers_app/features/categories/domain/entities/categories_params.dart';
 import 'package:flowers_app/features/categories/domain/entities/category_entity.dart';
 import 'package:flowers_app/features/categories/domain/use_cases/get_all_categories.dart';
@@ -16,8 +17,8 @@ import 'categories_cubit_test.mocks.dart';
 
 @GenerateNiceMocks([MockSpec<GetAllCategoriesUseCase>()])
 void main() {
-  provideDummy<Result<BasePaginationEntity<CategoryEntity>>>(
-    const Success<BasePaginationEntity<CategoryEntity>>(),
+  provideDummy<Result<BasePaginationEntity<AppFilterTabItemEntity>>>(
+    const Success<BasePaginationEntity<AppFilterTabItemEntity>>(),
   );
   late CategoriesCubit cubit;
   late MockGetAllCategoriesUseCase mockGetAllCategoriesUseCase;
@@ -33,7 +34,7 @@ void main() {
     cubit.close();
   });
 
-  final tCategory = CategoryEntity(id: '1', name: 'Category 1');
+  final tCategory = AppFilterTabItemEntity(id: '1', name: 'Category 1');
   final tCategoriesList = [tCategory];
   final tMeta = MetaEntity(
     total: 1,

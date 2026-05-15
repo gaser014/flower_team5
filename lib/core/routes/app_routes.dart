@@ -6,9 +6,14 @@ import 'package:flowers_app/config/database/cache_helper.dart';
 import 'package:flowers_app/config/dependency_injection/di.dart';
 import 'package:flowers_app/core/data/data_sources/auth_local_data_source.dart';
 import 'package:flowers_app/core/routes/routes.dart';
+import 'package:flowers_app/features/app_filter_tabs/domain/entities/app_filter_tab_item_entity.dart';
+import 'package:flowers_app/features/best_seller/presentation/view/pages/best_seller_page.dart';
+import 'package:flowers_app/features/categories/domain/entities/category_entity.dart';
 import 'package:flowers_app/features/forget_password/presentation/view_model/bloc/forget_password_bloc.dart';
 import 'package:flowers_app/features/login/presentation/view/pages/login_page.dart';
 import 'package:flowers_app/features/main/presentation/screens/main_view.dart';
+import 'package:flowers_app/features/product_details/presentation/view/pages/product_details_page.dart';
+import 'package:flowers_app/features/products/presentation/view/pages/occasion_page.dart';
 import 'package:flowers_app/features/spalsh/splash_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -20,6 +25,7 @@ import '../../features/forget_password/presentation/view/pages/forget_password_p
 import '../../features/forget_password/presentation/view/pages/verify_code_page.dart';
 import '../../features/forget_password/presentation/view/pages/reset_password_page.dart';
 import '../../features/forget_password/presentation/view_model/cubit/forget_password_cubit.dart';
+import 'package:flowers_app/features/products/domain/entities/product_entity.dart';
 
 final RouteObserver<ModalRoute> routeObserver = RouteObserver<ModalRoute>();
 
@@ -223,6 +229,39 @@ abstract class AppRoutes {
         name: Routes.forgetPassword,
         builder: (BuildContext context, GoRouterState state) {
           return const ForgetPasswordPage();
+        },
+      ),
+      GoRoute(
+        path: Routes.bestSeller,
+        name: Routes.bestSeller,
+        pageBuilder: (context, state) => buildAnimatedPage(
+          key: state.pageKey,
+          child: const BestSellerPage(),
+          animationType: AnimationType.slideFromRight,
+        ),
+      ),
+      GoRoute(
+        path: Routes.productDetails,
+        name: Routes.productDetails,
+        pageBuilder: (context, state) {
+          final product = state.extra as ProductEntity;
+          return buildAnimatedPage(
+            key: state.pageKey,
+            child: ProductDetailsPage(product: product),
+            animationType: AnimationType.fade,
+          );
+        },
+      ),
+      GoRoute(
+        path: Routes.occasionPage,
+        name: Routes.occasionPage,
+        pageBuilder: (context, state) {
+          final occasion = state.extra as AppFilterTabItemEntity?;
+          return buildAnimatedPage(
+            key: state.pageKey,
+            child: OccasionPage(occasion: occasion),
+            animationType: AnimationType.fade,
+          );
         },
       ),
       GoRoute(

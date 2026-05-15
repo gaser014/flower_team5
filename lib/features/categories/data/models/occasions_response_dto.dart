@@ -1,6 +1,7 @@
 import 'package:flowers_app/config/base_response/entity/base_pagination_entity.dart';
 import 'package:flowers_app/config/base_response/model/base_pagination_dto.dart';
 import 'package:flowers_app/config/base_response/model/meta_dto.dart';
+import 'package:flowers_app/features/app_filter_tabs/domain/entities/app_filter_tab_item_entity.dart';
 import 'package:flowers_app/features/categories/data/models/category_dto.dart';
 import 'package:flowers_app/features/categories/domain/entities/category_entity.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -20,6 +21,6 @@ class OccasionsResponseDto extends BasePaginationDto<CategoryDto> {
       _$OccasionsResponseDtoToJson(this);
 
   @override
-  BasePaginationEntity<CategoryEntity> toEntity() =>
-      mapToEntity<CategoryEntity>((dto) => dto.toEntity());
+  BasePaginationEntity<AppFilterTabItemEntity> toEntity() =>
+      mapToEntity<AppFilterTabItemEntity>((dto) => dto.toEntity());
 }

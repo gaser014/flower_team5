@@ -7,13 +7,13 @@ class ProductEntity extends Equatable {
   final String? description;
   final String? imgCover;
   final List<String>? images;
-  final int? price;
-  final int? priceAfterDiscount;
-  final int? discount;
-  final int? rateAvg;
-  final int? rateCount;
-  final int? sold;
-  final int? quantity;
+  final num? price;
+  final num? priceAfterDiscount;
+  final num? discount;
+  final num? rateAvg;
+  final num? rateCount;
+  final num? sold;
+  final num? quantity;
   final String? category;
   final String? occasion;
   final bool? isSuperAdmin;
@@ -52,13 +52,13 @@ class ProductEntity extends Equatable {
     String? description,
     String? imgCover,
     List<String>? images,
-    int? price,
-    int? priceAfterDiscount,
-    int? discount,
-    int? rateAvg,
-    int? rateCount,
-    int? sold,
-    int? quantity,
+    num? price,
+    num? priceAfterDiscount,
+    num? discount,
+    num? rateAvg,
+    num? rateCount,
+    num? sold,
+    num? quantity,
     String? category,
     String? occasion,
     bool? isSuperAdmin,

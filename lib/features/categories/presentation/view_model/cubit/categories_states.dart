@@ -1,8 +1,8 @@
 part of 'categories_cubit.dart';
 
 class CategoriesStates extends Equatable {
-  final PaginationState<CategoryEntity> categoriesState;
-  final CategoryEntity? selectCategoryState;
+  final PaginationState<AppFilterTabItemEntity> categoriesState;
+  final AppFilterTabItemEntity? selectCategoryState;
 
   const CategoriesStates({
     this.categoriesState = const PaginationState(
@@ -10,12 +10,15 @@ class CategoriesStates extends Equatable {
       data: [],
       query: CategoriesParams(),
     ),
-    this.selectCategoryState = const CategoryEntity(id: null, name: 'All'),
+    this.selectCategoryState = const AppFilterTabItemEntity(
+      id: null,
+      name: 'All',
+    ),
   });
 
   CategoriesStates copyWith({
-    PaginationState<CategoryEntity>? categoriesState,
-    CategoryEntity? selectCategoryState,
+    PaginationState<AppFilterTabItemEntity>? categoriesState,
+    AppFilterTabItemEntity? selectCategoryState,
   }) {
     return CategoriesStates(
       categoriesState: categoriesState ?? this.categoriesState,

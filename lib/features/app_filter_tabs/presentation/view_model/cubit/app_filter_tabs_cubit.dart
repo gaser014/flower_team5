@@ -1,8 +1,13 @@
+import 'dart:developer';
+
 import 'package:equatable/equatable.dart';
 import 'package:flowers_app/config/base_state/pagination_state.dart';
-import 'package:flowers_app/features/app_filter_tabs/domain/entities/app_filter_tabs_params.dart';
+import 'package:flowers_app/config/dependency_injection/di.dart';
+import 'package:flowers_app/config/dependency_injection/home_module.dart';
 import 'package:flowers_app/features/app_filter_tabs/domain/entities/app_filter_tab_item_entity.dart';
+import 'package:flowers_app/features/app_filter_tabs/domain/entities/app_filter_tabs_params.dart';
 import 'package:flowers_app/features/app_filter_tabs/domain/use_cases/get_all_app_filter_tabs.dart';
+import 'package:flowers_app/features/categories/domain/entities/category_entity.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 
@@ -30,46 +35,71 @@ class AppFilterTabsCubit extends Cubit<AppFilterTabsStates> {
   };
 
   Future<void> _getAllCategories(GetAllAppFilterTabsEvent event) async {
-    if (state.categoriesState.isLoading) return;
+    if (event.selectedTabFilter == null) {
+      final params = event.params ?? AppFilterTabsParams(page: 1);
+      emit(
+        state.copyWith(
+          categoriesState: state.categoriesState.toLoading(query: params),
+        ),
+      );
 
-    final params = event.params ?? AppFilterTabsParams(page: 1);
-    emit(
-      state.copyWith(
-        categoriesState: state.categoriesState.toLoading(query: params),
-      ),
-    );
+      final result = await _getAllAppFilterTabsUseCase.call(params);
 
-    final result = await _getAllAppFilterTabsUseCase.call(params);
-
-    result.when(
-      success: (data) {
-        if (data != null) {
-          emit(
-            state.copyWith(
-              categoriesState: state.categoriesState.toSuccessFromEntity(data),
-              selectCategoryState: state.selectCategoryState ?? data.data.first,
-            ),
-          );
-        } else {
+      result.when(
+        success: (data) {
+          if (data != null) {
+            emit(
+              state.copyWith(
+                categoriesState: state.categoriesState.toSuccessFromEntity(
+                  data,
+                ),
+                selectCategoryState:
+                    state.selectCategoryState ?? data.data.first,
+              ),
+            );
+          } else {
+            emit(
+              state.copyWith(
+                categoriesState: state.categoriesState.toError(
+                  Exception('No data received'),
+                ),
+              ),
+            );
+          }
+        },
+        error: (exception) {
           emit(
             state.copyWith(
               categoriesState: state.categoriesState.toError(
-                Exception('No data received'),
+                exception ?? Exception('Unknown error'),
               ),
             ),
           );
-        }
-      },
-      error: (exception) {
+        },
+      );
+    } else {
+      // emit(state.copyWith(categoriesState: state.categoriesState.toLoading()));
+      final data = getIt<HomeModule>().homeData?.occasions;
+      if (data != null) {
+        log(
+          'AppFilterTabsCubit: using cached data for occasions: ${event.selectedTabFilter} items',
+        );
+        emit(
+          state.copyWith(
+            categoriesState: state.categoriesState.toSuccess(data),
+            selectCategoryState: event.selectedTabFilter,
+          ),
+        );
+      } else {
         emit(
           state.copyWith(
             categoriesState: state.categoriesState.toError(
-              exception ?? Exception('Unknown error'),
+              Exception('No data received'),
             ),
           ),
         );
-      },
-    );
+      }
+    }
   }
 
   Future<void> _loadMore(LoadMoreAppFilterTabsEvent event) async {

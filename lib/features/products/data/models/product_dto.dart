@@ -24,25 +24,25 @@ class ProductDto {
   final List<String>? images;
 
   @JsonKey(name: 'price')
-  final int? price;
+  final num? price;
 
   @JsonKey(name: 'priceAfterDiscount')
-  final int? priceAfterDiscount;
+  final num? priceAfterDiscount;
 
   @JsonKey(name: 'discount')
-  final int? discount;
+  final num? discount;
 
   @JsonKey(name: 'rateAvg')
-  final int? rateAvg;
+  final num? rateAvg;
 
   @JsonKey(name: 'rateCount')
-  final int? rateCount;
+  final num? rateCount;
 
   @JsonKey(name: 'sold')
-  final int? sold;
+  final num? sold;
 
   @JsonKey(name: 'quantity')
-  final int? quantity;
+  final num? quantity;
 
   @JsonKey(name: 'category')
   final String? category;

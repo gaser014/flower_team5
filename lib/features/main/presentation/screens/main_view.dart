@@ -1,5 +1,6 @@
 import 'package:flowers_app/core/values/app_assets.dart';
 import 'package:flowers_app/core/values/app_colors.dart';
+import 'package:flowers_app/features/categories/presentation/view/categories_view.dart';
 import 'package:flowers_app/features/home/presentation/view/pages/home_page.dart';
 import 'package:flowers_app/features/main/presentation/screens/app_bar_widget.dart';
 import 'package:flowers_app/features/main/presentation/screens/profile_appbar.dart';
@@ -9,19 +10,31 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class MainView extends StatelessWidget {
+class MainView extends StatefulWidget {
   const MainView({super.key});
 
-  final List<Widget> _pages = const <Widget>[
-    HomePage(),
-    Center(child: Text('Categories')),
-    Center(child: Text('Cart')),
-    Center(child: Text('Profile')),
-  ];
+  @override
+  State<MainView> createState() => _MainViewState();
+}
+
+class _MainViewState extends State<MainView> {
+  late final HomeCubit cubit;
+  late final List<Widget> _pages;
+
+  @override
+  void initState() {
+    cubit = context.read<HomeCubit>();
+    _pages = <Widget>[
+      const HomePage(),
+      CategoriesView(),
+      const Center(child: Text('Cart')),
+      const Center(child: Text('Profile')),
+    ];
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    final cubit = context.read<HomeCubit>();
     return BlocBuilder<HomeCubit, HomeStates>(
       builder: (context, state) {
         final selectedIndex = state.bottomNavIndex;

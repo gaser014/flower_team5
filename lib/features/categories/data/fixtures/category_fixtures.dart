@@ -1,11 +1,12 @@
+import 'package:flowers_app/features/app_filter_tabs/domain/entities/app_filter_tab_item_entity.dart';
 import 'package:flowers_app/features/categories/domain/entities/category_entity.dart';
 
 class CategoryFixtures {
   CategoryFixtures._();
 
-  static List<CategoryEntity> get dummyCategories => List.generate(
+  static List<AppFilterTabItemEntity> get dummyCategories => List.generate(
     60,
-    (index) => CategoryEntity(
+    (index) => AppFilterTabItemEntity(
       id: '${index + 1}',
       name: 'cards ${index + 1}',
       slug: 'cards ${index + 1}',

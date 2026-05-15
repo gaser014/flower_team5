@@ -1,5 +1,5 @@
 import 'package:flowers_app/config/base_state/base_state.dart';
-import 'package:flowers_app/core/entities/product_entity.dart';
+import 'package:flowers_app/features/products/domain/entities/product_entity.dart';
 import 'package:flowers_app/features/product_details/domain/use_cases/get_product_details_use_case.dart';
 import 'package:flowers_app/features/product_details/presentation/view_model/cubit/product_details_events.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

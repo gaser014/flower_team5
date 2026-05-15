@@ -5,7 +5,7 @@ import 'package:flowers_app/core/values/app_strings.dart';
 import 'package:flowers_app/features/categories/domain/entities/categories_params.dart';
 import 'package:flowers_app/features/categories/presentation/view_model/cubit/categories_cubit.dart';
 import 'package:flowers_app/core/widgets/pagination_grid_view.dart';
-import 'package:flowers_app/features/categories/presentation/view/widgets/product_card.dart';
+import 'package:flowers_app/core/widgets/product_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -145,12 +145,6 @@ class _CategoriesSearchScreenState extends State<CategoriesSearchScreen> {
           },
           onRefresh: () => widget.cubit.refreshCategories(),
           padding: const EdgeInsets.all(16),
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            mainAxisSpacing: 16,
-            crossAxisSpacing: 16,
-            childAspectRatio: 0.7,
-          ),
         );
       },
     );

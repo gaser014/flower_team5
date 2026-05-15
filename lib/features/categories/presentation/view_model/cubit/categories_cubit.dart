@@ -2,6 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flowers_app/config/base_response/entity/base_pagination_entity.dart';
 import 'package:flowers_app/config/base_state/pagination_state.dart';
 import 'package:flowers_app/config/base_state/state_types.dart';
+import 'package:flowers_app/features/app_filter_tabs/domain/entities/app_filter_tab_item_entity.dart';
 import 'package:flowers_app/features/categories/domain/entities/categories_params.dart';
 import 'package:flowers_app/features/categories/domain/entities/category_entity.dart';
 import 'package:flowers_app/features/categories/domain/use_cases/get_all_categories.dart';
@@ -107,7 +108,7 @@ class CategoriesCubit extends Cubit<CategoriesStates> {
             return category;
           }).toList();
 
-          final fixedEntity = BasePaginationEntity<CategoryEntity>(
+          final fixedEntity = BasePaginationEntity<AppFilterTabItemEntity>(
             meta: data.meta,
             data: fixedData,
           );
@@ -119,7 +120,7 @@ class CategoriesCubit extends Cubit<CategoriesStates> {
               ),
               selectCategoryState:
                   state.selectCategoryState ??
-                  const CategoryEntity(id: null, name: 'All'),
+                  const AppFilterTabItemEntity(id: null, name: 'All'),
             ),
           );
         } else {

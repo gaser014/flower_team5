@@ -1,6 +1,9 @@
 import 'package:equatable/equatable.dart';
 import 'package:flowers_app/config/base_state/base_state.dart';
+import 'package:flowers_app/config/dependency_injection/di.dart';
+import 'package:flowers_app/config/dependency_injection/home_module.dart';
 import 'package:flowers_app/config/uses_cases/use_cases.dart';
+import 'package:flowers_app/features/app_filter_tabs/domain/entities/app_filter_tab_item_entity.dart';
 import 'package:flowers_app/features/home/domain/use_cases/get_home_use_case.dart';
 import 'package:flowers_app/features/main/presentation/view_model/cubit/home_events.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -23,8 +26,14 @@ class HomeCubit extends Cubit<HomeStates> {
     }
   }
 
-  void _changeBottomNavIndex(int index) {
-    emit(state.copyWith(bottomNavIndex: index));
+  void _changeBottomNavIndex(int index, {AppFilterTabItemEntity? category}) {
+    emit(
+      state.copyWith(
+        bottomNavIndex: index,
+        clearSelectedCategory: category != null,
+        selectedCategory: category,
+      ),
+    );
   }
 
   Future<void> _getHomeData() async {
@@ -32,6 +41,11 @@ class HomeCubit extends Cubit<HomeStates> {
     final result = await _getHomeUseCase.call(NoParams());
     result.when(
       success: (homeModel) {
+        if (getIt.isRegistered<HomeModule>()) {
+          getIt.unregister<HomeModule>();
+        }
+
+        getIt.registerSingleton<HomeModule>(HomeModule(homeModel));
         emit(state.copyWith(getAllHomeDataState: BaseState.success(homeModel)));
       },
       error: (exception) {

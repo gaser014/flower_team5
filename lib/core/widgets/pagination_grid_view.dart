@@ -26,14 +26,22 @@ class PaginationGridView<T> extends StatefulWidget {
     required this.isLoading,
     required this.isLoadingMore,
     required this.hasMore,
-    required this.gridDelegate,
+    SliverGridDelegate? gridDelegate,
     this.isAlwaysScrollable = false,
     this.shimmerBuilder,
     this.padding,
     this.controller,
     this.emptyWidget,
     this.shimmerCount = 3,
-  });
+  }) : gridDelegate =
+           gridDelegate ??
+           const SliverGridDelegateWithFixedCrossAxisCount(
+             crossAxisCount: 2,
+             childAspectRatio: 0.75,
+             crossAxisSpacing: 16,
+             mainAxisSpacing: 16,
+             mainAxisExtent: 250,
+           );
 
   @override
   State<PaginationGridView<T>> createState() => _PaginationGridViewState<T>();

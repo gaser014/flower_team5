@@ -1,12 +1,15 @@
-import 'package:flowers_app/features/home/domain/entities/home_category_entity.dart';
+import 'package:flowers_app/features/app_filter_tabs/domain/entities/app_filter_tab_item_entity.dart';
 import 'package:flowers_app/features/home/presentation/view/widgets/category_card.dart';
+import 'package:flowers_app/features/main/presentation/view_model/cubit/home_cubit.dart';
+import 'package:flowers_app/features/main/presentation/view_model/cubit/home_events.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 
 class CategoryListSection extends StatelessWidget {
   const CategoryListSection({super.key, required this.categories});
 
-  final List<HomeCategoryEntity> categories;
+  final List<AppFilterTabItemEntity> categories;
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +22,12 @@ class CategoryListSection extends StatelessWidget {
         separatorBuilder: (context, index) => const Gap(16),
         itemBuilder: (context, index) {
           final category = categories[index];
-          return CategoryCard(category: category);
+          return GestureDetector(
+            onTap: () => context.read<HomeCubit>().doIndented(
+              ChangeBottomNavIndexEvent(1, category: category),
+            ),
+            child: CategoryCard(category: category),
+          );
         },
       ),
     );

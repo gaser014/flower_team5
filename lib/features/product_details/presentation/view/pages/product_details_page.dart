@@ -4,7 +4,7 @@ import 'package:flowers_app/core/values/app_colors.dart';
 import 'package:flowers_app/core/values/app_font_style.dart';
 import 'package:flowers_app/core/values/app_strings.dart';
 import 'package:flowers_app/core/widgets/custom_cached_image.dart';
-import 'package:flowers_app/core/entities/product_entity.dart';
+import 'package:flowers_app/features/products/domain/entities/product_entity.dart';
 import 'package:flowers_app/features/product_details/presentation/view_model/cubit/product_details_cubit.dart';
 import 'package:flowers_app/features/product_details/presentation/view_model/cubit/product_details_events.dart';
 import 'package:flutter/material.dart';
@@ -19,14 +19,11 @@ class ProductDetailsPage extends StatelessWidget {
   final ProductEntity? product;
   final String? productId;
 
-  const ProductDetailsPage({
-    super.key,
-    this.product,
-    this.productId,
-  }) : assert(
-          product != null || productId != null,
-          'Either product or productId must be provided.',
-        );
+  const ProductDetailsPage({super.key, this.product, this.productId})
+    : assert(
+        product != null || productId != null,
+        'Either product or productId must be provided.',
+      );
 
   @override
   Widget build(BuildContext context) {
@@ -62,7 +59,11 @@ class _ProductDetailsView extends StatelessWidget {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Icon(Icons.error_outline, size: 48, color: AppColors.redCC),
+                      const Icon(
+                        Icons.error_outline,
+                        size: 48,
+                        color: AppColors.redCC,
+                      ),
                       Gap(16.h),
                       Text(
                         state.exception?.toString() ?? 'Something went wrong',
@@ -107,8 +108,9 @@ class _ProductDetailsView extends StatelessWidget {
                       ),
                       child: Text(
                         AppStrings.addToCart,
-                        style: AppFontStyle.semiBold18(context: context)
-                            .copyWith(color: AppColors.white),
+                        style: AppFontStyle.semiBold18(
+                          context: context,
+                        ).copyWith(color: AppColors.white),
                       ),
                     ),
                   ),
@@ -135,7 +137,7 @@ class _ProductDetailsContent extends StatelessWidget {
           Hero(
             tag: 'product_${product.id}',
             child: CustomCachedImage(
-              imagePath: product.image,
+              imagePath: product.imgCover ?? '',
               width: double.infinity,
               height: 400.h,
               fit: BoxFit.cover,
@@ -150,26 +152,29 @@ class _ProductDetailsContent extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'EGP ${product.price.toStringAsFixed(0)}',
-                      style: AppFontStyle.semiBold24(context: context)
-                          .copyWith(color: AppColors.black),
+                      'EGP ${product.priceAfterDiscount?.toStringAsFixed(0)}',
+                      style: AppFontStyle.semiBold24(
+                        context: context,
+                      ).copyWith(color: AppColors.black),
                     ),
                     Text(
-                      'Status: ${product.status ?? AppStrings.inStock}',
-                      style: AppFontStyle.medium14(context: context)
-                          .copyWith(color: AppColors.black),
+                      'Status: ${product.slug ?? AppStrings.inStock}',
+                      style: AppFontStyle.medium14(
+                        context: context,
+                      ).copyWith(color: AppColors.black),
                     ),
                   ],
                 ),
                 Gap(4.h),
                 Text(
                   'All prices include tax',
-                  style: AppFontStyle.regular12(context: context)
-                      .copyWith(color: AppColors.grayA6),
+                  style: AppFontStyle.regular12(
+                    context: context,
+                  ).copyWith(color: AppColors.grayA6),
                 ),
                 Gap(16.h),
                 Text(
-                  product.name,
+                  product.title ?? '',
                   style: AppFontStyle.semiBold20(context: context),
                 ),
                 Gap(24.h),
@@ -181,40 +186,41 @@ class _ProductDetailsContent extends StatelessWidget {
                 Text(
                   product.description ??
                       'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-                  style: AppFontStyle.regular14(context: context)
-                      .copyWith(color: AppColors.gray53),
+                  style: AppFontStyle.regular14(
+                    context: context,
+                  ).copyWith(color: AppColors.gray53),
                 ),
                 Gap(24.h),
-                if (product.bouquetInclude != null &&
-                    product.bouquetInclude!.isNotEmpty) ...[
-                  Text(
-                    AppStrings.bouquetInclude,
-                    style: AppFontStyle.semiBold18(context: context),
-                  ),
-                  Gap(8.h),
-                  ...product.bouquetInclude!.map(
-                    (item) => Padding(
-                      padding: EdgeInsets.only(bottom: 4.h),
-                      child: Row(
-                        children: [
-                          Container(
-                            width: 4.w,
-                            height: 4.h,
-                            decoration: const BoxDecoration(
-                              color: AppColors.primerColor,
-                              shape: BoxShape.circle,
-                            ),
-                          ),
-                          Gap(8.w),
-                          Text(
-                            item,
-                            style: AppFontStyle.regular14(context: context),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
+                // if (product.sold != null &&
+                //     product.bouquetInclude!.isNotEmpty) ...[
+                //   Text(
+                //     AppStrings.bouquetInclude,
+                //     style: AppFontStyle.semiBold18(context: context),
+                //   ),
+                //   Gap(8.h),
+                //   ...product.bouquetInclude!.map(
+                //     (item) => Padding(
+                //       padding: EdgeInsets.only(bottom: 4.h),
+                //       child: Row(
+                //         children: [
+                //           Container(
+                //             width: 4.w,
+                //             height: 4.h,
+                //             decoration: const BoxDecoration(
+                //               color: AppColors.primerColor,
+                //               shape: BoxShape.circle,
+                //             ),
+                //           ),
+                //           Gap(8.w),
+                //           Text(
+                //             item,
+                //             style: AppFontStyle.regular14(context: context),
+                //           ),
+                //         ],
+                //       ),
+                //     ),
+                //   ),
+                // ],
                 Gap(100.h), // Space for bottom button
               ],
             ),

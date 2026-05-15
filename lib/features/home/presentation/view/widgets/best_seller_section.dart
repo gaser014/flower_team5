@@ -1,8 +1,10 @@
+import 'package:flowers_app/core/routes/routes.dart';
 import 'package:flowers_app/features/home/presentation/view/widgets/home_product_and_occasion_card.dart';
 import 'package:flowers_app/features/home/presentation/view/widgets/occasion_section.dart';
 import 'package:flowers_app/features/products/domain/entities/product_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 
 class BestSellerSection extends StatelessWidget {
   const BestSellerSection({super.key, required this.products});
@@ -25,7 +27,9 @@ class BestSellerSection extends StatelessWidget {
             imageUrl: product.imgCover ?? '',
             cardType: HomeCardType.product,
             price: product.price,
-            onTap: () {},
+            onTap: () {
+              context.push(Routes.productDetails, extra: product);
+            },
           );
         },
       ),

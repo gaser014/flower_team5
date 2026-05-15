@@ -1,4 +1,5 @@
 import 'package:flowers_app/core/widgets/list_filter_tabs.dart';
+import 'package:flowers_app/features/app_filter_tabs/domain/entities/app_filter_tab_item_entity.dart';
 import 'package:flowers_app/features/categories/domain/entities/category_entity.dart';
 import 'package:flowers_app/features/categories/presentation/view_model/cubit/categories_cubit.dart';
 import 'package:flutter/material.dart';
@@ -6,7 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 
 class CategoriesTapBar extends StatelessWidget {
-  final void Function(CategoryEntity item) onTap;
+  final void Function(AppFilterTabItemEntity item) onTap;
 
   const CategoriesTapBar({super.key, required this.onTap});
 
