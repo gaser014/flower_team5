@@ -118,13 +118,10 @@ class _SignUpViewBodyState extends State<_SignUpViewBody> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Center(
-                    child: SvgPicture.asset(
-                      AppIcons.flower.path,
-                      height: 80,
-                    ),
-                  ),
-                  const SizedBox(height: 24),
+                  // Center(
+                  //   child: SvgPicture.asset(AppIcons.flower.path, height: 80),
+                  // ),
+                  // const SizedBox(height: 24),
                   Row(
                     children: [
                       Expanded(

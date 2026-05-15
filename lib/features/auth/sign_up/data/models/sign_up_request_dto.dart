@@ -1,3 +1,4 @@
+import 'package:flowers_app/features/auth/sign_up/domain/entities/user_entity.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'sign_up_request_dto.g.dart';
@@ -24,6 +25,16 @@ class SignUpRequestDto {
 
   factory SignUpRequestDto.fromJson(Map<String, dynamic> json) =>
       _$SignUpRequestDtoFromJson(json);
-
+  factory SignUpRequestDto.fromUserEntity(UserEntity user) {
+    return SignUpRequestDto(
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      password: user.password,
+      rePassword: user.rePassword,
+      gender: user.gender,
+      phone: user.phone,
+    );
+  }
   Map<String, dynamic> toJson() => _$SignUpRequestDtoToJson(this);
 }

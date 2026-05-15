@@ -1,5 +1,11 @@
+import 'dart:developer';
+
+import 'package:flowers_app/config/api/api_key.dart';
 import 'package:flowers_app/config/base_response/result.dart';
+import 'package:flowers_app/config/database/cache_helper.dart';
+import 'package:flowers_app/config/dependency_injection/di.dart';
 import 'package:flowers_app/config/uses_cases/login_params.dart';
+import 'package:flowers_app/core/data/data_sources/auth_local_data_source.dart';
 import 'package:flowers_app/features/login/data/datasources/login_local_data_source_contract.dart';
 import 'package:flowers_app/features/login/data/datasources/login_remote_data_source_contract.dart';
 import 'package:flowers_app/features/login/data/models/user_model.dart';
@@ -21,8 +27,21 @@ class LoginRepositoryImpl implements LoginRepositoryContract {
   Future<Result<LoginResponseEntity>> login(LoginParams params) async {
     final result = await _loginRemoteDataSourceContract.login(params);
     return result.when(
-      success: (response) {
+      success: (response) async {
         LoginResponseEntity? loginResponseEntity = response?.toEntity();
+        if (params.remember ?? false) {
+          if (loginResponseEntity?.user != null) {
+            _loginLocalDataSourceContract.saveUser(
+              UserModel.fromUserEntity(loginResponseEntity!.user!),
+            );
+            if (loginResponseEntity.token != null) {
+              log('Auth Token saved: ${loginResponseEntity.token}');
+              getIt<AuthLocalDataSourceContract>().saveUserToken(
+                loginResponseEntity.token!,
+              );
+            }
+          }
+        }
         return Success<LoginResponseEntity>(data: loginResponseEntity);
       },
       error: (error) {
