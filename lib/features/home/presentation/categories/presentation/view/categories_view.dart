@@ -12,7 +12,7 @@ import 'package:flowers_app/features/home/presentation/categories/presentation/v
 import 'package:flowers_app/config/uses_cases/filter_param.dart';
 import 'package:flowers_app/features/home/presentation/categories/domain/entities/categories_params.dart';
 
-import 'package:flowers_app/features/products/presentation/view_model/cubit/products_cubit.dart';
+import 'package:flowers_app/features/products/presentation/view_model/cubit/products_cubit.dart' hide UpdateSortByEvent;
 import 'package:flowers_app/features/products/domain/entities/products_params.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
