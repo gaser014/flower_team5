@@ -13,6 +13,9 @@ import 'package:flowers_app/features/spalsh/splash_page.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../features/forget_password/presentation/view/pages/forget_password_page.dart';
+import '../../features/forget_password/presentation/view_model/bloc/forget_password_bloc.dart';
+
 final RouteObserver<ModalRoute> routeObserver = RouteObserver<ModalRoute>();
 
 enum AnimationType {
@@ -204,30 +207,7 @@ class _PageBasedPageRoute<T> extends PageRoute<T> {
 abstract class AppRoutes {
   static final GoRouter router = GoRouter(
     initialLocation: Routes.splash,
-    routes: [
-      GoRoute(
-        path: Routes.main,
-        pageBuilder: (context, state) => buildAnimatedPage(
-          key: state.pageKey,
-          child: const MainView(),
-          animationType: AnimationType.fade,
-        ),
-      ),
-       GoRoute(
-        path: Routes.splash,
-        name: Routes.splash,
-        builder: (BuildContext context, GoRouterState state) {
-          return SplashPage();
-        },
-      ),
-       GoRoute(
-        path: Routes.login,
-        name: Routes.login,
-        builder: (BuildContext context, GoRouterState state) {
-          return LoginPage();
-        },
-      ),
-    ],
+    routes: [],
     redirect: (context, state) async {
       final currentLocation = state.matchedLocation;
 

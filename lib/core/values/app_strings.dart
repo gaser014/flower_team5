@@ -28,7 +28,8 @@ class AppStrings {
   static const String resendCodeIn = "Resend in {}";
   static const String resend = "Resend";
   static const String noProductsFound = "No products found";
-  static const String enterEmail = "Enter you email";
+  static const String enterEmail = "Enter your email";
+  static const String email = "Email";
   static const String password = "Password";
   static const String phoneNumber = "Phone Number";
   static const String enterPhoneNumber = "01012345678";
@@ -98,7 +99,7 @@ class AppStrings {
 
   // Validations
   static const String emailRequired = "Email is required";
-  static const String email = "email";
+  // static const String email = "Email";
   static const String emailInvalid = "Please enter a valid email address";
   static const String usernameRequired = "Username is required";
   static const String firstNameRequired = "First name is required";
@@ -121,6 +122,25 @@ class AppStrings {
   static const String signUp = "Sign up";
   static const String loginSuccessfully = "Login successfully";
   static const String loginError = "Invalid Phone Number or Password";
+
+  // Forget Password
+  static const String forgetPasswordTitle = "Forget password";
+  static const String forgetPasswordSubtitle =
+      "Please enter your email associated to your account";
+  static const String confirmForgetPassword = "Confirm";
+
+  // Verification Code
+  static const String verificationCodeTitle = " Email verification";
+  static const String verificationCodeSubtitle =
+      "Please enter your code that sent to your email address";
+  static const String resendCode = "Resend";
+
+  // Reset Password
+  static const String resetPasswordTitle = "Reset password";
+  static const String resetPasswordSubtitle =
+      "Password must not be empty and must contain 6 characters with upper case letter and any number at least";
+  static const String newPassword = "New password";
+  static const String confirmNewPassword = "Confirm password";
 
   // Register
   static const String registerTitle = "Sign up";
