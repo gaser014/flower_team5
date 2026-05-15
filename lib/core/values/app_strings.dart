@@ -111,6 +111,10 @@ class AppStrings {
   static const String phoneRequired = "Phone number is required";
   static const String pinRequired = "Verification code is required";
 
+  // Best Seller
+  static const String bestSeller = "Best Seller";
+  static const String bestSellerSubtitle = "Find your favorite products";
+
   // Login
   static const String loginTitle = "Login";
   static const String loginSubtitle = "Welcome back! Please login to continue";
