@@ -1,5 +1,7 @@
 class AppStrings {
   AppStrings._();
+  static const String otpRequired = "otp is required";
+  static const String otpMustBe4Digits = "otp must be 4 digits";
 
   // API Failures
   static const String connectionError = "Failed to connect to the server";
@@ -18,9 +20,7 @@ class AppStrings {
 
   // Custom Widgets
   static const String loadingAccessibilityLabel = "Loading...";
-  static const String otpRequired = "otp is required";
   static const String retryButton = "Retry...";
-  static const String otpMustBe4Digits = "otp must be 4 digits";
   static const String invalidCode = "Invalid code";
   static const String occasion = "Occasion";
   static const String occasionSubTitle =
@@ -29,7 +29,6 @@ class AppStrings {
   static const String codeNotReceived = "Didn't receive the code?";
   static const String resendCodeIn = "Resend in {}";
   static const String resend = "Resend";
-  static const String noProductsFound = "No products found";
   static const String enterEmail = "Enter your email";
   static const String email = "Email";
   static const String password = "Password";
@@ -234,4 +233,35 @@ class AppStrings {
 
   static String questionOf({required int current, required int total}) =>
       "question $current of $total";
+  static const String noProductsFound = "No products found";
+
+  static const String sortBy = "Sort by";
+  static const String lowestPrice = "Lowest Price";
+  static const String highestPrice = "Highest Price";
+  static const String newArrival = "New";
+  static const String old = "Old";
+  static const String discount = "Discount";
+  static const String filter = "Filter";
+  static const String searchForAnyProduct = "Search For Any Product You Want";
+
+  // Category Names
+  static const String flowers = "Flowers";
+  static const String gift = "Gift";
+  static const String card = "Card";
+  static const String jewellery = "Jewellery";
+
+  // Occasion Names
+  static const String wedding = "Wedding";
+  static const String birthday = "Birthday";
+  static const String graduation = "Graduation";
+  // Home
+  static const String categories = "Categories";
+  static const String viewAll = "View All";
+  static const String deliverTo = "Deliver to";
+  static const String egp = "EGP";
+
+  // Dummy Product Names
+  static const String sunnyProduct = "Sunny";
+  static const String redRosesProduct = "Red roses";
+  static const String springVaseProduct = "Spring vase";
 }

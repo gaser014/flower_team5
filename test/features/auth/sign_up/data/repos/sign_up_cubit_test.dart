@@ -37,19 +37,19 @@ void main() {
 
   group('Cubit Basic Functions', () {
     test('changeGender should update the state', () {
-      signUpCubit.changeGender(Gender.male);
+      signUpCubit.doIntent(ChangeGenderEvent(Gender.male));
       expect(signUpCubit.state.gender, Gender.male);
     });
 
     test('togglePasswordVisibility should update the state', () {
       final initialVisibility = signUpCubit.state.isPasswordVisible;
-      signUpCubit.togglePasswordVisibility();
+      signUpCubit.doIntent(TogglePasswordVisibilityEvent());
       expect(signUpCubit.state.isPasswordVisible, !initialVisibility);
     });
 
     test('toggleConfirmPasswordVisibility should update the state', () {
       final initialVisibility = signUpCubit.state.isConfirmPasswordVisible;
-      signUpCubit.toggleConfirmPasswordVisibility();
+      signUpCubit.doIntent(ToggleConfirmPasswordVisibilityEvent());
       expect(signUpCubit.state.isConfirmPasswordVisible, !initialVisibility);
     });
   });

@@ -9,7 +9,7 @@ import 'package:flowers_app/core/widgets/login_link.dart';
 import 'package:flowers_app/core/widgets/text_field/email_field.dart';
 import 'package:flowers_app/core/widgets/text_field/password_field.dart';
 import 'package:flowers_app/core/widgets/text_field/phone_field.dart';
-import 'package:flowers_app/features/auth/sign_up/domain/use_cases/sign_up_use_case.dart';
+import 'package:flowers_app/features/auth/sign_up/domain/entities/user_entity.dart';
 import 'package:flowers_app/features/auth/sign_up/presentation/cubit/sign_up_cubit.dart';
 import 'package:flowers_app/features/auth/sign_up/presentation/cubit/sign_up_state.dart';
 import 'package:flowers_app/features/auth/sign_up/presentation/widgets/gender_selector.dart';
@@ -18,8 +18,6 @@ import 'package:flowers_app/features/auth/sign_up/presentation/widgets/terms_and
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:flowers_app/core/values/app_assets.dart';
 
 class SignUpView extends StatelessWidget {
   const SignUpView({super.key});
@@ -45,7 +43,8 @@ class _SignUpViewBodyState extends State<_SignUpViewBody> {
   final TextEditingController _lastNameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
@@ -72,7 +71,7 @@ class _SignUpViewBodyState extends State<_SignUpViewBody> {
     }
     phoneNumber = "+20$phoneNumber";
 
-    final params = SignUpParams(
+    final params = UserEntity(
       firstName: _firstNameController.text.trim(),
       lastName: _lastNameController.text.trim(),
       email: _emailController.text.trim(),

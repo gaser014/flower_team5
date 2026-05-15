@@ -88,9 +88,7 @@ class _VerifyCodeBodyState extends State<VerifyCodeBody> {
               },
             ),
             Gap(16.h),
-            ResendTimerWidget(
-              onResend: () => bloc.add(SendCodeEvent(isReSend: true)),
-            ),
+            ResendTimerWidget(onResend: () => bloc.add(SendCodeEvent())),
             Gap(32.h),
             BlocBuilder<ForgetPasswordBloc, ForgetPasswordState>(
               builder: (context, state) {
