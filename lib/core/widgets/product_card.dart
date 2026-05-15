@@ -27,13 +27,13 @@ class ProductCard extends StatelessWidget {
           border: Border.all(color: AppColors.gray53, width: .5),
         ),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          // mainAxisAlignment: MainAxisAlignment.center,
           children: [
             _ProductImage(imgCover: product.imgCover),
             Expanded(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     product.title ?? 'Product',

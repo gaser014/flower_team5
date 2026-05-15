@@ -2,10 +2,10 @@ import 'package:flowers_app/core/values/app_assets.dart';
 import 'package:flowers_app/core/values/app_colors.dart';
 import 'package:flowers_app/core/values/app_font_style.dart';
 import 'package:flowers_app/core/values/app_strings.dart';
+import 'package:flowers_app/core/widgets/product_card.dart';
 import 'package:flowers_app/features/products/presentation/view_model/cubit/products_cubit.dart';
 import 'package:flowers_app/features/products/domain/entities/products_params.dart';
 import 'package:flowers_app/core/widgets/pagination_grid_view.dart';
-import 'package:flowers_app/features/products/presentation/view/widgets/product_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -39,9 +39,7 @@ class _CategoriesSearchScreenState extends State<CategoriesSearchScreen> {
           child: Column(
             children: [
               _buildSearchBar(context),
-              Expanded(
-                child: _buildBody(context),
-              ),
+              Expanded(child: _buildBody(context)),
             ],
           ),
         ),
@@ -71,13 +69,15 @@ class _CategoriesSearchScreenState extends State<CategoriesSearchScreen> {
                 controller: _searchController,
                 autofocus: true,
                 onChanged: (value) {
-                  widget.productsCubit.doIntent(SearchProductsEvent(query: value));
+                  widget.productsCubit.doIntent(
+                    SearchProductsEvent(query: value),
+                  );
                 },
                 decoration: InputDecoration(
                   hintText: AppStrings.search,
-                  hintStyle: AppFontStyle.regular14(context: context).copyWith(
-                    color: AppColors.grayA6,
-                  ),
+                  hintStyle: AppFontStyle.regular14(
+                    context: context,
+                  ).copyWith(color: AppColors.grayA6),
                   prefixIcon: Padding(
                     padding: const EdgeInsets.all(12),
                     child: SvgPicture.asset(
@@ -90,10 +90,15 @@ class _CategoriesSearchScreenState extends State<CategoriesSearchScreen> {
                   ),
                   suffixIcon: _searchController.text.isNotEmpty
                       ? IconButton(
-                          icon: const Icon(Icons.close, color: AppColors.grayA6),
+                          icon: const Icon(
+                            Icons.close,
+                            color: AppColors.grayA6,
+                          ),
                           onPressed: () {
                             _searchController.clear();
-                            widget.productsCubit.doIntent(const SearchProductsEvent(query: ''));
+                            widget.productsCubit.doIntent(
+                              const SearchProductsEvent(query: ''),
+                            );
                             setState(() {});
                           },
                         )
@@ -113,14 +118,14 @@ class _CategoriesSearchScreenState extends State<CategoriesSearchScreen> {
     return BlocBuilder<ProductsCubit, ProductsStates>(
       builder: (context, state) {
         final query = _searchController.text;
-        
+
         if (query.isEmpty) {
           return Center(
             child: Text(
               AppStrings.searchForAnyProduct,
-              style: AppFontStyle.medium16(context: context).copyWith(
-                color: AppColors.primerColor,
-              ),
+              style: AppFontStyle.medium16(
+                context: context,
+              ).copyWith(color: AppColors.primerColor),
             ),
           );
         }

@@ -1,12 +1,13 @@
 import 'package:flowers_app/core/values/app_colors.dart';
 import 'package:flowers_app/core/values/app_font_style.dart';
 import 'package:flowers_app/core/values/app_strings.dart';
+import 'package:flowers_app/features/products/domain/entities/products_params.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
 class SortByBottomSheet extends StatefulWidget {
-  final String selectedSortBy;
-  final Function(String) onSortSelected;
+  final SortType selectedSortBy;
+  final Function(SortType) onSortSelected;
 
   const SortByBottomSheet({
     super.key,
@@ -19,14 +20,14 @@ class SortByBottomSheet extends StatefulWidget {
 }
 
 class _SortByBottomSheetState extends State<SortByBottomSheet> {
-  late String _currentSortBy;
+  late SortType _currentSortBy;
 
-  final List<Map<String, String>> _sortOptions = [
-    {'label': AppStrings.lowestPrice, 'value': 'price_asc'},
-    {'label': AppStrings.highestPrice, 'value': 'price_desc'},
-    {'label': AppStrings.newArrival, 'value': 'new'},
-    {'label': AppStrings.old, 'value': 'old'},
-    {'label': AppStrings.discount, 'value': 'discount'},
+  final List<Map<SortType, String>> _sortOptions = [
+    {SortType.lowestPrice: AppStrings.lowestPrice},
+    {SortType.highestPrice: AppStrings.highestPrice},
+    {SortType.newProduct: AppStrings.newArrival},
+    {SortType.old: AppStrings.old},
+    {SortType.discount: AppStrings.discount},
   ];
 
   @override
@@ -60,9 +61,9 @@ class _SortByBottomSheetState extends State<SortByBottomSheet> {
           const Gap(24),
           Text(
             AppStrings.sortBy,
-            style: AppFontStyle.bold18(context: context).copyWith(
-              color: AppColors.primerColor,
-            ),
+            style: AppFontStyle.bold18(
+              context: context,
+            ).copyWith(color: AppColors.primerColor),
           ),
           const Gap(16),
           ..._sortOptions.map((option) => _buildSortOption(option)),
@@ -83,9 +84,9 @@ class _SortByBottomSheetState extends State<SortByBottomSheet> {
               ),
               child: Text(
                 AppStrings.filter,
-                style: AppFontStyle.bold16(context: context).copyWith(
-                  color: AppColors.white,
-                ),
+                style: AppFontStyle.bold16(
+                  context: context,
+                ).copyWith(color: AppColors.white),
               ),
             ),
           ),
@@ -94,12 +95,12 @@ class _SortByBottomSheetState extends State<SortByBottomSheet> {
     );
   }
 
-  Widget _buildSortOption(Map<String, String> option) {
-    final isSelected = _currentSortBy == option['value'];
+  Widget _buildSortOption(Map<SortType, String> option) {
+    final isSelected = _currentSortBy == option.keys.first;
     return InkWell(
       onTap: () {
         setState(() {
-          _currentSortBy = option['value']!;
+          _currentSortBy = option.keys.first;
         });
       },
       child: Padding(
@@ -108,7 +109,7 @@ class _SortByBottomSheetState extends State<SortByBottomSheet> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              option['label']!,
+              option.values.first,
               style: AppFontStyle.medium14(context: context).copyWith(
                 color: isSelected ? AppColors.black : AppColors.grayA6,
               ),

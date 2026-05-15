@@ -31,7 +31,7 @@ class CategoriesCubit extends Cubit<CategoriesStates> {
     LoadMoreCategoriesEvent() => _loadMore(event),
     SelectCategoryEvent() => _selectCategory(event),
     SearchCategoriesEvent() => _searchCategories(event),
-    UpdateSortByEvent() => _updateSortBy(event),
+    // UpdateSortByEvent() => _updateSortBy(event),
   };
 
   Future<void> _searchCategories(SearchCategoriesEvent event) async {
@@ -63,24 +63,24 @@ class CategoriesCubit extends Cubit<CategoriesStates> {
     );
   }
 
-  Future<void> _updateSortBy(UpdateSortByEvent event) async {
-    final currentParams = state.categoriesState.query as CategoriesParams;
-    final newFilterList = List<FilterParam>.from(currentParams.filterList);
-
-    newFilterList.removeWhere((f) => f.key == 'sort_by');
-    newFilterList.add(FilterParam(key: 'sort_by', value: event.sortBy));
-
-    await _getAllCategories(
-      GetAllCategoriesEvent(
-        params: CategoriesParams(
-          type: currentParams.type,
-          page: 1,
-          limit: currentParams.limit,
-          filterList: newFilterList,
-        ),
-      ),
-    );
-  }
+  // Future<void> _updateSortBy(UpdateSortByEvent event) async {
+  //   final currentParams = state.categoriesState.query as CategoriesParams;
+  //   final newFilterList = List<FilterParam>.from(currentParams.filterList);
+  //
+  //   newFilterList.removeWhere((f) => f.key == 'sort_by');
+  //   newFilterList.add(FilterParam(key: 'sort_by', value: event.sortBy));
+  //
+  //   await _getAllCategories(
+  //     GetAllCategoriesEvent(
+  //       params: CategoriesParams(
+  //         type: currentParams.type,
+  //         page: 1,
+  //         limit: currentParams.limit,
+  //         filterList: newFilterList,
+  //       ),
+  //     ),
+  //   );
+  // }
 
   Future<void> _getAllCategories(GetAllCategoriesEvent event) async {
     if (state.categoriesState.isLoading) return;

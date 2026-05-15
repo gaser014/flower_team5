@@ -14,10 +14,10 @@ class SearchCategoriesEvent extends CategoriesEvents {
   const SearchCategoriesEvent({required this.query});
 }
 
-class UpdateSortByEvent extends CategoriesEvents {
-  final String sortBy;
-  const UpdateSortByEvent({required this.sortBy});
-}
+// class UpdateSortByEvent extends CategoriesEvents {
+//   final String sortBy;
+//   const UpdateSortByEvent({required this.sortBy});
+// }
 
 class LoadMoreCategoriesEvent extends CategoriesEvents {
   final CategoriesParams params;

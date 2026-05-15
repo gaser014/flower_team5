@@ -35,35 +35,33 @@ class ProductsCubit extends Cubit<ProductsStates> {
   Future<void> _searchProducts(SearchProductsEvent event) async {
     final currentParams = state.productsState.query as ProductsParams;
     final newFilterList = List<FilterParam>.from(currentParams.filterList);
-    
+
     newFilterList.removeWhere((f) => f.key == 'keyword');
     if (event.query.isNotEmpty) {
       newFilterList.add(FilterParam(key: 'keyword', value: event.query));
     }
 
-    await _getAllProducts(GetAllProductsEvent(
-      params: currentParams.copyWith(
-        page: 1,
-        filterList: newFilterList,
+    await _getAllProducts(
+      GetAllProductsEvent(
+        params: currentParams.copyWith(page: 1, filterList: newFilterList),
       ),
-    ));
+    );
   }
 
   Future<void> _updateSortBy(UpdateSortByEvent event) async {
     final currentParams = state.productsState.query as ProductsParams;
-    final newFilterList = List<FilterParam>.from(currentParams.filterList);
-    
-    newFilterList.removeWhere((f) => f.key == 'sort_by');
-    if (event.sortBy.isNotEmpty) {
-      newFilterList.add(FilterParam(key: 'sort_by', value: event.sortBy));
-    }
+    // final newFilterList = List<FilterParam>.from(currentParams.filterList);
 
-    await _getAllProducts(GetAllProductsEvent(
-      params: currentParams.copyWith(
-        page: 1,
-        filterList: newFilterList,
+    // newFilterList.removeWhere((f) => f.key == 'sort_by');
+    // if (event.sortBy.isNotEmpty) {
+    //   newFilterList.add(FilterParam(key: 'sort', value: event.sortBy));
+    // }
+
+    await _getAllProducts(
+      GetAllProductsEvent(
+        params: currentParams.copyWith(page: 1, sortType: event.sortBy),
       ),
-    ));
+    );
   }
 
   Future<void> _getAllProducts(GetAllProductsEvent event) async {

@@ -2,18 +2,19 @@ import 'package:flowers_app/core/values/app_assets.dart';
 import 'package:flowers_app/core/values/app_colors.dart';
 import 'package:flowers_app/core/values/app_font_style.dart';
 import 'package:flowers_app/core/values/app_strings.dart';
-import 'package:flowers_app/features/products/presentation/view/widgets/product_card.dart';
-import 'package:flowers_app/features/home/presentation/categories/presentation/view/widgets/categories_tap_bar.dart';
-import 'package:flowers_app/features/home/presentation/categories/presentation/view_model/cubit/categories_cubit.dart';
+import 'package:flowers_app/core/widgets/product_card.dart';
+import 'package:flowers_app/features/categories/presentation/view_model/cubit/categories_cubit.dart';
+import 'package:flowers_app/features/categories/presentation/view/widgets/categories_tap_bar.dart';
+import 'package:flowers_app/features/categories/presentation/view_model/cubit/categories_cubit.dart';
 import 'package:flowers_app/config/dependency_injection/di.dart';
 import 'package:flowers_app/core/widgets/pagination_grid_view.dart';
-import 'package:flowers_app/features/home/presentation/categories/presentation/view/widgets/sort_by_bottom_sheet.dart';
-import 'package:flowers_app/features/home/presentation/categories/presentation/view/categories_search_screen.dart';
+import 'package:flowers_app/features/categories/presentation/view/widgets/sort_by_bottom_sheet.dart';
+import 'package:flowers_app/features/categories/presentation/view/categories_search_screen.dart';
 import 'package:flowers_app/config/uses_cases/filter_param.dart';
-import 'package:flowers_app/features/home/presentation/categories/domain/entities/categories_params.dart';
+import 'package:flowers_app/features/categories/domain/entities/categories_params.dart';
 
-import 'package:flowers_app/features/products/presentation/view_model/cubit/products_cubit.dart';
 import 'package:flowers_app/features/products/domain/entities/products_params.dart';
+import 'package:flowers_app/features/products/presentation/view_model/cubit/products_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -68,14 +69,14 @@ class CategoriesView extends StatelessWidget {
             child: Builder(
               builder: (context) => GestureDetector(
                 onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => CategoriesSearchScreen(
-                          productsCubit: context.read<ProductsCubit>(),
-                        ),
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => CategoriesSearchScreen(
+                        productsCubit: context.read<ProductsCubit>(),
                       ),
-                    );
+                    ),
+                  );
                 },
                 child: Container(
                   height: 48,
@@ -142,16 +143,13 @@ class CategoriesView extends StatelessWidget {
     return CategoriesTapBar(
       onTap: (category) {
         context.read<CategoriesCubit>().doIntent(
-              SelectCategoryEvent(category: category),
-            );
+          SelectCategoryEvent(category: category),
+        );
         context.read<ProductsCubit>().doIntent(
-              GetAllProductsEvent(
-                params: ProductsParams(
-                  category: category,
-                  page: 1,
-                ),
-              ),
-            );
+          GetAllProductsEvent(
+            params: ProductsParams(category: category, page: 1),
+          ),
+        );
       },
     );
   }
@@ -169,10 +167,10 @@ class CategoriesView extends StatelessWidget {
           },
           onLoadMore: () {
             context.read<ProductsCubit>().doIntent(
-                  LoadMoreProductsEvent(
-                    params: state.productsState.query as ProductsParams,
-                  ),
-                );
+              LoadMoreProductsEvent(
+                params: state.productsState.query as ProductsParams,
+              ),
+            );
           },
           onRefresh: () => context.read<ProductsCubit>().refreshProducts(),
           padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -212,12 +210,7 @@ class CategoriesView extends StatelessWidget {
   void _showSortBottomSheet(BuildContext context) {
     final cubit = context.read<ProductsCubit>();
     final currentParams = cubit.state.productsState.query as ProductsParams;
-    final currentSortBy = currentParams.filterList
-        .firstWhere(
-          (f) => f.key == 'sort_by',
-          orElse: () => const FilterParam(key: 'sort_by', value: ''),
-        )
-        .value;
+    final currentSortBy = SortType.newProduct;
 
     showModalBottomSheet(
       context: context,
