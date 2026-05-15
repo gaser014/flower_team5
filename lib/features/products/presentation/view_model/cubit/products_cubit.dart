@@ -5,6 +5,7 @@ import 'package:flowers_app/features/products/domain/entities/product_entity.dar
 import 'package:flowers_app/features/products/domain/entities/products_params.dart';
 import 'package:flowers_app/features/products/domain/use_cases/get_all_products.dart';
 
+import 'package:flowers_app/config/uses_cases/filter_param.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 
@@ -27,7 +28,43 @@ class ProductsCubit extends Cubit<ProductsStates> {
   Future<void> doIntent(ProductsEvents event) async => switch (event) {
     GetAllProductsEvent() => _getAllProducts(event),
     LoadMoreProductsEvent() => _loadMore(event),
+    SearchProductsEvent() => _searchProducts(event),
+    UpdateSortByEvent() => _updateSortBy(event),
   };
+
+  Future<void> _searchProducts(SearchProductsEvent event) async {
+    final currentParams = state.productsState.query as ProductsParams;
+    final newFilterList = List<FilterParam>.from(currentParams.filterList);
+    
+    newFilterList.removeWhere((f) => f.key == 'keyword');
+    if (event.query.isNotEmpty) {
+      newFilterList.add(FilterParam(key: 'keyword', value: event.query));
+    }
+
+    await _getAllProducts(GetAllProductsEvent(
+      params: currentParams.copyWith(
+        page: 1,
+        filterList: newFilterList,
+      ),
+    ));
+  }
+
+  Future<void> _updateSortBy(UpdateSortByEvent event) async {
+    final currentParams = state.productsState.query as ProductsParams;
+    final newFilterList = List<FilterParam>.from(currentParams.filterList);
+    
+    newFilterList.removeWhere((f) => f.key == 'sort_by');
+    if (event.sortBy.isNotEmpty) {
+      newFilterList.add(FilterParam(key: 'sort_by', value: event.sortBy));
+    }
+
+    await _getAllProducts(GetAllProductsEvent(
+      params: currentParams.copyWith(
+        page: 1,
+        filterList: newFilterList,
+      ),
+    ));
+  }
 
   Future<void> _getAllProducts(GetAllProductsEvent event) async {
     if (state.productsState.isLoading) return;

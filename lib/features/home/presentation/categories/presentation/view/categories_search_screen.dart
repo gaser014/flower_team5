@@ -2,19 +2,19 @@ import 'package:flowers_app/core/values/app_assets.dart';
 import 'package:flowers_app/core/values/app_colors.dart';
 import 'package:flowers_app/core/values/app_font_style.dart';
 import 'package:flowers_app/core/values/app_strings.dart';
-import 'package:flowers_app/features/home/presentation/categories/domain/entities/categories_params.dart';
-import 'package:flowers_app/features/home/presentation/categories/presentation/view_model/cubit/categories_cubit.dart';
+import 'package:flowers_app/features/products/presentation/view_model/cubit/products_cubit.dart';
+import 'package:flowers_app/features/products/domain/entities/products_params.dart';
 import 'package:flowers_app/core/widgets/pagination_grid_view.dart';
-import 'package:flowers_app/features/home/presentation/categories/presentation/view/widgets/product_card.dart';
+import 'package:flowers_app/features/products/presentation/view/widgets/product_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 
 class CategoriesSearchScreen extends StatefulWidget {
-  final CategoriesCubit cubit;
+  final ProductsCubit productsCubit;
 
-  const CategoriesSearchScreen({super.key, required this.cubit});
+  const CategoriesSearchScreen({super.key, required this.productsCubit});
 
   @override
   State<CategoriesSearchScreen> createState() => _CategoriesSearchScreenState();
@@ -32,7 +32,7 @@ class _CategoriesSearchScreenState extends State<CategoriesSearchScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider.value(
-      value: widget.cubit,
+      value: widget.productsCubit,
       child: Scaffold(
         backgroundColor: AppColors.white,
         body: SafeArea(
@@ -71,7 +71,7 @@ class _CategoriesSearchScreenState extends State<CategoriesSearchScreen> {
                 controller: _searchController,
                 autofocus: true,
                 onChanged: (value) {
-                  widget.cubit.doIntent(SearchCategoriesEvent(query: value));
+                  widget.productsCubit.doIntent(SearchProductsEvent(query: value));
                 },
                 decoration: InputDecoration(
                   hintText: AppStrings.search,
@@ -93,7 +93,7 @@ class _CategoriesSearchScreenState extends State<CategoriesSearchScreen> {
                           icon: const Icon(Icons.close, color: AppColors.grayA6),
                           onPressed: () {
                             _searchController.clear();
-                            widget.cubit.doIntent(const SearchCategoriesEvent(query: ''));
+                            widget.productsCubit.doIntent(const SearchProductsEvent(query: ''));
                             setState(() {});
                           },
                         )
@@ -110,7 +110,7 @@ class _CategoriesSearchScreenState extends State<CategoriesSearchScreen> {
   }
 
   Widget _buildBody(BuildContext context) {
-    return BlocBuilder<CategoriesCubit, CategoriesStates>(
+    return BlocBuilder<ProductsCubit, ProductsStates>(
       builder: (context, state) {
         final query = _searchController.text;
         
@@ -126,21 +126,21 @@ class _CategoriesSearchScreenState extends State<CategoriesSearchScreen> {
         }
 
         return PaginationGridView<dynamic>(
-          items: state.categoriesState.data,
-          isLoading: state.categoriesState.isLoading,
-          isLoadingMore: state.categoriesState.isLoadingMore,
-          hasMore: state.categoriesState.hasMore,
+          items: state.productsState.data,
+          isLoading: state.productsState.isLoading,
+          isLoadingMore: state.productsState.isLoadingMore,
+          hasMore: state.productsState.hasMore,
           itemBuilder: (context, item, index) {
             return ProductCard(product: item);
           },
           onLoadMore: () {
-            widget.cubit.doIntent(
-              LoadMoreCategoriesEvent(
-                params: state.categoriesState.query as CategoriesParams,
+            widget.productsCubit.doIntent(
+              LoadMoreProductsEvent(
+                params: state.productsState.query as ProductsParams,
               ),
             );
           },
-          onRefresh: () => widget.cubit.refreshCategories(),
+          onRefresh: () => widget.productsCubit.refreshProducts(),
           padding: const EdgeInsets.all(16),
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
