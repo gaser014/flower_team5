@@ -219,4 +219,13 @@ class AppStrings {
 
   static String questionOf({required int current, required int total}) =>
       "question $current of $total";
+
+  static const String sortBy = "Sort by";
+  static const String lowestPrice = "Lowest Price";
+  static const String highestPrice = "Highest Price";
+  static const String newArrival = "New";
+  static const String old = "Old";
+  static const String discount = "Discount";
+  static const String filter = "Filter";
+  static const String searchForAnyProduct = "Search For Any Product You Want";
 }
