@@ -1,13 +1,14 @@
 import 'package:bloc_test/bloc_test.dart';
+import 'package:flowers_app/categories/domain/entities/categories_params.dart';
+import 'package:flowers_app/categories/domain/entities/category_entity.dart';
+import 'package:flowers_app/categories/domain/use_cases/get_all_categories.dart';
+import 'package:flowers_app/categories/presentation/view_model/cubit/categories_cubit.dart';
 import 'package:flowers_app/config/base_response/entity/base_pagination_entity.dart';
 import 'package:flowers_app/config/base_response/entity/meta_entity.dart';
 import 'package:flowers_app/config/base_response/result.dart';
 import 'package:flowers_app/config/base_state/pagination_state.dart';
 import 'package:flowers_app/config/base_state/state_types.dart';
-import 'package:flowers_app/features/home/presentation/categories/domain/entities/categories_params.dart';
-import 'package:flowers_app/features/home/presentation/categories/domain/entities/category_entity.dart';
-import 'package:flowers_app/features/home/presentation/categories/domain/use_cases/get_all_categories.dart';
-import 'package:flowers_app/features/home/presentation/categories/presentation/view_model/cubit/categories_cubit.dart';
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
@@ -24,7 +25,9 @@ void main() {
 
   setUp(() {
     mockGetAllCategoriesUseCase = MockGetAllCategoriesUseCase();
-    cubit = CategoriesCubit(getAllCategoriesUseCase: mockGetAllCategoriesUseCase);
+    cubit = CategoriesCubit(
+      getAllCategoriesUseCase: mockGetAllCategoriesUseCase,
+    );
   });
 
   tearDown(() {
@@ -39,7 +42,10 @@ void main() {
     currentPage: 1,
     numberOfPages: 1,
   );
-  final tPaginationEntity = BasePaginationEntity(meta: tMeta, data: tCategoriesList);
+  final tPaginationEntity = BasePaginationEntity(
+    meta: tMeta,
+    data: tCategoriesList,
+  );
   final tParams = CategoriesParams(page: 1);
 
   group('CategoriesCubit', () {
@@ -50,8 +56,9 @@ void main() {
     blocTest<CategoriesCubit, CategoriesStates>(
       'emits [loading, success] when GetAllCategoriesEvent is successful',
       build: () {
-        when(mockGetAllCategoriesUseCase.call(any))
-            .thenAnswer((_) async => Success(data: tPaginationEntity));
+        when(
+          mockGetAllCategoriesUseCase.call(any),
+        ).thenAnswer((_) async => Success(data: tPaginationEntity));
         return cubit;
       },
       act: (cubit) => cubit.doIntent(GetAllCategoriesEvent(params: tParams)),
@@ -67,11 +74,7 @@ void main() {
               'success state',
               PaginationStateType.success,
             )
-            .having(
-              (s) => s.categoriesState.data,
-              'data',
-              tCategoriesList,
-            )
+            .having((s) => s.categoriesState.data, 'data', tCategoriesList)
             .having(
               (s) => s.selectCategoryState?.name,
               'default selected category',
@@ -83,8 +86,9 @@ void main() {
     blocTest<CategoriesCubit, CategoriesStates>(
       'emits [loading, error] when GetAllCategoriesEvent fails',
       build: () {
-        when(mockGetAllCategoriesUseCase.call(any))
-            .thenAnswer((_) async => Error(exception: Exception('Server Error')));
+        when(
+          mockGetAllCategoriesUseCase.call(any),
+        ).thenAnswer((_) async => Error(exception: Exception('Server Error')));
         return cubit;
       },
       act: (cubit) => cubit.doIntent(GetAllCategoriesEvent(params: tParams)),
@@ -106,19 +110,27 @@ void main() {
       'emits [loadingMore, success] when LoadMoreCategoriesEvent is successful',
       build: () {
         // First set initial state to success to allow loading more
-        when(mockGetAllCategoriesUseCase.call(any))
-            .thenAnswer((_) async => Success(data: tPaginationEntity));
+        when(
+          mockGetAllCategoriesUseCase.call(any),
+        ).thenAnswer((_) async => Success(data: tPaginationEntity));
         return cubit;
       },
       seed: () => CategoriesStates(
         categoriesState: PaginationState(
           state: PaginationStateType.success,
           data: tCategoriesList,
-          meta: MetaEntity(total: 10, limit: 5, currentPage: 1, numberOfPages: 2),
+          meta: MetaEntity(
+            total: 10,
+            limit: 5,
+            currentPage: 1,
+            numberOfPages: 2,
+          ),
           query: tParams,
         ),
       ),
-      act: (cubit) => cubit.doIntent(LoadMoreCategoriesEvent(params: tParams.copyWith(page: 2))),
+      act: (cubit) => cubit.doIntent(
+        LoadMoreCategoriesEvent(params: tParams.copyWith(page: 2)),
+      ),
       expect: () => [
         isA<CategoriesStates>().having(
           (s) => s.categoriesState.state,
@@ -150,7 +162,7 @@ void main() {
       cubit.reset();
       expect(cubit.state, const CategoriesStates());
     });
-   group('clearError', () {
+    group('clearError', () {
       blocTest<CategoriesCubit, CategoriesStates>(
         'clears error when categoriesState is in error state',
         build: () => cubit,

@@ -1,7 +1,7 @@
 import 'package:flowers_app/core/values/app_assets.dart';
 import 'package:flowers_app/core/values/app_colors.dart';
 import 'package:flowers_app/features/home/presentation/screens/home_view.dart';
-import 'package:flowers_app/features/home/presentation/categories/presentation/view/categories_view.dart';
+import '../../../../../categories/presentation/view/categories_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 

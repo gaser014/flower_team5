@@ -53,9 +53,9 @@ class ProductsCubit extends Cubit<ProductsStates> {
     final currentParams = state.productsState.query as ProductsParams;
     final newFilterList = List<FilterParam>.from(currentParams.filterList);
     
-    newFilterList.removeWhere((f) => f.key == 'sort_by');
+    newFilterList.removeWhere((f) => f.key == 'sort');
     if (event.sortBy.isNotEmpty) {
-      newFilterList.add(FilterParam(key: 'sort_by', value: event.sortBy));
+      newFilterList.add(FilterParam(key: 'sort', value: event.sortBy));
     }
 
     await _getAllProducts(GetAllProductsEvent(

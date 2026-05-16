@@ -35,7 +35,9 @@ class ProductsParams extends PaginationParams {
   @override
   Map<String, dynamic> toJson() {
     final json = super.toJson();
-    if (category != null) json[type.parmKey] = category!.id;
+    if (category != null && category!.id?.isNotEmpty == true) {
+      json[type.parmKey] = category!.id;
+    }
     return json;
   }
 
