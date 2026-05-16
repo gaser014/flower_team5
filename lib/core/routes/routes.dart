@@ -12,4 +12,5 @@ abstract class Routes {
   static const String subjects = "/subjects";
   static const String main = "/main";
   static const String profile = "/profile";
+  static const String appLanguage = "/app-language";
 }

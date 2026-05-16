@@ -1,6 +1,8 @@
 import 'package:flowers_app/core/values/app_assets.dart';
 import 'package:flowers_app/core/values/app_colors.dart';
 import 'package:flowers_app/features/home/presentation/screens/home_view.dart';
+import 'package:flowers_app/features/app_language/presentation/view/pages/app_language_page.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -18,7 +20,7 @@ class _MainViewState extends State<MainView> {
     HomeView(),
     Center(child: Text('Categories')),
     Center(child: Text('Cart')),
-    Center(child: Text('Profile')),
+    AppLanguagePage(),
   ];
 
   void _onItemTapped(int index) {
@@ -49,7 +51,7 @@ class _MainViewState extends State<MainView> {
                 BlendMode.srcIn,
               ),
             ),
-            label: 'Home',
+            label: 'Home'.tr(),
           ),
           BottomNavigationBarItem(
             icon: SvgPicture.asset(
@@ -59,7 +61,7 @@ class _MainViewState extends State<MainView> {
                 BlendMode.srcIn,
               ),
             ),
-            label: 'Categories',
+            label: 'Categories'.tr(),
           ),
           BottomNavigationBarItem(
             icon: SvgPicture.asset(
@@ -69,7 +71,7 @@ class _MainViewState extends State<MainView> {
                 BlendMode.srcIn,
               ),
             ),
-            label: 'Cart',
+            label: 'Cart'.tr(),
           ),
           BottomNavigationBarItem(
             icon: SvgPicture.asset(
@@ -79,7 +81,7 @@ class _MainViewState extends State<MainView> {
                 BlendMode.srcIn,
               ),
             ),
-            label: 'Profile',
+            label: 'Profile'.tr(),
           ),
         ],
       ),

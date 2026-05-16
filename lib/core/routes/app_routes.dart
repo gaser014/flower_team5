@@ -6,10 +6,10 @@ import 'package:flowers_app/core/routes/routes.dart';
 import 'package:flowers_app/features/login/presentation/view/pages/login_page.dart';
 import 'package:flowers_app/features/spalsh/splash_page.dart';
 import 'package:flowers_app/features/main/presentation/screens/main_view.dart';
+import 'package:flowers_app/features/app_language/presentation/view/pages/app_language_page.dart';
+import 'package:flowers_app/features/app_language/presentation/view_model/cubit/app_language_cubit.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flowers_app/features/spalsh/splash_page.dart';
-
-
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:go_router/go_router.dart';
 
@@ -203,7 +203,7 @@ class _PageBasedPageRoute<T> extends PageRoute<T> {
 
 abstract class AppRoutes {
   static final GoRouter router = GoRouter(
-    initialLocation: Routes.splash,
+    initialLocation: Routes.appLanguage,
     routes: [
       GoRoute(
         path: Routes.main,
@@ -225,6 +225,16 @@ abstract class AppRoutes {
         name: Routes.login,
         builder: (BuildContext context, GoRouterState state) {
           return LoginPage();
+        },
+      ),
+      GoRoute(
+        path: Routes.appLanguage,
+        name: Routes.appLanguage,
+        builder: (BuildContext context, GoRouterState state) {
+          return BlocProvider(
+            create: (context) => getIt<AppLanguageCubit>(),
+            child: const AppLanguagePage(),
+          );
         },
       ),
     ],

@@ -2,6 +2,7 @@ import 'package:flowers_app/core/values/app_assets.dart';
 import 'package:flowers_app/core/values/app_colors.dart';
 import 'package:flowers_app/core/values/app_font_style.dart';
 import 'package:flowers_app/core/values/app_strings.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
@@ -40,7 +41,7 @@ class HomeView extends StatelessWidget {
                 children: [
                   SvgPicture.asset(AppAssets.iconsFlower, height: 32),
                   const Gap(4),
-                  Text(
+                   Text(
                     AppStrings.appTitle,
                     style: AppFontStyle.bold20(
                       context: context,
