@@ -213,14 +213,14 @@ abstract class AppRoutes {
           animationType: AnimationType.fade,
         ),
       ),
-       GoRoute(
+      GoRoute(
         path: Routes.splash,
         name: Routes.splash,
         builder: (BuildContext context, GoRouterState state) {
           return SplashPage();
         },
       ),
-       GoRoute(
+      GoRoute(
         path: Routes.login,
         name: Routes.login,
         builder: (BuildContext context, GoRouterState state) {
@@ -232,7 +232,7 @@ abstract class AppRoutes {
         name: Routes.appLanguage,
         builder: (BuildContext context, GoRouterState state) {
           return BlocProvider(
-            create: (context) => getIt<AppLanguageCubit>(),
+            create: (context) => getIt<HomeCubit>(),
             child: const AppLanguagePage(),
           );
         },

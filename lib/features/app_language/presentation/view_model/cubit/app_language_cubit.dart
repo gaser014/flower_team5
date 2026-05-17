@@ -5,10 +5,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 
 @injectable
-class AppLanguageCubit extends Cubit<AppLanguageStates> {
-  AppLanguageCubit() : super(AppLanguageInitial());
+class HomeCubit extends Cubit<HomeStates> {
+  HomeCubit() : super(AppLanguageInitial());
 
-  static AppLanguageCubit get(BuildContext context) => BlocProvider.of(context);
+  static HomeCubit get(BuildContext context) => BlocProvider.of(context);
 
   Future<void> changeLanguage(BuildContext context, String langCode) async {
     emit(AppLanguageLoading());

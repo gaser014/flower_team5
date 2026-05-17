@@ -1,15 +1,15 @@
-abstract class AppLanguageStates {}
+abstract class HomeStates {}
 
-class AppLanguageInitial extends AppLanguageStates {}
+class AppLanguageInitial extends HomeStates {}
 
-class AppLanguageLoading extends AppLanguageStates {}
+class AppLanguageLoading extends HomeStates {}
 
-class AppLanguageChanged extends AppLanguageStates {
+class AppLanguageChanged extends HomeStates {
   final String localeCode;
   AppLanguageChanged(this.localeCode);
 }
 
-class AppLanguageError extends AppLanguageStates {
+class AppLanguageError extends HomeStates {
   final String error;
   AppLanguageError(this.error);
 }

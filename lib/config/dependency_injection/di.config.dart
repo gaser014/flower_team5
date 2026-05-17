@@ -81,7 +81,7 @@ extension GetItInjectableX on _i174.GetIt {
   }) {
     final gh = _i526.GetItHelper(this, environment, environmentFilter);
     final dioModule = _$DioModule();
-    gh.factory<_i439.AppLanguageCubit>(() => _i439.AppLanguageCubit());
+    gh.factory<_i439.HomeCubit>(() => _i439.HomeCubit());
     gh.singleton<_i361.Dio>(() => dioModule.dio());
     gh.lazySingleton<_i558.FlutterSecureStorage>(
       () => dioModule.secureStorage(),

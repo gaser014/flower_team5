@@ -39,7 +39,7 @@ class _AppLanguagePageState extends State<AppLanguagePage> {
           initialLanguage: _getLanguageString(context),
           onLanguageSelected: (newLanguage) {
             String code = newLanguage == AppStrings.arabic ? 'ar' : 'en';
-            AppLanguageCubit.get(context).changeLanguage(context, code);
+            HomeCubit.get(context).changeLanguage(context, code);
           },
         );
       },
@@ -77,9 +77,9 @@ class _AppLanguagePageState extends State<AppLanguagePage> {
           const Gap(8),
           Text(
             AppStrings.appTitle,
-            style: AppFontStyle.bold20(context: context).copyWith(
-              color: AppColors.primerColor,
-            ),
+            style: AppFontStyle.bold20(
+              context: context,
+            ).copyWith(color: AppColors.primerColor),
           ),
         ],
       ),
@@ -97,17 +97,25 @@ class _AppLanguagePageState extends State<AppLanguagePage> {
           SvgPicture.asset(
             AppAssets.iconsNotification,
             height: 24,
-            colorFilter: const ColorFilter.mode(AppColors.black5D, BlendMode.srcIn),
+            colorFilter: const ColorFilter.mode(
+              AppColors.black5D,
+              BlendMode.srcIn,
+            ),
           ),
           Positioned(
             right: -4,
             top: -4,
             child: Container(
               padding: const EdgeInsets.all(4),
-              decoration: const BoxDecoration(color: AppColors.redCC, shape: BoxShape.circle),
+              decoration: const BoxDecoration(
+                color: AppColors.redCC,
+                shape: BoxShape.circle,
+              ),
               child: Text(
                 '3',
-                style: AppFontStyle.medium8(context: context).copyWith(color: AppColors.white),
+                style: AppFontStyle.medium8(
+                  context: context,
+                ).copyWith(color: AppColors.white),
               ),
             ),
           ),
@@ -151,7 +159,10 @@ class _AppLanguagePageState extends State<AppLanguagePage> {
             children: [
               _buildLanguageTile(context),
               ProfileMenuItem(title: AppStrings.aboutUs, onTap: () {}),
-              ProfileMenuItem(title: AppStrings.termsAndConditions, onTap: () {}),
+              ProfileMenuItem(
+                title: AppStrings.termsAndConditions,
+                onTap: () {},
+              ),
             ],
           ),
         ),
@@ -179,27 +190,36 @@ class _AppLanguagePageState extends State<AppLanguagePage> {
             SvgPicture.asset(
               AppAssets.iconsTranslateLang,
               height: 20,
-              colorFilter: const ColorFilter.mode(AppColors.black35, BlendMode.srcIn),
+              colorFilter: const ColorFilter.mode(
+                AppColors.black35,
+                BlendMode.srcIn,
+              ),
             ),
             const Gap(12),
             Expanded(
               child: Text(
                 AppStrings.language,
-                style: AppFontStyle.medium14(context: context).copyWith(color: AppColors.black35),
+                style: AppFontStyle.medium14(
+                  context: context,
+                ).copyWith(color: AppColors.black35),
               ),
             ),
-            BlocBuilder<AppLanguageCubit, AppLanguageStates>(
+            BlocBuilder<HomeCubit, HomeStates>(
               builder: (context, state) {
                 return Text(
                   _getLanguageString(context),
-                  style: AppFontStyle.regular12(context: context).copyWith(
-                    color: AppColors.primerColor,
-                  ),
+                  style: AppFontStyle.regular12(
+                    context: context,
+                  ).copyWith(color: AppColors.primerColor),
                 );
               },
             ),
             const Gap(8),
-            const Icon(Icons.arrow_forward_ios, size: 16, color: AppColors.black5D),
+            const Icon(
+              Icons.arrow_forward_ios,
+              size: 16,
+              color: AppColors.black5D,
+            ),
           ],
         ),
       ),
@@ -209,7 +229,9 @@ class _AppLanguagePageState extends State<AppLanguagePage> {
   Widget _buildVersionInfo(BuildContext context) {
     return Text(
       'v 6.3.0 - (446)',
-      style: AppFontStyle.regular12(context: context).copyWith(color: AppColors.grayA6),
+      style: AppFontStyle.regular12(
+        context: context,
+      ).copyWith(color: AppColors.grayA6),
     );
   }
 }
