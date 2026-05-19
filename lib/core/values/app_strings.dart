@@ -193,6 +193,19 @@ class AppStrings {
   static const String token = "token";
   static const String user = "user";
 
+  // Reset Password
+  static const String resetPasswordTitle = "Reset password";
+  static const String passwordUpdatedSuccess = "Password updated successfully!";
+  static const String invalidPassword = "Invalid password";
+  static const String currentPassword = "Current password";
+  static const String enterCurrentPassword = "Please enter current password";
+  static const String newPassword = "New password";
+  static const String enterNewPassword = "Please enter new password";
+  static const String confirmPasswordLabel = "Confirm password";
+  static const String pleaseConfirmNewPassword = "Please confirm new password";
+  static const String passwordsDoNotMatch = "Passwords do not match";
+  static const String update = "Update";
+
   static String questionOf({required int current, required int total}) =>
       "question $current of $total";
 }

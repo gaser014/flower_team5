@@ -18,6 +18,20 @@ import 'package:internet_connection_checker_plus/internet_connection_checker_plu
 
 import '../../core/api/datasources/auth_local_data_source_impl.dart' as _i424;
 import '../../core/data/data_sources/auth_local_data_source.dart' as _i759;
+import '../../features/app_filter_tabs/api/api_client/app_filter_tabs_api_client.dart'
+    as _i173;
+import '../../features/app_filter_tabs/api/datasources/app_filter_tabs_remote_data_source_impl.dart'
+    as _i849;
+import '../../features/app_filter_tabs/data/datasources/app_filter_tabs_remote_data_source_contract.dart'
+    as _i823;
+import '../../features/app_filter_tabs/data/repositories/app_filter_tabs_repository_impl.dart'
+    as _i539;
+import '../../features/app_filter_tabs/domain/repositories/app_filter_tabs_repository.dart'
+    as _i902;
+import '../../features/app_filter_tabs/domain/use_cases/get_all_app_filter_tabs.dart'
+    as _i313;
+import '../../features/app_filter_tabs/presentation/view_model/cubit/app_filter_tabs_cubit.dart'
+    as _i468;
 import '../../features/login/api/api_client/login_api_client.dart' as _i395;
 import '../../features/login/api/datasources/login_local_data_source_impl.dart'
     as _i438;
@@ -36,6 +50,34 @@ import '../../features/login/domain/use_cases/login_use_case.dart' as _i191;
 import '../../features/login/domain/use_cases/save_user_use_case.dart' as _i71;
 import '../../features/login/presentation/view_model/cubit/login_cubit.dart'
     as _i753;
+import '../../features/products/api/api_client/products_api_client.dart'
+    as _i41;
+import '../../features/products/api/datasources/products_local_data_source_impl.dart'
+    as _i1032;
+import '../../features/products/api/datasources/products_remote_data_source_impl.dart'
+    as _i838;
+import '../../features/products/data/datasources/products_local_data_source_contract.dart'
+    as _i47;
+import '../../features/products/data/datasources/products_remote_data_source_contract.dart'
+    as _i106;
+import '../../features/products/data/repositories/products_repository_impl.dart'
+    as _i1045;
+import '../../features/products/domain/repositories/products_repository.dart'
+    as _i27;
+import '../../features/products/domain/use_cases/get_all_products.dart'
+    as _i845;
+import '../../features/products/presentation/view_model/cubit/products_cubit.dart'
+    as _i593;
+import '../../features/reset_password/api/api_client/reset_password_api_client.dart'
+    as _i801;
+import '../../features/reset_password/data/repositories/reset_password_repository_impl.dart'
+    as _i854;
+import '../../features/reset_password/domain/repositories/reset_password_repository.dart'
+    as _i833;
+import '../../features/reset_password/domain/use_cases/reset_password_use_case.dart'
+    as _i572;
+import '../../features/reset_password/presentation/view_model/cubit/reset_password_cubit.dart'
+    as _i1008;
 import '../api/app_interceptor.dart' as _i449;
 import '../api/dio_module.dart' as _i784;
 
@@ -58,14 +100,30 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i325.LoginLocalDataSourceContract>(
       () => _i438.LoginLocalDataSourceImpl(),
     );
+    gh.factory<_i47.ProductsLocalDataSourceContract>(
+      () => _i1032.ProductsLocalDataSourceImpl(),
+    );
+    gh.lazySingleton<_i173.AppFilterTabsApiClient>(
+      () => _i173.AppFilterTabsApiClient(gh<_i361.Dio>()),
+    );
     gh.factory<_i395.LoginApiClient>(
       () => _i395.LoginApiClient(gh<_i361.Dio>()),
+    );
+    gh.factory<_i41.ProductsApiClient>(
+      () => _i41.ProductsApiClient(gh<_i361.Dio>()),
+    );
+    gh.factory<_i801.ResetPasswordApiClient>(
+      () => _i801.ResetPasswordApiClient(gh<_i361.Dio>()),
     );
     gh.singleton<_i449.AppInterceptors>(
       () => _i449.AppInterceptors(
         dio: gh<_i361.Dio>(),
         fss: gh<_i558.FlutterSecureStorage>(),
       ),
+    );
+    gh.factory<_i833.ResetPasswordRepositoryContract>(
+      () =>
+          _i854.ResetPasswordRepositoryImpl(gh<_i801.ResetPasswordApiClient>()),
     );
     gh.lazySingleton<_i759.AuthLocalDataSourceContract>(
       () =>
@@ -74,20 +132,67 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i736.LoginRemoteDataSourceContract>(
       () => _i904.LoginRemoteDataSourceImpl(gh<_i395.LoginApiClient>()),
     );
-    gh.lazySingleton<_i902.LoginRepositoryContract>(
+    gh.factory<_i823.AppFilterTabsRemoteDataSourceContract>(
+      () => _i849.AppFilterTabsRemoteDataSourceImpl(
+        apiClient: gh<_i173.AppFilterTabsApiClient>(),
+      ),
+    );
+    gh.factory<_i106.ProductsRemoteDataSourceContract>(
+      () => _i838.ProductsRemoteDataSourceImpl(
+        apiClient: gh<_i41.ProductsApiClient>(),
+      ),
+    );
+    gh.factory<_i572.ResetPasswordUseCase>(
+      () => _i572.ResetPasswordUseCase(
+        gh<_i833.ResetPasswordRepositoryContract>(),
+      ),
+    );
+    gh.factory<_i902.LoginRepositoryContract>(
       () => _i1066.LoginRepositoryImpl(
         gh<_i736.LoginRemoteDataSourceContract>(),
         gh<_i325.LoginLocalDataSourceContract>(),
       ),
     );
-    gh.lazySingleton<_i12.GetUserUseCase>(
+    gh.factory<_i902.AppFilterTabsRepository>(
+      () => _i539.AppFilterTabsRepositoryImpl(
+        appFilterTabsRemoteDataSourceContract:
+            gh<_i823.AppFilterTabsRemoteDataSourceContract>(),
+      ),
+    );
+    gh.factory<_i27.ProductsRepository>(
+      () => _i1045.ProductsRepositoryImpl(
+        productsRemoteDataSourceContract:
+            gh<_i106.ProductsRemoteDataSourceContract>(),
+      ),
+    );
+    gh.factory<_i845.GetAllProductsUseCase>(
+      () => _i845.GetAllProductsUseCase(gh<_i27.ProductsRepository>()),
+    );
+    gh.factory<_i313.GetAllAppFilterTabsUseCase>(
+      () =>
+          _i313.GetAllAppFilterTabsUseCase(gh<_i902.AppFilterTabsRepository>()),
+    );
+    gh.factory<_i12.GetUserUseCase>(
       () => _i12.GetUserUseCase(gh<_i902.LoginRepositoryContract>()),
     );
-    gh.lazySingleton<_i191.LoginUseCase>(
+    gh.factory<_i191.LoginUseCase>(
       () => _i191.LoginUseCase(gh<_i902.LoginRepositoryContract>()),
     );
-    gh.lazySingleton<_i71.SaveUserUseCase>(
+    gh.factory<_i71.SaveUserUseCase>(
       () => _i71.SaveUserUseCase(gh<_i902.LoginRepositoryContract>()),
+    );
+    gh.factory<_i593.ProductsCubit>(
+      () => _i593.ProductsCubit(
+        getAllProductsUseCase: gh<_i845.GetAllProductsUseCase>(),
+      ),
+    );
+    gh.factory<_i1008.ResetPasswordCubit>(
+      () => _i1008.ResetPasswordCubit(gh<_i572.ResetPasswordUseCase>()),
+    );
+    gh.factory<_i468.AppFilterTabsCubit>(
+      () => _i468.AppFilterTabsCubit(
+        getAllAppFilterTabsUseCase: gh<_i313.GetAllAppFilterTabsUseCase>(),
+      ),
     );
     gh.factory<_i753.LoginCubit>(
       () => _i753.LoginCubit(

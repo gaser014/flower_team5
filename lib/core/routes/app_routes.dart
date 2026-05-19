@@ -4,6 +4,7 @@ import 'package:flowers_app/config/dependency_injection/di.dart';
 import 'package:flowers_app/core/data/data_sources/auth_local_data_source.dart';
 import 'package:flowers_app/core/routes/routes.dart';
 import 'package:flowers_app/features/login/presentation/view/pages/login_page.dart';
+import 'package:flowers_app/features/reset_password/presentation/view/pages/reset_password_page.dart';
 import 'package:flowers_app/features/spalsh/splash_page.dart';
 import 'package:flowers_app/features/main/presentation/screens/main_view.dart';
 import 'package:flutter/cupertino.dart';
@@ -203,8 +204,12 @@ class _PageBasedPageRoute<T> extends PageRoute<T> {
 
 abstract class AppRoutes {
   static final GoRouter router = GoRouter(
-    initialLocation: Routes.splash,
+    initialLocation: '/reset-password',
     routes: [
+      GoRoute(
+        path: '/reset-password',
+        builder: (context, state) => const ResetPasswordPage(),
+      ),
       GoRoute(
         path: Routes.main,
         pageBuilder: (context, state) => buildAnimatedPage(
