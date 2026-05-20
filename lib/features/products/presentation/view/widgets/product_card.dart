@@ -139,7 +139,7 @@ class _AddToCartButton extends StatelessWidget {
               AppAssets.iconsCart,
               width: 18,
               height: 18,
-              color: AppColors.whiteF9,
+              colorFilter: const ColorFilter.mode(AppColors.whiteF9, BlendMode.srcIn),
             ),
             Text(
               AppStrings.addToCart,

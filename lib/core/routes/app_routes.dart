@@ -6,11 +6,8 @@ import 'package:flowers_app/core/routes/routes.dart';
 import 'package:flowers_app/features/login/presentation/view/pages/login_page.dart';
 import 'package:flowers_app/features/spalsh/splash_page.dart';
 import 'package:flowers_app/features/main/presentation/screens/main_view.dart';
+import 'package:flowers_app/features/logout/presentation/view/pages/profile_page.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flowers_app/features/spalsh/splash_page.dart';
-
-
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:go_router/go_router.dart';
 
 final RouteObserver<ModalRoute> routeObserver = RouteObserver<ModalRoute>();
@@ -203,7 +200,7 @@ class _PageBasedPageRoute<T> extends PageRoute<T> {
 
 abstract class AppRoutes {
   static final GoRouter router = GoRouter(
-    initialLocation: Routes.splash,
+    initialLocation: Routes.main,
     routes: [
       GoRoute(
         path: Routes.main,
@@ -213,18 +210,25 @@ abstract class AppRoutes {
           animationType: AnimationType.fade,
         ),
       ),
-       GoRoute(
+      GoRoute(
         path: Routes.splash,
         name: Routes.splash,
         builder: (BuildContext context, GoRouterState state) {
-          return SplashPage();
+          return const SplashPage();
         },
       ),
-       GoRoute(
+      GoRoute(
         path: Routes.login,
         name: Routes.login,
         builder: (BuildContext context, GoRouterState state) {
-          return LoginPage();
+          return const LoginPage();
+        },
+      ),
+      GoRoute(
+        path: Routes.profile,
+        name: Routes.profile,
+        builder: (BuildContext context, GoRouterState state) {
+          return const ProfilePage();
         },
       ),
     ],
@@ -240,11 +244,6 @@ abstract class AppRoutes {
         // AuthRoutes.completeProfile,
         // AuthRoutes.success,
       ];
-      //
-      // if (!isLoggedIn && !authRoutes.contains(currentLocation)) {
-      //   // Redirect to account type selection (start of auth flow)
-      //   return Routes.login;
-      // }
 
       if (authRoutes.contains(currentLocation)) {
         final token = await getIt<AuthLocalDataSourceContract>().getUserToken();

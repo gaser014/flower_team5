@@ -1,6 +1,7 @@
 import 'package:flowers_app/core/values/app_assets.dart';
 import 'package:flowers_app/core/values/app_colors.dart';
 import 'package:flowers_app/features/home/presentation/screens/home_view.dart';
+import 'package:flowers_app/features/logout/presentation/view/pages/profile_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -12,13 +13,13 @@ class MainView extends StatefulWidget {
 }
 
 class _MainViewState extends State<MainView> {
-  int _selectedIndex = 0;
+  int _selectedIndex = 3;
 
   static const List<Widget> _pages = <Widget>[
     HomeView(),
     Center(child: Text('Categories')),
     Center(child: Text('Cart')),
-    Center(child: Text('Profile')),
+    ProfilePage(),
   ];
 
   void _onItemTapped(int index) {
