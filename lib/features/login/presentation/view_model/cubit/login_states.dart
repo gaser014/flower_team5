@@ -7,8 +7,8 @@ class LoginStates extends Equatable {
 
   const LoginStates({
     this.loginState = const BaseState.initial(),
-    this.rememberMeState = const BaseState.initial(),
-    this.showPasswordState = const BaseState.initial(),
+    this.rememberMeState = const BaseState.success(false),
+    this.showPasswordState = const BaseState.success(false),
   });
 
   LoginStates copyWith({
