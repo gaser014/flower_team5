@@ -77,7 +77,22 @@ class AppTheme {
       ),
     ),
     useMaterial3: true,
+    outlinedButtonTheme: OutlinedButtonThemeData(
+      style: OutlinedButton.styleFrom(
+        padding: const EdgeInsets.symmetric(vertical: 14),
+        side: const BorderSide(color: AppColors.black0C),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
+        foregroundColor: AppColors.black0C,
+      ),
+    ),
     textTheme: const TextTheme(
+      titleLarge: TextStyle(
+        color: AppColors.black0C,
+        fontSize: 18,
+        fontWeight: FontWeight.bold,
+      ),
       bodyLarge: TextStyle(
         color: AppColors.black0C,
         fontSize: 16,
@@ -174,6 +189,9 @@ class AppTheme {
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ButtonStyle(
+        padding: WidgetStateProperty.all<EdgeInsetsGeometry>(
+          const EdgeInsets.symmetric(vertical: 14),
+        ),
         shape: WidgetStateProperty.all<OutlinedBorder>(
           RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         ),
@@ -272,7 +290,22 @@ class AppTheme {
         statusBarBrightness: Brightness.dark,
       ),
     ),
+    outlinedButtonTheme: OutlinedButtonThemeData(
+      style: OutlinedButton.styleFrom(
+        padding: const EdgeInsets.symmetric(vertical: 14),
+        side: const BorderSide(color: AppColors.whiteF9),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
+        foregroundColor: AppColors.whiteF9,
+      ),
+    ),
     textTheme: const TextTheme(
+      titleLarge: TextStyle(
+        color: AppColors.whiteF9,
+        fontSize: 18,
+        fontWeight: FontWeight.bold,
+      ),
       bodyLarge: TextStyle(
         color: AppColors.whiteF9,
         fontSize: 16,
@@ -367,6 +400,9 @@ class AppTheme {
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ButtonStyle(
+        padding: WidgetStateProperty.all<EdgeInsetsGeometry>(
+          const EdgeInsets.symmetric(vertical: 14),
+        ),
         shape: WidgetStateProperty.all<OutlinedBorder>(
           RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         ),

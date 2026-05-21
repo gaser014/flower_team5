@@ -12,5 +12,5 @@ abstract class LogoutApiClient {
   factory LogoutApiClient(Dio dio) = _LogoutApiClient;
 
   @POST(EndPoints.logout)
-  Future<dynamic> logout();
+  Future<void> logout();
 }

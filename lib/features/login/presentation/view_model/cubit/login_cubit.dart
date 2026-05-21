@@ -1,11 +1,10 @@
 import 'dart:async';
 import 'package:equatable/equatable.dart';
 import 'package:flowers_app/config/base_state/base_state.dart';
-import 'package:flowers_app/config/database/cache_helper.dart';
 import 'package:flowers_app/config/uses_cases/login_params.dart';
-import 'package:flowers_app/core/values/app_strings.dart';
 import 'package:flowers_app/features/login/domain/use_cases/login_use_case.dart';
 import 'package:flowers_app/features/login/domain/use_cases/save_user_use_case.dart';
+import 'package:flowers_app/features/login/domain/use_cases/save_user_token_use_case.dart';
 import 'package:flowers_app/features/login/presentation/view_model/cubit/login_events.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
@@ -14,11 +13,12 @@ part 'login_states.dart';
 
 @injectable
 class LoginCubit extends Cubit<LoginStates> {
-  LoginCubit(this.loginUseCase, this.saveUserUseCase)
+  LoginCubit(this.loginUseCase, this.saveUserUseCase, this.saveUserTokenUseCase)
     : super(const LoginStates());
 
   final LoginUseCase loginUseCase;
   final SaveUserUseCase saveUserUseCase;
+  final SaveUserTokenUseCase saveUserTokenUseCase;
 
   void doIndented(LoginEvents event) {
     switch (event) {
@@ -36,10 +36,7 @@ class LoginCubit extends Cubit<LoginStates> {
     final result = await loginUseCase.call(params);
     result.when(
       success: (response) async {
-        await AppSharedPreferences.setString(
-          key: AppStrings.token,
-          value: response?.token ?? '',
-        );
+        await saveUserTokenUseCase.call(response?.token ?? '');
 
         if (params.remember == true && response?.user != null) {
           await saveUserUseCase.call(response!.user!);

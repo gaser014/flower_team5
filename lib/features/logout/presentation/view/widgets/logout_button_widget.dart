@@ -1,4 +1,5 @@
 import 'package:flowers_app/core/routes/routes.dart';
+import 'package:flowers_app/core/values/app_strings.dart';
 import 'package:flowers_app/features/logout/presentation/view_model/cubit/logout_cubit.dart';
 import 'package:flowers_app/features/logout/presentation/view_model/cubit/logout_events.dart';
 import 'package:flowers_app/features/logout/presentation/view/widgets/logout_dialog.dart';
@@ -16,15 +17,16 @@ class LogoutButtonWidget extends StatelessWidget {
       create: (context) => GetIt.I<LogoutCubit>(),
       child: BlocConsumer<LogoutCubit, LogoutStates>(
         listener: (context, state) {
-          if (state.logoutState.isSuccess) {
+          if (state.logoutState.isSuccess || state.logoutState.isError) {
+            if (state.logoutState.isError) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(state.logoutState.exception.toString()),
+                  backgroundColor: Colors.red,
+                ),
+              );
+            }
             context.go(Routes.login);
-          } else if (state.logoutState.isError) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(state.logoutState.exception.toString()),
-                backgroundColor: Colors.red,
-              ),
-            );
           }
         },
         builder: (context, state) {
@@ -59,7 +61,7 @@ class LogoutButtonWidget extends StatelessWidget {
                     const Icon(Icons.logout, color: Colors.black54),
                   const SizedBox(width: 16),
                   const Text(
-                    "Logout",
+                  AppStrings.Logout,
                     style: TextStyle(
                       fontSize: 16,
                       color: Colors.black87,

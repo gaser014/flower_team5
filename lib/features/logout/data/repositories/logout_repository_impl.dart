@@ -1,6 +1,5 @@
-import 'package:dio/dio.dart';
+import 'package:flowers_app/config/api/api_execute.dart';
 import 'package:flowers_app/config/base_response/result.dart';
-import 'package:flowers_app/config/error_handling/failures.dart';
 import 'package:flowers_app/core/data/data_sources/auth_local_data_source.dart';
 import 'package:flowers_app/features/logout/data/datasources/logout_remote_data_source_contract.dart';
 import 'package:flowers_app/features/logout/domain/repositories/logout_repository.dart';
@@ -15,16 +14,8 @@ class LogoutRepositoryImpl implements LogoutRepository {
 
   @override
   Future<Result<void>> logout() async {
-    try {
-      await _remoteDataSource.logout();
-      return const Success(data: null);
-    } catch (e) {
-      if (e is DioException) {
-        return Error(exception: ServerFailure.fromDioException(dioException: e));
-      }
-      return Error(exception: ServerFailure(errorMessage: e.toString()));
-    } finally {
-      await _localDataSource.clearSession();
-    }
+    final result = await executeApi<void>(() => _remoteDataSource.logout());
+    await _localDataSource.clearSession();
+    return result;
   }
 }

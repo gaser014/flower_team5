@@ -47,6 +47,8 @@ import '../../features/login/domain/repositories/login_repository.dart'
     as _i902;
 import '../../features/login/domain/use_cases/get_user_use_case.dart' as _i12;
 import '../../features/login/domain/use_cases/login_use_case.dart' as _i191;
+import '../../features/login/domain/use_cases/save_user_token_use_case.dart'
+    as _i140;
 import '../../features/login/domain/use_cases/save_user_use_case.dart' as _i71;
 import '../../features/login/presentation/view_model/cubit/login_cubit.dart'
     as _i753;
@@ -130,6 +132,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i736.LoginRemoteDataSourceContract>(
       () => _i904.LoginRemoteDataSourceImpl(gh<_i395.LoginApiClient>()),
     );
+    gh.factory<_i140.SaveUserTokenUseCase>(
+      () => _i140.SaveUserTokenUseCase(gh<_i759.AuthLocalDataSourceContract>()),
+    );
     gh.factory<_i913.LogoutRemoteDataSourceContract>(
       () => _i930.LogoutRemoteDataSourceImpl(gh<_i1048.LogoutApiClient>()),
     );
@@ -191,18 +196,19 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i677.LogoutUseCase>(
       () => _i677.LogoutUseCase(gh<_i1004.LogoutRepository>()),
     );
+    gh.factory<_i753.LoginCubit>(
+      () => _i753.LoginCubit(
+        gh<_i191.LoginUseCase>(),
+        gh<_i71.SaveUserUseCase>(),
+        gh<_i140.SaveUserTokenUseCase>(),
+      ),
+    );
     gh.factory<_i88.LogoutCubit>(
       () => _i88.LogoutCubit(gh<_i677.LogoutUseCase>()),
     );
     gh.factory<_i468.AppFilterTabsCubit>(
       () => _i468.AppFilterTabsCubit(
         getAllAppFilterTabsUseCase: gh<_i313.GetAllAppFilterTabsUseCase>(),
-      ),
-    );
-    gh.factory<_i753.LoginCubit>(
-      () => _i753.LoginCubit(
-        gh<_i191.LoginUseCase>(),
-        gh<_i71.SaveUserUseCase>(),
       ),
     );
     return this;

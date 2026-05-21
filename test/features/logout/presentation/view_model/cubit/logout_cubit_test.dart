@@ -1,46 +1,35 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flowers_app/config/base_response/result.dart';
 import 'package:flowers_app/config/base_state/base_state.dart';
-import 'package:flowers_app/config/uses_cases/use_cases.dart';
 import 'package:flowers_app/features/logout/domain/use_cases/logout_use_case.dart';
 import 'package:flowers_app/features/logout/presentation/view_model/cubit/logout_cubit.dart';
 import 'package:flowers_app/features/logout/presentation/view_model/cubit/logout_events.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/annotations.dart';
+import 'package:mockito/mockito.dart';
 
-// Manual mock for LogoutUseCase
-class MockLogoutUseCase implements LogoutUseCase {
-  final Result<void> result;
-  MockLogoutUseCase({required this.result});
+import 'logout_cubit_test.mocks.dart';
 
-  @override
-  Future<Result<void>> call(NoParams params) async {
-    return result;
-  }
-}
-
+@GenerateMocks([LogoutUseCase])
 void main() {
   group('LogoutCubit Tests', () {
-    late LogoutCubit logoutCubit;
     late MockLogoutUseCase mockLogoutUseCase;
 
     setUp(() {
-      // Default success mock
-      mockLogoutUseCase = MockLogoutUseCase(result: const Success(data: null));
-      logoutCubit = LogoutCubit(mockLogoutUseCase);
-    });
-
-    tearDown(() {
-      logoutCubit.close();
+      mockLogoutUseCase = MockLogoutUseCase();
     });
 
     test('initial state is BaseState.initial()', () {
-      expect(logoutCubit.state.logoutState.isInitial, isTrue);
+      final cubit = LogoutCubit(mockLogoutUseCase);
+      expect(cubit.state.logoutState.isInitial, isTrue);
+      cubit.close();
     });
 
     blocTest<LogoutCubit, LogoutStates>(
       'emits [loading, success] when DoLogoutEvent is added and usecase returns Success',
       build: () {
-        mockLogoutUseCase = MockLogoutUseCase(result: const Success(data: null));
+        when(mockLogoutUseCase.call())
+            .thenAnswer((_) async => const Success(data: null));
         return LogoutCubit(mockLogoutUseCase);
       },
       act: (cubit) => cubit.doIndented(const DoLogoutEvent()),
@@ -55,7 +44,8 @@ void main() {
     blocTest<LogoutCubit, LogoutStates>(
       'emits [loading, error] when DoLogoutEvent is added and usecase returns Error',
       build: () {
-        mockLogoutUseCase = MockLogoutUseCase(result: Error(exception: exception));
+        when(mockLogoutUseCase.call())
+            .thenAnswer((_) async => Error(exception: exception));
         return LogoutCubit(mockLogoutUseCase);
       },
       act: (cubit) => cubit.doIndented(const DoLogoutEvent()),

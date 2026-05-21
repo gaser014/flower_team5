@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'package:flutter/foundation.dart';
 import 'package:flowers_app/config/api/api_key.dart';
 import 'package:flowers_app/core/data/data_sources/auth_local_data_source.dart';
 import 'package:flowers_app/core/values/app_strings.dart';
@@ -14,11 +15,13 @@ class AuthLocalDataSourceImpl implements AuthLocalDataSourceContract {
   @override
   Future<void> saveUserToken(String token) async {
     try {
-      await fss.write(key: APIkeys.accessToken, value: token);
-      await fss.write(key: AppStrings.token, value: token);
-      log("Token saved successfully");
+      await Future.wait([
+        fss.write(key: APIkeys.accessToken, value: token),
+        fss.write(key: AppStrings.token, value: token),
+      ]);
+      if (kDebugMode) log("Token saved successfully");
     } catch (e) {
-      log("Error saving token: $e");
+      if (kDebugMode) log("Error saving token: $e");
     }
   }
 
@@ -31,7 +34,7 @@ class AuthLocalDataSourceImpl implements AuthLocalDataSourceContract {
       }
       return await fss.read(key: APIkeys.accessToken);
     } catch (e) {
-      log("Error reading token: $e");
+      if (kDebugMode) log("Error reading token: $e");
       return null;
     }
   }
@@ -39,24 +42,28 @@ class AuthLocalDataSourceImpl implements AuthLocalDataSourceContract {
   @override
   Future<void> deleteUserToken() async {
     try {
-      await fss.delete(key: AppStrings.token);
-      await fss.delete(key: APIkeys.accessToken);
-      log("Token deleted successfully");
+      await Future.wait([
+        fss.delete(key: AppStrings.token),
+        fss.delete(key: APIkeys.accessToken),
+      ]);
+      if (kDebugMode) log("Token deleted successfully");
     } catch (e) {
-      log("Error deleting token: $e");
+      if (kDebugMode) log("Error deleting token: $e");
     }
   }
 
   @override
   Future<void> clearSession() async {
     try {
-      await deleteUserToken();
-      await fss.delete(key: AppStrings.user);
-      await fss.delete(key: APIkeys.refreshToken);
-      await fss.delete(key: APIkeys.rememberMe);
-      log("Session cleared successfully");
+      await Future.wait([
+        deleteUserToken(),
+        fss.delete(key: AppStrings.user),
+        fss.delete(key: APIkeys.refreshToken),
+        fss.delete(key: APIkeys.rememberMe),
+      ]);
+      if (kDebugMode) log("Session cleared successfully");
     } catch (e) {
-      log("Error clearing session: $e");
+      if (kDebugMode) log("Error clearing session: $e");
     }
   }
 }

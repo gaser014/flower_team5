@@ -1,6 +1,5 @@
 import 'package:equatable/equatable.dart';
 import 'package:flowers_app/config/base_state/base_state.dart';
-import 'package:flowers_app/config/uses_cases/use_cases.dart';
 import 'package:flowers_app/features/logout/domain/use_cases/logout_use_case.dart';
 import 'package:flowers_app/features/logout/presentation/view_model/cubit/logout_events.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -23,7 +22,7 @@ class LogoutCubit extends Cubit<LogoutStates> {
 
   Future<void> _logout() async {
     emit(state.copyWith(logoutState: const BaseState.loading()));
-    final result = await logoutUseCase.call(const NoParams());
+    final result = await logoutUseCase.call();
     result.when(
       success: (_) {
         emit(state.copyWith(logoutState: const BaseState.success(null)));
