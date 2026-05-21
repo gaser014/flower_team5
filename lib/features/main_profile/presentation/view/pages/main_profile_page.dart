@@ -54,12 +54,25 @@ class MainProfilePage extends StatelessWidget {
                             ProfileHeaderWidget(user: user),
 
                             ProfileMenuItemWidget(
+                              title: AppStrings.profile,
+                              onTap: () {},
+                              trailing: const Icon(
+                                Icons.chevron_right,
+                                color: AppColors.gray7D,
+                              ),
+                              icon: null,
+                              leadingIconWidget: SvgPicture.asset(
+                                AppAssets.iconsProfile,
+                                height: 20,
+                                colorFilter: const ColorFilter.mode(
+                                  AppColors.black32,
+                                  BlendMode.srcIn,
+                                ),
+                              ),
+                            ),
+                            ProfileMenuItemWidget(
                               title: AppStrings.myOrders,
-                              onTap: () {
-                                context.read<MainProfileCubit>().doIndented(
-                                  GetMainProfileEvent(),
-                                );
-                              },
+                              onTap: () {},
                               trailing: const Icon(
                                 Icons.chevron_right,
                                 color: AppColors.gray7D,

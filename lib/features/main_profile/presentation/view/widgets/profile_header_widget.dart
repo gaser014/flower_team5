@@ -24,19 +24,11 @@ class ProfileHeaderWidget extends StatelessWidget {
               : null,
         ),
         const SizedBox(height: 16),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              "${user.firstName ?? ''} ${user.lastName ?? ''}".trim(),
-              style: AppFontStyle.medium20(context: context),
-            ),
-            const SizedBox(width: 8),
-            Icon(Icons.edit, size: 20, color: AppColors.gray7D),
-          ],
+        Text(
+          "${user.firstName ?? ''} ${user.lastName ?? ''}".trim(),
+          style: AppFontStyle.medium20(context: context),
         ),
         const SizedBox(height: 8),
-        // Email
         Text(
           user.email ?? '',
           style: AppFontStyle.regular16(
