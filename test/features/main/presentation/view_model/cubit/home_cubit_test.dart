@@ -35,7 +35,7 @@ void main() {
       occasions: [],
     );
 
-    blocTest<HomeCubit, HomeStates>(
+    blocTest<HomeCubit, HomeState>(
       'emits [Loading, Success] when data is fetched successfully',
       build: () {
         when(
@@ -45,15 +45,15 @@ void main() {
       },
       act: (cubit) => cubit.doIndented(GetAllHomeDataEvent()),
       expect: () => [
-        const HomeStates(getAllHomeDataState: BaseState.loading()),
-        const HomeStates(getAllHomeDataState: BaseState.success(tHomeEntity)),
+        const HomeState(getAllHomeDataState: BaseState.loading()),
+        const HomeState(getAllHomeDataState: BaseState.success(tHomeEntity)),
       ],
       verify: (_) {
         verify(mockGetHomeUseCase.call(any)).called(1);
       },
     );
 
-    blocTest<HomeCubit, HomeStates>(
+    blocTest<HomeCubit, HomeState>(
       'emits [Loading, Error] when fetching data fails',
       build: () {
         final tException = Exception('Failed to fetch home data');
@@ -64,8 +64,8 @@ void main() {
       },
       act: (cubit) => cubit.doIndented(GetAllHomeDataEvent()),
       expect: () => [
-        const HomeStates(getAllHomeDataState: BaseState.loading()),
-        isA<HomeStates>().having(
+        const HomeState(getAllHomeDataState: BaseState.loading()),
+        isA<HomeState>().having(
           (s) => s.getAllHomeDataState.isError,
           'isError',
           true,
@@ -78,11 +78,11 @@ void main() {
   });
 
   group('HomeCubit - Navigation', () {
-    blocTest<HomeCubit, HomeStates>(
+    blocTest<HomeCubit, HomeState>(
       'emits new bottomNavIndex when ChangeBottomNavIndexEvent is triggered',
       build: () => homeCubit,
       act: (cubit) => cubit.doIndented(ChangeBottomNavIndexEvent(1)),
-      expect: () => [const HomeStates(bottomNavIndex: 1)],
+      expect: () => [const HomeState(bottomNavIndex: 1)],
     );
   });
 }

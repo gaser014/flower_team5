@@ -6,11 +6,11 @@ import 'package:flowers_app/features/main/presentation/view_model/cubit/home_eve
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 
-part 'home_states.dart';
+part 'home_state.dart';
 
 @LazySingleton()
-class HomeCubit extends Cubit<HomeStates> {
-  HomeCubit(this._getHomeUseCase) : super(const HomeStates());
+class HomeCubit extends Cubit<HomeState> {
+  HomeCubit(this._getHomeUseCase) : super(const HomeState());
   final GetHomeUseCase _getHomeUseCase;
 
   void doIndented(HomeEvents event) {

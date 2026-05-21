@@ -1,7 +1,8 @@
 import 'package:flowers_app/core/values/app_assets.dart';
 import 'package:flowers_app/core/values/app_colors.dart';
+import 'package:flowers_app/core/values/app_strings.dart';
 import 'package:flowers_app/features/home/presentation/view/pages/home_page.dart';
-import 'package:flowers_app/features/main/presentation/screens/app_bar_widget.dart';
+import 'package:flowers_app/features/main/presentation/screens/home_app_bar_widget.dart';
 import 'package:flowers_app/features/main/presentation/screens/profile_appbar.dart';
 import 'package:flowers_app/features/main/presentation/view_model/cubit/home_cubit.dart';
 import 'package:flowers_app/features/main/presentation/view_model/cubit/home_events.dart';
@@ -22,12 +23,12 @@ class MainView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cubit = context.read<HomeCubit>();
-    return BlocBuilder<HomeCubit, HomeStates>(
+    return BlocBuilder<HomeCubit, HomeState>(
       builder: (context, state) {
         final selectedIndex = state.bottomNavIndex;
         return Scaffold(
           appBar: selectedIndex == 0
-              ? const AppBarWidget()
+              ? const HomeAppBarWidget()
               : selectedIndex == 3
               ? const ProfileAppBarWidget()
               : null,
@@ -51,7 +52,7 @@ class MainView extends StatelessWidget {
                     BlendMode.srcIn,
                   ),
                 ),
-                label: 'Home',
+                label: AppStrings.home,
               ),
               BottomNavigationBarItem(
                 icon: SvgPicture.asset(
@@ -63,7 +64,7 @@ class MainView extends StatelessWidget {
                     BlendMode.srcIn,
                   ),
                 ),
-                label: 'Categories',
+                label: AppStrings.categories,
               ),
               BottomNavigationBarItem(
                 icon: SvgPicture.asset(
@@ -75,7 +76,7 @@ class MainView extends StatelessWidget {
                     BlendMode.srcIn,
                   ),
                 ),
-                label: 'Cart',
+                label: AppStrings.cart,
               ),
               BottomNavigationBarItem(
                 icon: SvgPicture.asset(
@@ -87,7 +88,7 @@ class MainView extends StatelessWidget {
                     BlendMode.srcIn,
                   ),
                 ),
-                label: 'Profile',
+                label: AppStrings.profile,
               ),
             ],
           ),
