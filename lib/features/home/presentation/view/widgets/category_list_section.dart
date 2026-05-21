@@ -1,5 +1,5 @@
 import 'package:flowers_app/features/home/domain/entities/home_category_entity.dart';
-import 'package:flowers_app/features/home/presentation/view/widgets/category_card.dart';
+import 'package:flowers_app/features/home/presentation/view/widgets/home_category_card.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 

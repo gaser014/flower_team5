@@ -193,9 +193,6 @@ class AppStrings {
   static const String token = "token";
   static const String user = "user";
 
-  static String questionOf({required int current, required int total}) =>
-      "question $current of $total";
-
   // Home
   static const String categories = "Categories";
   static const String bestSeller = "Best seller";
@@ -218,4 +215,9 @@ class AppStrings {
   static const String sunnyProduct = "Sunny";
   static const String redRosesProduct = "Red roses";
   static const String springVaseProduct = "Spring vase";
+
+  // Navigation
+  static const String cart = "Cart";
+  static const String profile = "Profile";
+  static const String home = "Home";
 }

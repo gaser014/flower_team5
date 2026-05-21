@@ -1,16 +1,16 @@
 part of 'home_cubit.dart';
 
-class HomeStates extends Equatable {
+class HomeState extends Equatable {
   final int bottomNavIndex;
   final BaseState getAllHomeDataState;
 
-  const HomeStates({
+  const HomeState({
     this.bottomNavIndex = 0,
     this.getAllHomeDataState = const BaseState.initial(),
   });
 
-  HomeStates copyWith({int? bottomNavIndex, BaseState? getAllHomeDataState}) {
-    return HomeStates(
+  HomeState copyWith({int? bottomNavIndex, BaseState? getAllHomeDataState}) {
+    return HomeState(
       bottomNavIndex: bottomNavIndex ?? this.bottomNavIndex,
       getAllHomeDataState: getAllHomeDataState ?? this.getAllHomeDataState,
     );
