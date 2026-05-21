@@ -13,6 +13,7 @@ class EmailField extends StatelessWidget {
   final TextInputAction? textInputAction;
   final void Function(String)? onFieldSubmitted;
   final FocusNode? focusNode;
+  final bool showLabel;
 
   const EmailField({
     super.key,
@@ -22,6 +23,7 @@ class EmailField extends StatelessWidget {
     this.textInputAction,
     this.onFieldSubmitted,
     this.focusNode,
+    this.showLabel = true,
   });
 
   @override
@@ -38,7 +40,7 @@ class EmailField extends StatelessWidget {
       autofillHints: const [AutofillHints.email],
       autovalidateMode: AutovalidateMode.onUserInteraction,
       decoration: InputDecoration(
-        labelText: AppStrings.email,
+        labelText: showLabel ? AppStrings.email : null,
         hintText: AppStrings.enterEmail,
         hintStyle: AppFontStyle.regular14().copyWith(color: AppColors.grayA6),
       ),
