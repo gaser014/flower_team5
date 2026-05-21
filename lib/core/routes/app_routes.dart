@@ -9,7 +9,6 @@ import 'package:flowers_app/features/main/presentation/screens/main_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flowers_app/features/spalsh/splash_page.dart';
 
-
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:go_router/go_router.dart';
 
@@ -213,14 +212,14 @@ abstract class AppRoutes {
           animationType: AnimationType.fade,
         ),
       ),
-       GoRoute(
+      GoRoute(
         path: Routes.splash,
         name: Routes.splash,
         builder: (BuildContext context, GoRouterState state) {
           return SplashPage();
         },
       ),
-       GoRoute(
+      GoRoute(
         path: Routes.login,
         name: Routes.login,
         builder: (BuildContext context, GoRouterState state) {
@@ -233,6 +232,7 @@ abstract class AppRoutes {
 
       final authRoutes = [
         Routes.login,
+        Routes.main,
         // Routes.register,
         // Routes.forgetPassword,
         // Routes.resetPassword,

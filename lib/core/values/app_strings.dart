@@ -193,6 +193,31 @@ class AppStrings {
   static const String token = "token";
   static const String user = "user";
 
-  static String questionOf({required int current, required int total}) =>
-      "question $current of $total";
+  // Home
+  static const String categories = "Categories";
+  static const String bestSeller = "Best seller";
+  static const String viewAll = "View All";
+  static const String deliverTo = "Deliver to";
+  static const String egp = "EGP";
+
+  // Category Names
+  static const String flowers = "Flowers";
+  static const String gift = "Gift";
+  static const String card = "Card";
+  static const String jewellery = "Jewellery";
+
+  // Occasion Names
+  static const String wedding = "Wedding";
+  static const String birthday = "Birthday";
+  static const String graduation = "Graduation";
+
+  // Dummy Product Names
+  static const String sunnyProduct = "Sunny";
+  static const String redRosesProduct = "Red roses";
+  static const String springVaseProduct = "Spring vase";
+
+  // Navigation
+  static const String cart = "Cart";
+  static const String profile = "Profile";
+  static const String home = "Home";
 }
