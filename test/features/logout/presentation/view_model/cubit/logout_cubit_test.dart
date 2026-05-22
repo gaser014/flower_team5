@@ -27,11 +27,11 @@ void main() {
 
     blocTest<LogoutCubit, LogoutStates>(
       'emits [loading, success] when DoLogoutEvent is added and usecase returns Success',
-      build: () {
+      setUp: () {
         when(mockLogoutUseCase.call())
             .thenAnswer((_) async => const Success(data: null));
-        return LogoutCubit(mockLogoutUseCase);
       },
+      build: () => LogoutCubit(mockLogoutUseCase),
       act: (cubit) => cubit.doIndented(const DoLogoutEvent()),
       expect: () => [
         const LogoutStates(logoutState: BaseState.loading()),
@@ -43,11 +43,11 @@ void main() {
 
     blocTest<LogoutCubit, LogoutStates>(
       'emits [loading, error] when DoLogoutEvent is added and usecase returns Error',
-      build: () {
+      setUp: () {
         when(mockLogoutUseCase.call())
             .thenAnswer((_) async => Error(exception: exception));
-        return LogoutCubit(mockLogoutUseCase);
       },
+      build: () => LogoutCubit(mockLogoutUseCase),
       act: (cubit) => cubit.doIndented(const DoLogoutEvent()),
       expect: () => [
         const LogoutStates(logoutState: BaseState.loading()),
