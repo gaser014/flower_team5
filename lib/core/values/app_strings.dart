@@ -35,6 +35,7 @@ class AppStrings {
   static const String phoneNumber = "Phone Number";
   static const String enterPhoneNumber = "01012345678";
   static const String search = "Search";
+  static const String Logout = "Logout";
 
   // Date Time
   static const String amLong = "AM";
@@ -279,6 +280,19 @@ class AppStrings {
   static const String highestPrice = "Highest Price";
   static const String newArrival = "New";
   static const String old = "Old";
+  // Profile & Address
+  // static const String  myOrders = "My orders";
+  // static const String  savedAddresses = "Saved addresses";
+  // static const String  logout = "Logout";
+  // static const String  editProfile = "Edit profile";
+  // static const String  addNewAddress = "Add New Address";
+  // static const String notification = "Notification";
+  // static const String language = "Language";
+  // static const String aboutUs = "About us";
+  static const String termsAndConditions = "Terms & conditions";
+  // static const String arabic = "Arabic";
+  // static const String english = "English";
+  static const String changeLanguage = "Change Language";
   static const String discount = "Discount";
   static const String filter = "Filter";
   static const String searchForAnyProduct = "Search For Any Product You Want";
