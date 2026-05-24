@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flowers_app/config/base_response/result.dart';
 import 'package:flowers_app/config/base_state/base_state.dart';
+import 'package:flowers_app/config/error_handling/failures.dart';
 import 'package:flowers_app/features/cart/data/models/post/cart_product_post_data.dart';
 import 'package:flowers_app/features/cart/data/models/post/cart_update_data.dart';
 import 'package:flowers_app/features/cart/domain/entities/cart_entity.dart';
@@ -15,6 +16,16 @@ import 'package:flowers_app/features/cart/presentation/view_model/cubit/cart_sta
 import 'package:flowers_app/features/products/domain/entities/product_entity.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
+
+sealed class CartSideEffect {
+  const CartSideEffect();
+}
+
+class CartSyncFailed extends CartSideEffect {
+  final String productId;
+  final String message;
+  const CartSyncFailed({required this.productId, required this.message});
+}
 
 @lazySingleton
 class CartCubit extends Cubit<CartStates> {
@@ -45,6 +56,13 @@ class CartCubit extends Cubit<CartStates> {
   final Map<String, int> _lastSyncedQuantity = {};
   final Map<String, Future<void>> _inFlight = {};
 
+  final StreamController<CartSideEffect> _sideEffects =
+      StreamController<CartSideEffect>.broadcast();
+
+  /// One-shot UI events (e.g. show a toast). Subscribe in the screen via
+  /// [BlocListener] equivalent — a plain [StreamSubscription].
+  Stream<CartSideEffect> get sideEffects => _sideEffects.stream;
+
   @override
   void emit(CartStates state) {
     if (!isClosed) super.emit(state);
@@ -58,6 +76,7 @@ class CartCubit extends Cubit<CartStates> {
     for (final t in _maxWaitTimers.values) {
       t.cancel();
     }
+    _sideEffects.close();
     return super.close();
   }
 
@@ -314,17 +333,30 @@ class CartCubit extends Cubit<CartStates> {
           _lastSyncedQuantity[productId] = currentQty;
         }
       case Error<void>():
+        // Roll the local map back to the last server-confirmed quantity.
+        // Keep the state as `success` so the UI never flashes the error
+        // page during transient sync failures (e.g. "sold out" while the
+        // user is incrementing). The error is reported as a side effect
+        // for the UI to show as a toast.
         _rollback(productId, lastSynced);
-        emit(
-          state.copyWith(state: BaseState<CartEntity>.error(result.exception)),
-        );
-        emit(
-          state.copyWith(
-            state: BaseState<CartEntity>.success(_currentCart()),
-            totalPrice: _currentCart().totalPrice,
-          ),
-        );
+        // Cancel any pending debounce so we don't immediately retry the
+        // failed request on the next tick.
+        _debounceTimers.remove(productId)?.cancel();
+        _maxWaitTimers.remove(productId)?.cancel();
+        if (!_sideEffects.isClosed) {
+          _sideEffects.add(
+            CartSyncFailed(
+              productId: productId,
+              message: _messageFor(result.exception),
+            ),
+          );
+        }
     }
+  }
+
+  String _messageFor(Exception? exception) {
+    if (exception is Failures) return exception.errorMessage;
+    return exception?.toString() ?? 'Something went wrong';
   }
 
   void _rollback(String productId, int lastSyncedQty) {
