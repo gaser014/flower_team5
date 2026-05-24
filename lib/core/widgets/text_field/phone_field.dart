@@ -11,6 +11,7 @@ class PhoneField extends StatelessWidget {
   final TextInputAction? textInputAction;
   final void Function(String)? onFieldSubmitted;
   final FocusNode? focusNode;
+  final bool showLabel;
 
   const PhoneField({
     super.key,
@@ -20,6 +21,7 @@ class PhoneField extends StatelessWidget {
     this.textInputAction,
     this.onFieldSubmitted,
     this.focusNode,
+    this.showLabel = true,
   });
 
   @override
@@ -36,8 +38,8 @@ class PhoneField extends StatelessWidget {
       autofillHints: const [AutofillHints.telephoneNumber],
       maxLength: 11,
       decoration: InputDecoration(
-        labelText: AppStrings.phoneNumber,
-        hintText: AppStrings.enterPhoneNumber,
+        labelText: showLabel ? AppStrings.phoneNumber : null,
+        //hintText: AppStrings.enterPhoneNumber,
         prefixText: '+20 ',
       ),
     );
