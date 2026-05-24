@@ -1,4 +1,4 @@
-import 'package:flowers_app/features/home/domain/entities/home_occasion_entity.dart';
+import 'package:flowers_app/features/app_filter_tabs/domain/entities/app_filter_tab_item_entity.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'home_occasion_dto.g.dart';
@@ -41,7 +41,7 @@ class HomeOccasionDto {
 
   Map<String, dynamic> toJson() => _$HomeOccasionDtoToJson(this);
 
-  factory HomeOccasionDto.fromEntity(HomeOccasionEntity entity) {
+  factory HomeOccasionDto.fromEntity(AppFilterTabItemEntity entity) {
     return HomeOccasionDto(
       id: entity.id,
       name: entity.name,
@@ -53,8 +53,8 @@ class HomeOccasionDto {
     );
   }
 
-  HomeOccasionEntity toEntity() {
-    return HomeOccasionEntity(
+  AppFilterTabItemEntity toEntity() {
+    return AppFilterTabItemEntity(
       id: id,
       name: name,
       slug: slug,

@@ -1,6 +1,7 @@
 import 'package:flowers_app/config/dependency_injection/di.dart';
 import 'package:flowers_app/core/values/app_strings.dart';
 import 'package:flowers_app/core/widgets/custom_app_bar.dart';
+import 'package:flowers_app/features/app_filter_tabs/domain/entities/app_filter_tab_item_entity.dart';
 import 'package:flowers_app/features/app_filter_tabs/domain/entities/app_filter_tabs_params.dart';
 import 'package:flowers_app/features/app_filter_tabs/presentation/view/widgets/app_filter_tabs_bar.dart';
 import 'package:flowers_app/features/app_filter_tabs/presentation/view_model/cubit/app_filter_tabs_cubit.dart';
@@ -11,7 +12,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class OccasionPage extends StatefulWidget {
-  const OccasionPage({super.key});
+  final AppFilterTabItemEntity? occasion;
+
+  const OccasionPage({super.key, this.occasion});
 
   @override
   State<OccasionPage> createState() => _OccasionPageState();
@@ -23,13 +26,24 @@ class _OccasionPageState extends State<OccasionPage> {
 
   @override
   void initState() {
-    appFilterTabsCubit = getIt<AppFilterTabsCubit>()
-      ..doIntent(
-        GetAllAppFilterTabsEvent(
-          params: AppFilterTabsParams(type: AppFilterTabsType.occasions),
+    appFilterTabsCubit = getIt<AppFilterTabsCubit>();
+    appFilterTabsCubit.doIntent(
+      GetAllAppFilterTabsEvent(
+        params: AppFilterTabsParams(type: AppFilterTabsType.occasions),
+        selectedTabFilter: widget.occasion,
+      ),
+    );
+    productsCubit = getIt<ProductsCubit>();
+    if (widget.occasion != null) {
+      productsCubit.doIntent(
+        GetAllProductsEvent(
+          params: ProductsParams(
+            category: widget.occasion,
+            type: AppFilterTabsType.occasions,
+          ),
         ),
       );
-    productsCubit = getIt<ProductsCubit>();
+    }
     super.initState();
   }
 
@@ -41,44 +55,63 @@ class _OccasionPageState extends State<OccasionPage> {
         subTitle: AppStrings.occasionSubTitle,
       ),
       body: SafeArea(
-        child: Column(
-          children: [
-            BlocProvider<AppFilterTabsCubit>(
-              create: (context) => appFilterTabsCubit,
-              child: BlocListener<AppFilterTabsCubit, AppFilterTabsStates>(
-                listenWhen: (previous, current) =>
-                    previous.selectCategoryState != current.selectCategoryState,
-                listener: (context, state) {
-                  final category = state.selectCategoryState;
-                  if (category != null) {
-                    productsCubit.doIntent(
-                      GetAllProductsEvent(
-                        params: ProductsParams(
-                          category: category,
-                          type: AppFilterTabsType.occasions,
-                        ),
-                      ),
-                    );
-                  }
-                },
-                child: AppFilterTabsBar(
-                  onTap: (item) {
-                    appFilterTabsCubit.doIntent(
-                      SelectAppFilterTabEvent(category: item),
-                    );
-                  },
-                ),
-              ),
-            ),
-            Expanded(
-              child: BlocProvider<ProductsCubit>(
-                create: (context) => productsCubit,
-                child: const ProductsBody(),
-              ),
-            ),
-          ],
+        child: ProductWithTabFilter(
+          appFilterTabsCubit: appFilterTabsCubit,
+          productsCubit: productsCubit,
         ),
       ),
+    );
+  }
+}
+
+class ProductWithTabFilter extends StatelessWidget {
+  final AppFilterTabsCubit appFilterTabsCubit;
+  final ProductsCubit productsCubit;
+
+  const ProductWithTabFilter({
+    super.key,
+    required this.appFilterTabsCubit,
+    required this.productsCubit,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        BlocProvider<AppFilterTabsCubit>(
+          create: (context) => appFilterTabsCubit,
+          child: BlocListener<AppFilterTabsCubit, AppFilterTabsStates>(
+            listenWhen: (previous, current) =>
+                previous.selectCategoryState != current.selectCategoryState,
+            listener: (context, state) {
+              final category = state.selectCategoryState;
+              if (category != null) {
+                productsCubit.doIntent(
+                  GetAllProductsEvent(
+                    params: ProductsParams(
+                      category: category,
+                      type: AppFilterTabsType.occasions,
+                    ),
+                  ),
+                );
+              }
+            },
+            child: AppFilterTabsBar(
+              onTap: (item) {
+                appFilterTabsCubit.doIntent(
+                  SelectAppFilterTabEvent(category: item),
+                );
+              },
+            ),
+          ),
+        ),
+        Expanded(
+          child: BlocProvider<ProductsCubit>(
+            create: (context) => productsCubit,
+            child: const ProductsBody(),
+          ),
+        ),
+      ],
     );
   }
 }

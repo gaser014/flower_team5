@@ -1,14 +1,16 @@
-import 'package:flowers_app/features/home/domain/entities/home_occasion_entity.dart';
+import 'package:flowers_app/core/routes/routes.dart';
+import 'package:flowers_app/features/app_filter_tabs/domain/entities/app_filter_tab_item_entity.dart';
 import 'package:flowers_app/features/home/presentation/view/widgets/home_product_and_occasion_card.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 
 enum HomeCardType { product, occasion }
 
 class OccasionSection extends StatelessWidget {
   const OccasionSection({super.key, required this.occasions});
 
-  final List<HomeOccasionEntity> occasions;
+  final List<AppFilterTabItemEntity> occasions;
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +27,9 @@ class OccasionSection extends StatelessWidget {
             name: occasion.name ?? '',
             imageUrl: occasion.image ?? '',
             cardType: HomeCardType.occasion,
-            onTap: () {},
+            onTap: () {
+              context.push(Routes.occasionPage, extra: occasion);
+            },
           );
         },
       ),

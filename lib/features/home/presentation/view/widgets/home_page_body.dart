@@ -1,3 +1,4 @@
+import 'package:flowers_app/core/routes/routes.dart';
 import 'package:flowers_app/core/values/app_strings.dart';
 import 'package:flowers_app/features/home/presentation/view/widgets/best_seller_section.dart';
 import 'package:flowers_app/features/home/presentation/view/widgets/category_list_section.dart';
@@ -9,6 +10,7 @@ import 'package:flowers_app/features/main/presentation/view_model/cubit/home_eve
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 
 class HomePageBody extends StatefulWidget {
   const HomePageBody({super.key});
@@ -61,12 +63,22 @@ class _HomePageBodyState extends State<HomePageBody> {
                         const Gap(16),
                       ],
                       if (homeData.bestSeller?.isNotEmpty ?? false) ...[
-                        const SectionHeader(title: AppStrings.bestSeller),
+                        SectionHeader(
+                          title: AppStrings.bestSeller,
+                          onViewAllPressed: () {
+                            // context.push(Routes.bestSeller);
+                          },
+                        ),
                         BestSellerSection(products: homeData.bestSeller ?? []),
                         const Gap(16),
                       ],
                       if (homeData.occasions?.isNotEmpty ?? false) ...[
-                        const SectionHeader(title: AppStrings.occasion),
+                        SectionHeader(
+                          title: AppStrings.occasion,
+                          onViewAllPressed: () {
+                            context.push(Routes.occasionPage);
+                          },
+                        ),
                         OccasionSection(occasions: homeData.occasions ?? []),
                       ],
                     ],
