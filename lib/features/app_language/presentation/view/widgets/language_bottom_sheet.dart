@@ -3,6 +3,7 @@ import 'package:flowers_app/core/values/app_font_style.dart';
 import 'package:flowers_app/core/values/app_strings.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 
 class LanguageBottomSheet extends StatefulWidget {
   final String initialLanguage;
@@ -44,9 +45,9 @@ class _LanguageBottomSheetState extends State<LanguageBottomSheet> {
         children: [
           Text(
             AppStrings.changeLanguage,
-            style: AppFontStyle.bold18(context: context).copyWith(
-              color: AppColors.primerColor,
-            ),
+            style: AppFontStyle.bold18(
+              context: context,
+            ).copyWith(color: AppColors.primerColor),
           ),
           const Gap(16),
           _buildLanguageOption(AppStrings.arabic),
@@ -67,7 +68,7 @@ class _LanguageBottomSheetState extends State<LanguageBottomSheet> {
           selectedLanguage = language;
         });
         widget.onLanguageSelected(language);
-        Navigator.pop(context); // Close the bottom sheet after selection
+        context.pop(); // Close the bottom sheet after selection
       },
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
@@ -84,9 +85,9 @@ class _LanguageBottomSheetState extends State<LanguageBottomSheet> {
           children: [
             Text(
               language,
-              style: AppFontStyle.semiBold14(context: context).copyWith(
-                color: AppColors.black,
-              ),
+              style: AppFontStyle.semiBold14(
+                context: context,
+              ).copyWith(color: AppColors.black),
             ),
             Container(
               width: 20,
@@ -94,10 +95,7 @@ class _LanguageBottomSheetState extends State<LanguageBottomSheet> {
               padding: const EdgeInsets.all(2),
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                border: Border.all(
-                  color: AppColors.primerColor,
-                  width: 1.5,
-                ),
+                border: Border.all(color: AppColors.primerColor, width: 1.5),
               ),
               child: isSelected
                   ? Container(

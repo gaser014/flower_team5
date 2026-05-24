@@ -1,7 +1,9 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flowers_app/core/values/app_assets.dart';
 import 'package:flowers_app/core/values/app_colors.dart';
 import 'package:flowers_app/core/values/app_strings.dart';
 import 'package:flowers_app/features/cart/presentation/view/pages/cart_page.dart';
+import 'package:flowers_app/features/categories/presentation/view/categories_view.dart';
 import 'package:flowers_app/features/home/presentation/view/pages/home_page.dart';
 import 'package:flowers_app/features/main/presentation/screens/home_app_bar_widget.dart';
 import 'package:flowers_app/features/main/presentation/screens/profile_appbar.dart';
@@ -12,19 +14,36 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class MainView extends StatelessWidget {
+class MainView extends StatefulWidget {
   const MainView({super.key});
 
-  final List<Widget> _pages = const <Widget>[
-    HomePage(),
-    Center(child: Text('Categories')),
-    Center(child: Text('Cart')),
-    MainProfilePage(),
-  ];
+  @override
+  State<MainView> createState() => _MainViewState();
+}
+
+class _MainViewState extends State<MainView> {
+  late final HomeCubit cubit;
+  late List<Widget> _pages;
+
+  @override
+  void initState() {
+    super.initState();
+    cubit = context.read<HomeCubit>();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _pages = <Widget>[
+      const HomePage(),
+      CategoriesView(),
+      CartPage(),
+      KeyedSubtree(key: ValueKey(context.locale), child: MainProfilePage()),
+    ];
+  }
 
   @override
   Widget build(BuildContext context) {
-    final cubit = context.read<HomeCubit>();
     return BlocBuilder<HomeCubit, HomeState>(
       builder: (context, state) {
         final selectedIndex = state.bottomNavIndex;

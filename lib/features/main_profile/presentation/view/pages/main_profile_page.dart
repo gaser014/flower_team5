@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flowers_app/config/dependency_injection/di.dart';
 import 'package:flowers_app/core/values/app_strings.dart';
+import 'package:flowers_app/features/app_language/presentation/view/widgets/language_bottom_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -17,6 +18,34 @@ import 'package:flowers_app/features/main_profile/presentation/view/widgets/main
 
 class MainProfilePage extends StatelessWidget {
   const MainProfilePage({super.key});
+  String _getLanguageString(BuildContext context) {
+    if (Localizations.localeOf(context).languageCode == 'ar') {
+      return AppStrings.arabic;
+    }
+    return AppStrings.english;
+  }
+
+  void _showLanguageBottomSheet(BuildContext context) {
+    final currentLanguage = _getLanguageString(context);
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (_) {
+        return LanguageBottomSheet(
+          initialLanguage: currentLanguage,
+          onLanguageSelected: (newLanguage) {
+            final code = newLanguage == AppStrings.arabic ? 'ar' : 'en';
+            if (code == 'ar') {
+              context.setLocale(const Locale('ar', 'EG'));
+            } else {
+              context.setLocale(const Locale('en', 'US'));
+            }
+          },
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -126,7 +155,7 @@ class MainProfilePage extends StatelessWidget {
 
                             ProfileMenuItemWidget(
                               title: AppStrings.language,
-                              onTap: () {},
+                              onTap: () => _showLanguageBottomSheet(context),
                               leadingIconWidget: SvgPicture.asset(
                                 AppAssets.iconsTranslateLang,
                                 height: 24,

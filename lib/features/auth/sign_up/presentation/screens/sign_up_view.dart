@@ -87,7 +87,7 @@ class _SignUpViewBodyState extends State<_SignUpViewBody> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const CustomAppBar(title: AppStrings.registerTitle),
+      appBar: CustomAppBar(title: AppStrings.registerTitle),
       body: BlocConsumer<SignUpCubit, SignUpState>(
         listenWhen: (previous, current) => previous.status != current.status,
         listener: (context, state) {

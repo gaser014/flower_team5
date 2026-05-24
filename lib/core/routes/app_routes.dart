@@ -1,14 +1,13 @@
 import 'dart:developer';
 import 'dart:io';
 
-import 'package:flowers_app/config/api/api_key.dart';
-import 'package:flowers_app/config/database/cache_helper.dart';
 import 'package:flowers_app/config/dependency_injection/di.dart';
 import 'package:flowers_app/core/data/data_sources/auth_local_data_source.dart';
 import 'package:flowers_app/core/routes/routes.dart';
 import 'package:flowers_app/features/app_filter_tabs/domain/entities/app_filter_tab_item_entity.dart';
 import 'package:flowers_app/features/best_seller/presentation/view/pages/best_seller_page.dart';
-import 'package:flowers_app/features/categories/domain/entities/category_entity.dart';
+import 'package:flowers_app/features/edit_profile/presentation/view/pages/change_password_page.dart';
+import 'package:flowers_app/features/edit_profile/presentation/view/pages/edit_profile_page.dart';
 import 'package:flowers_app/features/forget_password/presentation/view_model/bloc/forget_password_bloc.dart';
 import 'package:flowers_app/features/login/presentation/view/pages/login_page.dart';
 import 'package:flowers_app/features/logout/presentation/view/pages/profile_page.dart';
@@ -17,7 +16,6 @@ import 'package:flowers_app/features/product_details/presentation/view/pages/pro
 import 'package:flowers_app/features/products/presentation/view/pages/occasion_page.dart';
 import 'package:flowers_app/features/spalsh/splash_page.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flowers_app/features/auth/sign_up/presentation/screens/sign_up_view.dart';
 import 'package:flowers_app/features/auth/sign_up/presentation/screens/terms_and_conditions_view.dart';
@@ -25,7 +23,6 @@ import 'package:flowers_app/features/auth/sign_up/presentation/screens/terms_and
 import '../../features/forget_password/presentation/view/pages/forget_password_page.dart';
 import '../../features/forget_password/presentation/view/pages/verify_code_page.dart';
 import '../../features/forget_password/presentation/view/pages/reset_password_page.dart';
-import '../../features/forget_password/presentation/view_model/cubit/forget_password_cubit.dart';
 import 'package:flowers_app/features/products/domain/entities/product_entity.dart';
 
 final RouteObserver<ModalRoute> routeObserver = RouteObserver<ModalRoute>();
@@ -297,6 +294,20 @@ abstract class AppRoutes {
           child: const SignUpView(),
           animationType: AnimationType.slideFromRight,
         ),
+      ),
+      GoRoute(
+        path: Routes.editProfile,
+        name: Routes.editProfile,
+        builder: (BuildContext context, GoRouterState state) {
+          return const EditProfilePage();
+        },
+      ),
+      GoRoute(
+        path: Routes.changePassword,
+        name: Routes.changePassword,
+        builder: (BuildContext context, GoRouterState state) {
+          return const ChangePasswordPage();
+        },
       ),
       GoRoute(
         path: Routes.termsAndConditions,

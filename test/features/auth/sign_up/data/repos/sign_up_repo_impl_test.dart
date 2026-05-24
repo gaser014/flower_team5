@@ -31,6 +31,9 @@ class MockAuthLocalDataSource implements AuthLocalDataSourceContract {
   Future<String?> getUserToken() async => null;
   @override
   Future<void> deleteUserToken() async {}
+
+  @override
+  Future<void> clearSession() async {}
 }
 
 void main() {

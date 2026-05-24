@@ -7,13 +7,13 @@ class TermsAndConditionsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text(AppStrings.termsConditionsPart2)),
-      body: const Padding(
-        padding: EdgeInsets.all(16),
+      appBar: AppBar(title: Text(AppStrings.termsConditionsPart2)),
+      body: Padding(
+        padding: const EdgeInsets.all(16),
         child: SingleChildScrollView(
           child: Text(
             AppStrings.termsAndConditionsView,
-            style: TextStyle(fontSize: 16),
+            style: const TextStyle(fontSize: 16),
           ),
         ),
       ),

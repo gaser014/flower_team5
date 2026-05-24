@@ -16,7 +16,7 @@ class ResetPasswordPage extends StatelessWidget {
     return BlocProvider.value(
       value: bloc,
       child: Scaffold(
-        appBar: const CustomAppBar(title: AppStrings.resetPasswordTitle),
+        appBar: CustomAppBar(title: AppStrings.resetPasswordTitle),
         body: Padding(
           padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 24.h),
           child: const ResetPasswordBody(),

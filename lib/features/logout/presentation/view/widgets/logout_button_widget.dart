@@ -42,7 +42,9 @@ class LogoutButtonWidget extends StatelessWidget {
                   },
                   onConfirm: () {
                     Navigator.pop(dialogContext);
-                    context.read<LogoutCubit>().doIndented(const DoLogoutEvent());
+                    context.read<LogoutCubit>().doIndented(
+                      const DoLogoutEvent(),
+                    );
                   },
                 ),
               );
@@ -60,16 +62,20 @@ class LogoutButtonWidget extends StatelessWidget {
                   else
                     const Icon(Icons.logout, color: Colors.black54),
                   const SizedBox(width: 16),
-                  const Text(
-                  AppStrings.Logout,
-                    style: TextStyle(
+                  Text(
+                    AppStrings.logout,
+                    style: const TextStyle(
                       fontSize: 16,
                       color: Colors.black87,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
                   const Spacer(),
-                  const Icon(Icons.arrow_forward_ios, color: Colors.black54, size: 16),
+                  const Icon(
+                    Icons.arrow_forward_ios,
+                    color: Colors.black54,
+                    size: 16,
+                  ),
                 ],
               ),
             ),

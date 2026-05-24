@@ -35,15 +35,16 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     final canPop = context.canPop();
-    final shouldShowBack = showBackButton && (canPop || onBackPressed != null);
+    final shouldShowBack = showBackButton && canPop;
     final isRTL = Directionality.of(context) == TextDirection.rtl;
     return AppBar(
       backgroundColor: backgroundColor ?? Colors.transparent,
       elevation: 0,
       automaticallyImplyLeading: false,
+
       titleSpacing: shouldShowBack ? 4 : 16,
       leading: shouldShowBack ? _BackButton(onPressed: onBackPressed) : null,
-      leadingWidth: shouldShowBack && !isRTL ? 40 : 0,
+      leadingWidth: shouldShowBack && !isRTL ? 40 : 40,
       title: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

@@ -15,7 +15,7 @@ class VerifyCodePage extends StatelessWidget {
     return BlocProvider.value(
       value: bloc,
       child: Scaffold(
-        appBar: const CustomAppBar(title: AppStrings.password),
+        appBar: CustomAppBar(title: AppStrings.password),
         body: Padding(
           padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 24.h),
           child: const VerifyCodeBody(),

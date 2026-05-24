@@ -164,34 +164,42 @@ class _AddButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 24),
-        decoration: BoxDecoration(
-          color: AppColors.primerColor,
-          borderRadius: BorderRadius.circular(100),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          spacing: 8,
-          children: [
-            SvgPicture.asset(
-              AppAssets.iconsCart,
-              width: 18,
-              height: 18,
-              colorFilter: const ColorFilter.mode(
-                AppColors.whiteF9,
-                BlendMode.srcIn,
+    return Directionality(
+      textDirection: TextDirection.ltr,
+      child: GestureDetector(
+        onTap: onTap,
+        child: Container(
+          padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 24),
+          decoration: BoxDecoration(
+            color: AppColors.primerColor,
+            borderRadius: BorderRadius.circular(100),
+          ),
+
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            spacing: 8,
+            children: [
+              SvgPicture.asset(
+                AppAssets.iconsCart,
+                width: 18,
+                height: 18,
+                colorFilter: const ColorFilter.mode(
+                  AppColors.whiteF9,
+                  BlendMode.srcIn,
+                ),
               ),
-            ),
-            Text(
-              AppStrings.addToCart,
-              style: AppFontStyle.medium13(
-                context: context,
-              ).copyWith(color: AppColors.whiteF9),
-            ),
-          ],
+              Expanded(
+                child: FittedBox(
+                  child: Text(
+                    AppStrings.addToCart,
+                    style: AppFontStyle.medium13(
+                      context: context,
+                    ).copyWith(color: AppColors.whiteF9),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -211,30 +219,36 @@ class _QuantityStepper extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+    return Directionality(
+      textDirection: TextDirection.ltr,
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
 
-      decoration: BoxDecoration(
-        color: AppColors.primerColor,
-        borderRadius: BorderRadius.circular(100),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        spacing: 12,
-        children: [
-          Expanded(
-            child: _StepperIcon(icon: Icons.remove_rounded, onTap: onDecrement),
-          ),
-          Text(
-            '$quantity',
-            style: AppFontStyle.semiBold14(
-              context: context,
-            ).copyWith(color: AppColors.whiteF9),
-          ),
-          Expanded(
-            child: _StepperIcon(icon: Icons.add_rounded, onTap: onIncrement),
-          ),
-        ],
+        decoration: BoxDecoration(
+          color: AppColors.primerColor,
+          borderRadius: BorderRadius.circular(100),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          spacing: 12,
+          children: [
+            Expanded(
+              child: _StepperIcon(
+                icon: Icons.remove_rounded,
+                onTap: onDecrement,
+              ),
+            ),
+            Text(
+              '$quantity',
+              style: AppFontStyle.semiBold14(
+                context: context,
+              ).copyWith(color: AppColors.whiteF9),
+            ),
+            Expanded(
+              child: _StepperIcon(icon: Icons.add_rounded, onTap: onIncrement),
+            ),
+          ],
+        ),
       ),
     );
   }
