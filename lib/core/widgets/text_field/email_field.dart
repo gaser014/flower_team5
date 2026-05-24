@@ -32,6 +32,7 @@ class EmailField extends StatelessWidget {
       controller: controller,
       focusNode: focusNode,
       enabled: enabled,
+
       keyboardType: TextInputType.emailAddress,
       textInputAction: textInputAction ?? TextInputAction.next,
       inputFormatters: AppInputFormatters.email,

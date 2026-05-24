@@ -31,6 +31,8 @@ class PhoneField extends StatelessWidget {
       focusNode: focusNode,
       enabled: enabled,
       keyboardType: TextInputType.phone,
+      autovalidateMode: AutovalidateMode.onUserInteraction,
+
       textInputAction: textInputAction ?? TextInputAction.done,
       inputFormatters: AppInputFormatters.egyptianPhone,
       validator: validator ?? Validations.validateEgyptianPhone,

@@ -36,6 +36,7 @@ class OtpInputField extends StatelessWidget {
         onCompleted: onCompleted,
         onChanged: onChanged,
         validator: validator,
+        pinputAutovalidateMode: PinputAutovalidateMode.onSubmit,
         defaultPinTheme: _defaultPinTheme(context),
         focusedPinTheme: _focusedPinTheme(context),
         submittedPinTheme: _submittedPinTheme(context),
