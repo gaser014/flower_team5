@@ -41,12 +41,14 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       backgroundColor: backgroundColor ?? Colors.transparent,
       elevation: 0,
       automaticallyImplyLeading: false,
-
+      centerTitle: centerTitle,
       titleSpacing: shouldShowBack ? 4 : 16,
       leading: shouldShowBack ? _BackButton(onPressed: onBackPressed) : null,
       leadingWidth: shouldShowBack && !isRTL ? 40 : 40,
       title: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: centerTitle
+            ? CrossAxisAlignment.center
+            : CrossAxisAlignment.start,
         children: [
           Text(
             title,

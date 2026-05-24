@@ -15,7 +15,7 @@ class CustomButton extends StatelessWidget {
   final Color? textColor;
   final double? width;
   final double radius;
-  final double height;
+  final double? height;
   final ButtonVariant variant;
   final BorderSide? borderSide;
 
@@ -29,7 +29,7 @@ class CustomButton extends StatelessWidget {
     this.radius = 100,
     this.textColor,
     this.width,
-    this.height = 48,
+    this.height,
     this.borderSide,
     this.variant = ButtonVariant.filled,
   });
@@ -72,7 +72,7 @@ class _FilledButton extends StatelessWidget {
   final bool isLoading;
   final bool enabled;
   final double? width;
-  final double height;
+  final double? height;
   final Color? backgroundColor;
   final double radius;
   final Color? textColor;
@@ -127,7 +127,7 @@ class _OutlinedButton extends StatelessWidget {
   final VoidCallback? onPressed;
   final bool isLoading;
   final double? width;
-  final double height;
+  final double? height;
   final double radius;
   final Color? textColor;
   final Color? borderColor;

@@ -16,11 +16,13 @@ class SectionHeader extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(
-            title,
-            style: AppFontStyle.bold18(
-              context: context,
-            ).copyWith(color: AppColors.black0C),
+          Expanded(
+            child: Text(
+              title,
+              style: AppFontStyle.bold18(
+                context: context,
+              ).copyWith(color: AppColors.black0C),
+            ),
           ),
           TextButton(
             onPressed: onViewAllPressed,

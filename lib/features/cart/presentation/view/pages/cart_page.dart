@@ -1,4 +1,6 @@
 import 'package:flowers_app/core/values/app_colors.dart';
+import 'package:flowers_app/core/values/app_strings.dart';
+import 'package:flowers_app/core/widgets/custom_app_bar.dart';
 import 'package:flowers_app/features/cart/domain/entities/cart_entity.dart';
 import 'package:flowers_app/features/cart/presentation/view/widgets/cart_empty_widget.dart';
 import 'package:flowers_app/features/cart/presentation/view/widgets/cart_page_with_data.dart';
@@ -28,7 +30,7 @@ class _CartPageState extends State<CartPage>
   Widget build(BuildContext context) {
     super.build(context);
     return Scaffold(
-      backgroundColor: AppColors.whiteF9,
+      appBar: CustomAppBar(title: AppStrings.cart, centerTitle: true),
       body: SafeArea(
         child: BlocBuilder<CartCubit, CartStates>(
           buildWhen: (previous, current) => previous.state != current.state,

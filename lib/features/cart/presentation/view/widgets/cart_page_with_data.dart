@@ -4,22 +4,32 @@ import 'package:flowers_app/core/values/app_strings.dart';
 import 'package:flowers_app/core/widgets/custom_button.dart';
 import 'package:flowers_app/features/cart/domain/entities/cart_entity.dart';
 import 'package:flowers_app/features/cart/presentation/view/widgets/cart_item.dart';
-import 'package:flowers_app/features/cart/presentation/view/widgets/cart_upper_part.dart';
 import 'package:flowers_app/features/cart/presentation/view_model/cubit/cart_cubit.dart';
 import 'package:flowers_app/features/cart/presentation/view_model/cubit/cart_events.dart';
 import 'package:flowers_app/features/cart/presentation/view_model/cubit/cart_states.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class CartPageWithData extends StatelessWidget {
+class CartPageWithData extends StatefulWidget {
   const CartPageWithData({super.key});
+
+  @override
+  State<CartPageWithData> createState() => _CartPageWithDataState();
+}
+
+class _CartPageWithDataState extends State<CartPageWithData> {
+  late final CartCubit cubit;
+  @override
+  void initState() {
+    cubit = context.read<CartCubit>();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<CartCubit, CartStates>(
       buildWhen: (a, b) => a.state.data != b.state.data,
       builder: (context, state) {
-        final cubit = context.read<CartCubit>();
         final cart = state.state.data ?? CartEntity.empty();
         final products = cart.cartProducts;
         final subTotal = cart.totalPrice;
@@ -30,8 +40,6 @@ class CartPageWithData extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Column(
             children: [
-              CartUpperPart(itemsCount: products.length),
-              const SizedBox(height: 8),
               Expanded(
                 child: ListView.separated(
                   padding: const EdgeInsets.symmetric(vertical: 8),
