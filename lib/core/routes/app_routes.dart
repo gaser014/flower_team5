@@ -7,9 +7,7 @@ import 'package:flowers_app/features/login/presentation/view/pages/login_page.da
 import 'package:flowers_app/features/spalsh/splash_page.dart';
 import 'package:flowers_app/features/main/presentation/screens/main_view.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flowers_app/features/spalsh/splash_page.dart';
 
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:go_router/go_router.dart';
 
 final RouteObserver<ModalRoute> routeObserver = RouteObserver<ModalRoute>();
