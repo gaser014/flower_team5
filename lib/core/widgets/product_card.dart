@@ -1,3 +1,4 @@
+import 'package:flowers_app/core/routes/routes.dart';
 import 'package:flowers_app/core/values/app_assets.dart';
 import 'package:flowers_app/core/values/app_colors.dart';
 import 'package:flowers_app/core/values/app_font_style.dart';
@@ -6,44 +7,49 @@ import 'package:flowers_app/core/widgets/custom_cached_image.dart';
 import 'package:flowers_app/features/products/domain/entities/product_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:go_router/go_router.dart';
 
 class ProductCard extends StatelessWidget {
   final ProductEntity product;
-
   const ProductCard({super.key, required this.product});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(8),
-      decoration: BoxDecoration(
-        color: AppColors.white,
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: AppColors.gray53, width: .5),
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          _ProductImage(imgCover: product.imgCover),
-          Expanded(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text(
-                  product.title ?? 'Product',
-                  style: AppFontStyle.regular12(
-                    context: context,
-                  ).copyWith(color: AppColors.black0C),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                FittedBox(child: _PriceRow(product: product)),
-              ],
+    return GestureDetector(
+      onTap: () {
+        // context.push(Routes.productDetails, extra: product);
+      },
+      child: Container(
+        padding: const EdgeInsets.all(8),
+        decoration: BoxDecoration(
+          color: AppColors.white,
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(color: AppColors.gray53, width: .5),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            _ProductImage(imgCover: product.imgCover),
+            Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    product.title ?? 'Product',
+                    style: AppFontStyle.regular12(
+                      context: context,
+                    ).copyWith(color: AppColors.black0C),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  FittedBox(child: _PriceRow(product: product)),
+                ],
+              ),
             ),
-          ),
-          _AddToCartButton(onTap: () {}),
-        ],
+            _AddToCartButton(onTap: () {}),
+          ],
+        ),
       ),
     );
   }

@@ -17,7 +17,6 @@ class AppFilterTabsBar extends StatelessWidget {
       builder: (context, state) {
         return ListFilterTabs(
           onTap: onTap,
-
           selectedItem: context.select(
             (AppFilterTabsCubit cubit) => cubit.state.selectCategoryState,
           ),

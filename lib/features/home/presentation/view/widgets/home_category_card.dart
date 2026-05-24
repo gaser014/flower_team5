@@ -1,6 +1,7 @@
 import 'package:flowers_app/core/values/app_colors.dart';
 import 'package:flowers_app/core/values/app_font_style.dart';
 import 'package:flowers_app/core/widgets/custom_cached_image.dart';
+import 'package:flowers_app/features/app_filter_tabs/domain/entities/app_filter_tab_item_entity.dart';
 import 'package:flowers_app/features/home/domain/entities/home_category_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
@@ -8,7 +9,7 @@ import 'package:gap/gap.dart';
 class CategoryCard extends StatelessWidget {
   const CategoryCard({super.key, required this.category});
 
-  final HomeCategoryEntity category;
+  final AppFilterTabItemEntity category;
 
   @override
   Widget build(BuildContext context) {
