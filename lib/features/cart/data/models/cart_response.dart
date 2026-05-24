@@ -19,14 +19,17 @@ class CartResponse {
       _$CartResponseFromJson(json);
 
   CartEntity toCartEntity() {
+    final items = cart?.cartItems ?? const [];
+    final map = <String, CartProductEntity>{};
+    for (final item in items) {
+      final entity = item.toCartProductEntity();
+      if (entity.id.isEmpty) continue;
+      map[entity.id] = entity;
+    }
     return CartEntity(
       numOfCartItems: numOfCartItems?.toInt() ?? 0,
       totalPrice: cart?.totalPrice?.toDouble() ?? 0,
-      cartProducts:
-          cart?.cartItems?.map((value) {
-            return value.toCartProductEntity();
-          }).toList() ??
-          [],
+      cartProductsMap: map,
     );
   }
 }

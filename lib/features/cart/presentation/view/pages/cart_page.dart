@@ -1,4 +1,3 @@
-import 'package:flowers_app/config/dependency_injection/di.dart';
 import 'package:flowers_app/core/values/app_colors.dart';
 import 'package:flowers_app/features/cart/domain/entities/cart_entity.dart';
 import 'package:flowers_app/features/cart/presentation/view/widgets/cart_empty_widget.dart';
@@ -19,38 +18,31 @@ class CartPage extends StatefulWidget {
 
 class _CartPageState extends State<CartPage>
     with AutomaticKeepAliveClientMixin {
-  late final CartCubit vm;
-
   @override
   void initState() {
     super.initState();
-    vm = getIt<CartCubit>()..doIntent(GetCartDataEvent());
+    context.read<CartCubit>().doIntent(GetCartDataEvent());
   }
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return BlocProvider<CartCubit>.value(
-      value: vm,
-      child: Scaffold(
-        backgroundColor: AppColors.whiteF9,
-        body: SafeArea(
-          child: BlocBuilder<CartCubit, CartStates>(
-            buildWhen: (previous, current) => previous.state != current.state,
-            builder: (context, state) {
-              return state.state.when(
-                initial: () => const Center(child: CircularProgressIndicator()),
-                loading: () => const Center(child: CircularProgressIndicator()),
-                error: (_) => const NotAuthenticatedUserWidget(),
-                success: (CartEntity data) {
-                  if (data.cartProducts.isEmpty) {
-                    return const CartEmptyWidget();
-                  }
-                  return CartPageWithData(cartViewModel: vm);
-                },
-              );
-            },
-          ),
+    return Scaffold(
+      backgroundColor: AppColors.whiteF9,
+      body: SafeArea(
+        child: BlocBuilder<CartCubit, CartStates>(
+          buildWhen: (previous, current) => previous.state != current.state,
+          builder: (context, state) {
+            return state.state.when(
+              initial: () => const Center(child: CircularProgressIndicator()),
+              loading: () => const Center(child: CircularProgressIndicator()),
+              error: (_) => const NotAuthenticatedUserWidget(),
+              success: (CartEntity data) {
+                if (data.isEmpty) return const CartEmptyWidget();
+                return const CartPageWithData();
+              },
+            );
+          },
         ),
       ),
     );

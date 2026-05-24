@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flowers_app/config/base_response/result.dart';
 import 'package:flowers_app/config/base_state/base_state.dart';
 import 'package:flowers_app/features/cart/data/models/post/cart_product_post_data.dart';
@@ -10,6 +12,7 @@ import 'package:flowers_app/features/cart/domain/use_cases/remove_product_from_c
 import 'package:flowers_app/features/cart/domain/use_cases/update_product_in_cart_usecase.dart';
 import 'package:flowers_app/features/cart/presentation/view_model/cubit/cart_events.dart';
 import 'package:flowers_app/features/cart/presentation/view_model/cubit/cart_states.dart';
+import 'package:flowers_app/features/products/domain/entities/product_entity.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 
@@ -20,12 +23,12 @@ class CartCubit extends Cubit<CartStates> {
     required AddProductToCartUseCase addProductToCartUseCase,
     required RemoveProductFromCartUseCase removeProductFromCartUseCase,
     required ClearUserCartUseCase clearUserCartUseCase,
-    required UpdateProductInCartUsecase updateProductInCartUsecase,
+    required UpdateProductInCartUsecase updateProductInCartUseCase,
   }) : _getCartDataUseCase = getCartDataUseCase,
        _addProductToCartUseCase = addProductToCartUseCase,
        _removeProductFromCartUseCase = removeProductFromCartUseCase,
        _clearUserCartUseCase = clearUserCartUseCase,
-       _updateProductInCartUsecase = updateProductInCartUsecase,
+       _updateProductInCartUsecase = updateProductInCartUseCase,
        super(CartStates.initial());
 
   final GetCartDataUseCase _getCartDataUseCase;
@@ -34,29 +37,55 @@ class CartCubit extends Cubit<CartStates> {
   final ClearUserCartUseCase _clearUserCartUseCase;
   final UpdateProductInCartUsecase _updateProductInCartUsecase;
 
+  static const Duration _debounceDuration = Duration(milliseconds: 600);
+  static const Duration _maxWait = Duration(seconds: 3);
+
+  final Map<String, Timer> _debounceTimers = {};
+  final Map<String, Timer> _maxWaitTimers = {};
+  final Map<String, int> _lastSyncedQuantity = {};
+  final Map<String, Future<void>> _inFlight = {};
+
   @override
   void emit(CartStates state) {
     if (!isClosed) super.emit(state);
+  }
+
+  @override
+  Future<void> close() {
+    for (final t in _debounceTimers.values) {
+      t.cancel();
+    }
+    for (final t in _maxWaitTimers.values) {
+      t.cancel();
+    }
+    return super.close();
   }
 
   Future<dynamic> doIntent(CartEvents event) async {
     switch (event) {
       case GetCartDataEvent():
         await _loadCart();
-      case AddProductToCartEvent():
-        return _addProduct(
-          productId: event.productId,
-          fromCartScreen: event.fromCartScreen,
-        );
+      case IncrementProductEvent():
+        _localIncrement(event.product);
+      case DecrementProductEvent():
+        _localDecrement(event.productId);
       case RemoveProductFromCartEvent():
-        await _removeProduct(productId: event.productId);
+        _localRemove(event.productId);
       case ClearUserCartEvent():
         await _clearCart();
+      case AddProductToCartEvent():
+        _localIncrementById(event.productId);
       case UpdateProductInCartEvent():
-        await _updateQuantity(
-          productId: event.productId,
-          quantity: event.quantity,
-        );
+        _localSetQuantity(event.productId, event.quantity);
+    }
+  }
+
+  Future<void> flushPendingSyncs() async {
+    final pendingIds = _debounceTimers.keys.toList();
+    for (final id in pendingIds) {
+      _debounceTimers.remove(id)?.cancel();
+      _maxWaitTimers.remove(id)?.cancel();
+      await _syncProduct(id);
     }
   }
 
@@ -66,10 +95,18 @@ class CartCubit extends Cubit<CartStates> {
     final result = await _getCartDataUseCase();
     switch (result) {
       case Success<CartEntity>():
+        final cart = result.data ?? CartEntity.empty();
+        _lastSyncedQuantity
+          ..clear()
+          ..addEntries(
+            cart.cartProductsMap.entries.map(
+              (e) => MapEntry(e.key, e.value.productQuantityInCart),
+            ),
+          );
         emit(
           state.copyWith(
-            state: BaseState<CartEntity>.success(result.data),
-            totalPrice: result.data?.totalPrice ?? 0,
+            state: BaseState<CartEntity>.success(cart),
+            totalPrice: cart.totalPrice,
           ),
         );
       case Error<CartEntity>():
@@ -79,142 +116,15 @@ class CartCubit extends Cubit<CartStates> {
     }
   }
 
-  Future<dynamic> _addProduct({
-    required String productId,
-    bool fromCartScreen = true,
-  }) async {
-    emit(
-      state.copyWith(isAddingItem: true, currentActedUponProductId: productId),
-    );
-
-    final result = await _addProductToCartUseCase(
-      CartProductPostData(product: productId),
-    );
-
-    switch (result) {
-      case Success<void>():
-        final updatedCart = _updateCartAfterAdding(
-          productId,
-          fromCartScreen: fromCartScreen,
-        );
-        if (updatedCart != null) {
-          emit(
-            state.copyWith(
-              isAddingItem: false,
-              state: BaseState<CartEntity>.success(updatedCart),
-              totalPrice: updatedCart.totalPrice,
-              currentActedUponProductId: '',
-            ),
-          );
-        } else {
-          await _loadCart();
-          emit(
-            state.copyWith(isAddingItem: false, currentActedUponProductId: ''),
-          );
-        }
-        return true;
-      case Error<void>():
-        emit(
-          state.copyWith(
-            isAddingItem: false,
-            state: BaseState<CartEntity>.error(result.exception),
-            currentActedUponProductId: '',
-          ),
-        );
-        return result.exception;
-    }
-  }
-
-  Future<dynamic> _updateQuantity({
-    required String productId,
-    required int quantity,
-  }) async {
-    emit(
-      state.copyWith(
-        isDecrementingItem: true,
-        currentActedUponProductId: productId,
-      ),
-    );
-
-    final result = await _updateProductInCartUsecase(
-      productId,
-      CartUpdateDataModel(quantity: quantity - 1),
-    );
-
-    switch (result) {
-      case Success<void>():
-        final updatedCart = _updateCartAfterDecrementing(productId);
-        emit(
-          state.copyWith(
-            isDecrementingItem: false,
-            state: updatedCart != null
-                ? BaseState<CartEntity>.success(updatedCart)
-                : state.state,
-            totalPrice: updatedCart?.totalPrice ?? state.totalPrice,
-            currentActedUponProductId: '',
-          ),
-        );
-        return true;
-      case Error<void>():
-        emit(
-          state.copyWith(
-            isDecrementingItem: false,
-            state: BaseState<CartEntity>.error(result.exception),
-            currentActedUponProductId: '',
-          ),
-        );
-        return result.exception;
-    }
-  }
-
-  Future<void> _removeProduct({required String productId}) async {
-    emit(
-      state.copyWith(
-        isRemovingItem: true,
-        currentActedUponProductId: productId,
-      ),
-    );
-
-    final result = await _removeProductFromCartUseCase(productId);
-
-    switch (result) {
-      case Success<void>():
-        final updatedCart = _reduceRemoveProduct(productId);
-        emit(
-          state.copyWith(
-            isRemovingItem: false,
-            state: BaseState<CartEntity>.success(updatedCart),
-            totalPrice: updatedCart.totalPrice,
-            currentActedUponProductId: '',
-          ),
-        );
-      case Error<void>():
-        emit(
-          state.copyWith(
-            isRemovingItem: false,
-            state: BaseState<CartEntity>.error(result.exception),
-            currentActedUponProductId: '',
-          ),
-        );
-    }
-  }
-
   Future<void> _clearCart() async {
     emit(state.copyWith(state: const BaseState<CartEntity>.loading()));
-
     final result = await _clearUserCartUseCase();
-
     switch (result) {
       case Success<void>():
+        _lastSyncedQuantity.clear();
         emit(
           state.copyWith(
-            state: BaseState<CartEntity>.success(
-              CartEntity(
-                numOfCartItems: 0,
-                totalPrice: 0,
-                cartProducts: const [],
-              ),
-            ),
+            state: BaseState<CartEntity>.success(CartEntity.empty()),
             totalPrice: 0,
           ),
         );
@@ -225,65 +135,219 @@ class CartCubit extends Cubit<CartStates> {
     }
   }
 
-  CartEntity? _updateCartAfterAdding(
-    String productId, {
-    bool fromCartScreen = true,
-  }) {
-    if (!fromCartScreen) return null;
-    final cart = state.state.data;
-    if (cart == null) return null;
+  CartEntity _currentCart() => state.state.data ?? CartEntity.empty();
 
-    final updatedProducts = cart.cartProducts.map((item) {
-      if (item.id == productId) {
-        return item.copyWith(
-          productQuantityInCart: item.productQuantityInCart + 1,
-        );
-      }
-      return item;
-    }).toList();
-
-    final price = cart.cartProducts
-        .firstWhere((e) => e.id == productId)
-        .productPrice;
-
-    return cart.copyWith(
-      cartProducts: updatedProducts,
-      totalPrice: cart.totalPrice + price,
+  void _emitCart(CartEntity cart) {
+    emit(
+      state.copyWith(
+        state: BaseState<CartEntity>.success(cart),
+        totalPrice: cart.totalPrice,
+      ),
     );
   }
 
-  CartEntity? _updateCartAfterDecrementing(String productId) {
-    final cart = state.state.data;
-    if (cart == null) return null;
+  void _localIncrement(ProductEntity product) {
+    final id = product.id;
+    if (id == null || id.isEmpty) return;
 
-    final updatedProducts = cart.cartProducts.map((item) {
-      if (item.id == productId) {
-        return item.copyWith(
-          productQuantityInCart: item.productQuantityInCart - 1,
-        );
-      }
-      return item;
-    }).toList();
+    final cart = _currentCart();
+    final existing = cart.cartProductsMap[id];
+    final newMap = Map<String, CartProductEntity>.from(cart.cartProductsMap);
 
-    final price = cart.cartProducts
-        .firstWhere((e) => e.id == productId)
-        .productPrice;
+    if (existing != null) {
+      newMap[id] = existing.copyWith(
+        productQuantityInCart: existing.productQuantityInCart + 1,
+      );
+    } else {
+      newMap[id] = CartProductEntity(
+        id: id,
+        productName: product.title ?? '',
+        productDescription: product.description ?? '',
+        productPrice: (product.priceAfterDiscount ?? product.price ?? 0)
+            .toDouble(),
+        productImage: product.imgCover ?? '',
+        productQuantityInCart: 1,
+      );
+    }
 
-    return cart.copyWith(
-      cartProducts: updatedProducts,
-      totalPrice: cart.totalPrice - price,
+    _emitCart(_recomputeTotals(cart.copyWith(cartProductsMap: newMap)));
+    _scheduleSync(id);
+  }
+
+  void _localIncrementById(String id) {
+    if (id.isEmpty) return;
+    final cart = _currentCart();
+    final existing = cart.cartProductsMap[id];
+    if (existing == null) return;
+
+    final newMap = Map<String, CartProductEntity>.from(cart.cartProductsMap);
+    newMap[id] = existing.copyWith(
+      productQuantityInCart: existing.productQuantityInCart + 1,
+    );
+    _emitCart(_recomputeTotals(cart.copyWith(cartProductsMap: newMap)));
+    _scheduleSync(id);
+  }
+
+  void _localDecrement(String id) {
+    if (id.isEmpty) return;
+    final cart = _currentCart();
+    final existing = cart.cartProductsMap[id];
+    if (existing == null) return;
+
+    final newMap = Map<String, CartProductEntity>.from(cart.cartProductsMap);
+    final newQty = existing.productQuantityInCart - 1;
+    if (newQty <= 0) {
+      newMap.remove(id);
+    } else {
+      newMap[id] = existing.copyWith(productQuantityInCart: newQty);
+    }
+    _emitCart(_recomputeTotals(cart.copyWith(cartProductsMap: newMap)));
+    _scheduleSync(id);
+  }
+
+  void _localRemove(String id) {
+    if (id.isEmpty) return;
+    final cart = _currentCart();
+    if (!cart.cartProductsMap.containsKey(id)) return;
+
+    final newMap = Map<String, CartProductEntity>.from(cart.cartProductsMap)
+      ..remove(id);
+    _emitCart(_recomputeTotals(cart.copyWith(cartProductsMap: newMap)));
+    _scheduleSync(id);
+  }
+
+  void _localSetQuantity(String id, int qty) {
+    if (id.isEmpty) return;
+    final cart = _currentCart();
+    final existing = cart.cartProductsMap[id];
+    final newMap = Map<String, CartProductEntity>.from(cart.cartProductsMap);
+    if (qty <= 0) {
+      newMap.remove(id);
+    } else if (existing != null) {
+      newMap[id] = existing.copyWith(productQuantityInCart: qty);
+    } else {
+      return;
+    }
+    _emitCart(_recomputeTotals(cart.copyWith(cartProductsMap: newMap)));
+    _scheduleSync(id);
+  }
+
+  CartEntity _recomputeTotals(CartEntity cart) {
+    double total = 0;
+    int count = 0;
+    for (final p in cart.cartProductsMap.values) {
+      total += p.productPrice * p.productQuantityInCart;
+      count += p.productQuantityInCart;
+    }
+    return cart.copyWith(numOfCartItems: count, totalPrice: total);
+  }
+
+  void _scheduleSync(String productId) {
+    _debounceTimers[productId]?.cancel();
+    _debounceTimers[productId] = Timer(_debounceDuration, () {
+      _debounceTimers.remove(productId);
+      _maxWaitTimers.remove(productId)?.cancel();
+      _syncProduct(productId);
+    });
+    _maxWaitTimers.putIfAbsent(
+      productId,
+      () => Timer(_maxWait, () {
+        _maxWaitTimers.remove(productId);
+        _debounceTimers.remove(productId)?.cancel();
+        _syncProduct(productId);
+      }),
     );
   }
 
-  CartEntity _reduceRemoveProduct(String productId) {
-    final cart = state.state.data!;
-    final removed = cart.cartProducts.firstWhere((e) => e.id == productId);
+  Future<void> _syncProduct(String productId) async {
+    final previous = _inFlight[productId];
+    final completer = Completer<void>();
+    _inFlight[productId] = completer.future;
 
-    return cart.copyWith(
-      cartProducts: cart.cartProducts.where((e) => e.id != productId).toList(),
-      totalPrice:
-          cart.totalPrice -
-          (removed.productPrice * removed.productQuantityInCart),
+    if (previous != null) {
+      await previous;
+    }
+
+    try {
+      await _doSync(productId);
+    } finally {
+      if (identical(_inFlight[productId], completer.future)) {
+        _inFlight.remove(productId);
+      }
+      completer.complete();
+    }
+  }
+
+  Future<void> _doSync(String productId) async {
+    final lastSynced = _lastSyncedQuantity[productId] ?? 0;
+    final currentQty =
+        _currentCart().cartProductsMap[productId]?.productQuantityInCart ?? 0;
+
+    if (currentQty == lastSynced) return;
+
+    Result<void> result;
+
+    if (lastSynced == 0 && currentQty > 0) {
+      result = await _addProductToCartUseCase(
+        CartProductPostData(product: productId),
+      );
+      if (result is Success<void> && currentQty > 1) {
+        result = await _updateProductInCartUsecase(
+          productId,
+          CartUpdateDataModel(quantity: currentQty),
+        );
+      }
+    } else if (currentQty == 0) {
+      result = await _removeProductFromCartUseCase(productId);
+    } else {
+      result = await _updateProductInCartUsecase(
+        productId,
+        CartUpdateDataModel(quantity: currentQty),
+      );
+    }
+
+    switch (result) {
+      case Success<void>():
+        if (currentQty == 0) {
+          _lastSyncedQuantity.remove(productId);
+        } else {
+          _lastSyncedQuantity[productId] = currentQty;
+        }
+      case Error<void>():
+        _rollback(productId, lastSynced);
+        emit(
+          state.copyWith(state: BaseState<CartEntity>.error(result.exception)),
+        );
+        emit(
+          state.copyWith(
+            state: BaseState<CartEntity>.success(_currentCart()),
+            totalPrice: _currentCart().totalPrice,
+          ),
+        );
+    }
+  }
+
+  void _rollback(String productId, int lastSyncedQty) {
+    final cart = _currentCart();
+    final newMap = Map<String, CartProductEntity>.from(cart.cartProductsMap);
+
+    if (lastSyncedQty <= 0) {
+      newMap.remove(productId);
+    } else {
+      final existing = newMap[productId];
+      if (existing != null) {
+        newMap[productId] = existing.copyWith(
+          productQuantityInCart: lastSyncedQty,
+        );
+      }
+    }
+
+    final rolled = _recomputeTotals(cart.copyWith(cartProductsMap: newMap));
+    emit(
+      state.copyWith(
+        state: BaseState<CartEntity>.success(rolled),
+        totalPrice: rolled.totalPrice,
+      ),
     );
   }
 }

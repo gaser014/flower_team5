@@ -1,51 +1,67 @@
 import 'package:flutter/foundation.dart';
 
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 class CartEntity {
-  int numOfCartItems;
-  double totalPrice;
-  List<CartProductEntity> cartProducts;
-  CartEntity({
+  final int numOfCartItems;
+  final double totalPrice;
+  final Map<String, CartProductEntity> cartProductsMap;
+
+  const CartEntity({
     required this.numOfCartItems,
     required this.totalPrice,
-    required this.cartProducts,
+    required this.cartProductsMap,
   });
 
-  @override
-  bool operator ==(covariant CartEntity other) {
-    if (identical(this, other)) return true;
+  factory CartEntity.empty() => const CartEntity(
+    numOfCartItems: 0,
+    totalPrice: 0,
+    cartProductsMap: <String, CartProductEntity>{},
+  );
 
-    return other.numOfCartItems == numOfCartItems &&
-        other.totalPrice == totalPrice &&
-        listEquals(other.cartProducts, cartProducts);
-  }
+  List<CartProductEntity> get cartProducts =>
+      cartProductsMap.values.toList(growable: false);
 
-  @override
-  int get hashCode =>
-      numOfCartItems.hashCode ^ totalPrice.hashCode ^ cartProducts.hashCode;
+  bool get isEmpty => cartProductsMap.isEmpty;
+
+  int getQuantity(String productId) =>
+      cartProductsMap[productId]?.productQuantityInCart ?? 0;
+
+  CartProductEntity? getProduct(String productId) => cartProductsMap[productId];
 
   CartEntity copyWith({
     int? numOfCartItems,
     double? totalPrice,
-    List<CartProductEntity>? cartProducts,
+    Map<String, CartProductEntity>? cartProductsMap,
   }) {
     return CartEntity(
       numOfCartItems: numOfCartItems ?? this.numOfCartItems,
       totalPrice: totalPrice ?? this.totalPrice,
-      cartProducts: cartProducts ?? this.cartProducts,
+      cartProductsMap: cartProductsMap ?? this.cartProductsMap,
     );
   }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is CartEntity &&
+        other.numOfCartItems == numOfCartItems &&
+        other.totalPrice == totalPrice &&
+        mapEquals(other.cartProductsMap, cartProductsMap);
+  }
+
+  @override
+  int get hashCode =>
+      numOfCartItems.hashCode ^ totalPrice.hashCode ^ cartProductsMap.hashCode;
 }
 
 class CartProductEntity {
-  String id;
-  String productName;
-  String productDescription;
-  double productPrice;
-  String productImage;
-  int productQuantityInCart;
+  final String id;
+  final String productName;
+  final String productDescription;
+  final double productPrice;
+  final String productImage;
+  final int productQuantityInCart;
 
-  CartProductEntity({
+  const CartProductEntity({
     required this.id,
     required this.productName,
     required this.productDescription,
@@ -53,28 +69,6 @@ class CartProductEntity {
     required this.productImage,
     required this.productQuantityInCart,
   });
-
-  @override
-  bool operator ==(covariant CartProductEntity other) {
-    if (identical(this, other)) return true;
-
-    return other.id == id &&
-        other.productName == productName &&
-        other.productDescription == productDescription &&
-        other.productPrice == productPrice &&
-        other.productImage == productImage &&
-        other.productQuantityInCart == productQuantityInCart;
-  }
-
-  @override
-  int get hashCode {
-    return id.hashCode ^
-        productName.hashCode ^
-        productDescription.hashCode ^
-        productPrice.hashCode ^
-        productImage.hashCode ^
-        productQuantityInCart.hashCode;
-  }
 
   CartProductEntity copyWith({
     String? id,
@@ -94,4 +88,25 @@ class CartProductEntity {
           productQuantityInCart ?? this.productQuantityInCart,
     );
   }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is CartProductEntity &&
+        other.id == id &&
+        other.productName == productName &&
+        other.productDescription == productDescription &&
+        other.productPrice == productPrice &&
+        other.productImage == productImage &&
+        other.productQuantityInCart == productQuantityInCart;
+  }
+
+  @override
+  int get hashCode =>
+      id.hashCode ^
+      productName.hashCode ^
+      productDescription.hashCode ^
+      productPrice.hashCode ^
+      productImage.hashCode ^
+      productQuantityInCart.hashCode;
 }

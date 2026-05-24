@@ -4,56 +4,23 @@ import 'package:flowers_app/features/cart/domain/entities/cart_entity.dart';
 
 class CartStates extends Equatable {
   final BaseState<CartEntity> state;
-  final bool isAddingItem;
-  final bool isRemovingItem;
-  final bool isDecrementingItem;
-  final String currentActedUponProductId;
   final double totalPrice;
 
-  const CartStates({
-    required this.state,
-    required this.isAddingItem,
-    required this.isRemovingItem,
-    required this.isDecrementingItem,
-    required this.totalPrice,
-    required this.currentActedUponProductId,
-  });
+  const CartStates({required this.state, required this.totalPrice});
 
-  factory CartStates.initial() => const CartStates(
-    state: BaseState<CartEntity>.initial(),
-    isAddingItem: false,
-    isRemovingItem: false,
-    isDecrementingItem: false,
-    totalPrice: 0,
-    currentActedUponProductId: '',
-  );
+  factory CartStates.initial() =>
+      const CartStates(state: BaseState<CartEntity>.initial(), totalPrice: 0);
 
-  CartStates copyWith({
-    BaseState<CartEntity>? state,
-    bool? isAddingItem,
-    bool? isRemovingItem,
-    bool? isDecrementingItem,
-    String? currentActedUponProductId,
-    double? totalPrice,
-  }) {
+  CartStates copyWith({BaseState<CartEntity>? state, double? totalPrice}) {
     return CartStates(
       state: state ?? this.state,
-      isAddingItem: isAddingItem ?? this.isAddingItem,
-      isRemovingItem: isRemovingItem ?? this.isRemovingItem,
-      isDecrementingItem: isDecrementingItem ?? this.isDecrementingItem,
-      currentActedUponProductId:
-          currentActedUponProductId ?? this.currentActedUponProductId,
       totalPrice: totalPrice ?? this.totalPrice,
     );
   }
 
+  int quantityOf(String productId) =>
+      state.data?.cartProductsMap[productId]?.productQuantityInCart ?? 0;
+
   @override
-  List<Object?> get props => [
-    state,
-    isAddingItem,
-    isRemovingItem,
-    isDecrementingItem,
-    currentActedUponProductId,
-    totalPrice,
-  ];
+  List<Object?> get props => [state, totalPrice];
 }

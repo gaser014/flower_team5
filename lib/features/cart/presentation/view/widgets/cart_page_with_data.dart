@@ -12,17 +12,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CartPageWithData extends StatelessWidget {
-  const CartPageWithData({super.key, required this.cartViewModel});
-
-  final CartCubit cartViewModel;
+  const CartPageWithData({super.key});
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<CartCubit, CartStates>(
+      buildWhen: (a, b) => a.state.data != b.state.data,
       builder: (context, state) {
-        final cart = state.state.data;
-        final products = cart?.cartProducts ?? const <CartProductEntity>[];
-        final subTotal = state.totalPrice;
+        final cubit = context.read<CartCubit>();
+        final cart = state.state.data ?? CartEntity.empty();
+        final products = cart.cartProducts;
+        final subTotal = cart.totalPrice;
         const deliveryFee = 10.0;
         final total = subTotal + (products.isEmpty ? 0 : deliveryFee);
 
@@ -39,9 +39,14 @@ class CartPageWithData extends StatelessWidget {
                     final product = products[index];
                     return CartItemWidget(
                       cartProduct: product,
-                      onAddFunction: () => _onAdd(state, product),
-                      onDecrementFunction: () => _onDecrement(state, product),
-                      onRemoveFunction: () => _onRemove(state, product),
+                      onAddFunction: () => cubit.doIntent(
+                        AddProductToCartEvent(productId: product.id),
+                      ),
+                      onDecrementFunction: () =>
+                          cubit.doIntent(DecrementProductEvent(product.id)),
+                      onRemoveFunction: () => cubit.doIntent(
+                        RemoveProductFromCartEvent(productId: product.id),
+                      ),
                     );
                   },
                   separatorBuilder: (_, _) => const SizedBox(height: 24),
@@ -58,7 +63,11 @@ class CartPageWithData extends StatelessWidget {
               CustomButton(
                 text: AppStrings.checkout,
                 radius: 100,
-                onPressed: products.isEmpty ? null : () {},
+                onPressed: products.isEmpty
+                    ? null
+                    : () async {
+                        await cubit.flushPendingSyncs();
+                      },
               ),
               const SizedBox(height: 16),
             ],
@@ -66,32 +75,6 @@ class CartPageWithData extends StatelessWidget {
         );
       },
     );
-  }
-
-  void _onAdd(CartStates state, CartProductEntity product) {
-    if (state.currentActedUponProductId.isNotEmpty) return;
-    cartViewModel.doIntent(
-      AddProductToCartEvent(productId: product.id, fromCartScreen: true),
-    );
-  }
-
-  void _onDecrement(CartStates state, CartProductEntity product) {
-    if (state.currentActedUponProductId.isNotEmpty) return;
-    if (product.productQuantityInCart == 1) {
-      cartViewModel.doIntent(RemoveProductFromCartEvent(productId: product.id));
-    } else {
-      cartViewModel.doIntent(
-        UpdateProductInCartEvent(
-          productId: product.id,
-          quantity: product.productQuantityInCart,
-        ),
-      );
-    }
-  }
-
-  void _onRemove(CartStates state, CartProductEntity product) {
-    if (state.currentActedUponProductId.isNotEmpty) return;
-    cartViewModel.doIntent(RemoveProductFromCartEvent(productId: product.id));
   }
 }
 
