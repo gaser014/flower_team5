@@ -1,6 +1,8 @@
+import 'dart:async';
+
 import 'package:flowers_app/core/values/app_colors.dart';
 import 'package:flowers_app/core/values/app_strings.dart';
-import 'package:flowers_app/core/widgets/custom_app_bar.dart';
+import 'package:flowers_app/core/widgets/custom_toast.dart';
 import 'package:flowers_app/features/cart/domain/entities/cart_entity.dart';
 import 'package:flowers_app/features/cart/presentation/view/widgets/cart_empty_widget.dart';
 import 'package:flowers_app/features/cart/presentation/view/widgets/cart_page_with_data.dart';
@@ -20,21 +22,48 @@ class CartPage extends StatefulWidget {
 
 class _CartPageState extends State<CartPage>
     with AutomaticKeepAliveClientMixin {
+  StreamSubscription<CartSideEffect>? _sideEffectsSub;
+
   @override
   void initState() {
     super.initState();
-    context.read<CartCubit>().doIntent(GetCartDataEvent());
+    final cubit = context.read<CartCubit>();
+    cubit.doIntent(GetCartDataEvent());
+    _sideEffectsSub = cubit.sideEffects.listen(_onSideEffect);
+  }
+
+  @override
+  void dispose() {
+    _sideEffectsSub?.cancel();
+    super.dispose();
+  }
+
+  void _onSideEffect(CartSideEffect effect) {
+    if (!mounted) return;
+    switch (effect) {
+      case CartSyncFailed():
+        CustomToast.showError(
+          context: context,
+          title: AppStrings.error,
+          message: effect.message,
+        );
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
     return Scaffold(
-      appBar: CustomAppBar(title: AppStrings.cart, centerTitle: true),
+      backgroundColor: AppColors.whiteF9,
       body: SafeArea(
         child: BlocBuilder<CartCubit, CartStates>(
           buildWhen: (previous, current) => previous.state != current.state,
           builder: (context, state) {
+            if (state.state.data != null) {
+              final data = state.state.data!;
+              if (data.isEmpty) return const CartEmptyWidget();
+              return const CartPageWithData();
+            }
             return state.state.when(
               initial: () => const Center(child: CircularProgressIndicator()),
               loading: () => const Center(child: CircularProgressIndicator()),
