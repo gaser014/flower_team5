@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flowers_app/config/dependency_injection/di.dart';
 import 'package:flowers_app/core/data/data_sources/auth_local_data_source.dart';
 import 'package:flowers_app/core/routes/routes.dart';
@@ -322,7 +323,10 @@ abstract class AppRoutes {
         name: Routes.main,
         pageBuilder: (context, state) => buildAnimatedPage(
           key: state.pageKey,
-          child: const MainView(),
+          child: KeyedSubtree(
+            key: ValueKey(context.locale),
+            child: const MainView(),
+          ),
           animationType: AnimationType.fade,
         ),
       ),

@@ -29,16 +29,11 @@ class _MainViewState extends State<MainView> {
   void initState() {
     super.initState();
     cubit = context.read<HomeCubit>();
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
     _pages = <Widget>[
       const HomePage(),
       CategoriesView(),
       CartPage(),
-      KeyedSubtree(key: ValueKey(context.locale), child: MainProfilePage()),
+      MainProfilePage(),
     ];
   }
 

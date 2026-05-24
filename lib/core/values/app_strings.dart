@@ -269,6 +269,7 @@ abstract class AppStrings {
   // ── Misc ──────────────────────────────────────────────────────────────────
   static String get token => 'token'.tr();
   static String get user => 'user'.tr();
+  static String get subTotal => 'subTotal'.tr();
 
   static String get questionOf => 'questionOf'.tr();
 }

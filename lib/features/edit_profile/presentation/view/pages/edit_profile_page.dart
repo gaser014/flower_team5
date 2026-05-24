@@ -1,6 +1,7 @@
 import 'package:flowers_app/config/dependency_injection/di.dart';
 import 'package:flowers_app/core/values/app_assets.dart';
 import 'package:flowers_app/core/values/app_colors.dart';
+import 'package:flowers_app/core/values/app_strings.dart';
 import 'package:flowers_app/core/widgets/custom_app_bar.dart';
 import 'package:flowers_app/features/edit_profile/presentation/view/widgets/edit_profile_body.dart';
 import 'package:flowers_app/features/edit_profile/presentation/view_model/cubit/edit_profile_cubit.dart';
@@ -18,7 +19,7 @@ class EditProfilePage extends StatelessWidget {
       child: Scaffold(
         backgroundColor: AppColors.whiteF9,
         appBar: CustomAppBar(
-          title: 'Edit profile',
+          title: AppStrings.editProfile,
           showBackButton: true,
           actions: [
             Padding(
@@ -67,9 +68,7 @@ class EditProfilePage extends StatelessWidget {
             ),
           ],
         ),
-        body: const SafeArea(
-          child: EditProfileBody(),
-        ),
+        body: const SafeArea(child: EditProfileBody()),
       ),
     );
   }

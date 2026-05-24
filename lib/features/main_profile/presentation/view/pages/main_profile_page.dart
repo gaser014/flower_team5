@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flowers_app/config/dependency_injection/di.dart';
+import 'package:flowers_app/core/routes/routes.dart';
 import 'package:flowers_app/core/values/app_strings.dart';
 import 'package:flowers_app/features/app_language/presentation/view/widgets/language_bottom_sheet.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +16,7 @@ import 'package:flowers_app/features/main_profile/presentation/view/widgets/prof
 import 'package:flowers_app/features/main_profile/presentation/view/widgets/profile_menu_item_widget.dart';
 
 import 'package:flowers_app/features/main_profile/presentation/view/widgets/main_profile_shimmer.dart';
+import 'package:go_router/go_router.dart';
 
 class MainProfilePage extends StatelessWidget {
   const MainProfilePage({super.key});
@@ -84,7 +86,9 @@ class MainProfilePage extends StatelessWidget {
 
                             ProfileMenuItemWidget(
                               title: AppStrings.profile,
-                              onTap: () {},
+                              onTap: () {
+                                context.push(Routes.editProfile);
+                              },
                               trailing: const Icon(
                                 Icons.chevron_right,
                                 color: AppColors.gray7D,
@@ -162,8 +166,8 @@ class MainProfilePage extends StatelessWidget {
                               ),
                               trailing: Text(
                                 context.locale.languageCode == "ar"
-                                    ? AppStrings.english
-                                    : AppStrings.arabic,
+                                    ? AppStrings.arabic
+                                    : AppStrings.english,
                                 style: AppFontStyle.regular14(
                                   context: context,
                                 ).copyWith(color: AppColors.primerColor),

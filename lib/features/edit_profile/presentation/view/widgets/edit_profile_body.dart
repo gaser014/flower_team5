@@ -25,7 +25,7 @@ class EditProfileBody extends StatefulWidget {
 
 class _EditProfileBodyState extends State<EditProfileBody> {
   final _formKey = GlobalKey<FormState>();
-  
+
   late final TextEditingController _firstNameController;
   late final TextEditingController _lastNameController;
   late final TextEditingController _emailController;
@@ -44,7 +44,7 @@ class _EditProfileBodyState extends State<EditProfileBody> {
     _emailController = TextEditingController();
     _phoneController = TextEditingController();
     _passwordController = TextEditingController(text: '••••••••');
-    
+
     // Fetch cached user data to prefill fields
     context.read<EditProfileCubit>().doIntent(GetCachedUserEvent());
   }
@@ -67,22 +67,22 @@ class _EditProfileBodyState extends State<EditProfileBody> {
     );
     if (image != null && mounted) {
       context.read<EditProfileCubit>().doIntent(
-            UploadProfilePhotoEvent(imagePath: image.path),
-          );
+        UploadProfilePhotoEvent(imagePath: image.path),
+      );
     }
   }
 
   void _submitForm() {
     if (_formKey.currentState?.validate() ?? false) {
       context.read<EditProfileCubit>().doIntent(
-            UpdateProfileDetailsEvent(
-              firstName: _firstNameController.text.trim(),
-              lastName: _lastNameController.text.trim(),
-              email: _emailController.text.trim(),
-              phone: _phoneController.text.trim(),
-              gender: _selectedGender,
-            ),
-          );
+        UpdateProfileDetailsEvent(
+          firstName: _firstNameController.text.trim(),
+          lastName: _lastNameController.text.trim(),
+          email: _emailController.text.trim(),
+          phone: _phoneController.text.trim(),
+          gender: _selectedGender,
+        ),
+      );
     }
   }
 
@@ -120,7 +120,9 @@ class _EditProfileBodyState extends State<EditProfileBody> {
         } else if (state.updateState.isError) {
           CustomToast.showError(
             context: context,
-            message: state.updateState.exception?.toString() ?? "Failed to update profile",
+            message:
+                state.updateState.exception?.toString() ??
+                "Failed to update profile",
           );
         }
 
@@ -139,16 +141,16 @@ class _EditProfileBodyState extends State<EditProfileBody> {
         } else if (state.uploadPhotoState.isError) {
           CustomToast.showError(
             context: context,
-            message: state.uploadPhotoState.exception?.toString() ?? "Failed to upload photo",
+            message:
+                state.uploadPhotoState.exception?.toString() ??
+                "Failed to upload photo",
           );
         }
       },
       builder: (context, state) {
         if (state.loadUserState.isLoading) {
           return const Center(
-            child: CircularProgressIndicator(
-              color: AppColors.primerColor,
-            ),
+            child: CircularProgressIndicator(color: AppColors.primerColor),
           );
         }
 
@@ -182,18 +184,18 @@ class _EditProfileBodyState extends State<EditProfileBody> {
                                   ),
                                 )
                               : (_photoUrl != null && _photoUrl!.isNotEmpty
-                                  ? CustomCachedImage(
-                                      imagePath: _photoUrl!,
-                                      width: 80.r,
-                                      height: 80.r,
-                                      fit: BoxFit.cover,
-                                    )
-                                  : SvgPicture.asset(
-                                      AppAssets.iconsNoProfile,
-                                      width: 80.r,
-                                      height: 80.r,
-                                      fit: BoxFit.cover,
-                                    )),
+                                    ? CustomCachedImage(
+                                        imagePath: _photoUrl!,
+                                        width: 80.r,
+                                        height: 80.r,
+                                        fit: BoxFit.cover,
+                                      )
+                                    : SvgPicture.asset(
+                                        AppAssets.iconsNoProfile,
+                                        width: 80.r,
+                                        height: 80.r,
+                                        fit: BoxFit.cover,
+                                      )),
                         ),
                       ),
                       GestureDetector(
@@ -229,9 +231,9 @@ class _EditProfileBodyState extends State<EditProfileBody> {
                         children: [
                           Text(
                             "First name",
-                            style: AppFontStyle.medium14(context: context).copyWith(
-                              color: AppColors.gray53,
-                            ),
+                            style: AppFontStyle.medium14(
+                              context: context,
+                            ).copyWith(color: AppColors.gray53),
                           ),
                           SizedBox(height: 8.h),
                           TextFormField(
@@ -258,9 +260,9 @@ class _EditProfileBodyState extends State<EditProfileBody> {
                         children: [
                           Text(
                             "Last name",
-                            style: AppFontStyle.medium14(context: context).copyWith(
-                              color: AppColors.gray53,
-                            ),
+                            style: AppFontStyle.medium14(
+                              context: context,
+                            ).copyWith(color: AppColors.gray53),
                           ),
                           SizedBox(height: 8.h),
                           TextFormField(
@@ -290,15 +292,12 @@ class _EditProfileBodyState extends State<EditProfileBody> {
                   children: [
                     Text(
                       "Email",
-                      style: AppFontStyle.medium14(context: context).copyWith(
-                        color: AppColors.gray53,
-                      ),
+                      style: AppFontStyle.medium14(
+                        context: context,
+                      ).copyWith(color: AppColors.gray53),
                     ),
                     SizedBox(height: 8.h),
-                    EmailField(
-                      controller: _emailController,
-                      showLabel: false,
-                    ),
+                    EmailField(controller: _emailController, showLabel: false),
                   ],
                 ),
                 SizedBox(height: 16.h),
@@ -309,15 +308,12 @@ class _EditProfileBodyState extends State<EditProfileBody> {
                   children: [
                     Text(
                       "Phone Number",
-                      style: AppFontStyle.medium14(context: context).copyWith(
-                        color: AppColors.gray53,
-                      ),
+                      style: AppFontStyle.medium14(
+                        context: context,
+                      ).copyWith(color: AppColors.gray53),
                     ),
                     SizedBox(height: 8.h),
-                    PhoneField(
-                      controller: _phoneController,
-                      showLabel: false,
-                    ),
+                    PhoneField(controller: _phoneController, showLabel: false),
                   ],
                 ),
                 SizedBox(height: 16.h),
@@ -328,30 +324,36 @@ class _EditProfileBodyState extends State<EditProfileBody> {
                   children: [
                     Text(
                       "Password",
-                      style: AppFontStyle.medium14(context: context).copyWith(
-                        color: AppColors.gray53,
-                      ),
+                      style: AppFontStyle.medium14(
+                        context: context,
+                      ).copyWith(color: AppColors.gray53),
                     ),
                     SizedBox(height: 8.h),
-                    TextFormField(
-                      controller: _passwordController,
-                      obscureText: true,
-                      obscuringCharacter: '★',
-                      enabled: false,
-                      decoration: InputDecoration(
-                        disabledBorder: OutlineInputBorder(
-                          borderSide: const BorderSide(color: AppColors.grayCF, width: 1),
-                          borderRadius: BorderRadius.circular(4),
-                        ),
-                        suffixIcon: TextButton(
-                          onPressed: () {
-                            context.push(Routes.changePassword);
-                          },
-                          child: Text(
-                            "Change",
-                            style: AppFontStyle.medium14(
-                              context: context,
-                            ).copyWith(color: AppColors.primerColor),
+                    GestureDetector(
+                      onTap: () {
+                        context.push(Routes.changePassword);
+                      },
+                      child: TextFormField(
+                        controller: _passwordController,
+                        obscureText: true,
+                        obscuringCharacter: '★',
+                        enabled: false,
+                        decoration: InputDecoration(
+                          disabledBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(
+                              color: AppColors.grayCF,
+                              width: 1,
+                            ),
+                            borderRadius: BorderRadius.circular(4),
+                          ),
+                          suffixIcon: Padding(
+                            padding: EdgeInsets.all(12),
+                            child: Text(
+                              "Change",
+                              style: AppFontStyle.medium14(
+                                context: context,
+                              ).copyWith(color: AppColors.primerColor),
+                            ),
                           ),
                         ),
                       ),
@@ -366,9 +368,9 @@ class _EditProfileBodyState extends State<EditProfileBody> {
                   children: [
                     Text(
                       "Gender",
-                      style: AppFontStyle.medium14(context: context).copyWith(
-                        color: AppColors.gray53,
-                      ),
+                      style: AppFontStyle.medium14(
+                        context: context,
+                      ).copyWith(color: AppColors.gray53),
                     ),
                     SizedBox(height: 8.h),
                     Row(
