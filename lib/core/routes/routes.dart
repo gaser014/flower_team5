@@ -19,4 +19,5 @@ abstract class Routes {
   static const String bestSeller = "/best-seller";
   static const String productDetails = "/product-details";
   static const String occasionPage = "/occasion_page";
+  static const String appLanguage = "/app-language";
 }
