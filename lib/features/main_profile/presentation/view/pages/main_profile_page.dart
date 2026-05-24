@@ -3,6 +3,7 @@ import 'package:flowers_app/config/dependency_injection/di.dart';
 import 'package:flowers_app/core/routes/routes.dart';
 import 'package:flowers_app/core/values/app_strings.dart';
 import 'package:flowers_app/features/app_language/presentation/view/widgets/language_bottom_sheet.dart';
+import 'package:flowers_app/features/logout/presentation/view/widgets/logout_button_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -196,35 +197,35 @@ class MainProfilePage extends StatelessWidget {
                               color: AppColors.grayEA,
                               thickness: 1,
                             ),
+                            LogoutButtonWidget(),
 
-                            Padding(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 24.0,
-                                vertical: 16.0,
-                              ),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Row(
-                                    children: [
-                                      SvgPicture.asset(
-                                        AppAssets.iconsLogout,
-                                        height: 24,
-                                      ),
-                                      const Gap(16),
-                                      Text(
-                                        AppStrings.logout,
-                                        style: AppFontStyle.regular16(
-                                          context: context,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ),
-
+                            // Padding(
+                            //   padding: const EdgeInsets.symmetric(
+                            //     horizontal: 24.0,
+                            //     vertical: 16.0,
+                            //   ),
+                            //   child: Row(
+                            //     mainAxisAlignment:
+                            //         MainAxisAlignment.spaceBetween,
+                            //     children: [
+                            //       Row(
+                            //         children: [
+                            //           SvgPicture.asset(
+                            //             AppAssets.iconsLogout,
+                            //             height: 24,
+                            //           ),
+                            //           const Gap(16),
+                            //           Text(
+                            //             AppStrings.logout,
+                            //             style: AppFontStyle.regular16(
+                            //               context: context,
+                            //             ),
+                            //           ),
+                            //         ],
+                            //       ),
+                            //     ],
+                            //   ),
+                            // ),
                             const SizedBox(height: 40),
                             Text(
                               "v 6.3.0 - (446)",
