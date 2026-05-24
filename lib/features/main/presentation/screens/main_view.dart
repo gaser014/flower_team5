@@ -1,8 +1,9 @@
 import 'package:flowers_app/core/values/app_assets.dart';
 import 'package:flowers_app/core/values/app_colors.dart';
-import 'package:flowers_app/features/categories/presentation/view/categories_view.dart';
+import 'package:flowers_app/core/values/app_strings.dart';
+import 'package:flowers_app/features/cart/presentation/view/pages/cart_page.dart';
 import 'package:flowers_app/features/home/presentation/view/pages/home_page.dart';
-import 'package:flowers_app/features/main/presentation/screens/app_bar_widget.dart';
+import 'package:flowers_app/features/main/presentation/screens/home_app_bar_widget.dart';
 import 'package:flowers_app/features/main/presentation/screens/profile_appbar.dart';
 import 'package:flowers_app/features/main/presentation/view_model/cubit/home_cubit.dart';
 import 'package:flowers_app/features/main/presentation/view_model/cubit/home_events.dart';
@@ -10,37 +11,25 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class MainView extends StatefulWidget {
+class MainView extends StatelessWidget {
   const MainView({super.key});
 
-  @override
-  State<MainView> createState() => _MainViewState();
-}
-
-class _MainViewState extends State<MainView> {
-  late final HomeCubit cubit;
-  late final List<Widget> _pages;
-
-  @override
-  void initState() {
-    cubit = context.read<HomeCubit>();
-    _pages = <Widget>[
-      const HomePage(),
-      CategoriesView(),
-      const Center(child: Text('Cart')),
-      const Center(child: Text('Profile')),
-    ];
-    super.initState();
-  }
+  final List<Widget> _pages = const <Widget>[
+    HomePage(),
+    Center(child: Text('Categories')),
+    CartPage(),
+    Center(child: Text('Profile')),
+  ];
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<HomeCubit, HomeStates>(
+    final cubit = context.read<HomeCubit>();
+    return BlocBuilder<HomeCubit, HomeState>(
       builder: (context, state) {
         final selectedIndex = state.bottomNavIndex;
         return Scaffold(
           appBar: selectedIndex == 0
-              ? const AppBarWidget()
+              ? const HomeAppBarWidget()
               : selectedIndex == 3
               ? const ProfileAppBarWidget()
               : null,
@@ -64,7 +53,7 @@ class _MainViewState extends State<MainView> {
                     BlendMode.srcIn,
                   ),
                 ),
-                label: 'Home',
+                label: AppStrings.home,
               ),
               BottomNavigationBarItem(
                 icon: SvgPicture.asset(
@@ -76,7 +65,7 @@ class _MainViewState extends State<MainView> {
                     BlendMode.srcIn,
                   ),
                 ),
-                label: 'Categories',
+                label: AppStrings.categories,
               ),
               BottomNavigationBarItem(
                 icon: SvgPicture.asset(
@@ -88,7 +77,7 @@ class _MainViewState extends State<MainView> {
                     BlendMode.srcIn,
                   ),
                 ),
-                label: 'Cart',
+                label: AppStrings.cart,
               ),
               BottomNavigationBarItem(
                 icon: SvgPicture.asset(
@@ -100,7 +89,7 @@ class _MainViewState extends State<MainView> {
                     BlendMode.srcIn,
                   ),
                 ),
-                label: 'Profile',
+                label: AppStrings.profile,
               ),
             ],
           ),

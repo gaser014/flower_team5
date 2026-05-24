@@ -7,8 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 
-class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
-  const AppBarWidget({super.key});
+class HomeAppBarWidget extends StatelessWidget implements PreferredSizeWidget {
+  const HomeAppBarWidget({super.key});
 
   @override
   Size get preferredSize => const Size.fromHeight(130);

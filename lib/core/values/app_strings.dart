@@ -233,16 +233,13 @@ class AppStrings {
 
   static String questionOf({required int current, required int total}) =>
       "question $current of $total";
-  static const String noProductsFound = "No products found";
 
-  static const String sortBy = "Sort by";
-  static const String lowestPrice = "Lowest Price";
-  static const String highestPrice = "Highest Price";
-  static const String newArrival = "New";
-  static const String old = "Old";
-  static const String discount = "Discount";
-  static const String filter = "Filter";
-  static const String searchForAnyProduct = "Search For Any Product You Want";
+  // Home
+  static const String categories = "Categories";
+  // static const String bestSeller = "Best seller";
+  static const String viewAll = "View All";
+  static const String deliverTo = "Deliver to";
+  static const String egp = "EGP";
 
   // Category Names
   static const String flowers = "Flowers";
@@ -255,13 +252,18 @@ class AppStrings {
   static const String birthday = "Birthday";
   static const String graduation = "Graduation";
   // Home
-  static const String categories = "Categories";
-  static const String viewAll = "View All";
-  static const String deliverTo = "Deliver to";
-  static const String egp = "EGP";
+  // static const String categories = "Categories";
+  // static const String viewAll = "View All";
+  // static const String deliverTo = "Deliver to";
+  // static const String egp = "EGP";
 
   // Dummy Product Names
   static const String sunnyProduct = "Sunny";
   static const String redRosesProduct = "Red roses";
   static const String springVaseProduct = "Spring vase";
+
+  // Navigation
+  static const String cart = "Cart";
+  static const String profile = "Profile";
+  static const String home = "Home";
 }
