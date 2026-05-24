@@ -35,7 +35,7 @@ class _HomePageBodyState extends State<HomePageBody> {
         onRefresh: () async {
           cubit.doIndented(GetAllHomeDataEvent());
         },
-        child: BlocBuilder<HomeCubit, HomeStates>(
+        child: BlocBuilder<HomeCubit, HomeState>(
           buildWhen: (previous, current) =>
               previous.getAllHomeDataState != current.getAllHomeDataState,
           builder: (context, state) {

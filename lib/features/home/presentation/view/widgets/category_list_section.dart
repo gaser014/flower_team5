@@ -1,5 +1,5 @@
 import 'package:flowers_app/features/app_filter_tabs/domain/entities/app_filter_tab_item_entity.dart';
-import 'package:flowers_app/features/home/presentation/view/widgets/category_card.dart';
+import 'package:flowers_app/features/home/presentation/view/widgets/home_category_card.dart';
 import 'package:flowers_app/features/main/presentation/view_model/cubit/home_cubit.dart';
 import 'package:flowers_app/features/main/presentation/view_model/cubit/home_events.dart';
 import 'package:flutter/material.dart';

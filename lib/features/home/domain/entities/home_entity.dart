@@ -1,7 +1,5 @@
 import 'package:equatable/equatable.dart';
 import 'package:flowers_app/features/app_filter_tabs/domain/entities/app_filter_tab_item_entity.dart';
-import 'package:flowers_app/features/home/domain/entities/home_category_entity.dart';
-import 'package:flowers_app/features/home/domain/entities/home_occasion_entity.dart';
 import 'package:flowers_app/features/products/domain/entities/product_entity.dart';
 
 class HomeEntity extends Equatable {

@@ -266,4 +266,14 @@ class AppStrings {
   static const String cart = "Cart";
   static const String profile = "Profile";
   static const String home = "Home";
+  static const String noProductsFound = "No products found";
+
+  static const String sortBy = "Sort by";
+  static const String lowestPrice = "Lowest Price";
+  static const String highestPrice = "Highest Price";
+  static const String newArrival = "New";
+  static const String old = "Old";
+  static const String discount = "Discount";
+  static const String filter = "Filter";
+  static const String searchForAnyProduct = "Search For Any Product You Want";
 }
