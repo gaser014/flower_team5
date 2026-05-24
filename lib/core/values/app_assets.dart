@@ -58,7 +58,9 @@ abstract class AppAssets {
   static const String iconsClock = "assets/icons/clock.svg";
   static const String iconsCloseCircle = "assets/icons/close-circle.svg";
   static const String iconsClosedEye = "assets/icons/closed_eye.svg";
-  static const String iconsConnectionError = "assets/icons/connection_error.svg";
+  static const String emptyCartIcon = "assets/icons/no_items_in_cart.svg";
+  static const String iconsConnectionError =
+      "assets/icons/connection_error.svg";
   static const String iconsDownArrow = "assets/icons/down_arrow.svg";
   static const String arrowBack = "assets/icons/arrow_back.svg";
   static const String iconsEditProfile = "assets/icons/edit_profile.svg";
@@ -79,11 +81,13 @@ abstract class AppAssets {
   static const String iconsPhone = "assets/icons/phone.svg";
   static const String iconsProfile = "assets/icons/profile.svg";
   static const String iconsSearch = "assets/icons/search.svg";
-  static const String iconsTransactionOrder = "assets/icons/transaction_order.svg";
+  static const String iconsTransactionOrder =
+      "assets/icons/transaction_order.svg";
   static const String iconsTranslateLang = "assets/icons/translate_lang.svg";
   static const String iconsWarning = "assets/icons/warning.svg";
   static const String iconsDelete = "assets/icons/delete.svg";
-  static const String imagesIcLauncherAndroid = "assets/images/ic_launcher_android.png";
+  static const String imagesIcLauncherAndroid =
+      "assets/images/ic_launcher_android.png";
   static const String imagesIcLauncherIos = "assets/images/ic_launcher_ios.png";
   static const String imagesIcLauncherWeb = "assets/images/ic_launcher_web.png";
   static const String locationMarker = "assets/images/location_marker.png";
