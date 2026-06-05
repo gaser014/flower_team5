@@ -122,6 +122,16 @@ class AppStrings {
   static const String loginSuccessfully = "Login successfully";
   static const String loginError = "Invalid Phone Number or Password";
 
+  // ── Search & Filter ───────────────────────────────────────────────────────
+  static const String searchForAnyProduct = "Search for any product";
+  static const String sortBy = "Sort by";
+  static const String newArrival = "New Arrival";
+  static const String lowestPrice = "Lowest Price";
+  static const String highestPrice = "Highest Price";
+  static const String discount = "Discount";
+  static const String filter = "Filter";
+  static const String old = "Old";
+
   // Register
   static const String registerTitle = "Sign up";
   static const String genderLabel = "Gender";
@@ -150,7 +160,32 @@ class AppStrings {
   static const String placeOrder = "Place Order";
   static const String paymentMethod = "Payment method";
   static const String cash = "Cash";
+  static const String cashOnDelivery = "Cash on delivery";
   static const String creditCard = "Credit Card";
+  static const String paymentPage = "Payment page";
+  static const String paymentLoginHint =
+      "Please login to save payment information";
+  static const String loginToSavePayment =
+      "Please login first to save payment information.";
+  static const String paymentLoggedInAs = "Logged in as";
+  static const String enterCardDataSecurely = "Enter your card data securely";
+  static const String method = "Method";
+  static const String cardEnding = "Card ending";
+  static const String cardHolderName = "Card Holder Name";
+  static const String cardNumber = "Card Number";
+  static const String expiryDate = "Expiry Date";
+  static const String cvc = "CVC";
+  static const String saveCard = "Save Card";
+  static const String cardSavedSuccessfully = "Card saved successfully";
+  static const String savedCardDetails = "Saved card details";
+  static const String noSavedCard = "No saved card data";
+  static const String enterCardHolderName = "Enter card holder name";
+  static const String enterCardNumber = "Enter card number";
+  static const String enterExpiryDate = "MM/YY";
+  static const String enterCvc = "Enter CVC";
+  static const String invalidCardNumber = "Card number must be 16 digits";
+  static const String invalidExpiryDate = "Expiry date must be MM/YY";
+  static const String invalidCvc = "CVC must be 3 digits";
 
   // Profile & Address
   static const String myOrders = "My orders";

@@ -39,6 +39,7 @@ import '../../features/home/data/datasources/home_remote_data_source_contract.da
     as _i969;
 import '../../features/home/data/repositories/home_repository_impl.dart'
     as _i76;
+import '../../features/home/domain/entities/home_entity.dart' as _i628;
 import '../../features/home/domain/repositories/home_repository.dart' as _i0;
 import '../../features/home/domain/use_cases/get_home_use_case.dart' as _i261;
 import '../../features/login/api/api_client/login_api_client.dart' as _i395;
@@ -81,6 +82,7 @@ import '../../features/products/presentation/view_model/cubit/products_cubit.dar
     as _i593;
 import '../api/app_interceptor.dart' as _i449;
 import '../api/dio_module.dart' as _i784;
+import 'home_module.dart' as _i473;
 
 extension GetItInjectableX on _i174.GetIt {
   // initializes the registration of main-scope dependencies inside of GetIt
@@ -122,6 +124,9 @@ extension GetItInjectableX on _i174.GetIt {
         dio: gh<_i361.Dio>(),
         fss: gh<_i558.FlutterSecureStorage>(),
       ),
+    );
+    gh.lazySingleton<_i473.HomeModule>(
+      () => _i473.HomeModule(gh<_i628.HomeEntity>()),
     );
     gh.lazySingleton<_i759.AuthLocalDataSourceContract>(
       () =>

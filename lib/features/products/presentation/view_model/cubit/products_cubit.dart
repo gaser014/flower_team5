@@ -27,7 +27,33 @@ class ProductsCubit extends Cubit<ProductsStates> {
   Future<void> doIntent(ProductsEvents event) async => switch (event) {
     GetAllProductsEvent() => _getAllProducts(event),
     LoadMoreProductsEvent() => _loadMore(event),
+    SearchProductsEvent() => _searchProducts(event),
+    UpdateSortByEvent() => _updateSortBy(event),
   };
+
+  Future<void> _searchProducts(SearchProductsEvent event) async {
+    final currentParams = state.productsState.query as ProductsParams;
+
+    await _getAllProducts(
+      GetAllProductsEvent(
+        params: currentParams.copyWith(
+          page: 1,
+          search: event.query.isNotEmpty ? event.query : null,
+          clearSearch: event.query.isEmpty,
+        ),
+      ),
+    );
+  }
+
+  Future<void> _updateSortBy(UpdateSortByEvent event) async {
+    final currentParams = state.productsState.query as ProductsParams;
+
+    await _getAllProducts(
+      GetAllProductsEvent(
+        params: currentParams.copyWith(page: 1, sortType: event.sortBy),
+      ),
+    );
+  }
 
   Future<void> _getAllProducts(GetAllProductsEvent event) async {
     if (state.productsState.isLoading) return;

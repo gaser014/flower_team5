@@ -3,6 +3,7 @@ import 'package:flowers_app/core/values/app_colors.dart';
 import 'package:flowers_app/core/values/app_strings.dart';
 import 'package:flowers_app/features/home/presentation/view/pages/home_page.dart';
 import 'package:flowers_app/features/main/presentation/screens/home_app_bar_widget.dart';
+import 'package:flowers_app/features/Payment/presentation/view/pages/Payment_page.dart';
 import 'package:flowers_app/features/main/presentation/screens/profile_appbar.dart';
 import 'package:flowers_app/features/main/presentation/view_model/cubit/home_cubit.dart';
 import 'package:flowers_app/features/main/presentation/view_model/cubit/home_events.dart';
@@ -16,7 +17,7 @@ class MainView extends StatelessWidget {
   final List<Widget> _pages = const <Widget>[
     HomePage(),
     Center(child: Text('Categories')),
-    Center(child: Text('Cart')),
+    PaymentPage(),
     Center(child: Text('Profile')),
   ];
 

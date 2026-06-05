@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:equatable/equatable.dart';
 import 'package:flowers_app/config/base_state/pagination_state.dart';
+import 'package:flowers_app/config/base_response/entity/base_pagination_entity.dart';
 import 'package:flowers_app/config/dependency_injection/di.dart';
 import 'package:flowers_app/config/dependency_injection/home_module.dart';
 import 'package:flowers_app/features/app_filter_tabs/domain/entities/app_filter_tab_item_entity.dart';
@@ -47,13 +48,23 @@ class AppFilterTabsCubit extends Cubit<AppFilterTabsStates> {
       result.when(
         success: (data) {
           if (data != null) {
+            final fixedData = [
+              const AppFilterTabItemEntity(id: null, name: 'All'),
+              ...data.data,
+            ];
+            
+            final fixedEntity = BasePaginationEntity<AppFilterTabItemEntity>(
+              meta: data.meta,
+              data: fixedData,
+            );
+
             emit(
               state.copyWith(
                 categoriesState: state.categoriesState.toSuccessFromEntity(
-                  data,
+                  fixedEntity,
                 ),
                 selectCategoryState:
-                    state.selectCategoryState ?? data.data.first,
+                    state.selectCategoryState ?? fixedEntity.data.first,
               ),
             );
           } else {
