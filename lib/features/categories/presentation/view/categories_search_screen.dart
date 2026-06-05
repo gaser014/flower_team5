@@ -6,6 +6,7 @@ import 'package:flowers_app/core/widgets/product_card.dart';
 import 'package:flowers_app/features/products/presentation/view_model/cubit/products_cubit.dart';
 import 'package:flowers_app/features/products/domain/entities/products_params.dart';
 import 'package:flowers_app/core/widgets/pagination_grid_view.dart';
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -22,9 +23,11 @@ class CategoriesSearchScreen extends StatefulWidget {
 
 class _CategoriesSearchScreenState extends State<CategoriesSearchScreen> {
   final TextEditingController _searchController = TextEditingController();
+  Timer? _debounce;
 
   @override
   void dispose() {
+    _debounce?.cancel();
     _searchController.dispose();
     super.dispose();
   }
@@ -69,9 +72,13 @@ class _CategoriesSearchScreenState extends State<CategoriesSearchScreen> {
                 controller: _searchController,
                 autofocus: true,
                 onChanged: (value) {
-                  widget.productsCubit.doIntent(
-                    SearchProductsEvent(query: value),
-                  );
+                  setState(() {});
+                  if (_debounce?.isActive ?? false) _debounce!.cancel();
+                  _debounce = Timer(const Duration(milliseconds: 500), () {
+                    widget.productsCubit.doIntent(
+                      SearchProductsEvent(query: value),
+                    );
+                  });
                 },
                 decoration: InputDecoration(
                   hintText: AppStrings.search,

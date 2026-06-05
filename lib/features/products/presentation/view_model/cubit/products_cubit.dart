@@ -33,16 +33,14 @@ class ProductsCubit extends Cubit<ProductsStates> {
 
   Future<void> _searchProducts(SearchProductsEvent event) async {
     final currentParams = state.productsState.query as ProductsParams;
-    final newFilterList = List<FilterParam>.from(currentParams.filterList);
-
-    newFilterList.removeWhere((f) => f.key == 'keyword');
-    if (event.query.isNotEmpty) {
-      newFilterList.add(FilterParam(key: 'keyword', value: event.query));
-    }
 
     await _getAllProducts(
       GetAllProductsEvent(
-        params: currentParams.copyWith(page: 1, filterList: newFilterList),
+        params: currentParams.copyWith(
+          page: 1,
+          search: event.query.isNotEmpty ? event.query : null,
+          clearSearch: event.query.isEmpty,
+        ),
       ),
     );
   }

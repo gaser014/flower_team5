@@ -145,9 +145,11 @@ class CategoriesView extends StatelessWidget {
         context.read<CategoriesCubit>().doIntent(
           SelectCategoryEvent(category: category),
         );
-        context.read<ProductsCubit>().doIntent(
+        final cubit = context.read<ProductsCubit>();
+        final currentParams = cubit.state.productsState.query as ProductsParams;
+        cubit.doIntent(
           GetAllProductsEvent(
-            params: ProductsParams(category: category, page: 1),
+            params: currentParams.copyWith(category: category, page: 1),
           ),
         );
       },
@@ -186,31 +188,38 @@ class CategoriesView extends StatelessWidget {
   }
 
   Widget _buildFloatingFilterButton(BuildContext context) {
-    return Builder(
-      builder: (context) => ElevatedButton.icon(
-        onPressed: () => _showSortBottomSheet(context),
-        icon: SvgPicture.asset(
-          AppAssets.iconsFilter,
-          colorFilter: const ColorFilter.mode(AppColors.white, BlendMode.srcIn),
-          height: 20,
-        ),
-        label: const Text('Filter'),
-        style: ElevatedButton.styleFrom(
-          backgroundColor: AppColors.primerColor,
-          foregroundColor: AppColors.white,
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(24),
+    return BlocBuilder<ProductsCubit, ProductsStates>(
+      builder: (context, state) {
+        final currentParams = state.productsState.query;
+        final hasFilter = currentParams is ProductsParams && currentParams.sortType != null;
+
+        if (!hasFilter) return const SizedBox.shrink();
+
+        return ElevatedButton.icon(
+          onPressed: () => _showSortBottomSheet(context),
+          icon: SvgPicture.asset(
+            AppAssets.iconsFilter,
+            colorFilter: const ColorFilter.mode(AppColors.white, BlendMode.srcIn),
+            height: 20,
           ),
-        ),
-      ),
+          label: const Text('Filter'),
+          style: ElevatedButton.styleFrom(
+            backgroundColor: AppColors.primerColor,
+            foregroundColor: AppColors.white,
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(24),
+            ),
+          ),
+        );
+      },
     );
   }
 
   void _showSortBottomSheet(BuildContext context) {
     final cubit = context.read<ProductsCubit>();
     final currentParams = cubit.state.productsState.query as ProductsParams;
-    final currentSortBy = SortType.newProduct;
+    final currentSortBy = currentParams.sortType ?? SortType.newProduct;
 
     showModalBottomSheet(
       context: context,

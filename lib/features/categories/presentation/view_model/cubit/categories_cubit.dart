@@ -99,7 +99,7 @@ class CategoriesCubit extends Cubit<CategoriesStates> {
         if (data != null) {
           // Temporary mapping to match user's requested names for testing
           final requestedNames = ['Hand Bouquet', 'Vases', 'Boxes', 'Jewelry'];
-          final fixedData = data.data.asMap().entries.map((entry) {
+          final mappedData = data.data.asMap().entries.map((entry) {
             final index = entry.key;
             final category = entry.value;
             if (index < requestedNames.length) {
@@ -107,6 +107,11 @@ class CategoriesCubit extends Cubit<CategoriesStates> {
             }
             return category;
           }).toList();
+
+          final fixedData = [
+            const AppFilterTabItemEntity(id: null, name: 'All'),
+            ...mappedData,
+          ];
 
           final fixedEntity = BasePaginationEntity<AppFilterTabItemEntity>(
             meta: data.meta,
