@@ -158,6 +158,8 @@ class AppStrings {
   static const String logout = "Logout";
   static const String editProfile = "Edit profile";
   static const String addNewAddress = "Add New Address";
+  static const String aboutUs = "About us";
+  static const String termsAndConditions = "Terms & conditions";
 
   // Remaining values from provided dart source
   static const String setPassword1ConditionError =
