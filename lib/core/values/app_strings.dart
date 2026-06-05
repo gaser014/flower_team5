@@ -149,8 +149,34 @@ class AppStrings {
   static const String totalPrice = "Total";
   static const String placeOrder = "Place Order";
   static const String paymentMethod = "Payment method";
+  static const String paymentLoginHint = "Login to save your payment method";
+  static const String paymentLoggedInAs = "Logged in as";
+  static const String enterCardDataSecurely = "Enter card details securely";
   static const String cash = "Cash";
   static const String creditCard = "Credit Card";
+  static const String cashOnDelivery = "Cash on delivery";
+  static const String saveCard = "Save Card";
+  static const String paymentMethodLabel = "Method";
+  static const String cardHolderName = "Cardholder Name";
+  static const String enterCardHolderName = "Enter cardholder name";
+  static const String cardNumber = "Card Number";
+  static const String enterCardNumber = "Enter card number";
+  static const String invalidCardNumber =
+      "Please enter a valid 16-digit card number";
+  static const String expiryDate = "Expiry Date";
+  static const String enterExpiryDate = "MM/YY";
+  static const String invalidExpiryDate = "Please enter a valid expiry date";
+  static const String cvc = "CVC";
+  static const String enterCvc = "Enter CVC";
+  static const String invalidCvc = "Please enter a valid 3-digit CVC";
+  static const String savedCardDetails = "Saved payment";
+  static const String noSavedCard = "No saved payment method";
+  static const String cardEnding = "Card ending";
+  static const String cardSavedSuccessfully = "Card saved successfully";
+  static const String paymentLoginToSave =
+      "Please login first to save payment information.";
+  static const String deleteCard = "Delete Card";
+  static const String cardDeletedSuccessfully = "Card deleted successfully";
 
   // Profile & Address
   static const String myOrders = "My orders";

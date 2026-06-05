@@ -11,12 +11,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class MainView extends StatelessWidget {
-  const MainView({super.key});
+   MainView({super.key});
 
   final List<Widget> _pages = const <Widget>[
     HomePage(),
     Center(child: Text('Categories')),
-    Center(child: Text('Cart')),
     Center(child: Text('Profile')),
   ];
 

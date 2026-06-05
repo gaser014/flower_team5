@@ -5,13 +5,12 @@ import 'package:flowers_app/core/data/data_sources/auth_local_data_source.dart';
 import 'package:flowers_app/core/routes/routes.dart';
 import 'package:flowers_app/features/app_filter_tabs/domain/entities/app_filter_tab_item_entity.dart';
 import 'package:flowers_app/features/login/presentation/view/pages/login_page.dart';
+import 'package:flowers_app/features/main/presentation/screens/main_view.dart';
+import 'package:flowers_app/features/payment/presentation/view/pages/payment_page.dart';
 import 'package:flowers_app/features/products/presentation/view/pages/occasion_page.dart';
 import 'package:flowers_app/features/spalsh/splash_page.dart';
-import 'package:flowers_app/features/main/presentation/screens/main_view.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flowers_app/features/spalsh/splash_page.dart';
 
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:go_router/go_router.dart';
 
 final RouteObserver<ModalRoute> routeObserver = RouteObserver<ModalRoute>();
@@ -210,7 +209,7 @@ abstract class AppRoutes {
         path: Routes.main,
         pageBuilder: (context, state) => buildAnimatedPage(
           key: state.pageKey,
-          child: const MainView(),
+          child: MainView(),
           animationType: AnimationType.fade,
         ),
       ),
@@ -230,7 +229,7 @@ abstract class AppRoutes {
         path: Routes.splash,
         name: Routes.splash,
         builder: (BuildContext context, GoRouterState state) {
-          return SplashPage();
+          return PaymentPage();
         },
       ),
       GoRoute(
