@@ -4,6 +4,7 @@ import 'package:flowers_app/features/payment/presentation/view/widgets/payment_m
 import 'package:flowers_app/features/payment/presentation/view/widgets/payment_actions_row.dart';
 import 'package:flowers_app/features/payment/presentation/view/pages/payment_page_saved_card.dart';
 import 'package:flowers_app/features/payment/presentation/view/pages/payment_page_form.dart';
+import 'package:flowers_app/features/payment/presentation/view/widgets/payment_card_preview.dart';
 import 'package:flutter/material.dart';
 
 class PaymentPageUI extends StatelessWidget {
@@ -80,13 +81,26 @@ class PaymentPageUI extends StatelessWidget {
                   child: isCreditCard
                       ? Padding(
                           padding: const EdgeInsets.only(top: 12.0),
-                          child: PaymentPageForm(
-                            formKey: formKey,
-                            cardHolderController: cardHolderController,
-                            cardNumberController: cardNumberController,
-                            expiryController: expiryController,
-                            cvcController: cvcController,
-                            onFormChanged: onFormChanged,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              PaymentCardPreview(
+                                cardHolderController: cardHolderController,
+                                cardNumberController: cardNumberController,
+                                expiryController: expiryController,
+                                cvcController: cvcController,
+                              ),
+                              const SizedBox(height: 12),
+                              if (savedPaymentMethod == null)
+                                PaymentPageForm(
+                                  formKey: formKey,
+                                  cardHolderController: cardHolderController,
+                                  cardNumberController: cardNumberController,
+                                  expiryController: expiryController,
+                                  cvcController: cvcController,
+                                  onFormChanged: onFormChanged,
+                                ),
+                            ],
                           ),
                         )
                       : const SizedBox.shrink(),

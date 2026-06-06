@@ -163,6 +163,8 @@ class AppStrings {
   static const String enterCardNumber = "Enter card number";
   static const String invalidCardNumber =
       "Please enter a valid 16-digit card number";
+  static const String cardHolderNameThreeWords =
+      "Please enter exactly three names for the cardholder";
   static const String expiryDate = "Expiry Date";
   static const String enterExpiryDate = "MM/YY";
   static const String invalidExpiryDate = "Please enter a valid expiry date";
