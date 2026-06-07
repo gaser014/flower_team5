@@ -4,6 +4,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flowers_app/app.dart';
 import 'package:flowers_app/config/database/cache_helper.dart';
+import 'package:flowers_app/config/fcm/fcm_service.dart';
 import 'package:flowers_app/config/helper/bloc_observer.dart';
 import 'package:flowers_app/core/constants/app_constants.dart';
 import 'package:flowers_app/firebase_options.dart';
@@ -22,7 +23,7 @@ void main() async {
   await EasyLocalization.ensureInitialized();
   Bloc.observer = MyBlocObserver();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-
+  FCMService().initialize();
   FlutterError.onError = (errorDetails) {
     FirebaseCrashlytics.instance.recordFlutterFatalError(errorDetails);
   };
