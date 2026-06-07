@@ -22,7 +22,7 @@ class AppInterceptors extends Interceptor {
     String? authToken = await fss.read(key: APIkeys.accessToken);
     if (authToken != null && authToken.isNotEmpty) {
       options.headers['Authorization'] = 'Bearer $authToken';
-      // options.headers["token"] = authToken;
+      options.headers["token"] = authToken;
     }
     super.onRequest(options, handler);
   }

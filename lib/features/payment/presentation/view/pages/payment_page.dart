@@ -1,9 +1,14 @@
 import 'dart:convert';
 
 import 'package:flowers_app/config/database/cache_helper.dart';
+import 'package:flowers_app/config/dependency_injection/di.dart';
 import 'package:flowers_app/core/values/app_strings.dart';
 import 'package:flowers_app/features/payment/presentation/services/payment_storage.dart';
+import 'package:flowers_app/features/payment/presentation/view/pages/payment_webview_page.dart';
+import 'package:flowers_app/features/payment/presentation/view_model/cubit/payment_cubit.dart';
+import 'package:flowers_app/features/payment/presentation/view_model/cubit/payment_states.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flowers_app/features/payment/presentation/view/pages/payment_page_ui.dart';
 
 class PaymentPage extends StatefulWidget {
@@ -125,9 +130,8 @@ class _PaymentPageState extends State<PaymentPage> {
     });
   }
 
-  Future<void> _savePayment() async {
+  Future<void> _savePayment(BuildContext blocContext) async {
     if (_userEmail.isEmpty) {
-      if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text(AppStrings.paymentLoginToSave)),
       );
@@ -148,29 +152,15 @@ class _PaymentPageState extends State<PaymentPage> {
       });
     }
 
+    final cubit = blocContext.read<PaymentCubit>();
     setState(() => _isLoading = true);
-    final saved = await PaymentStorage.save(_userEmail, paymentData);
+    await PaymentStorage.save(_userEmail, paymentData);
     setState(() => _isLoading = false);
 
-    if (!mounted) return;
-
-    if (saved) {
-      setState(() {
-        _savedPaymentMethod = paymentData['method'] as String;
-        _savedCardLast4 = _isCreditCard
-            ? _cardNumberController.text
-                  .trim()
-                  .replaceAll(' ', '')
-                  .substring(_cardNumberController.text.trim().length - 4)
-            : null;
-      });
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text(AppStrings.cardSavedSuccessfully)),
-      );
+    if (_isCreditCard) {
+      cubit.checkoutCredit();
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text(AppStrings.somethingWentWrong)),
-      );
+      cubit.checkoutCash();
     }
   }
 
@@ -211,23 +201,73 @@ class _PaymentPageState extends State<PaymentPage> {
 
   @override
   Widget build(BuildContext context) {
-    return PaymentPageUI(
-      userEmail: _userEmail,
-      isCreditCard: _isCreditCard,
-      isLoading: _isLoading,
-      isFormValid: _isFormValid,
-      savedPaymentMethod: _savedPaymentMethod,
-      savedCardLast4: _savedCardLast4,
-      formKey: _formKey,
-      cardHolderController: _cardHolderController,
-      cardNumberController: _cardNumberController,
-      expiryController: _expiryController,
-      cvcController: _cvcController,
-      onSelectCredit: () => setState(() => _isCreditCard = true),
-      onSelectCash: () => setState(() => _isCreditCard = false),
-      onSave: _savePayment,
-      onDelete: _deleteSavedPayment,
-      onFormChanged: _updateForm,
+    return BlocProvider(
+      create: (context) => getIt<PaymentCubit>(),
+      child: BlocConsumer<PaymentCubit, PaymentState>(
+        listener: (context, state) async {
+          final messenger = ScaffoldMessenger.of(context);
+          if (state is PaymentError) {
+            messenger.showSnackBar(
+              SnackBar(content: Text(state.error)),
+            );
+          } else if (state is PaymentCheckoutSuccess) {
+            final success = await Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => PaymentWebviewPage(url: state.url),
+              ),
+            );
+
+            if (!mounted) return;
+
+            if (success == true) {
+              setState(() {
+                _savedPaymentMethod = 'creditCard';
+                _savedCardLast4 = _cardNumberController.text
+                    .trim()
+                    .replaceAll(' ', '')
+                    .substring(_cardNumberController.text.trim().length - 4);
+              });
+              messenger.showSnackBar(
+                const SnackBar(content: Text('Payment Successful!')),
+              );
+            } else if (success == false) {
+              messenger.showSnackBar(
+                const SnackBar(content: Text('Payment Failed or Cancelled')),
+              );
+            }
+          } else if (state is PaymentCashSuccess) {
+            setState(() {
+              _savedPaymentMethod = 'cash';
+              _savedCardLast4 = null;
+            });
+            messenger.showSnackBar(
+              const SnackBar(content: Text(AppStrings.cardSavedSuccessfully)),
+            );
+          }
+        },
+        builder: (context, state) {
+          final isBlocLoading = state is PaymentLoading;
+          return PaymentPageUI(
+            userEmail: _userEmail,
+            isCreditCard: _isCreditCard,
+            isLoading: _isLoading || isBlocLoading,
+            isFormValid: _isFormValid,
+            savedPaymentMethod: _savedPaymentMethod,
+            savedCardLast4: _savedCardLast4,
+            formKey: _formKey,
+            cardHolderController: _cardHolderController,
+            cardNumberController: _cardNumberController,
+            expiryController: _expiryController,
+            cvcController: _cvcController,
+            onSelectCredit: () => setState(() => _isCreditCard = true),
+            onSelectCash: () => setState(() => _isCreditCard = false),
+            onSave: () => _savePayment(context),
+            onDelete: _deleteSavedPayment,
+            onFormChanged: _updateForm,
+          );
+        },
+      ),
     );
   }
 }
