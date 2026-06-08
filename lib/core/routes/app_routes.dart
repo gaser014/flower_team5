@@ -5,6 +5,7 @@ import 'package:flowers_app/core/data/data_sources/auth_local_data_source.dart';
 import 'package:flowers_app/core/routes/routes.dart';
 import 'package:flowers_app/features/app_filter_tabs/domain/entities/app_filter_tab_item_entity.dart';
 import 'package:flowers_app/features/login/presentation/view/pages/login_page.dart';
+import 'package:flowers_app/features/notifications/presentation/view/pages/notifications_page.dart';
 import 'package:flowers_app/features/products/presentation/view/pages/occasion_page.dart';
 import 'package:flowers_app/features/spalsh/splash_page.dart';
 import 'package:flowers_app/features/main/presentation/screens/main_view.dart';
@@ -238,6 +239,13 @@ abstract class AppRoutes {
         name: Routes.login,
         builder: (BuildContext context, GoRouterState state) {
           return LoginPage();
+        },
+      ),
+      GoRoute(
+        path: Routes.notifications,
+        name: Routes.notifications,
+        builder: (BuildContext context, GoRouterState state) {
+          return NotificationsPage();
         },
       ),
     ],

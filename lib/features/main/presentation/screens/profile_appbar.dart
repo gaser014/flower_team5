@@ -1,3 +1,4 @@
+import 'package:flowers_app/core/routes/routes.dart';
 import 'package:flowers_app/core/values/app_assets.dart';
 import 'package:flowers_app/core/values/app_colors.dart';
 import 'package:flowers_app/core/values/app_font_style.dart';
@@ -5,6 +6,7 @@ import 'package:flowers_app/core/values/app_strings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 
 class ProfileAppBarWidget extends StatelessWidget
     implements PreferredSizeWidget {
@@ -30,7 +32,7 @@ class ProfileAppBarWidget extends StatelessWidget
             ),
             const Spacer(),
             IconButton(
-              onPressed: () {},
+              onPressed: () => context.push(Routes.notifications),
               icon: Stack(
                 alignment: Alignment.center,
                 children: [
