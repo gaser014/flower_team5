@@ -42,7 +42,11 @@ class _GovernorateDropdownFieldState
     super.didUpdateWidget(oldWidget);
     if (oldWidget.selectedGovernorate?.id !=
         widget.selectedGovernorate?.id) {
-      _controller.text = widget.selectedGovernorate?.nameEn ?? '';
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) {
+          _controller.text = widget.selectedGovernorate?.nameEn ?? '';
+        }
+      });
     }
   }
 

@@ -1,7 +1,9 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+
 import 'package:flowers_app/core/localization_constants/address_constants.dart';
 import 'package:flowers_app/core/values/app_colors.dart';
 import 'package:flowers_app/core/values/app_font_style.dart';
-import 'package:flutter/material.dart';
 
 class EmptyAddressesWidget extends StatelessWidget {
   const EmptyAddressesWidget({super.key});
@@ -12,10 +14,14 @@ class EmptyAddressesWidget extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Icon(
-            Icons.location_off_outlined,
-            size: 100,
-            color: AppColors.grayA6,
+          SvgPicture.asset(
+            'assets/icons/location.svg',
+            height: 100,
+            width: 100,
+            colorFilter: const ColorFilter.mode(
+              AppColors.grayA6,
+              BlendMode.srcIn,
+            ),
           ),
           const SizedBox(height: 24),
           Text(

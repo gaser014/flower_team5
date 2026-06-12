@@ -14,6 +14,7 @@ class AppAssets {
   static const String iconsCheckmark = "assets/icons/checkmark.svg";
 
   static const String iconsClock = "assets/icons/clock.svg";
+  static const String edit = "assets/icons/edit.svg";
 
   static const String iconsCloseCircle = "assets/icons/close-circle.svg";
 
@@ -78,6 +79,7 @@ class AppAssets {
   static const String locationSvg = "assets/icons/location.svg";
   static const String emptyCartIcon = "assets/icons/no_items_in_cart.svg";
   static const String locationMarker = "assets/images/location_marker.png";
+  static const String locationMarkerSvg = "assets/icons/location_marker.svg";
   //!======= Splash=============
   static const String logoSplash = "assets/images/flower-bg.png";
   static const String logoTextSplash = "assets/images/flowery-text.png";

@@ -43,10 +43,16 @@ class _AreaDropdownFieldState extends State<AreaDropdownField> {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.selectedGovernorateId !=
         widget.selectedGovernorateId) {
-      _filter();
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) _filter();
+      });
     }
     if (oldWidget.selectedArea?.id != widget.selectedArea?.id) {
-      _controller.text = widget.selectedArea?.nameEn ?? '';
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) {
+          _controller.text = widget.selectedArea?.nameEn ?? '';
+        }
+      });
     }
   }
 
