@@ -16,12 +16,17 @@ abstract interface class AddressesApiClient {
   @GET(EndPoints.addressEndPoint)
   Future<AddressesResponseDto> getAddresses();
 
-  @POST(EndPoints.addressEndPoint)
-  Future<AddressDto> addAddress(@Body() AddressDto address);
+  @PATCH(EndPoints.addressEndPoint)
+  Future<AddressesResponseDto> addAddress(@Body() AddressDto address);
 
-  @PUT(EndPoints.addressEndPoint)
-  Future<AddressDto> updateAddress(@Body() AddressDto address);
+  @PATCH('${EndPoints.addressEndPoint}/{addressId}')
+  Future<AddressesResponseDto> updateAddress(
+    @Path('addressId') String addressId,
+    @Body() AddressDto address,
+  );
 
   @DELETE('${EndPoints.addressEndPoint}/{addressId}')
-  Future<void> deleteAddress(@Path('addressId') String addressId);
+  Future<AddressesResponseDto> deleteAddress(
+    @Path('addressId') String addressId,
+  );
 }

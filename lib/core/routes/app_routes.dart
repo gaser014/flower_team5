@@ -241,12 +241,15 @@ abstract class AppRoutes {
         path: Routes.addAddress,
         name: Routes.addAddress,
         pageBuilder: (context, state) {
-          final editAddress = state.extra as AddressEntity?;
+          final Map<String, dynamic> extra =
+              state.extra as Map<String, dynamic>;
+          final editAddress = extra['editAddress'] as AddressEntity?;
+          final cubit = extra['cubit'] as AddressesCubit;
 
           return buildAnimatedPage(
             key: state.pageKey,
-            child: BlocProvider<AddressesCubit>(
-              create: (_) => getIt<AddressesCubit>(),
+            child: BlocProvider.value(
+              value: cubit,
               child: AddAddressScreen(editAddress: editAddress),
             ),
             animationType: AnimationType.slideFromRight,

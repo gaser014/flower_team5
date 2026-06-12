@@ -23,3 +23,31 @@ class DeleteAddressEvent extends AddressesEvents {
   const DeleteAddressEvent({required this.id});
 }
 
+class UpdateFormCityEvent extends AddressesEvents {
+  final CityItem city;
+  const UpdateFormCityEvent({required this.city});
+}
+
+class UpdateFormAreaEvent extends AddressesEvents {
+  final AreaItem? area;
+  const UpdateFormAreaEvent({required this.area});
+}
+
+class ResetFormEvent extends AddressesEvents {
+  const ResetFormEvent();
+}
+
+class UpdateFormLocationEvent extends AddressesEvents {
+  final double? lat;
+  final double? lng;
+  final String? street;
+  final CityItem? city;
+  final AreaItem? area;
+  const UpdateFormLocationEvent({
+    this.lat,
+    this.lng,
+    this.street,
+    this.city,
+    this.area,
+  });
+}

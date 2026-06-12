@@ -9,12 +9,34 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
-class AddressesBody extends StatelessWidget {
+class AddressesBody extends StatefulWidget {
   const AddressesBody({super.key});
+
+  @override
+  State<AddressesBody> createState() => _AddressesBodyState();
+}
+
+class _AddressesBodyState extends State<AddressesBody> {
+  late final AddressesCubit _cubit;
+
+  @override
+  void initState() {
+    super.initState();
+    _cubit = context.read<AddressesCubit>();
+  }
+
+  @override
+  void dispose() {
+    _cubit.close();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<AddressesCubit, AddressesStates>(
+      buildWhen: (previous, current) =>
+          previous.getAddressesState != current.getAddressesState ||
+          previous.deleteAddressState != current.deleteAddressState,
       builder: (context, state) {
         final listState = state.getAddressesState;
 
@@ -24,9 +46,10 @@ class AddressesBody extends StatelessWidget {
 
         if (listState.isError) {
           return AddressErrorState(
-            message: listState.exception?.toString() ?? AppStrings.somethingWentWrong,
-            onRetry: () =>
-                context.read<AddressesCubit>().doIntent(const GetAddressesEvent()),
+            message:
+                listState.exception?.toString() ??
+                AppStrings.somethingWentWrong,
+            onRetry: () => _cubit.doIntent(const GetAddressesEvent()),
           );
         }
 
@@ -34,29 +57,30 @@ class AddressesBody extends StatelessWidget {
         return AddressListContent(
           items: items,
           isDeleting: state.deleteAddressState.isLoading,
-          onEdit: (address) =>
-              context.pushNamed(Routes.addAddress, extra: address),
+
+          onEdit: (address) => context.pushNamed(
+            Routes.addAddress,
+            extra: {"editAddress": address, 'cubit': _cubit},
+          ),
           onDelete: (id) => _confirmDelete(context, id),
-          onAdd: () => context.pushNamed(Routes.addAddress),
+          onAdd: () =>
+              context.pushNamed(Routes.addAddress, extra: {'cubit': _cubit}),
         );
       },
     );
   }
 
   Future<void> _confirmDelete(BuildContext context, String addressId) async {
-    final confirmed = await showModalBottomSheet<bool>(
+    await showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      shape: const RoundedRectangleBorder(
+      shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
       ),
-      builder: (_) => const DeleteAddressSheet(),
+      builder: (_) => BlocProvider<AddressesCubit>.value(
+        value: _cubit,
+        child: DeleteAddressSheet(addressId: addressId),
+      ),
     );
-
-    if (confirmed == true && context.mounted) {
-      context.read<AddressesCubit>().doIntent(
-        DeleteAddressEvent(id: addressId),
-      );
-    }
   }
 }

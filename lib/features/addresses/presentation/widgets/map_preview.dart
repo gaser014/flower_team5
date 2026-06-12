@@ -28,30 +28,35 @@ class MapPreview extends StatelessWidget {
   }
 
   Widget _buildMap(BuildContext context) {
-    return FlutterMap(
-      options: MapOptions(
-        initialCenter: latLng!,
-        interactionOptions: const InteractionOptions(
-          flags: InteractiveFlag.none,
-        ),
-      ),
+    return Stack(
       children: [
-        TileLayer(
-          urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-          userAgentPackageName: 'com.flowers_app',
-        ),
-        MarkerLayer(
-          markers: [
-            Marker(
-              point: latLng!,
-              child: const Icon(
-                Icons.location_on,
-                color: AppColors.primerColor,
-                size: 36,
-              ),
+        FlutterMap(
+          options: MapOptions(
+            initialCenter: latLng!,
+            interactionOptions: const InteractionOptions(
+              flags: InteractiveFlag.none,
+            ),
+          ),
+          children: [
+            TileLayer(
+              urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+              userAgentPackageName: 'com.flowers_app',
+            ),
+            MarkerLayer(
+              markers: [
+                Marker(
+                  point: latLng!,
+                  child: const Icon(
+                    Icons.location_on,
+                    color: AppColors.primerColor,
+                    size: 36,
+                  ),
+                ),
+              ],
             ),
           ],
         ),
+        Positioned.fill(child: GestureDetector(onTap: onTap)),
       ],
     );
   }

@@ -1,4 +1,5 @@
 import 'package:flowers_app/core/values/app_assets.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -79,10 +80,7 @@ class AddressCard extends StatelessWidget {
             const SizedBox(
               width: 24,
               height: 24,
-              child: CircularProgressIndicator(
-                strokeWidth: 2,
-                color: AppColors.redCC,
-              ),
+              child: CupertinoActivityIndicator(color: AppColors.redCC),
             )
           else
             Row(

@@ -31,7 +31,6 @@ class AddressDto {
     );
   }
 
-
   factory AddressDto.fromEntity(AddressEntity entity) {
     return AddressDto(
       id: entity.id,
@@ -46,7 +45,6 @@ class AddressDto {
 
   Map<String, dynamic> toJson() {
     return {
-      '_id': id,
       'street': street,
       'phone': phone,
       'city': city,
@@ -55,7 +53,6 @@ class AddressDto {
       'username': username,
     };
   }
-
 
   AddressEntity toEntity() {
     return AddressEntity(

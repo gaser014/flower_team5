@@ -5,17 +5,13 @@ class AddressesResponseDto {
   final String? message;
   final List<AddressDto>? addresses;
 
-  const AddressesResponseDto({
-    this.message,
-    this.addresses,
-  });
+  const AddressesResponseDto({this.message, this.addresses});
 
   factory AddressesResponseDto.fromJson(Map<String, dynamic> json) {
+    final list = (json['address'] ?? json['addresses']) as List?;
     return AddressesResponseDto(
       message: json['message'],
-      addresses: (json['addresses'] as List?)
-          ?.map((e) => AddressDto.fromJson(e))
-          .toList(),
+      addresses: list?.map((e) => AddressDto.fromJson(e)).toList(),
     );
   }
 

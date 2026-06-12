@@ -9,9 +9,7 @@ import 'package:injectable/injectable.dart';
 class AddressesRepositoryImpl implements AddressesRepository {
   final AddressesRemoteDataSourceContract addressesRemoteDataSourceContract;
 
-  AddressesRepositoryImpl({
-    required this.addressesRemoteDataSourceContract,
-  });
+  AddressesRepositoryImpl({required this.addressesRemoteDataSourceContract});
 
   @override
   Future<Result<List<AddressEntity>>> getAddresses() async {
@@ -23,28 +21,42 @@ class AddressesRepositoryImpl implements AddressesRepository {
   }
 
   @override
-  Future<Result<AddressEntity>> addAddress({required AddressEntity address}) async {
-    final result = await addressesRemoteDataSourceContract.addAddress(address: AddressDto.fromEntity(address));
+  Future<Result<List<AddressEntity>>> addAddress({
+    required AddressEntity address,
+  }) async {
+    final result = await addressesRemoteDataSourceContract.addAddress(
+      address: AddressDto.fromEntity(address),
+    );
     return result.when(
-      success: (data) => Success(data: data?.toEntity()),
+      success: (data) => Success(data: data?.toEntities()),
       error: (exception) => Error(exception: exception),
     );
   }
 
   @override
-  Future<Result<AddressEntity>> updateAddress({required AddressEntity address}) async {
-    final result = await addressesRemoteDataSourceContract.updateAddress(address: AddressDto.fromEntity(address));
+  Future<Result<List<AddressEntity>>> updateAddress({
+    required AddressEntity address,
+  }) async {
+    final dto = AddressDto.fromEntity(address);
+    final result = await addressesRemoteDataSourceContract.updateAddress(
+      addressId: address.id ?? '',
+      address: dto,
+    );
     return result.when(
-      success: (data) => Success(data: data?.toEntity()),
+      success: (data) => Success(data: data?.toEntities()),
       error: (exception) => Error(exception: exception),
     );
   }
 
   @override
-  Future<Result<void>> deleteAddress({required String addressId}) async {
-    final result = await addressesRemoteDataSourceContract.deleteAddress(addressId: addressId);
+  Future<Result<List<AddressEntity>>> deleteAddress({
+    required String addressId,
+  }) async {
+    final result = await addressesRemoteDataSourceContract.deleteAddress(
+      addressId: addressId,
+    );
     return result.when(
-      success: (_) => Success(data: null),
+      success: (data) => Success(data: data?.toEntities()),
       error: (exception) => Error(exception: exception),
     );
   }

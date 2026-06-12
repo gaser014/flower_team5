@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:osm_location_picker/osm_location_picker.dart';
 
+import 'package:flowers_app/config/helper/extensions/base_state/show_error_massage.dart';
+import 'package:flowers_app/config/helper/extensions/base_state/show_success_massage.dart';
+import 'package:flowers_app/core/helper/address_parser.dart';
 import 'package:flowers_app/core/localization_constants/address_constants.dart';
 import 'package:flowers_app/core/location_data/egypt_location_loader.dart';
 import 'package:flowers_app/core/values/app_colors.dart';
@@ -26,10 +30,6 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
   late final TextEditingController _phoneController;
   late final TextEditingController _usernameController;
 
-  CityItem? _selectedCity;
-  AreaItem? _selectedArea;
-  LatLng? _selectedLatLng;
-
   bool get _isEditing => widget.editAddress != null;
 
   @override
@@ -41,47 +41,50 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
     _usernameController = TextEditingController(text: edit?.username ?? '');
 
     if (edit != null) {
-      final lat = edit.lat;
-      final lng = edit.long;
-      if (lat != null && lng != null) {
-        _selectedLatLng = LatLng(
-          double.tryParse(lat) ?? 0,
-          double.tryParse(lng) ?? 0,
-        );
-      }
+      _loadLocationDataForEdit(edit);
+    } else {
+      context.read<AddressesCubit>().doIntent(ResetFormEvent());
     }
-
-    _loadLocationData();
   }
 
-  Future<void> _loadLocationData() async {
-    if (_isEditing && widget.editAddress!.city != null) {
-      final cities = await EgyptLocationLoader.loadCities();
-      final matchedCity = cities.firstWhere(
-        (c) =>
-            c.nameEn.toLowerCase() == widget.editAddress!.city!.toLowerCase() ||
-            c.nameAr == widget.editAddress!.city,
-        orElse: () => const CityItem(id: '', nameEn: '', nameAr: ''),
-      );
+  Future<void> _loadLocationDataForEdit(AddressEntity edit) async {
+    if (edit.city == null) return;
 
-      if (matchedCity.id.isNotEmpty) {
-        setState(() => _selectedCity = matchedCity);
-      }
+    final cities = await EgyptLocationLoader.loadCities();
+    final matchedCity = cities.firstWhere(
+      (c) =>
+          c.nameEn.toLowerCase() == edit.city!.toLowerCase() ||
+          c.nameAr == edit.city!,
+      orElse: () => const CityItem(id: '', nameEn: '', nameAr: ''),
+    );
+
+    final double? lat = edit.lat != null ? double.tryParse(edit.lat!) : null;
+    final double? lng = edit.long != null ? double.tryParse(edit.long!) : null;
+
+    if (matchedCity.id.isNotEmpty || lat != null || lng != null) {
+      if (!mounted) return;
+      context.read<AddressesCubit>().doIntent(
+        UpdateFormLocationEvent(
+          lat: lat,
+          lng: lng,
+          city: matchedCity.id.isNotEmpty ? matchedCity : null,
+        ),
+      );
     }
   }
 
   void _onCitySelected(CityItem city) {
-    setState(() {
-      _selectedCity = city;
-      _selectedArea = null;
-    });
+    context.read<AddressesCubit>().doIntent(UpdateFormCityEvent(city: city));
   }
 
   Future<void> _pickLocation() async {
+    final state = context.read<AddressesCubit>().state;
+    final initialLatLng = LatLng(state.formSelectedLat, state.formSelectedLng);
+
     final result = await Navigator.of(context).push<LocationModel>(
       MaterialPageRoute(
         builder: (_) => LocationPickerView(
-          initialLatLng: _selectedLatLng,
+          initialLatLng: initialLatLng,
           theme: LocationPickerTheme(
             primaryColor: AppColors.primerColor,
             backgroundColor: AppColors.white,
@@ -90,18 +93,42 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
       ),
     );
 
-    if (result != null && mounted) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        if (mounted) {
-          setState(() => _selectedLatLng = result.latLng);
+    if (result != null && result.latLng != null && mounted) {
+      final addressString = result.address ?? '';
+      final parsed = parseAddressString(addressString);
+
+      CityItem? matchedCity;
+      AreaItem? matchedArea;
+
+      if (parsed != null) {
+        final matched = await matchAddressFromParsed(parsed);
+        matchedCity = matched?.city;
+        matchedArea = matched?.area;
+
+        if (parsed.street.isNotEmpty) {
+          _streetController.text = parsed.street;
         }
-      });
+      }
+
+      if (mounted) {
+        context.read<AddressesCubit>().doIntent(
+          UpdateFormLocationEvent(
+            lat: result.latLng!.latitude,
+            lng: result.latLng!.longitude,
+            city: matchedCity,
+            area: matchedArea,
+          ),
+        );
+      }
     }
   }
 
   void _onSubmit() {
     if (!(_formKey.currentState?.validate() ?? false)) return;
-    if (_selectedCity == null || _selectedArea == null) {
+
+    final cubit = context.read<AddressesCubit>();
+    final s = cubit.state;
+    if (s.formSelectedCity == null || s.formSelectedArea == null) {
       ScaffoldMessenger.of(
         context,
       ).showSnackBar(SnackBar(content: Text(context.selectCity)));
@@ -112,18 +139,16 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
       id: widget.editAddress?.id,
       street: _streetController.text.trim(),
       phone: _phoneController.text.trim(),
-      city: _selectedCity!.nameEn,
-      lat: _selectedLatLng?.latitude.toString(),
-      long: _selectedLatLng?.longitude.toString(),
+      city: s.formSelectedCity!.nameEn,
+      lat: s.formSelectedLat.toString(),
+      long: s.formSelectedLng.toString(),
       username: _usernameController.text.trim(),
     );
 
     if (_isEditing) {
-      context.read<AddressesCubit>().doIntent(
-        UpdateAddressEvent(entity: entity),
-      );
+      cubit.doIntent(UpdateAddressEvent(entity: entity));
     } else {
-      context.read<AddressesCubit>().doIntent(AddAddressEvent(entity: entity));
+      cubit.doIntent(AddAddressEvent(entity: entity));
     }
   }
 
@@ -146,14 +171,14 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
         appBar: CustomAppBar(title: context.addressTitle),
         body: AddressForm(
           formKey: _formKey,
-          latLng: _selectedLatLng,
-          selectedCity: _selectedCity,
-          selectedArea: _selectedArea,
+
           streetController: _streetController,
           phoneController: _phoneController,
           usernameController: _usernameController,
           onCityChanged: _onCitySelected,
-          onAreaChanged: (area) => setState(() => _selectedArea = area),
+          onAreaChanged: (area) => context.read<AddressesCubit>().doIntent(
+            UpdateFormAreaEvent(area: area),
+          ),
           onPickLocation: _pickLocation,
           onSubmit: _onSubmit,
         ),
@@ -165,19 +190,22 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
     final addState = state.addAddressState;
     final updateState = state.updateAddressState;
 
-    if (addState.isSuccess || updateState.isSuccess) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text(context.addressSaved)));
-      Navigator.pop(context, true);
+    if (addState.isSuccess) {
+      context.showSuccessMessage(
+        state: addState,
+        massage: context.addressSaved,
+        onSuccess: () => context.pop(true),
+      );
+    } else if (updateState.isSuccess) {
+      context.showSuccessMessage(
+        state: updateState,
+        massage: context.addressSaved,
+        onSuccess: () => context.pop(true),
+      );
     } else if (addState.isError) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(addState.exception?.toString() ?? 'Error')),
-      );
+      context.showErrorMessage(addState);
     } else if (updateState.isError) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(updateState.exception?.toString() ?? 'Error')),
-      );
+      context.showErrorMessage(updateState);
     }
   }
 }

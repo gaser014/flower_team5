@@ -21,19 +21,30 @@ class AddressesRemoteDataSourceImpl
   }
 
   @override
-  Future<Result<AddressDto>> addAddress({required AddressDto address}) async {
-    return await executeApi<AddressDto>(() => apiClient.addAddress(address));
-  }
-
-  @override
-  Future<Result<AddressDto>> updateAddress({
+  Future<Result<AddressesResponseDto>> addAddress({
     required AddressDto address,
   }) async {
-    return await executeApi<AddressDto>(() => apiClient.updateAddress(address));
+    return await executeApi<AddressesResponseDto>(
+      () => apiClient.addAddress(address),
+    );
   }
 
   @override
-  Future<Result<void>> deleteAddress({required String addressId}) async {
-    return await executeApi<void>(() => apiClient.deleteAddress(addressId));
+  Future<Result<AddressesResponseDto>> updateAddress({
+    required String addressId,
+    required AddressDto address,
+  }) async {
+    return await executeApi<AddressesResponseDto>(
+      () => apiClient.updateAddress(addressId, address),
+    );
+  }
+
+  @override
+  Future<Result<AddressesResponseDto>> deleteAddress({
+    required String addressId,
+  }) async {
+    return await executeApi<AddressesResponseDto>(
+      () => apiClient.deleteAddress(addressId),
+    );
   }
 }

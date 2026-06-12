@@ -5,13 +5,13 @@ import 'package:flowers_app/features/addresses/domain/repositories/addresses_rep
 import 'package:injectable/injectable.dart';
 
 @Injectable()
-class UpdateAddressUseCase extends UseCase<AddressEntity, AddressEntity> {
+class UpdateAddressUseCase extends UseCase<List<AddressEntity>, AddressEntity> {
   final AddressesRepository repository;
 
   UpdateAddressUseCase(this.repository);
 
   @override
-  Future<Result<AddressEntity>> call(AddressEntity parm) {
+  Future<Result<List<AddressEntity>>> call(AddressEntity parm) {
     return repository.updateAddress(address: parm);
   }
 }

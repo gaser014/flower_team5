@@ -1,6 +1,6 @@
 import 'package:flowers_app/core/values/app_colors.dart';
+import 'package:flowers_app/core/widgets/custom_shimmer_container.dart';
 import 'package:flutter/material.dart';
-import 'package:shimmer/shimmer.dart';
 
 /// Shimmer loading widget for Addresses
 class AddressesShimmer extends StatelessWidget {
@@ -37,63 +37,69 @@ class _ShimmerItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Shimmer.fromColors(
-      baseColor: AppColors.lightGray,
-      highlightColor: AppColors.grayEA,
-      child: Card(
-        margin: const EdgeInsets.only(bottom: 12),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-          side: const BorderSide(color: AppColors.grayEA),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Row(
-            children: [
-              Container(
-                width: 60,
-                height: 60,
-                decoration: BoxDecoration(
-                  color: AppColors.white,
-                  borderRadius: BorderRadius.circular(8),
-                ),
-              ),
-              const SizedBox(width: 16),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+    return Container(
+      margin: const EdgeInsets.only(bottom: 12),
+      decoration: BoxDecoration(
+        color: AppColors.whiteF9,
+        borderRadius: BorderRadius.circular(10),
+        boxShadow: const [
+          BoxShadow(
+            color: Color.fromRGBO(83, 83, 83, 0.25),
+            blurRadius: 2,
+            offset: Offset.zero,
+          ),
+        ],
+      ),
+      padding: const EdgeInsets.all(16),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Flexible(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  spacing: 4,
                   children: [
-                    Container(
+                    const CustomShimmerContainer(
+                      width: 20,
+                      height: 20,
+                      borderRadius: 4,
+                    ),
+                    const CustomShimmerContainer(
+                      width: 80,
                       height: 16,
-                      decoration: BoxDecoration(
-                        color: AppColors.white,
-                        borderRadius: BorderRadius.circular(4),
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    Container(
-                      height: 14,
-                      width: 100,
-                      decoration: BoxDecoration(
-                        color: AppColors.white,
-                        borderRadius: BorderRadius.circular(4),
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    Container(
-                      height: 12,
-                      width: 120,
-                      decoration: BoxDecoration(
-                        color: AppColors.white,
-                        borderRadius: BorderRadius.circular(4),
-                      ),
+                      borderRadius: 4,
                     ),
                   ],
                 ),
+                const SizedBox(height: 16),
+                const CustomShimmerContainer(
+                  width: 140,
+                  height: 14,
+                  borderRadius: 4,
+                ),
+              ],
+            ),
+          ),
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const CustomShimmerContainer(
+                width: 24,
+                height: 24,
+                borderRadius: 4,
+              ),
+              const SizedBox(width: 4),
+              const CustomShimmerContainer(
+                width: 24,
+                height: 24,
+                borderRadius: 4,
               ),
             ],
           ),
-        ),
+        ],
       ),
     );
   }

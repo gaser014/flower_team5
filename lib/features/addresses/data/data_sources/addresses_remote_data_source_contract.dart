@@ -5,9 +5,16 @@ import 'package:flowers_app/features/addresses/data/models/addresses_response_dt
 abstract interface class AddressesRemoteDataSourceContract {
   Future<Result<AddressesResponseDto>> getAddresses();
 
-  Future<Result<AddressDto>> addAddress({required AddressDto address});
+  Future<Result<AddressesResponseDto>> addAddress({
+    required AddressDto address,
+  });
 
-  Future<Result<AddressDto>> updateAddress({required AddressDto address});
+  Future<Result<AddressesResponseDto>> updateAddress({
+    required String addressId,
+    required AddressDto address,
+  });
 
-  Future<Result<void>> deleteAddress({required String addressId});
+  Future<Result<AddressesResponseDto>> deleteAddress({
+    required String addressId,
+  });
 }

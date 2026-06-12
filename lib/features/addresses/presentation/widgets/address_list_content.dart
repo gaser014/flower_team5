@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
+import 'package:flowers_app/core/localization_constants/address_constants.dart';
+import 'package:flowers_app/core/values/app_colors.dart';
+import 'package:flowers_app/core/widgets/custom_button.dart';
 import 'package:flowers_app/features/addresses/domain/entities/address_entity.dart';
-import 'package:flowers_app/features/addresses/presentation/widgets/add_address_button.dart';
 import 'package:flowers_app/features/addresses/presentation/widgets/address_list_view.dart';
 
 class AddressListContent extends StatelessWidget {
@@ -32,7 +34,17 @@ class AddressListContent extends StatelessWidget {
             onDelete: onDelete,
           ),
         ),
-        AddAddressButton(onAdd: onAdd),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: CustomButton(
+            text: context.addNewAddress,
+            onPressed: onAdd,
+            height: 50,
+            radius: 20,
+            backgroundColor: AppColors.primerColor,
+            textColor: AppColors.whiteF9,
+          ),
+        ),
       ],
     );
   }

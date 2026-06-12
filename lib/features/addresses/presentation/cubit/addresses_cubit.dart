@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flowers_app/config/base_state/base_state.dart';
 import 'package:flowers_app/config/uses_cases/use_cases.dart';
+import 'package:flowers_app/core/location_data/egypt_location_loader.dart';
 import 'package:flowers_app/features/addresses/domain/entities/address_entity.dart';
 import 'package:flowers_app/features/addresses/domain/use_cases/get_addresses.dart';
 import 'package:flowers_app/features/addresses/domain/use_cases/add_address.dart';
@@ -41,6 +42,10 @@ class AddressesCubit extends Cubit<AddressesStates> {
     AddAddressEvent() => _addAddress(event),
     UpdateAddressEvent() => _updateAddress(event),
     DeleteAddressEvent() => _deleteAddress(event),
+    UpdateFormCityEvent e => _onUpdateFormCity(e),
+    UpdateFormAreaEvent e => _onUpdateFormArea(e),
+    ResetFormEvent _ => resetForm(),
+    UpdateFormLocationEvent e => _onUpdateFormLocation(e),
   };
 
   Future<void> _getAddresses(GetAddressesEvent event) async {
@@ -84,7 +89,12 @@ class AddressesCubit extends Cubit<AddressesStates> {
     result.when(
       success: (data) {
         if (data != null) {
-          emit(state.copyWith(addAddressState: BaseState.success(data)));
+          emit(
+            state.copyWith(
+              addAddressState: BaseState.success(data),
+              getAddressesState: BaseState.success(data),
+            ),
+          );
         } else {
           emit(
             state.copyWith(
@@ -115,7 +125,12 @@ class AddressesCubit extends Cubit<AddressesStates> {
     result.when(
       success: (data) {
         if (data != null) {
-          emit(state.copyWith(updateAddressState: BaseState.success(data)));
+          emit(
+            state.copyWith(
+              updateAddressState: BaseState.success(data),
+              getAddressesState: BaseState.success(data),
+            ),
+          );
         } else {
           emit(
             state.copyWith(
@@ -147,7 +162,22 @@ class AddressesCubit extends Cubit<AddressesStates> {
 
     result.when(
       success: (data) {
-        emit(state.copyWith(deleteAddressState: BaseState.success(data)));
+        if (data != null) {
+          emit(
+            state.copyWith(
+              deleteAddressState: BaseState.success(data),
+              getAddressesState: BaseState.success(data),
+            ),
+          );
+        } else {
+          emit(
+            state.copyWith(
+              deleteAddressState: BaseState.error(
+                Exception('No data received'),
+              ),
+            ),
+          );
+        }
       },
       error: (exception) {
         emit(
@@ -158,6 +188,39 @@ class AddressesCubit extends Cubit<AddressesStates> {
           ),
         );
       },
+    );
+  }
+
+  void _onUpdateFormCity(UpdateFormCityEvent event) {
+    emit(
+      state.copyWith(formSelectedCity: event.city, clearFormSelectedArea: true),
+    );
+  }
+
+  void _onUpdateFormArea(UpdateFormAreaEvent event) {
+    emit(state.copyWith(formSelectedArea: event.area));
+  }
+
+  void _onUpdateFormLocation(UpdateFormLocationEvent event) {
+    emit(
+      state.copyWith(
+        formSelectedLat: event.lat,
+        formSelectedLng: event.lng,
+        formSelectedCity: event.city,
+        formSelectedArea: event.area,
+        clearFormSelectedArea: event.city != null,
+      ),
+    );
+  }
+
+  void resetForm() {
+    emit(
+      state.copyWith(
+        clearFormSelectedArea: true,
+        clearFormSelectedCity: true,
+        clearFormSelectedLat: true,
+        clearFormSelectedLng: true,
+      ),
     );
   }
 

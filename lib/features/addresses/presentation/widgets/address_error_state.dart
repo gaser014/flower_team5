@@ -6,7 +6,11 @@ class AddressErrorState extends StatelessWidget {
   final String message;
   final VoidCallback onRetry;
 
-  const AddressErrorState({super.key, required this.message, required this.onRetry});
+  const AddressErrorState({
+    super.key,
+    required this.message,
+    required this.onRetry,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +20,10 @@ class AddressErrorState extends StatelessWidget {
         children: [
           Text(message),
           const SizedBox(height: 16),
-          ElevatedButton(onPressed: onRetry, child: const Text(AppStrings.tryAgain)),
+          ElevatedButton(
+            onPressed: onRetry,
+            child: const Text(AppStrings.tryAgain),
+          ),
         ],
       ),
     );
