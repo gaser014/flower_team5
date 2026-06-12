@@ -39,6 +39,7 @@ import '../../features/home/data/datasources/home_remote_data_source_contract.da
     as _i969;
 import '../../features/home/data/repositories/home_repository_impl.dart'
     as _i76;
+import '../../features/home/domain/entities/home_entity.dart' as _i628;
 import '../../features/home/domain/repositories/home_repository.dart' as _i0;
 import '../../features/home/domain/use_cases/get_home_use_case.dart' as _i261;
 import '../../features/login/api/api_client/login_api_client.dart' as _i395;
@@ -61,6 +62,20 @@ import '../../features/login/presentation/view_model/cubit/login_cubit.dart'
     as _i753;
 import '../../features/main/presentation/view_model/cubit/home_cubit.dart'
     as _i679;
+import '../../features/main_profile/api/api_client/main_profile_api_client.dart'
+    as _i89;
+import '../../features/main_profile/api/datasources/main_profile_remote_data_source_impl.dart'
+    as _i522;
+import '../../features/main_profile/data/datasources/main_profile_remote_data_source_contract.dart'
+    as _i525;
+import '../../features/main_profile/data/repositories/main_profile_repository_impl.dart'
+    as _i164;
+import '../../features/main_profile/domain/repositories/main_profile_repository.dart'
+    as _i488;
+import '../../features/main_profile/domain/use_cases/get_main_profile_use_case.dart'
+    as _i818;
+import '../../features/main_profile/presentation/view_model/cubit/main_profile_cubit.dart'
+    as _i60;
 import '../../features/products/api/api_client/products_api_client.dart'
     as _i41;
 import '../../features/products/api/datasources/products_local_data_source_impl.dart'
@@ -81,6 +96,7 @@ import '../../features/products/presentation/view_model/cubit/products_cubit.dar
     as _i593;
 import '../api/app_interceptor.dart' as _i449;
 import '../api/dio_module.dart' as _i784;
+import 'home_module.dart' as _i473;
 
 extension GetItInjectableX on _i174.GetIt {
   // initializes the registration of main-scope dependencies inside of GetIt
@@ -111,6 +127,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i395.LoginApiClient>(
       () => _i395.LoginApiClient(gh<_i361.Dio>()),
     );
+    gh.factory<_i89.MainProfileApiClient>(
+      () => _i89.MainProfileApiClient(gh<_i361.Dio>()),
+    );
     gh.factory<_i41.ProductsApiClient>(
       () => _i41.ProductsApiClient(gh<_i361.Dio>()),
     );
@@ -122,6 +141,9 @@ extension GetItInjectableX on _i174.GetIt {
         dio: gh<_i361.Dio>(),
         fss: gh<_i558.FlutterSecureStorage>(),
       ),
+    );
+    gh.lazySingleton<_i473.HomeModule>(
+      () => _i473.HomeModule(gh<_i628.HomeEntity>()),
     );
     gh.lazySingleton<_i759.AuthLocalDataSourceContract>(
       () =>
@@ -138,6 +160,11 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i106.ProductsRemoteDataSourceContract>(
       () => _i838.ProductsRemoteDataSourceImpl(
         apiClient: gh<_i41.ProductsApiClient>(),
+      ),
+    );
+    gh.factory<_i525.MainProfileRemoteDataSourceContract>(
+      () => _i522.MainProfileRemoteDataSourceImpl(
+        gh<_i89.MainProfileApiClient>(),
       ),
     );
     gh.factory<_i0.HomeRepository>(
@@ -164,8 +191,18 @@ extension GetItInjectableX on _i174.GetIt {
             gh<_i106.ProductsRemoteDataSourceContract>(),
       ),
     );
+    gh.factory<_i488.MainProfileRepositoryContract>(
+      () => _i164.MainProfileRepositoryImpl(
+        gh<_i525.MainProfileRemoteDataSourceContract>(),
+      ),
+    );
     gh.factory<_i845.GetAllProductsUseCase>(
       () => _i845.GetAllProductsUseCase(gh<_i27.ProductsRepository>()),
+    );
+    gh.factory<_i818.GetMainProfileUseCase>(
+      () => _i818.GetMainProfileUseCase(
+        gh<_i488.MainProfileRepositoryContract>(),
+      ),
     );
     gh.factory<_i313.GetAllAppFilterTabsUseCase>(
       () =>
@@ -186,6 +223,12 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i593.ProductsCubit>(
       () => _i593.ProductsCubit(
         getAllProductsUseCase: gh<_i845.GetAllProductsUseCase>(),
+      ),
+    );
+    gh.factory<_i60.MainProfileCubit>(
+      () => _i60.MainProfileCubit(
+        gh<_i818.GetMainProfileUseCase>(),
+        gh<_i71.SaveUserUseCase>(),
       ),
     );
     gh.factory<_i468.AppFilterTabsCubit>(
