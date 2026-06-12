@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flowers_app/config/base_response/result.dart';
 import 'package:flowers_app/features/location/data/data_sources/location_remote_data_source_contract.dart';
 import 'package:flowers_app/features/location/data/models/location_dto.dart';
@@ -9,44 +11,44 @@ class LocationRemoteDataSourceImpl implements LocationRemoteDataSourceContract {
   @override
   Future<Result<bool>> requestLocationPermission() async {
     try {
-      print('🔵 [LocationRemoteDataSource] Starting permission request...');
+      log('🔵 [LocationRemoteDataSource] Starting permission request...');
 
       // Check if location services are enabled
       bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
-      print(
+      log(
         '🔵 [LocationRemoteDataSource] Location services enabled: $serviceEnabled',
       );
 
       if (!serviceEnabled) {
-        print('� [LocationRemoteDataSource] Location services are disabled');
+        log('� [LocationRemoteDataSource] Location services are disabled');
         return Success(data: false);
       }
 
       // Check current permission status
       LocationPermission permission = await Geolocator.checkPermission();
-      print('🔵 [LocationRemoteDataSource] Current permission: $permission');
+      log('🔵 [LocationRemoteDataSource] Current permission: $permission');
 
       if (permission == LocationPermission.denied) {
-        print('🔵 [LocationRemoteDataSource] Permission denied, requesting...');
+        log('🔵 [LocationRemoteDataSource] Permission denied, requesting...');
         permission = await Geolocator.requestPermission();
-        print(
+        log(
           '🔵 [LocationRemoteDataSource] Permission request result: $permission',
         );
       }
 
       if (permission == LocationPermission.deniedForever) {
-        print('🔴 [LocationRemoteDataSource] Permission denied forever');
+        log('🔴 [LocationRemoteDataSource] Permission denied forever');
         return Success(data: false);
       }
 
       final isGranted =
           permission == LocationPermission.whileInUse ||
           permission == LocationPermission.always;
-      print('� [LocationRemoteDataSource] Is granted: $isGranted');
+      log('� [LocationRemoteDataSource] Is granted: $isGranted');
 
       return Success(data: isGranted);
     } catch (e) {
-      print('🔴 [LocationRemoteDataSource] Error requesting permission: $e');
+      log('🔴 [LocationRemoteDataSource] Error requesting permission: $e');
       return Error(exception: Exception(e.toString()));
     }
   }
