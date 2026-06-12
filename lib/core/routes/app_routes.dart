@@ -3,15 +3,17 @@ import 'dart:io';
 import 'package:flowers_app/config/dependency_injection/di.dart';
 import 'package:flowers_app/core/data/data_sources/auth_local_data_source.dart';
 import 'package:flowers_app/core/routes/routes.dart';
+import 'package:flowers_app/features/addresses/domain/entities/address_entity.dart';
+import 'package:flowers_app/features/addresses/presentation/cubit/addresses_cubit.dart';
+import 'package:flowers_app/features/addresses/presentation/screens/addresses_page.dart';
+import 'package:flowers_app/features/addresses/presentation/screens/add_address_screen.dart';
 import 'package:flowers_app/features/app_filter_tabs/domain/entities/app_filter_tab_item_entity.dart';
 import 'package:flowers_app/features/login/presentation/view/pages/login_page.dart';
 import 'package:flowers_app/features/products/presentation/view/pages/occasion_page.dart';
 import 'package:flowers_app/features/spalsh/splash_page.dart';
 import 'package:flowers_app/features/main/presentation/screens/main_view.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flowers_app/features/spalsh/splash_page.dart';
-
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 final RouteObserver<ModalRoute> routeObserver = RouteObserver<ModalRoute>();
@@ -204,7 +206,7 @@ class _PageBasedPageRoute<T> extends PageRoute<T> {
 
 abstract class AppRoutes {
   static final GoRouter router = GoRouter(
-    initialLocation: Routes.splash,
+    initialLocation: Routes.addresses,
     routes: [
       GoRoute(
         path: Routes.main,
@@ -223,6 +225,31 @@ abstract class AppRoutes {
             key: state.pageKey,
             child: OccasionPage(occasion: occasion),
             animationType: AnimationType.fade,
+          );
+        },
+      ),
+      GoRoute(
+        path: Routes.addresses,
+        name: Routes.addresses,
+        pageBuilder: (context, state) => buildAnimatedPage(
+          key: state.pageKey,
+          child: const AddressesPage(),
+          animationType: AnimationType.slideFromRight,
+        ),
+      ),
+      GoRoute(
+        path: Routes.addAddress,
+        name: Routes.addAddress,
+        pageBuilder: (context, state) {
+          final editAddress = state.extra as AddressEntity?;
+
+          return buildAnimatedPage(
+            key: state.pageKey,
+            child: BlocProvider<AddressesCubit>(
+              create: (_) => getIt<AddressesCubit>(),
+              child: AddAddressScreen(editAddress: editAddress),
+            ),
+            animationType: AnimationType.slideFromRight,
           );
         },
       ),
