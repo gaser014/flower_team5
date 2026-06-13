@@ -106,7 +106,7 @@ class MainProfilePage extends StatelessWidget {
                             ),
                             ProfileMenuItemWidget(
                               title: AppStrings.myOrders,
-                              onTap: () {},
+                              onTap: () => context.push(Routes.myOrders),
                               trailing: const Icon(
                                 Icons.chevron_right,
                                 color: AppColors.gray7D,

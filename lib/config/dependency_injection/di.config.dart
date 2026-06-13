@@ -96,6 +96,18 @@ import '../../features/main_profile/domain/use_cases/get_main_profile_use_case.d
     as _i818;
 import '../../features/main_profile/presentation/view_model/cubit/main_profile_cubit.dart'
     as _i60;
+import '../../features/my_orders/api/api_client/my_orders_api_client.dart'
+    as _i45;
+import '../../features/my_orders/api/datasources/my_orders_remote_data_source_impl.dart'
+    as _i354;
+import '../../features/my_orders/data/datasources/my_orders_remote_data_source_contract.dart'
+    as _i677;
+import '../../features/my_orders/data/repositories/my_orders_repository_impl.dart'
+    as _i747;
+import '../../features/my_orders/domain/repositories/my_orders_repository.dart'
+    as _i438;
+import '../../features/my_orders/domain/use_cases/get_my_orders_use_case.dart'
+    as _i132;
 import '../../features/products/api/api_client/products_api_client.dart'
     as _i41;
 import '../../features/products/api/datasources/products_local_data_source_impl.dart'
@@ -151,6 +163,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i89.MainProfileApiClient>(
       () => _i89.MainProfileApiClient(gh<_i361.Dio>()),
     );
+    gh.factory<_i45.MyOrdersApiClient>(
+      () => _i45.MyOrdersApiClient(gh<_i361.Dio>()),
+    );
     gh.factory<_i41.ProductsApiClient>(
       () => _i41.ProductsApiClient(gh<_i361.Dio>()),
     );
@@ -202,6 +217,9 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i325.LoginLocalDataSourceContract>(),
       ),
     );
+    gh.factory<_i677.MyOrdersRemoteDataSourceContract>(
+      () => _i354.MyOrdersRemoteDataSourceImpl(gh<_i45.MyOrdersApiClient>()),
+    );
     gh.factory<_i902.AppFilterTabsRepository>(
       () => _i539.AppFilterTabsRepositoryImpl(
         appFilterTabsRemoteDataSourceContract:
@@ -216,6 +234,14 @@ extension GetItInjectableX on _i174.GetIt {
         productsRemoteDataSourceContract:
             gh<_i106.ProductsRemoteDataSourceContract>(),
       ),
+    );
+    gh.factory<_i438.MyOrdersRepository>(
+      () => _i747.MyOrdersRepositoryImpl(
+        gh<_i677.MyOrdersRemoteDataSourceContract>(),
+      ),
+    );
+    gh.factory<_i132.GetMyOrdersUseCase>(
+      () => _i132.GetMyOrdersUseCase(gh<_i438.MyOrdersRepository>()),
     );
     gh.factory<_i488.MainProfileRepositoryContract>(
       () => _i164.MainProfileRepositoryImpl(

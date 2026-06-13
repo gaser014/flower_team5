@@ -22,4 +22,6 @@ abstract class Routes {
   static const String occasionPage = "/occasion_page";
   static const String appLanguage = "/app-language";
   static const String editProfile = "/edit-profile";
+  static const String myOrders = "/my_orders";
+
 }
