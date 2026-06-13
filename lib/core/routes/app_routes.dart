@@ -11,9 +11,8 @@ import 'package:flowers_app/features/edit_profile/presentation/view/pages/change
 import 'package:flowers_app/features/edit_profile/presentation/view/pages/edit_profile_page.dart';
 import 'package:flowers_app/features/forget_password/presentation/view_model/bloc/forget_password_bloc.dart';
 import 'package:flowers_app/features/login/presentation/view/pages/login_page.dart';
-import 'package:flowers_app/features/logout/presentation/view/pages/profile_page.dart';
 import 'package:flowers_app/features/main/presentation/screens/main_view.dart';
-import 'package:flowers_app/features/product_details/presentation/view/pages/product_details_page.dart';
+import 'package:flowers_app/features/notifications/presentation/view/pages/notifications_page.dart';
 import 'package:flowers_app/features/products/presentation/view/pages/occasion_page.dart';
 import 'package:flowers_app/features/spalsh/splash_page.dart';
 import 'package:flutter/cupertino.dart';
@@ -338,10 +337,10 @@ abstract class AppRoutes {
         },
       ),
       GoRoute(
-        path: Routes.splash,
-        name: Routes.splash,
+        path: Routes.notifications,
+        name: Routes.notifications,
         builder: (BuildContext context, GoRouterState state) {
-          return SplashPage();
+          return NotificationsPage();
         },
       ),
     ],
