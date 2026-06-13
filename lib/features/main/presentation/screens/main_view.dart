@@ -14,28 +14,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class MainView extends StatefulWidget {
+class MainView extends StatelessWidget {
   const MainView({super.key});
 
-  @override
-  State<MainView> createState() => _MainViewState();
-}
-
-class _MainViewState extends State<MainView> {
-  late final HomeCubit cubit;
-  late List<Widget> _pages;
-
-  @override
-  void initState() {
-    super.initState();
-    cubit = context.read<HomeCubit>();
-    _pages = <Widget>[
-      const HomePage(),
-      CategoriesView(),
-      CartPage(),
-      MainProfilePage(),
-    ];
-  }
+  final List<Widget> _pages = const <Widget>[
+    HomePage(),
+    Center(child: Text('Categories')),
+    Center(child: Text('Cart')),
+    Center(child: Text('Profile')),
+  ];
 
   @override
   Widget build(BuildContext context) {

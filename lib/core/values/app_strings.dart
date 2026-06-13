@@ -112,37 +112,51 @@ abstract class AppStrings {
   static String get camera => 'camera'.tr();
   static String get gallery => 'gallery'.tr();
 
-  // ── Validations ───────────────────────────────────────────────────────────
-  static String get emailRequired => 'emailRequired'.tr();
-  static String get emailInvalid => 'emailInvalid'.tr();
-  static String get usernameRequired => 'usernameRequired'.tr();
-  static String get usernameInvalid => 'usernameInvalid'.tr();
-  static String get firstNameRequired => 'firstNameRequired'.tr();
-  static String get lastNameRequired => 'lastNameRequired'.tr();
-  static String get passwordRequired => 'passwordRequired'.tr();
-  static String get passwordHint => 'passwordHint'.tr();
-  static String get confirmPasswordRequired => 'confirmPasswordRequired'.tr();
-  static String get confirmPasswordMismatch => 'confirmPasswordMismatch'.tr();
-  static String get confirmPasswordInvalid => 'confirmPasswordInvalid'.tr();
-  static String get pleaseConfirmYourPassword =>
-      'pleaseConfirmYourPassword'.tr();
-  static String get phoneRequired => 'phoneRequired'.tr();
-  static String get phoneInvalid => 'phoneInvalid'.tr();
-  static String get egyptianPhoneInvalid => 'egyptianPhoneInvalid'.tr();
-  static String get pinRequired => 'pinRequired'.tr();
-  static String get pinInvalid => 'pinInvalid'.tr();
-  static String get nameRequired => 'nameRequired'.tr();
-  static String get profileImage => 'profileImage'.tr();
-  static String get setPassword1ConditionError =>
-      'setPassword1ConditionError'.tr();
-  static String get setPassword2ConditionError =>
-      'setPassword2ConditionError'.tr();
-  static String get setPassword3ConditionError =>
-      'setPassword3ConditionError'.tr();
-  static String get setPassword4ConditionError =>
-      'setPassword4ConditionError'.tr();
-  static String get setPassword5ConditionError =>
-      'setPassword5ConditionError'.tr();
+  // Checkout
+  static const String deliveryTime = "Delivery Time";
+  static const String deliveryFee = "Delivery Fee";
+  static const String totalPrice = "Total";
+  static const String placeOrder = "Place Order";
+  static const String paymentMethod = "Payment method";
+  static const String cash = "Cash";
+  static const String creditCard = "Credit Card";
+
+  // Checkout
+  static const String deliveryTime = "Delivery Time";
+  static const String deliveryFee = "Delivery Fee";
+  static const String totalPrice = "Total";
+  static const String placeOrder = "Place Order";
+  static const String paymentMethod = "Payment method";
+  static const String paymentLoginHint = "Login to save your payment method";
+  static const String paymentLoggedInAs = "Logged in as";
+  static const String enterCardDataSecurely = "Enter card details securely";
+  static const String cash = "Cash";
+  static const String creditCard = "Credit Card";
+  static const String cashOnDelivery = "Cash on delivery";
+  static const String saveCard = "Save Card";
+  static const String paymentMethodLabel = "Method";
+  static const String cardHolderName = "Cardholder Name";
+  static const String enterCardHolderName = "Enter cardholder name";
+  static const String cardNumber = "Card Number";
+  static const String enterCardNumber = "Enter card number";
+  static const String invalidCardNumber =
+      "Please enter a valid 16-digit card number";
+  static const String cardHolderNameThreeWords =
+      "Please enter exactly three names for the cardholder";
+  static const String expiryDate = "Expiry Date";
+  static const String enterExpiryDate = "MM/YY";
+  static const String invalidExpiryDate = "Please enter a valid expiry date";
+  static const String cvc = "CVC";
+  static const String enterCvc = "Enter CVC";
+  static const String invalidCvc = "Please enter a valid 3-digit CVC";
+  static const String savedCardDetails = "Saved payment";
+  static const String noSavedCard = "No saved payment method";
+  static const String cardEnding = "Card ending";
+  static const String cardSavedSuccessfully = "Card saved successfully";
+  static const String paymentLoginToSave =
+      "Please login first to save payment information.";
+  static const String deleteCard = "Delete Card";
+  static const String cardDeletedSuccessfully = "Card deleted successfully";
 
   // ── Products ──────────────────────────────────────────────────────────────
   static String get product => 'product'.tr();
