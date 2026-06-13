@@ -1,17 +1,19 @@
 import 'package:flowers_app/core/values/app_colors.dart';
 import 'package:flowers_app/core/values/app_font_style.dart';
 import 'package:flowers_app/core/values/app_strings.dart';
+import 'package:flowers_app/core/widgets/text_field/phone_field.dart';
+import 'package:flowers_app/features/addresses/presentation/widgets/address_text_field.dart';
 import 'package:flowers_app/features/checkout/presentation/cubit/checkout_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CheckoutGiftSection extends StatefulWidget {
-  final TextEditingController nameController;
+  final TextEditingController usernameController;
   final TextEditingController phoneController;
 
   const CheckoutGiftSection({
     super.key,
-    required this.nameController,
+    required this.usernameController,
     required this.phoneController,
   });
 
@@ -22,114 +24,56 @@ class CheckoutGiftSection extends StatefulWidget {
 class _CheckoutGiftSectionState extends State<CheckoutGiftSection> {
   @override
   Widget build(BuildContext context) {
-    final isCredit = context.select<CheckoutCubit, int>(
-      (c) => c.state.selectedPayment,
-    ) == 1;
+    final isCredit =
+        context.select<CheckoutCubit, int>((c) => c.state.selectedPayment) == 1;
     final isEnabled = context.select<CheckoutCubit, bool>(
       (c) => c.state.isGift,
     );
 
-    return AbsorbPointer(
-      absorbing: !isCredit,
-      child: Container(
-        padding: const EdgeInsets.all(16),
-        color: AppColors.whiteF9,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          spacing: 16,
-          children: [
-            Row(
-              spacing: 8,
-              children: [
-                SizedBox(
-                  height: 24,
-                  child: Switch.adaptive(
-                    value: isCredit ? isEnabled : false,
-                    onChanged: (v) =>
-                        context.read<CheckoutCubit>().doEvent(ToggleGift(v)),
-                    activeThumbColor: AppColors.whiteF9,
-                    activeTrackColor: AppColors.primerColor,
-                    inactiveThumbColor: AppColors.primerColor,
-                    inactiveTrackColor: AppColors.whiteF9,
+    if (!isCredit) return const SizedBox.shrink();
+
+    return Container(
+      padding: const EdgeInsets.all(16),
+      color: AppColors.whiteF9,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        spacing: 16,
+        children: [
+          Row(
+            spacing: 8,
+            children: [
+              SizedBox(
+                height: 24,
+                child: Switch.adaptive(
+                  value: isEnabled,
+                  onChanged: (v) =>
+                      context.read<CheckoutCubit>().doEvent(ToggleGift(v)),
+                  activeThumbColor: AppColors.whiteF9,
+                  activeTrackColor: AppColors.primerColor,
+                  inactiveThumbColor: AppColors.primerColor,
+                  inactiveTrackColor: AppColors.primerColor.withValues(
+                    alpha: .1,
                   ),
-                ),
-                Text(
-                  AppStrings.itIsAGift,
-                  style: AppFontStyle.medium18(context: context).copyWith(color: AppColors.black0C),
-                ),
-              ],
-            ),
-            SizedBox(
-              height: 56,
-              child: TextField(
-                controller: widget.nameController,
-                decoration: InputDecoration(
-                  labelText: AppStrings.nameLabel,
-                  hintText: AppStrings.enterNameHint,
-                  labelStyle: const TextStyle(
-                    color: AppColors.gray53,
-                    fontSize: 12,
-                    fontWeight: FontWeight.w400,
-                  ),
-                  hintStyle: const TextStyle(
-                    color: AppColors.grayA6,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w400,
-                  ),
-                  floatingLabelBehavior: FloatingLabelBehavior.always,
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(4),
-                    borderSide: const BorderSide(color: AppColors.gray53),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(4),
-                    borderSide: const BorderSide(color: AppColors.gray53),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(4),
-                    borderSide: const BorderSide(color: AppColors.gray53),
-                  ),
-                  contentPadding: const EdgeInsets.fromLTRB(16, 4, 16, 4),
                 ),
               ),
-            ),
-            SizedBox(
-              height: 56,
-              child: TextField(
-                controller: widget.phoneController,
-                keyboardType: TextInputType.phone,
-                decoration: InputDecoration(
-                  labelText: AppStrings.phoneNumber,
-                  hintText: AppStrings.enterPhoneHint,
-                  labelStyle: const TextStyle(
-                    color: AppColors.gray53,
-                    fontSize: 12,
-                    fontWeight: FontWeight.w400,
-                  ),
-                  hintStyle: const TextStyle(
-                    color: AppColors.grayA6,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w400,
-                  ),
-                  floatingLabelBehavior: FloatingLabelBehavior.always,
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(4),
-                    borderSide: const BorderSide(color: AppColors.gray53),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(4),
-                    borderSide: const BorderSide(color: AppColors.gray53),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(4),
-                    borderSide: const BorderSide(color: AppColors.gray53),
-                  ),
-                  contentPadding: const EdgeInsets.fromLTRB(16, 4, 16, 4),
-                ),
+              Text(
+                AppStrings.itIsAGift,
+                style: AppFontStyle.medium18(
+                  context: context,
+                ).copyWith(color: AppColors.black0C),
               ),
+            ],
+          ),
+          if (isEnabled) ...[
+            AddressTextField(
+              controller: widget.usernameController,
+              label: AppStrings.enterRecipientName,
+              hint: AppStrings.enterRecipientName,
+              errorText: AppStrings.enterRecipientName,
             ),
+            PhoneField(controller: widget.phoneController),
           ],
-        ),
+        ],
       ),
     );
   }

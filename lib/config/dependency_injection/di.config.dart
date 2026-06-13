@@ -604,12 +604,6 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i175.UpdateAddressUseCase>(
       () => _i175.UpdateAddressUseCase(gh<_i1.AddressesRepository>()),
     );
-    gh.factory<_i645.CheckoutCubit>(
-      () => _i645.CheckoutCubit(
-        gh<_i447.CheckoutWithCashUseCase>(),
-        gh<_i413.CheckoutWithCardUseCase>(),
-      ),
-    );
     gh.factory<_i438.MyOrdersRepository>(
       () => _i747.MyOrdersRepositoryImpl(
         gh<_i677.MyOrdersRemoteDataSourceContract>(),
@@ -692,6 +686,13 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i593.ProductsCubit>(
       () => _i593.ProductsCubit(
         getAllProductsUseCase: gh<_i845.GetAllProductsUseCase>(),
+      ),
+    );
+    gh.factory<_i645.CheckoutCubit>(
+      () => _i645.CheckoutCubit(
+        gh<_i447.CheckoutWithCashUseCase>(),
+        gh<_i413.CheckoutWithCardUseCase>(),
+        gh<_i825.GetAddressesUseCase>(),
       ),
     );
     gh.factory<_i677.LogoutUseCase>(

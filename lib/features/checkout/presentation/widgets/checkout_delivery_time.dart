@@ -13,19 +13,13 @@ class CheckoutDeliveryTime extends StatelessWidget {
       color: AppColors.whiteF9,
       child: Column(
         spacing: 16,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                AppStrings.deliveryTime,
-                style: AppFontStyle.medium18(context: context).copyWith(color: AppColors.black0C),
-              ),
-              Text(
-                AppStrings.schedule,
-                style: AppFontStyle.medium18(context: context).copyWith(color: AppColors.primerColor),
-              ),
-            ],
+          Text(
+            AppStrings.deliveryTime,
+            style: AppFontStyle.medium18(
+              context: context,
+            ).copyWith(color: AppColors.black0C),
           ),
           Row(
             spacing: 4,
@@ -36,11 +30,15 @@ class CheckoutDeliveryTime extends StatelessWidget {
                   children: [
                     TextSpan(
                       text: '${AppStrings.instant}, ',
-                      style: AppFontStyle.medium14(context: context).copyWith(color: AppColors.black0C),
+                      style: AppFontStyle.medium14(
+                        context: context,
+                      ).copyWith(color: AppColors.black0C),
                     ),
                     TextSpan(
                       text: '${AppStrings.arriveBy} 03 Sep 2024, 11:00 AM',
-                      style: AppFontStyle.medium14(context: context).copyWith(color: AppColors.green0C),
+                      style: AppFontStyle.medium14(
+                        context: context,
+                      ).copyWith(color: AppColors.green0C),
                     ),
                   ],
                 ),

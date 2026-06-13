@@ -12,6 +12,7 @@ class CheckoutState extends Equatable {
   final String street;
   final String phone;
   final String city;
+  final List<AddressEntity> addresses;
 
   const CheckoutState({
     this.status = CheckoutStatus.initial,
@@ -23,6 +24,7 @@ class CheckoutState extends Equatable {
     this.street = '',
     this.phone = '',
     this.city = '',
+    this.addresses = const [],
   });
 
   CheckoutState copyWith({
@@ -35,6 +37,7 @@ class CheckoutState extends Equatable {
     String? street,
     String? phone,
     String? city,
+    List<AddressEntity>? addresses,
     bool clearError = false,
   }) {
     return CheckoutState(
@@ -47,6 +50,7 @@ class CheckoutState extends Equatable {
       street: street ?? this.street,
       phone: phone ?? this.phone,
       city: city ?? this.city,
+      addresses: addresses ?? this.addresses,
     );
   }
 
@@ -61,5 +65,6 @@ class CheckoutState extends Equatable {
     street,
     phone,
     city,
+    addresses,
   ];
 }

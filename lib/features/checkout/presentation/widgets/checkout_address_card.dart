@@ -1,20 +1,31 @@
 import 'package:flowers_app/core/values/app_colors.dart';
 import 'package:flowers_app/core/values/app_font_style.dart';
 import 'package:flowers_app/core/values/app_strings.dart';
+import 'package:flowers_app/core/widgets/custom_button.dart';
+import 'package:flowers_app/features/addresses/domain/entities/address_entity.dart';
 import 'package:flutter/material.dart';
 
 class CheckoutAddressCard extends StatelessWidget {
   final int selectedIndex;
+  final List<AddressEntity> addresses;
   final ValueChanged<int> onChanged;
+  final VoidCallback onShowAllAddresses;
+  final VoidCallback onAddNewAddress;
 
   const CheckoutAddressCard({
     super.key,
     required this.selectedIndex,
+    required this.addresses,
     required this.onChanged,
+    required this.onShowAllAddresses,
+    required this.onAddNewAddress,
   });
 
   @override
   Widget build(BuildContext context) {
+    final displayAddresses = addresses.take(3).toList();
+    final showAll = addresses.length > 3;
+
     return Container(
       padding: const EdgeInsets.all(16),
       color: AppColors.whiteF9,
@@ -24,47 +35,35 @@ class CheckoutAddressCard extends StatelessWidget {
         children: [
           Text(
             AppStrings.deliveryAddress,
-            style: AppFontStyle.medium18(context: context).copyWith(color: AppColors.black0C),
+            style: AppFontStyle.medium18(
+              context: context,
+            ).copyWith(color: AppColors.black0C),
           ),
-          _AddressCard(
-            title: AppStrings.homeLabel,
-            address: '2XVP+XC - Sheikh Zayed',
-            isSelected: selectedIndex == 0,
-            onTap: () => onChanged(0),
-          ),
-          _AddressCard(
-            title: AppStrings.officeLabel,
-            address: '2XVP+XC - Sheikh Zayed',
-            isSelected: selectedIndex == 1,
-            onTap: () => onChanged(1),
-          ),
-          SizedBox(
-            width: double.infinity,
-            height: 36,
-            child: OutlinedButton(
-              onPressed: () {},
-              style: OutlinedButton.styleFrom(
-                side: const BorderSide(color: AppColors.grayA6),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20),
-                ),
-              ),
-              child: Row(
-                spacing: 4,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Icon(Icons.add, size: 20, color: AppColors.primerColor),
-                  Text(
-                    AppStrings.addNew,
-                    style: AppFontStyle.medium14(context: context).copyWith(color: AppColors.primerColor),
-                  ),
-                ],
-              ),
-            ),
+          ...displayAddresses.asMap().entries.map((entry) {
+            final addr = entry.value;
+            return _AddressCard(
+              title: addr.username ?? '',
+              address: addr.street ?? '',
+              isSelected: _indexOf(addr) == selectedIndex,
+              onTap: () => onChanged(_indexOf(addr)),
+            );
+          }),
+          CustomButton(
+            text: showAll ? AppStrings.showAllAddresses : AppStrings.addNew,
+            onPressed: showAll ? onShowAllAddresses : onAddNewAddress,
+            variant: ButtonVariant.outlined,
+            radius: 20,
+
+            textColor: AppColors.primerColor,
+            backgroundColor: AppColors.grayA6,
           ),
         ],
       ),
     );
+  }
+
+  int _indexOf(AddressEntity addr) {
+    return addresses.indexOf(addr);
   }
 }
 
@@ -130,12 +129,16 @@ class _AddressCard extends StatelessWidget {
                 children: [
                   Text(
                     title,
-                    style: AppFontStyle.medium16(context: context).copyWith(color: AppColors.black0C),
+                    style: AppFontStyle.medium16(
+                      context: context,
+                    ).copyWith(color: AppColors.black0C),
                   ),
                   const SizedBox(height: 4),
                   Text(
                     address,
-                    style: AppFontStyle.regular13(context: context).copyWith(color: AppColors.gray53),
+                    style: AppFontStyle.regular13(
+                      context: context,
+                    ).copyWith(color: AppColors.gray53),
                   ),
                 ],
               ),

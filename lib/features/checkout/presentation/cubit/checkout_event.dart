@@ -4,6 +4,10 @@ sealed class CheckoutEvent {
   const CheckoutEvent();
 }
 
+final class LoadAddresses extends CheckoutEvent {
+  const LoadAddresses();
+}
+
 final class ChangePaymentMethod extends CheckoutEvent {
   final int index;
   const ChangePaymentMethod(this.index);

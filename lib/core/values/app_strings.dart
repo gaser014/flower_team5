@@ -224,6 +224,7 @@ abstract class AppStrings {
   static String get homeLabel => 'homeLabel'.tr();
   static String get officeLabel => 'officeLabel'.tr();
   static String get addNew => 'addNew'.tr();
+  static String get showAllAddresses => 'showAllAddresses'.tr();
   static String get deliveryFee => 'deliveryFee'.tr();
   static String get totalPrice => 'totalPrice'.tr();
   static String get placeOrder => 'placeOrder'.tr();

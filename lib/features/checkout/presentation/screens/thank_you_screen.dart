@@ -1,3 +1,4 @@
+import 'package:flowers_app/core/routes/routes.dart';
 import 'package:flowers_app/core/values/app_colors.dart';
 import 'package:flowers_app/core/values/app_font_style.dart';
 import 'package:flowers_app/core/values/app_strings.dart';
@@ -49,7 +50,7 @@ class ThankYouScreen extends StatelessWidget {
                 width: double.infinity,
                 height: 50,
                 child: ElevatedButton(
-                  onPressed: () => context.goNamed('main'),
+                  onPressed: () => context.goNamed(Routes.main),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.primerColor,
                     foregroundColor: AppColors.white,

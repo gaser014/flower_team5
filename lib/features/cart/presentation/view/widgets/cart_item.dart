@@ -78,16 +78,11 @@ class _ProductImage extends StatelessWidget {
         color: AppColors.pinkF9,
         borderRadius: BorderRadius.circular(8),
       ),
-      clipBehavior: Clip.antiAlias,
-      alignment: Alignment.center,
+      clipBehavior: Clip.hardEdge,
+
       child: imageUrl.isNotEmpty
-          ? CustomCachedImage(
-              imagePath: imageUrl,
-              fit: BoxFit.contain,
-              width: 66,
-              height: 87,
-            )
-          : SvgPicture.asset(AppAssets.iconsFlower, width: 66, height: 87),
+          ? CustomCachedImage(imagePath: imageUrl, fit: BoxFit.fill)
+          : SvgPicture.asset(AppAssets.iconsFlower, fit: BoxFit.scaleDown),
     );
   }
 }

@@ -1,5 +1,8 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flowers_app/config/uses_cases/use_cases.dart';
+import 'package:flowers_app/features/addresses/domain/entities/address_entity.dart';
+import 'package:flowers_app/features/addresses/domain/use_cases/get_addresses.dart';
 import 'package:flowers_app/features/checkout/domain/use_cases/checkout_params.dart';
 import 'package:flowers_app/features/checkout/domain/use_cases/checkout_with_cash_usecase.dart';
 import 'package:flowers_app/features/checkout/domain/use_cases/checkout_with_card_usecase.dart';
@@ -12,10 +15,12 @@ part 'checkout_state.dart';
 class CheckoutCubit extends Cubit<CheckoutState> {
   final CheckoutWithCashUseCase _checkoutWithCashUseCase;
   final CheckoutWithCardUseCase _checkoutWithCardUseCase;
+  final GetAddressesUseCase _getAddressesUseCase;
 
   CheckoutCubit(
     this._checkoutWithCashUseCase,
     this._checkoutWithCardUseCase,
+    this._getAddressesUseCase,
   ) : super(const CheckoutState());
 
   @override
@@ -25,6 +30,8 @@ class CheckoutCubit extends Cubit<CheckoutState> {
 
   Future<void> doEvent(CheckoutEvent event) async {
     switch (event) {
+      case LoadAddresses():
+        await _loadAddresses();
       case ChangePaymentMethod():
         emit(state.copyWith(
           selectedPayment: event.index,
@@ -108,6 +115,16 @@ class CheckoutCubit extends Cubit<CheckoutState> {
           errorMessage: exception?.toString(),
         ));
       },
+    );
+  }
+
+  Future<void> _loadAddresses() async {
+    final result = await _getAddressesUseCase.call(const NoParams());
+    result.when(
+      success: (data) {
+        emit(state.copyWith(addresses: data));
+      },
+      error: (_) {},
     );
   }
 }
