@@ -32,4 +32,5 @@ abstract class EndPoints {
   static const String addressEndPoint = "/addresses";
   static const String changePassword = "/auth/change-password";
   static const String aboutApp = "/about-app";
+  static const String myOrders = "/orders";
 }

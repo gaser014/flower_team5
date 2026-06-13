@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flowers_app/config/dependency_injection/di.dart';
+import 'package:flowers_app/core/routes/routes.dart';
 import 'package:flowers_app/core/values/app_strings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -14,6 +15,7 @@ import 'package:flowers_app/features/main_profile/presentation/view/widgets/prof
 import 'package:flowers_app/features/main_profile/presentation/view/widgets/profile_menu_item_widget.dart';
 
 import 'package:flowers_app/features/main_profile/presentation/view/widgets/main_profile_shimmer.dart';
+import 'package:go_router/go_router.dart';
 
 class MainProfilePage extends StatelessWidget {
   const MainProfilePage({super.key});
@@ -72,7 +74,7 @@ class MainProfilePage extends StatelessWidget {
                             ),
                             ProfileMenuItemWidget(
                               title: AppStrings.myOrders,
-                              onTap: () {},
+                              onTap: () => context.push(Routes.myOrders),
                               trailing: const Icon(
                                 Icons.chevron_right,
                                 color: AppColors.gray7D,
