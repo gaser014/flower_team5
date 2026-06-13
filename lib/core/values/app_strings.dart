@@ -242,6 +242,12 @@ abstract class AppStrings {
   static String get orderPlaced => 'orderPlaced'.tr();
   static String get thankYouMessage => 'thankYouMessage'.tr();
   static String get continueShopping => 'continueShopping'.tr();
+  static String get active => 'active'.tr();
+  static String get completed => 'completed'.tr();
+  static String get noActiveOrders => 'noActiveOrders'.tr();
+  static String get noCompletedOrders => 'noCompletedOrders'.tr();
+  static String get trackOrder => 'trackOrder'.tr();
+  static String get orderNumber => 'orderNumber'.tr();
 
   // ── Auth — Login ──────────────────────────────────────────────────────────
   static String get loginTitle => 'loginTitle'.tr();

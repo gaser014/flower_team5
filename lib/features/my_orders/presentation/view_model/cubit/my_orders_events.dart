@@ -1,1 +1,3 @@
-// TODO: presentation My_ordersEvents
+sealed class MyOrdersEvents {}
+
+class GetOrdersEvent extends MyOrdersEvents {}

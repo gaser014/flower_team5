@@ -43,7 +43,9 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       automaticallyImplyLeading: false,
       centerTitle: centerTitle,
       titleSpacing: shouldShowBack ? 4 : 16,
-      leading: shouldShowBack ? _BackButton(onPressed: onBackPressed) : null,
+      leading: shouldShowBack
+          ? _BackButton(onPressed: onBackPressed, color: titleColor)
+          : null,
       leadingWidth: shouldShowBack && !isRTL ? 40 : 40,
       title: Column(
         crossAxisAlignment: centerTitle
@@ -73,8 +75,9 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
 
 class _BackButton extends StatelessWidget {
   final VoidCallback? onPressed;
+  final Color? color;
 
-  const _BackButton({this.onPressed});
+  const _BackButton({this.onPressed, this.color});
 
   @override
   Widget build(BuildContext context) {
@@ -88,8 +91,8 @@ class _BackButton extends StatelessWidget {
           AppAssets.arrowBack,
           width: 20,
           height: 20,
-          colorFilter: const ColorFilter.mode(
-            AppColors.black0C,
+          colorFilter: ColorFilter.mode(
+            color ?? AppColors.black0C,
             BlendMode.srcIn,
           ),
           fit: BoxFit.scaleDown,

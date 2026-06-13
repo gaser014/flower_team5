@@ -1,9 +1,10 @@
 import 'package:equatable/equatable.dart';
+import 'package:flowers_app/features/my_orders/domain/entities/order_item_entity.dart';
 
 class OrderEntity extends Equatable {
   final String? id;
   final String? user;
-  final List<dynamic>? orderItems;
+  final List<OrderItemEntity>? orderItems;
   final num? totalPrice;
   final String? paymentType;
   final bool? isPaid;

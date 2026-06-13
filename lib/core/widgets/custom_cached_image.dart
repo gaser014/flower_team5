@@ -3,6 +3,7 @@ import 'package:flowers_app/core/values/app_assets.dart';
 import 'package:flowers_app/core/values/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:toastification/toastification.dart';
 
 class CustomCachedImage extends StatelessWidget {
   const CustomCachedImage({
@@ -12,6 +13,8 @@ class CustomCachedImage extends StatelessWidget {
     required this.imagePath,
     this.fit,
     this.fromApi = true,
+    this.errorWidget,
+    this.errorImage,
     this.colorTint,
     this.blendMode,
     this.isFromSlider = false,
@@ -24,27 +27,30 @@ class CustomCachedImage extends StatelessWidget {
   final BlendMode? blendMode;
   final bool fromApi;
   final bool isFromSlider;
+  final Widget? errorWidget;
+  final String? errorImage;
 
   @override
   Widget build(BuildContext context) {
     if (imagePath.isEmpty) {
-      return Container(
-        width: width,
-        height: height,
-        padding: const EdgeInsets.all(8),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          color: AppColors.black.withValues(alpha: 0.1),
-        ),
-        child: Center(
-          child: SvgPicture.asset(
-            fit: BoxFit.scaleDown,
+      return errorWidget ??
+          Container(
             width: width,
             height: height,
-            AppAssets.errorImage,
-          ),
-        ),
-      );
+            padding: const EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              color: AppColors.black.withValues(alpha: 0.1),
+            ),
+            child: Center(
+              child: SvgPicture.asset(
+                fit: BoxFit.scaleDown,
+                width: width,
+                height: height,
+                AppAssets.errorImage,
+              ),
+            ),
+          );
     }
 
     return ColorFiltered(
@@ -64,23 +70,25 @@ class CustomCachedImage extends StatelessWidget {
         // maxWidthDiskCache: width?.isFinite == true ? width?.toInt() : 512,
         // memCacheHeight: height?.isFinite == true ? height?.toInt() : 512,
         // memCacheWidth: width?.isFinite == true ? width?.toInt() : 512,
-        errorWidget: (context, url, error) => Container(
-          width: width,
-          height: height,
-          padding: const EdgeInsets.all(8),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
-            color: AppColors.grayA6.withValues(alpha: 0.25),
-          ),
-          child: Center(
-            child: SvgPicture.asset(
-              fit: BoxFit.scaleDown,
+        errorWidget: (context, url, error) =>
+            errorWidget ??
+            Container(
               width: width,
               height: height,
-              AppAssets.errorImage,
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: AppColors.grayA6.withValues(alpha: 0.25),
+              ),
+              child: Center(
+                child: SvgPicture.asset(
+                  fit: BoxFit.scaleDown,
+                  width: width,
+                  height: height,
+                  errorImage ?? AppAssets.errorImage,
+                ),
+              ),
             ),
-          ),
-        ),
         progressIndicatorBuilder: (context, url, progress) {
           return Container(
             width: width,

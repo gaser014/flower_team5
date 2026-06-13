@@ -16,6 +16,8 @@ import 'package:flowers_app/features/main_profile/presentation/view_model/cubit/
 import 'package:flowers_app/features/main_profile/presentation/view/widgets/profile_header_widget.dart';
 import 'package:flowers_app/features/main_profile/presentation/view/widgets/profile_menu_item_widget.dart';
 
+import 'package:flowers_app/core/constants/app_urls.dart';
+import 'package:flowers_app/features/main_profile/presentation/view/pages/web_view_page.dart';
 import 'package:flowers_app/features/main_profile/presentation/view/widgets/main_profile_shimmer.dart';
 import 'package:go_router/go_router.dart';
 
@@ -119,7 +121,7 @@ class MainProfilePage extends StatelessWidget {
                             ),
                             ProfileMenuItemWidget(
                               title: AppStrings.savedAddresses,
-                              onTap: () {},
+                              onTap: () => context.push(Routes.addresses),
                               trailing: const Icon(
                                 Icons.chevron_right,
                                 color: AppColors.gray7D,
@@ -138,18 +140,15 @@ class MainProfilePage extends StatelessWidget {
 
                             ProfileMenuItemWidget(
                               title: AppStrings.notification,
-                              onTap: () {},
-                              leadingIconWidget: const SizedBox(width: 24),
-                              trailing: Switch(
-                                value: false,
-                                onChanged: (val) {},
-                                activeThumbColor: AppColors.white,
-                                inactiveThumbColor: AppColors.gray7D,
-                                activeTrackColor: AppColors.primerColor,
-                                inactiveTrackColor: AppColors.grayEA,
-                                trackOutlineColor: WidgetStateColor.resolveWith(
-                                  (states) => AppColors.grayEA,
-                                ),
+                              onTap: () => context.push(Routes.notifications),
+                              trailing: const Icon(
+                                Icons.chevron_right,
+                                color: AppColors.gray7D,
+                              ),
+                              icon: null,
+                              leadingIconWidget: SvgPicture.asset(
+                                AppAssets.iconsNotification,
+                                height: 24,
                               ),
                             ),
 
@@ -176,7 +175,15 @@ class MainProfilePage extends StatelessWidget {
                             ),
                             ProfileMenuItemWidget(
                               title: AppStrings.aboutUs,
-                              onTap: () {},
+                              onTap: () => Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (_) => WebViewPage(
+                                    url: AppUrls.aboutUs.toString(),
+                                    title: AppStrings.aboutUs,
+                                  ),
+                                ),
+                              ),
                               leadingIconWidget: const SizedBox(width: 24),
                               trailing: const Icon(
                                 Icons.chevron_right,
@@ -185,7 +192,15 @@ class MainProfilePage extends StatelessWidget {
                             ),
                             ProfileMenuItemWidget(
                               title: AppStrings.termsConditions,
-                              onTap: () {},
+                              onTap: () => Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (_) => WebViewPage(
+                                    url: AppUrls.termsAndConditions.toString(),
+                                    title: AppStrings.termsConditions,
+                                  ),
+                                ),
+                              ),
                               leadingIconWidget: const SizedBox(width: 24),
                               trailing: const Icon(
                                 Icons.chevron_right,

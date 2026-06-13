@@ -28,4 +28,5 @@ abstract class Routes {
   static const String checkout = "/checkout";
   static const String thankYou = "/thank-you";
   static const String paymentWebView = "/payment-webview";
+  static const String profileSettings = "/profile-settings";
 }

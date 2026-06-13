@@ -1,3 +1,4 @@
+import 'package:flowers_app/features/my_orders/data/models/order_item_dto.dart';
 import 'package:flowers_app/features/my_orders/domain/entities/order_entity.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -12,7 +13,7 @@ class OrderDto {
   final String? user;
 
   @JsonKey(name: 'orderItems')
-  final List<dynamic>? orderItems;
+  final List<OrderItemDto>? orderItems;
 
   @JsonKey(name: 'totalPrice')
   final num? totalPrice;
@@ -61,7 +62,7 @@ class OrderDto {
     return OrderEntity(
       id: id,
       user: user,
-      orderItems: orderItems,
+      orderItems: orderItems?.map((e) => e.toEntity()).toList(),
       totalPrice: totalPrice,
       paymentType: paymentType,
       isPaid: isPaid,

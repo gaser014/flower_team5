@@ -21,12 +21,14 @@ import 'package:flowers_app/features/forget_password/presentation/view_model/blo
 import 'package:flowers_app/features/login/presentation/view/pages/login_page.dart';
 import 'package:flowers_app/features/logout/presentation/view/pages/profile_page.dart';
 import 'package:flowers_app/features/main/presentation/screens/main_view.dart';
+import 'package:flowers_app/features/main/presentation/view/profile_settings_page.dart';
 import 'package:flowers_app/features/my_orders/presentation/view/pages/my_orders_page.dart';
 import 'package:flowers_app/features/notifications/presentation/view/pages/notifications_page.dart';
 import 'package:flowers_app/features/product_details/presentation/view/pages/product_details_page.dart';
 import 'package:flowers_app/features/products/presentation/view/pages/occasion_page.dart';
 import 'package:flowers_app/features/spalsh/splash_page.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flowers_app/features/auth/sign_up/presentation/screens/sign_up_view.dart';
@@ -258,6 +260,17 @@ abstract class AppRoutes {
           return buildAnimatedPage(
             key: state.pageKey,
             child: ProductDetailsPage(product: product),
+            animationType: AnimationType.fade,
+          );
+        },
+      ),
+      GoRoute(
+        path: Routes.profileSettings,
+        name: Routes.profileSettings,
+        pageBuilder: (context, state) {
+          return buildAnimatedPage(
+            key: state.pageKey,
+            child: Scaffold(body: ProfileSettingsPage()),
             animationType: AnimationType.fade,
           );
         },

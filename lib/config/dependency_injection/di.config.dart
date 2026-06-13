@@ -270,6 +270,8 @@ import '../../features/my_orders/domain/repositories/my_orders_repository.dart'
     as _i438;
 import '../../features/my_orders/domain/use_cases/get_my_orders_use_case.dart'
     as _i132;
+import '../../features/my_orders/presentation/view_model/cubit/my_orders_cubit.dart'
+    as _i850;
 import '../../features/payment/presentation/view_model/cubit/payment_cubit.dart'
     as _i621;
 import '../../features/product_details/api/api_client/product_details_api_client.dart'
@@ -700,6 +702,9 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i818.GetMainProfileUseCase>(),
         gh<_i71.SaveUserUseCase>(),
       ),
+    );
+    gh.factory<_i850.MyOrdersCubit>(
+      () => _i850.MyOrdersCubit(gh<_i132.GetMyOrdersUseCase>()),
     );
     gh.factory<_i473.AddProductToCartUseCase>(
       () => _i473.AddProductToCartUseCase(repo: gh<_i322.CartRepository>()),
