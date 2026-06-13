@@ -23,5 +23,6 @@ abstract class Routes {
   static const String appLanguage = "/app-language";
   static const String editProfile = "/edit-profile";
   static const String myOrders = "/my_orders";
-
+  static const String addresses = "/addresses";
+  static const String addAddress = "/add-address";
 }
