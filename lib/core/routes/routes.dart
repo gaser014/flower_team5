@@ -25,4 +25,7 @@ abstract class Routes {
   static const String myOrders = "/my_orders";
   static const String addresses = "/addresses";
   static const String addAddress = "/add-address";
+  static const String checkout = "/checkout";
+  static const String thankYou = "/thank-you";
+  static const String paymentWebView = "/payment-webview";
 }

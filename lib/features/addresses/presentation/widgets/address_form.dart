@@ -1,8 +1,8 @@
+import 'package:flowers_app/core/values/app_strings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:latlong2/latlong.dart';
 
-import 'package:flowers_app/core/localization_constants/address_constants.dart';
 import 'package:flowers_app/core/location_data/egypt_location_loader.dart';
 import 'package:flowers_app/core/values/app_colors.dart';
 import 'package:flowers_app/core/widgets/custom_button.dart';
@@ -92,18 +92,18 @@ class _AddressFormState extends State<AddressForm> {
           const SizedBox(height: 24),
           AddressTextField(
             controller: widget.streetController,
-            label: context.addressLabel,
-            hint: context.enterAddress,
-            errorText: context.enterAddress,
+            label: AppStrings.addressLabel,
+            hint: AppStrings.enterAddress,
+            errorText: AppStrings.enterAddress,
           ),
           const SizedBox(height: 16),
           PhoneField(controller: widget.phoneController),
           const SizedBox(height: 16),
           AddressTextField(
             controller: widget.usernameController,
-            label: context.recipientName,
-            hint: context.enterRecipientName,
-            errorText: context.enterRecipientName,
+            label: AppStrings.enterRecipientName,
+            hint: AppStrings.enterRecipientName,
+            errorText: AppStrings.enterRecipientName,
           ),
           const SizedBox(height: 16),
           CityAreaRow(
@@ -122,7 +122,7 @@ class _AddressFormState extends State<AddressForm> {
                   state.formSelectedArea != null;
 
               return CustomButton(
-                text: context.saveAddress,
+                text: AppStrings.saveAddress,
                 onPressed: isEnabled && !isLoading ? widget.onSubmit : null,
                 isLoading: isLoading,
                 isEnabled: isEnabled,

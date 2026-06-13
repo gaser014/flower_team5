@@ -68,7 +68,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
       backgroundColor: AppColors.grayEA,
       appBar: CheckoutAppBar(
         context: context,
-        title: AppStrings.checkoutTitle,
+        title: AppStrings.checkout,
       ),
       body: BlocListener<CheckoutCubit, CheckoutState>(
         listenWhen: (previous, current) =>

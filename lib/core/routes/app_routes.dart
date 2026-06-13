@@ -11,6 +11,10 @@ import 'package:flowers_app/features/addresses/presentation/screens/addresses_pa
 import 'package:flowers_app/features/addresses/presentation/screens/add_address_screen.dart';
 import 'package:flowers_app/features/app_filter_tabs/domain/entities/app_filter_tab_item_entity.dart';
 import 'package:flowers_app/features/best_seller/presentation/view/pages/best_seller_page.dart';
+import 'package:flowers_app/features/checkout/presentation/cubit/checkout_cubit.dart';
+import 'package:flowers_app/features/checkout/presentation/screens/checkout_screen.dart';
+import 'package:flowers_app/features/checkout/presentation/screens/payment_web_view_screen.dart';
+import 'package:flowers_app/features/checkout/presentation/screens/thank_you_screen.dart';
 import 'package:flowers_app/features/edit_profile/presentation/view/pages/change_password_page.dart';
 import 'package:flowers_app/features/edit_profile/presentation/view/pages/edit_profile_page.dart';
 import 'package:flowers_app/features/forget_password/presentation/view_model/bloc/forget_password_bloc.dart';
@@ -423,6 +427,13 @@ abstract class AppRoutes {
         name: Routes.notifications,
         builder: (BuildContext context, GoRouterState state) {
           return NotificationsPage();
+        },
+      ),
+      GoRoute(
+        path: Routes.splash,
+        name: Routes.splash,
+        builder: (BuildContext context, GoRouterState state) {
+          return SplashPage();
         },
       ),
     ],

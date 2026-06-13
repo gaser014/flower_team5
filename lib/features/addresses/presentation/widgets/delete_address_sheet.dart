@@ -1,8 +1,8 @@
+import 'package:flowers_app/core/values/app_strings.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:flowers_app/core/localization_constants/address_constants.dart';
 import 'package:flowers_app/core/values/app_colors.dart';
 import 'package:flowers_app/core/values/app_font_style.dart';
 import 'package:flowers_app/features/addresses/presentation/cubit/addresses_cubit.dart';
@@ -32,12 +32,12 @@ class _DeleteAddressSheetState extends State<DeleteAddressSheet> {
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
-                context.deleteAddressTitle,
+                AppStrings.deleteAddressTitle,
                 style: AppFontStyle.medium20(context: context),
               ),
               const SizedBox(height: 16),
               Text(
-                context.deleteAddressMessage,
+                AppStrings.deleteAddressMessage,
                 style: AppFontStyle.regular14(
                   context: context,
                 ).copyWith(color: AppColors.gray53),
@@ -50,14 +50,14 @@ class _DeleteAddressSheetState extends State<DeleteAddressSheet> {
                   if (!isLoading)
                     Expanded(
                       child: _SheetButton(
-                        label: context.cancel,
+                        label: AppStrings.cancel,
 
                         onPressed: isLoading ? () {} : () => context.pop(),
                       ),
                     ),
                   Expanded(
                     child: _SheetButton(
-                      label: context.delete,
+                      label: AppStrings.delete,
                       isLoading: isLoading,
                       backgroundColor: AppColors.redCC,
                       foregroundColor: AppColors.whiteF9,

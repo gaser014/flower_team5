@@ -132,9 +132,9 @@ class _PaymentPageState extends State<PaymentPage> {
 
   Future<void> _savePayment(BuildContext blocContext) async {
     if (_userEmail.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text(AppStrings.paymentLoginToSave)),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(AppStrings.paymentLoginToSave)));
       return;
     }
 
@@ -167,9 +167,9 @@ class _PaymentPageState extends State<PaymentPage> {
   Future<void> _deleteSavedPayment() async {
     if (_userEmail.isEmpty) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text(AppStrings.paymentLoginToSave)),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(AppStrings.paymentLoginToSave)));
       return;
     }
 
@@ -190,12 +190,12 @@ class _PaymentPageState extends State<PaymentPage> {
         _isFormValid = false;
       });
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text(AppStrings.cardDeletedSuccessfully)),
+        SnackBar(content: Text(AppStrings.cardDeletedSuccessfully)),
       );
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text(AppStrings.somethingWentWrong)),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(AppStrings.somethingWentWrong)));
     }
   }
 
@@ -207,9 +207,7 @@ class _PaymentPageState extends State<PaymentPage> {
         listener: (context, state) async {
           final messenger = ScaffoldMessenger.of(context);
           if (state is PaymentError) {
-            messenger.showSnackBar(
-              SnackBar(content: Text(state.error)),
-            );
+            messenger.showSnackBar(SnackBar(content: Text(state.error)));
           } else if (state is PaymentCheckoutSuccess) {
             final success = await Navigator.push(
               context,
@@ -242,7 +240,7 @@ class _PaymentPageState extends State<PaymentPage> {
               _savedCardLast4 = null;
             });
             messenger.showSnackBar(
-              const SnackBar(content: Text(AppStrings.cardSavedSuccessfully)),
+              SnackBar(content: Text(AppStrings.cardSavedSuccessfully)),
             );
           }
         },

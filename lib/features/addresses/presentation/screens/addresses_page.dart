@@ -12,7 +12,7 @@ class AddressesPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const CustomAppBar(title: AppStrings.savedAddresses),
+      appBar: CustomAppBar(title: AppStrings.savedAddresses),
       body: SafeArea(
         child: BlocProvider<AddressesCubit>(
           create: (context) =>

@@ -1,3 +1,4 @@
+import 'package:flowers_app/core/values/app_strings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -7,7 +8,6 @@ import 'package:osm_location_picker/osm_location_picker.dart';
 import 'package:flowers_app/config/helper/extensions/base_state/show_error_massage.dart';
 import 'package:flowers_app/config/helper/extensions/base_state/show_success_massage.dart';
 import 'package:flowers_app/core/helper/address_parser.dart';
-import 'package:flowers_app/core/localization_constants/address_constants.dart';
 import 'package:flowers_app/core/location_data/egypt_location_loader.dart';
 import 'package:flowers_app/core/values/app_colors.dart';
 import 'package:flowers_app/core/widgets/custom_app_bar.dart';
@@ -131,7 +131,7 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
     if (s.formSelectedCity == null || s.formSelectedArea == null) {
       ScaffoldMessenger.of(
         context,
-      ).showSnackBar(SnackBar(content: Text(context.selectCity)));
+      ).showSnackBar(SnackBar(content: Text(AppStrings.selectCity)));
       return;
     }
 
@@ -168,7 +168,7 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
           prev.updateAddressState != curr.updateAddressState,
       listener: _onAddressStateChanged,
       child: Scaffold(
-        appBar: CustomAppBar(title: context.addressTitle),
+        appBar: CustomAppBar(title: AppStrings.addressTitle),
         body: AddressForm(
           formKey: _formKey,
 
@@ -193,13 +193,13 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
     if (addState.isSuccess) {
       context.showSuccessMessage(
         state: addState,
-        massage: context.addressSaved,
+        massage: AppStrings.addressSaved,
         onSuccess: () => context.pop(true),
       );
     } else if (updateState.isSuccess) {
       context.showSuccessMessage(
         state: updateState,
-        massage: context.addressSaved,
+        massage: AppStrings.addressSaved,
         onSuccess: () => context.pop(true),
       );
     } else if (addState.isError) {

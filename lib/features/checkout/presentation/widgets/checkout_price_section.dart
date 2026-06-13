@@ -33,7 +33,7 @@ class CheckoutPriceSection extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                AppStrings.subtotal,
+                AppStrings.subTotal,
                 style: AppFontStyle.regular16(context: context).copyWith(color: AppColors.gray53),
               ),
               Text(

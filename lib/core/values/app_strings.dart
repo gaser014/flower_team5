@@ -112,77 +112,62 @@ abstract class AppStrings {
   static String get camera => 'camera'.tr();
   static String get gallery => 'gallery'.tr();
 
-  // Checkout
-  static const String checkoutTitle = "Checkout";
-  static const String deliveryTime = "Delivery time";
-  static const String deliveryFee = "Delivery Fee";
-  static const String subtotal = "Sub Total";
-  static const String totalPrice = "Total";
-  static const String placeOrder = "Place order";
-  static const String schedule = "Schedule";
-  static const String arriveBy = "Arrive by";
-  static const String paymentSuccessful = "Payment Successful!";
-  static const String paymentFailed = "Payment Failed!";
-  static const String selectAddress = "Select Address";
-  static const String paymentMethod = "Payment method";
-  static const String cash = "Cash";
-  static const String creditCard = "Credit card";
-  static const String shippingAddress = "Shipping Address";
-  static const String deliveryAddress = "Delivery address";
-  static const String cashOnDelivery = "Cash on delivery";
-  static const String sendAsGift = "Send as a gift";
-  static const String itIsAGift = "It is a gift";
-  static const String receiverName = "Receiver Name";
-  static const String receiverPhone = "Receiver Phone";
-  static const String nameLabel = "Name";
-  static const String enterNameHint = "Enter the name";
-  static const String enterPhoneHint = "Enter the phone number";
-  static const String homeLabel = "Home";
-  static const String officeLabel = "Office";
-  static const String addNew = "Add new";
-  static const String instant = "Instant";
-  static const String orderPlaced = "Order Placed!";
-  static const String thankYou = "Thank You!";
-  static const String thankYouMessage = "Your order has been placed successfully.";
-  static const String continueShopping = "Continue Shopping";
-  static const String paymentCompleted = "Payment Completed";
+  // ── Validations ────────────────────────────────────────────────────────────
+  static String get emailRequired => 'emailRequired'.tr();
+  static String get emailInvalid => 'emailInvalid'.tr();
+  static String get usernameRequired => 'usernameRequired'.tr();
+  static String get usernameInvalid => 'usernameInvalid'.tr();
+  static String get firstNameRequired => 'firstNameRequired'.tr();
+  static String get lastNameRequired => 'lastNameRequired'.tr();
+  static String get passwordRequired => 'passwordRequired'.tr();
+  static String get passwordHint => 'passwordHint'.tr();
+  static String get confirmPasswordRequired => 'confirmPasswordRequired'.tr();
+  static String get confirmPasswordMismatch => 'confirmPasswordMismatch'.tr();
+  static String get confirmPasswordInvalid => 'confirmPasswordInvalid'.tr();
+  static String get pleaseConfirmYourPassword =>
+      'pleaseConfirmYourPassword'.tr();
+  static String get phoneRequired => 'phoneRequired'.tr();
+  static String get phoneInvalid => 'phoneInvalid'.tr();
+  static String get egyptianPhoneInvalid => 'egyptianPhoneInvalid'.tr();
+  static String get pinRequired => 'pinRequired'.tr();
+  static String get pinInvalid => 'pinInvalid'.tr();
+  static String get nameRequired => 'nameRequired'.tr();
+  static String get profileImage => 'profileImage'.tr();
+  static String get setPassword1ConditionError =>
+      'setPassword1ConditionError'.tr();
+  static String get setPassword2ConditionError =>
+      'setPassword2ConditionError'.tr();
+  static String get setPassword3ConditionError =>
+      'setPassword3ConditionError'.tr();
+  static String get setPassword4ConditionError =>
+      'setPassword4ConditionError'.tr();
+  static String get setPassword5ConditionError =>
+      'setPassword5ConditionError'.tr();
 
-  // Checkout
-  static const String deliveryTime = "Delivery Time";
-  static const String deliveryFee = "Delivery Fee";
-  static const String totalPrice = "Total";
-  static const String placeOrder = "Place Order";
-  static const String paymentMethod = "Payment method";
-  static const String paymentLoginHint = "Login to save your payment method";
-  static const String paymentLoggedInAs = "Logged in as";
-  static const String enterCardDataSecurely = "Enter card details securely";
-  static const String cash = "Cash";
-  static const String creditCard = "Credit Card";
-  static const String cashOnDelivery = "Cash on delivery";
-  static const String saveCard = "Save Card";
-  static const String paymentMethodLabel = "Method";
-  static const String cardHolderName = "Cardholder Name";
-  static const String enterCardHolderName = "Enter cardholder name";
-  static const String cardNumber = "Card Number";
-  static const String enterCardNumber = "Enter card number";
-  static const String invalidCardNumber =
-      "Please enter a valid 16-digit card number";
-  static const String cardHolderNameThreeWords =
-      "Please enter exactly three names for the cardholder";
-  static const String expiryDate = "Expiry Date";
-  static const String enterExpiryDate = "MM/YY";
-  static const String invalidExpiryDate = "Please enter a valid expiry date";
-  static const String cvc = "CVC";
-  static const String enterCvc = "Enter CVC";
-  static const String invalidCvc = "Please enter a valid 3-digit CVC";
-  static const String savedCardDetails = "Saved payment";
-  static const String noSavedCard = "No saved payment method";
-  static const String cardEnding = "Card ending";
-  static const String cardSavedSuccessfully = "Card saved successfully";
-  static const String paymentLoginToSave =
-      "Please login first to save payment information.";
-  static const String deleteCard = "Delete Card";
-  static const String cardDeletedSuccessfully = "Card deleted successfully";
+  // ── Payment ────────────────────────────────────────────────────────────────
+  static String get paymentLoginHint => 'paymentLoginHint'.tr();
+  static String get paymentLoggedInAs => 'paymentLoggedInAs'.tr();
+  static String get enterCardDataSecurely => 'enterCardDataSecurely'.tr();
+  static String get saveCard => 'saveCard'.tr();
+  static String get deleteCard => 'deleteCard'.tr();
+  static String get cardHolderName => 'cardHolderName'.tr();
+  static String get enterCardHolderName => 'enterCardHolderName'.tr();
+  static String get cardNumber => 'cardNumber'.tr();
+  static String get enterCardNumber => 'enterCardNumber'.tr();
+  static String get invalidCardNumber => 'invalidCardNumber'.tr();
+  static String get cardHolderNameThreeWords => 'cardHolderNameThreeWords'.tr();
+  static String get expiryDate => 'expiryDate'.tr();
+  static String get enterExpiryDate => 'enterExpiryDate'.tr();
+  static String get invalidExpiryDate => 'invalidExpiryDate'.tr();
+  static String get cvc => 'cvc'.tr();
+  static String get enterCvc => 'enterCvc'.tr();
+  static String get invalidCvc => 'invalidCvc'.tr();
+  static String get savedCardDetails => 'savedCardDetails'.tr();
+  static String get noSavedCard => 'noSavedCard'.tr();
+  static String get cardEnding => 'cardEnding'.tr();
+  static String get cardSavedSuccessfully => 'cardSavedSuccessfully'.tr();
+  static String get paymentLoginToSave => 'paymentLoginToSave'.tr();
+  static String get cardDeletedSuccessfully => 'cardDeletedSuccessfully'.tr();
 
   // ── Products ──────────────────────────────────────────────────────────────
   static String get product => 'product'.tr();
@@ -232,12 +217,31 @@ abstract class AppStrings {
 
   // ── Checkout ──────────────────────────────────────────────────────────────
   static String get deliveryTime => 'deliveryTime'.tr();
+  static String get schedule => 'schedule'.tr();
+  static String get arriveBy => 'arriveBy'.tr();
+  static String get instant => 'instant'.tr();
+  static String get deliveryAddress => 'deliveryAddress'.tr();
+  static String get homeLabel => 'homeLabel'.tr();
+  static String get officeLabel => 'officeLabel'.tr();
+  static String get addNew => 'addNew'.tr();
   static String get deliveryFee => 'deliveryFee'.tr();
   static String get totalPrice => 'totalPrice'.tr();
   static String get placeOrder => 'placeOrder'.tr();
   static String get paymentMethod => 'paymentMethod'.tr();
   static String get cash => 'cash'.tr();
   static String get creditCard => 'creditCard'.tr();
+  static String get cashOnDelivery => 'cashOnDelivery'.tr();
+  static String get itIsAGift => 'itIsAGift'.tr();
+  static String get nameLabel => 'nameLabel'.tr();
+  static String get enterNameHint => 'enterNameHint'.tr();
+  static String get enterPhoneHint => 'enterPhoneHint'.tr();
+  static String get subTotal => 'subTotal'.tr();
+  static String get selectAddress => 'selectAddress'.tr();
+  static String get paymentSuccessful => 'paymentSuccessful'.tr();
+  static String get paymentFailed => 'paymentFailed'.tr();
+  static String get orderPlaced => 'orderPlaced'.tr();
+  static String get thankYouMessage => 'thankYouMessage'.tr();
+  static String get continueShopping => 'continueShopping'.tr();
 
   // ── Auth — Login ──────────────────────────────────────────────────────────
   static String get loginTitle => 'loginTitle'.tr();
@@ -309,7 +313,32 @@ abstract class AppStrings {
   // ── Misc ──────────────────────────────────────────────────────────────────
   static String get token => 'token'.tr();
   static String get user => 'user'.tr();
-  static String get subTotal => 'subTotal'.tr();
 
   static String get questionOf => 'questionOf'.tr();
+  static String get addressTitle => 'title'.tr();
+  static String get addressLabel => 'address_label'.tr();
+  static String get enterAddress => 'enter_address'.tr();
+  // static String get phoneNumber => 'phone_number'.tr();
+  // static String get enterPhoneNumber => 'enter_phone_number'.tr();
+  static String get recipientName => 'recipient_name'.tr();
+  static String get enterRecipientName => 'enter_recipient_name'.tr();
+  static String get cityLabel => 'city'.tr();
+  static String get areaLabel => 'area'.tr();
+  static String get selectCity => 'select_city'.tr();
+  static String get selectArea => 'select_area'.tr();
+  static String get saveAddress => 'save_address'.tr();
+  static String get addressSaved => 'address_saved'.tr();
+  static String get locationPermissionDenied =>
+      'location_permission_denied'.tr();
+
+  static String get savedAddressTitle => 'saved_address_title'.tr();
+  // static String get addNewAddress => 'add_new_address'.tr();
+  static String get noSavedAddresses => 'no_saved_addresses'.tr();
+  static String get deleteAddressTitle => 'delete_address_title'.tr();
+  static String get deleteAddressMessage => 'delete_address_message'.tr();
+  // static String get cancel => 'cancel'.tr();
+  static String get delete => 'delete'.tr();
+  // static String get deliverTo => 'deliver_to'.tr();
+  static String get noAddressesYet => 'no_addresses_yet'.tr();
+  static String get addAddressToStart => 'add_address_to_start'.tr();
 }

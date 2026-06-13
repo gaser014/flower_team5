@@ -1,7 +1,7 @@
+import 'package:flowers_app/core/values/app_strings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-import 'package:flowers_app/core/localization_constants/address_constants.dart';
 import 'package:flowers_app/core/values/app_colors.dart';
 import 'package:flowers_app/core/values/app_font_style.dart';
 
@@ -25,14 +25,14 @@ class EmptyAddressesWidget extends StatelessWidget {
           ),
           const SizedBox(height: 24),
           Text(
-            context.noAddressesYet,
+            AppStrings.noAddressesYet,
             style: AppFontStyle.medium18(
               context: context,
             ).copyWith(color: AppColors.gray7D),
           ),
           const SizedBox(height: 8),
           Text(
-            context.addAddressToStart,
+            AppStrings.addAddressToStart,
             style: AppFontStyle.regular14(
               context: context,
             ).copyWith(color: AppColors.gray7D),

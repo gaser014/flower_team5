@@ -20,10 +20,7 @@ class AddressErrorState extends StatelessWidget {
         children: [
           Text(message),
           const SizedBox(height: 16),
-          ElevatedButton(
-            onPressed: onRetry,
-            child: const Text(AppStrings.tryAgain),
-          ),
+          ElevatedButton(onPressed: onRetry, child: Text(AppStrings.tryAgain)),
         ],
       ),
     );
