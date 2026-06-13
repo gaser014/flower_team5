@@ -277,6 +277,45 @@ abstract class AppRoutes {
           );
         },
       ),
+
+      GoRoute(
+        path: Routes.checkout,
+        name: Routes.checkout,
+        pageBuilder: (context, state) {
+          final subtotal = state.extra as int? ?? 0;
+          return buildAnimatedPage(
+            key: state.pageKey,
+            child: BlocProvider(
+              create: (_) => getIt<CheckoutCubit>(),
+              child: CheckoutScreen(subtotal: subtotal),
+            ),
+            animationType: AnimationType.slideFromRight,
+          );
+        },
+      ),
+      GoRoute(
+        path: Routes.thankYou,
+        name: Routes.thankYou,
+        pageBuilder: (context, state) => buildAnimatedPage(
+          key: state.pageKey,
+          child: const ThankYouScreen(),
+          animationType: AnimationType.fade,
+        ),
+      ),
+      GoRoute(
+        path: Routes.paymentWebView,
+        name: Routes.paymentWebView,
+        pageBuilder: (context, state) {
+          final args = state.extra as Map<String, dynamic>? ?? {};
+          final url = args['url'] as String? ?? '';
+          final successUrl = args['successUrl'] as String?;
+          return buildAnimatedPage(
+            key: state.pageKey,
+            child: PaymentWebViewScreen(url: url, successUrl: successUrl),
+            animationType: AnimationType.fade,
+          );
+        },
+      ),
       GoRoute(
         path: Routes.addresses,
         name: Routes.addresses,
