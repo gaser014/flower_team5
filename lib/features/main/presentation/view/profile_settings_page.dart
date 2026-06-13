@@ -1,0 +1,98 @@
+import 'package:flowers_app/core/values/app_colors.dart';
+import 'package:flowers_app/core/values/app_font_style.dart';
+import 'package:flowers_app/core/values/app_strings.dart';
+import 'package:flowers_app/core/constants/app_urls.dart';
+import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+class ProfileSettingsPage extends StatelessWidget {
+  const ProfileSettingsPage({super.key});
+
+  Future<void> _openUrl(BuildContext context, Uri url) async {
+    final messenger = ScaffoldMessenger.of(context);
+    if (!await canLaunchUrl(url) ||
+        !await launchUrl(url, mode: LaunchMode.platformDefault)) {
+      messenger.showSnackBar(
+        const SnackBar(content: Text('Unable to open the page.')),
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              color: AppColors.white,
+              borderRadius: BorderRadius.circular(16),
+              boxShadow: AppColors.shadowBox,
+            ),
+            child: Column(
+              children: [
+                _SettingsTile(
+                  title: AppStrings.aboutUs,
+                  trailing: const Icon(
+                    Icons.keyboard_arrow_right,
+                    color: AppColors.grayA6,
+                  ),
+                  onTap: () => _openUrl(context, AppUrls.aboutUs),
+                ),
+                const Divider(height: 1, color: AppColors.grayEA),
+                _SettingsTile(
+                  title: AppStrings.termsAndConditions,
+                  trailing: const Icon(
+                    Icons.keyboard_arrow_right,
+                    color: AppColors.grayA6,
+                  ),
+                  onTap: () => _openUrl(context, AppUrls.termsAndConditions),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _SettingsTile extends StatelessWidget {
+  const _SettingsTile({
+    required this.title,
+    required this.trailing,
+    required this.onTap,
+  });
+
+  final String title;
+  final Widget trailing;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: AppColors.white,
+      child: InkWell(
+        onTap: onTap,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+          child: Row(
+            children: [
+              Expanded(
+                child: Text(
+                  title,
+                  style: AppFontStyle.light16(
+                    context: context,
+                  ).copyWith(color: AppColors.black0C),
+                ),
+              ),
+              trailing,
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
