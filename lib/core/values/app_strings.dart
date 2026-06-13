@@ -144,13 +144,39 @@ class AppStrings {
   static const String itemAddedSuccess = "Item added successfully to your cart";
 
   // Checkout
-  static const String deliveryTime = "Delivery Time";
+  static const String checkoutTitle = "Checkout";
+  static const String deliveryTime = "Delivery time";
   static const String deliveryFee = "Delivery Fee";
+  static const String subtotal = "Sub Total";
   static const String totalPrice = "Total";
-  static const String placeOrder = "Place Order";
+  static const String placeOrder = "Place order";
+  static const String schedule = "Schedule";
+  static const String arriveBy = "Arrive by";
+  static const String paymentSuccessful = "Payment Successful!";
+  static const String paymentFailed = "Payment Failed!";
+  static const String selectAddress = "Select Address";
   static const String paymentMethod = "Payment method";
   static const String cash = "Cash";
-  static const String creditCard = "Credit Card";
+  static const String creditCard = "Credit card";
+  static const String shippingAddress = "Shipping Address";
+  static const String deliveryAddress = "Delivery address";
+  static const String cashOnDelivery = "Cash on delivery";
+  static const String sendAsGift = "Send as a gift";
+  static const String itIsAGift = "It is a gift";
+  static const String receiverName = "Receiver Name";
+  static const String receiverPhone = "Receiver Phone";
+  static const String nameLabel = "Name";
+  static const String enterNameHint = "Enter the name";
+  static const String enterPhoneHint = "Enter the phone number";
+  static const String homeLabel = "Home";
+  static const String officeLabel = "Office";
+  static const String addNew = "Add new";
+  static const String instant = "Instant";
+  static const String orderPlaced = "Order Placed!";
+  static const String thankYou = "Thank You!";
+  static const String thankYouMessage = "Your order has been placed successfully.";
+  static const String continueShopping = "Continue Shopping";
+  static const String paymentCompleted = "Payment Completed";
 
   // Profile & Address
   static const String myOrders = "My orders";
