@@ -1,8 +1,10 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flowers_app/config/base_state/base_state.dart';
 import 'package:flowers_app/config/uses_cases/use_cases.dart';
 import 'package:flowers_app/features/addresses/domain/entities/address_entity.dart';
 import 'package:flowers_app/features/addresses/domain/use_cases/get_addresses.dart';
+import 'package:flowers_app/features/checkout/domain/entities/credit_card_entity.dart';
 import 'package:flowers_app/features/checkout/domain/use_cases/checkout_params.dart';
 import 'package:flowers_app/features/checkout/domain/use_cases/checkout_with_cash_usecase.dart';
 import 'package:flowers_app/features/checkout/domain/use_cases/checkout_with_card_usecase.dart';
@@ -47,20 +49,23 @@ class CheckoutCubit extends Cubit<CheckoutState> {
       case PaymentCompleted():
         if (event.success) {
           emit(state.copyWith(
-            status: CheckoutStatus.success,
+            checkoutState: const BaseState<CreditCardEntity?>.success(null),
             paymentUrl: null,
           ));
         } else {
           emit(state.copyWith(
-            status: CheckoutStatus.error,
-            errorMessage: null,
+            checkoutState: BaseState<CreditCardEntity?>.error(
+              Exception('Payment failed'),
+            ),
           ));
         }
     }
   }
 
   Future<void> _placeOrderWithCash(PlaceOrderWithCash event) async {
-    emit(state.copyWith(status: CheckoutStatus.loading));
+    emit(state.copyWith(
+      checkoutState: const BaseState<CreditCardEntity?>.loading(),
+    ));
 
     final params = CheckoutParams(
       street: event.street,
@@ -75,21 +80,24 @@ class CheckoutCubit extends Cubit<CheckoutState> {
     result.when(
       success: (_) {
         emit(state.copyWith(
-          status: CheckoutStatus.success,
+          checkoutState: const BaseState<CreditCardEntity?>.success(null),
           paymentUrl: null,
         ));
       },
       error: (exception) {
         emit(state.copyWith(
-          status: CheckoutStatus.error,
-          errorMessage: exception?.toString(),
+          checkoutState: BaseState<CreditCardEntity?>.error(
+            exception ?? Exception('Checkout failed'),
+          ),
         ));
       },
     );
   }
 
   Future<void> _placeOrderWithCard(PlaceOrderWithCard event) async {
-    emit(state.copyWith(status: CheckoutStatus.loading));
+    emit(state.copyWith(
+      checkoutState: const BaseState<CreditCardEntity?>.loading(),
+    ));
 
     final params = CheckoutParams(
       street: event.street,
@@ -104,15 +112,16 @@ class CheckoutCubit extends Cubit<CheckoutState> {
     result.when(
       success: (data) {
         emit(state.copyWith(
-          status: CheckoutStatus.paymentPending,
+          checkoutState: BaseState<CreditCardEntity?>.success(data),
           paymentUrl: data?.url,
           successUrl: data?.successUrl,
         ));
       },
       error: (exception) {
         emit(state.copyWith(
-          status: CheckoutStatus.error,
-          errorMessage: exception?.toString(),
+          checkoutState: BaseState<CreditCardEntity?>.error(
+            exception ?? Exception('Card checkout failed'),
+          ),
         ));
       },
     );

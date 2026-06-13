@@ -1,10 +1,7 @@
 part of 'checkout_cubit.dart';
 
-enum CheckoutStatus { initial, loading, success, paymentPending, error }
-
 class CheckoutState extends Equatable {
-  final CheckoutStatus status;
-  final String? errorMessage;
+  final BaseState<CreditCardEntity?> checkoutState;
   final int selectedPayment;
   final bool isGift;
   final String? paymentUrl;
@@ -15,8 +12,7 @@ class CheckoutState extends Equatable {
   final List<AddressEntity> addresses;
 
   const CheckoutState({
-    this.status = CheckoutStatus.initial,
-    this.errorMessage,
+    this.checkoutState = const BaseState<CreditCardEntity?>.initial(),
     this.selectedPayment = 0,
     this.isGift = false,
     this.paymentUrl,
@@ -28,8 +24,7 @@ class CheckoutState extends Equatable {
   });
 
   CheckoutState copyWith({
-    CheckoutStatus? status,
-    String? errorMessage,
+    BaseState<CreditCardEntity?>? checkoutState,
     int? selectedPayment,
     bool? isGift,
     String? paymentUrl,
@@ -41,12 +36,11 @@ class CheckoutState extends Equatable {
     bool clearError = false,
   }) {
     return CheckoutState(
-      status: status ?? this.status,
-      errorMessage: clearError ? null : (errorMessage ?? this.errorMessage),
+      checkoutState: checkoutState ?? this.checkoutState,
       selectedPayment: selectedPayment ?? this.selectedPayment,
       isGift: isGift ?? this.isGift,
-      paymentUrl: paymentUrl ?? this.paymentUrl,
-      successUrl: successUrl ?? this.successUrl,
+      paymentUrl: clearError ? null : (paymentUrl ?? this.paymentUrl),
+      successUrl: clearError ? null : (successUrl ?? this.successUrl),
       street: street ?? this.street,
       phone: phone ?? this.phone,
       city: city ?? this.city,
@@ -56,8 +50,7 @@ class CheckoutState extends Equatable {
 
   @override
   List<Object?> get props => [
-    status,
-    errorMessage,
+    checkoutState,
     selectedPayment,
     isGift,
     paymentUrl,

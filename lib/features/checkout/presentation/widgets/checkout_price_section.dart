@@ -1,3 +1,4 @@
+import 'package:flowers_app/core/widgets/custom_button.dart';
 import 'package:flowers_app/core/values/app_colors.dart';
 import 'package:flowers_app/core/values/app_font_style.dart';
 import 'package:flowers_app/core/values/app_strings.dart';
@@ -19,8 +20,8 @@ class CheckoutPriceSection extends StatelessWidget {
   Widget build(BuildContext context) {
     const delivery = 10;
     final total = subtotal + delivery;
-    final status = context.select<CheckoutCubit, CheckoutStatus>(
-      (c) => c.state.status,
+    final isLoading = context.select<CheckoutCubit, bool>(
+      (c) => c.state.checkoutState.isLoading,
     );
 
     return Container(
@@ -74,29 +75,11 @@ class CheckoutPriceSection extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 44),
-          SizedBox(
-            width: double.infinity,
+          CustomButton(
+            text: AppStrings.placeOrder,
+            onPressed: onPlaceOrder,
+            isLoading: isLoading,
             height: 48,
-            child: switch (status) {
-              CheckoutStatus.loading => const Center(
-                child: CircularProgressIndicator(color: AppColors.primerColor),
-              ),
-              _ => ElevatedButton(
-                onPressed: onPlaceOrder,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.primerColor,
-                  foregroundColor: AppColors.whiteF9,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(100),
-                  ),
-                  elevation: 0,
-                ),
-                child: Text(
-                  AppStrings.placeOrder,
-                  style: AppFontStyle.medium16(context: context).copyWith(color: AppColors.whiteF9),
-                ),
-              ),
-            },
           ),
         ],
       ),

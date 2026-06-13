@@ -1,9 +1,9 @@
 import 'package:flowers_app/config/dependency_injection/di.dart';
+import 'package:flowers_app/config/helper/extensions/base_state/show_error_massage.dart';
 import 'package:flowers_app/core/routes/routes.dart';
 import 'package:flowers_app/core/values/app_colors.dart';
 import 'package:flowers_app/core/values/app_strings.dart';
 import 'package:flowers_app/features/addresses/domain/entities/address_entity.dart';
-import 'package:flowers_app/features/addresses/presentation/cubit/addresses_cubit.dart';
 import 'package:flowers_app/features/cart/presentation/view_model/cubit/cart_cubit.dart';
 import 'package:flowers_app/features/cart/presentation/view_model/cubit/cart_events.dart';
 import 'package:flowers_app/features/checkout/presentation/cubit/checkout_cubit.dart';
@@ -97,31 +97,29 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
       appBar: CheckoutAppBar(context: context, title: AppStrings.checkout),
       body: BlocListener<CheckoutCubit, CheckoutState>(
         listenWhen: (previous, current) =>
-            previous.status != current.status &&
-            (current.status == CheckoutStatus.success ||
-                current.status == CheckoutStatus.paymentPending ||
-                current.status == CheckoutStatus.error),
+            previous.checkoutState != current.checkoutState &&
+            (current.checkoutState.isSuccess ||
+                current.checkoutState.isError),
         listener: (context, state) {
-          switch (state.status) {
-            case CheckoutStatus.success:
-              getIt<CartCubit>().doIntent(ClearUserCartEvent());
-              context.pushReplacementNamed(Routes.thankYou);
-            case CheckoutStatus.paymentPending:
-              final url = state.paymentUrl;
-              if (url != null && url.isNotEmpty) {
-                context.pushNamed(
-                  'paymentWebView',
-                  extra: {'url': url, 'successUrl': state.successUrl},
-                );
-              }
-            case CheckoutStatus.error:
-              if (state.errorMessage != null) {
-                ScaffoldMessenger.of(
-                  context,
-                ).showSnackBar(SnackBar(content: Text(state.errorMessage!)));
-              }
-            default:
-              break;
+          final checkoutState = state.checkoutState;
+          if (checkoutState.isSuccess && state.paymentUrl != null) {
+            final url = state.paymentUrl!;
+            if (url.isNotEmpty) {
+              final cubit = context.read<CheckoutCubit>();
+              context
+                  .pushNamed<bool>(
+                Routes.paymentWebView,
+                extra: {'url': url, 'successUrl': state.successUrl},
+              )
+                  .then((paid) {
+                if (paid == true) cubit.doEvent(const PaymentCompleted());
+              });
+            }
+          } else if (checkoutState.isSuccess) {
+            getIt<CartCubit>().doIntent(ClearUserCartEvent());
+            context.pushReplacementNamed(Routes.thankYou);
+          } else if (checkoutState.isError) {
+            context.showErrorMessage(checkoutState);
           }
         },
         child: BlocListener<CheckoutCubit, CheckoutState>(
@@ -141,15 +139,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                       selectedIndex: _selectedAddress,
                       addresses: addresses,
                       onChanged: (v) => setState(() => _selectedAddress = v),
-                      onShowAllAddresses: () =>
-                          context.pushNamed(Routes.addresses),
-                      onAddNewAddress: () => context.pushNamed(
-                        Routes.addAddress,
-                        extra: <String, dynamic>{
-                          'editAddress': null,
-                          'cubit': getIt<AddressesCubit>(),
-                        },
-                      ),
+                    onShowAllAddresses: () =>
+                        context.pushNamed(Routes.addresses),
                     ),
                     CheckoutPaymentMethod(
                       selectedIndex: context.select<CheckoutCubit, int>(

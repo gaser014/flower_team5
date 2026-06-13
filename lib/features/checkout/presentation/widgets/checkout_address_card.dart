@@ -1,16 +1,21 @@
+import 'package:flowers_app/config/dependency_injection/di.dart';
+import 'package:flowers_app/core/routes/routes.dart';
 import 'package:flowers_app/core/values/app_colors.dart';
 import 'package:flowers_app/core/values/app_font_style.dart';
 import 'package:flowers_app/core/values/app_strings.dart';
 import 'package:flowers_app/core/widgets/custom_button.dart';
 import 'package:flowers_app/features/addresses/domain/entities/address_entity.dart';
+import 'package:flowers_app/features/addresses/presentation/cubit/addresses_cubit.dart';
+import 'package:flowers_app/features/checkout/presentation/cubit/checkout_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 class CheckoutAddressCard extends StatelessWidget {
   final int selectedIndex;
   final List<AddressEntity> addresses;
   final ValueChanged<int> onChanged;
   final VoidCallback onShowAllAddresses;
-  final VoidCallback onAddNewAddress;
 
   const CheckoutAddressCard({
     super.key,
@@ -18,7 +23,6 @@ class CheckoutAddressCard extends StatelessWidget {
     required this.addresses,
     required this.onChanged,
     required this.onShowAllAddresses,
-    required this.onAddNewAddress,
   });
 
   @override
@@ -50,7 +54,18 @@ class CheckoutAddressCard extends StatelessWidget {
           }),
           CustomButton(
             text: showAll ? AppStrings.showAllAddresses : AppStrings.addNew,
-            onPressed: showAll ? onShowAllAddresses : onAddNewAddress,
+            onPressed: showAll
+                ? onShowAllAddresses
+                : () {
+                    final cubit = context.read<CheckoutCubit>();
+                    context.pushNamed(
+                      Routes.addAddress,
+                      extra: <String, dynamic>{
+                        'editAddress': null,
+                        'cubit': getIt<AddressesCubit>(),
+                      },
+                    ).then((_) => cubit.doEvent(const LoadAddresses()));
+                  },
             variant: ButtonVariant.outlined,
             radius: 20,
 
@@ -143,7 +158,7 @@ class _AddressCard extends StatelessWidget {
                 ],
               ),
             ),
-            const Icon(Icons.edit, color: AppColors.gray53, size: 20),
+            // const Icon(Icons.edit, color: AppColors.gray53, size: 20),
           ],
         ),
       ),
