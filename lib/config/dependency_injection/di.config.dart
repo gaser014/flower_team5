@@ -60,6 +60,34 @@ import '../../features/login/domain/use_cases/login_use_case.dart' as _i191;
 import '../../features/login/domain/use_cases/save_user_use_case.dart' as _i71;
 import '../../features/login/presentation/view_model/cubit/login_cubit.dart'
     as _i753;
+import '../../features/login_Driver/api/api_client/login_Driver_api_client.dart'
+    as _i576;
+import '../../features/login_Driver/api/datasources/login_Driver_local_data_source_impl.dart'
+    as _i547;
+import '../../features/login_Driver/api/datasources/login_Driver_remote_data_source_impl.dart'
+    as _i377;
+import '../../features/login_Driver/data/datasources/login_Driver_local_data_source_contract.dart'
+    as _i98;
+import '../../features/login_Driver/data/datasources/login_Driver_remote_data_source_contract.dart'
+    as _i885;
+import '../../features/login_Driver/data/repositories/login_Driver_repository_impl.dart'
+    as _i746;
+import '../../features/login_Driver/domain/repositories/login_Driver_repository.dart'
+    as _i141;
+import '../../features/login_Driver/domain/use_cases/delete_driver_credentials_use_case.dart'
+    as _i491;
+import '../../features/login_Driver/domain/use_cases/delete_driver_token_use_case.dart'
+    as _i23;
+import '../../features/login_Driver/domain/use_cases/get_driver_credentials_use_case.dart'
+    as _i608;
+import '../../features/login_Driver/domain/use_cases/login_driver_use_case.dart'
+    as _i577;
+import '../../features/login_Driver/domain/use_cases/save_driver_credentials_use_case.dart'
+    as _i828;
+import '../../features/login_Driver/domain/use_cases/save_driver_token_use_case.dart'
+    as _i796;
+import '../../features/login_Driver/presentation/view_model/cubit/login_Driver_cubit.dart'
+    as _i283;
 import '../../features/main/presentation/view_model/cubit/home_cubit.dart'
     as _i679;
 import '../../features/main_profile/api/api_client/main_profile_api_client.dart'
@@ -114,6 +142,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i161.InternetConnection>(
       () => dioModule.internetConnection(),
     );
+    gh.factory<_i98.LoginDriverLocalDataSourceContract>(
+      () => _i547.LoginDriverLocalDataSourceImpl(),
+    );
     gh.factory<_i325.LoginLocalDataSourceContract>(
       () => _i438.LoginLocalDataSourceImpl(),
     );
@@ -126,6 +157,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i592.HomeApiClient>(() => _i592.HomeApiClient(gh<_i361.Dio>()));
     gh.factory<_i395.LoginApiClient>(
       () => _i395.LoginApiClient(gh<_i361.Dio>()),
+    );
+    gh.factory<_i576.LoginDriverApiClient>(
+      () => _i576.LoginDriverApiClient(gh<_i361.Dio>()),
     );
     gh.factory<_i89.MainProfileApiClient>(
       () => _i89.MainProfileApiClient(gh<_i361.Dio>()),
@@ -145,6 +179,11 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i473.HomeModule>(
       () => _i473.HomeModule(gh<_i628.HomeEntity>()),
     );
+    gh.factory<_i885.LoginDriverRemoteDataSourceContract>(
+      () => _i377.LoginDriverRemoteDataSourceImpl(
+        gh<_i576.LoginDriverApiClient>(),
+      ),
+    );
     gh.lazySingleton<_i759.AuthLocalDataSourceContract>(
       () =>
           _i424.AuthLocalDataSourceImpl(fss: gh<_i558.FlutterSecureStorage>()),
@@ -162,6 +201,12 @@ extension GetItInjectableX on _i174.GetIt {
         apiClient: gh<_i41.ProductsApiClient>(),
       ),
     );
+    gh.factory<_i141.LoginDriverRepositoryContract>(
+      () => _i746.LoginDriverRepositoryImpl(
+        gh<_i885.LoginDriverRemoteDataSourceContract>(),
+        gh<_i98.LoginDriverLocalDataSourceContract>(),
+      ),
+    );
     gh.factory<_i525.MainProfileRemoteDataSourceContract>(
       () => _i522.MainProfileRemoteDataSourceImpl(
         gh<_i89.MainProfileApiClient>(),
@@ -176,10 +221,48 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i325.LoginLocalDataSourceContract>(),
       ),
     );
+    gh.factory<_i491.DeleteDriverCredentialsUseCase>(
+      () => _i491.DeleteDriverCredentialsUseCase(
+        gh<_i141.LoginDriverRepositoryContract>(),
+      ),
+    );
+    gh.factory<_i23.DeleteDriverTokenUseCase>(
+      () => _i23.DeleteDriverTokenUseCase(
+        gh<_i141.LoginDriverRepositoryContract>(),
+      ),
+    );
+    gh.factory<_i608.GetDriverCredentialsUseCase>(
+      () => _i608.GetDriverCredentialsUseCase(
+        gh<_i141.LoginDriverRepositoryContract>(),
+      ),
+    );
+    gh.factory<_i577.LoginDriverUseCase>(
+      () => _i577.LoginDriverUseCase(gh<_i141.LoginDriverRepositoryContract>()),
+    );
+    gh.factory<_i828.SaveDriverCredentialsUseCase>(
+      () => _i828.SaveDriverCredentialsUseCase(
+        gh<_i141.LoginDriverRepositoryContract>(),
+      ),
+    );
+    gh.factory<_i796.SaveDriverTokenUseCase>(
+      () => _i796.SaveDriverTokenUseCase(
+        gh<_i141.LoginDriverRepositoryContract>(),
+      ),
+    );
     gh.factory<_i902.AppFilterTabsRepository>(
       () => _i539.AppFilterTabsRepositoryImpl(
         appFilterTabsRemoteDataSourceContract:
             gh<_i823.AppFilterTabsRemoteDataSourceContract>(),
+      ),
+    );
+    gh.factory<_i283.LoginDriverCubit>(
+      () => _i283.LoginDriverCubit(
+        gh<_i577.LoginDriverUseCase>(),
+        gh<_i796.SaveDriverTokenUseCase>(),
+        gh<_i23.DeleteDriverTokenUseCase>(),
+        gh<_i828.SaveDriverCredentialsUseCase>(),
+        gh<_i608.GetDriverCredentialsUseCase>(),
+        gh<_i491.DeleteDriverCredentialsUseCase>(),
       ),
     );
     gh.factory<_i261.GetHomeUseCase>(

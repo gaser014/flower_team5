@@ -76,6 +76,8 @@ flutter:
     - assets/images/
     - assets/icons/
     - assets/translations/
+    - assets/animations/
+    - assets/animations/Delivery guy (2).json
 
   # ---------- Fonts ----------
   fonts:

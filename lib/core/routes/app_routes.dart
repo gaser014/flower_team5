@@ -5,13 +5,13 @@ import 'package:flowers_app/core/data/data_sources/auth_local_data_source.dart';
 import 'package:flowers_app/core/routes/routes.dart';
 import 'package:flowers_app/features/app_filter_tabs/domain/entities/app_filter_tab_item_entity.dart';
 import 'package:flowers_app/features/login/presentation/view/pages/login_page.dart';
+import 'package:flowers_app/features/Apply_now/Apply.dart';
+import 'package:flowers_app/features/login_Driver/presentation/view/pages/login_Driver_page.dart';
+import 'package:flowers_app/features/login_Driver/presentation/view/pages/onboarding_driver_page.dart';
 import 'package:flowers_app/features/products/presentation/view/pages/occasion_page.dart';
 import 'package:flowers_app/features/spalsh/splash_page.dart';
 import 'package:flowers_app/features/main/presentation/screens/main_view.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flowers_app/features/spalsh/splash_page.dart';
-
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:go_router/go_router.dart';
 
 final RouteObserver<ModalRoute> routeObserver = RouteObserver<ModalRoute>();
@@ -204,7 +204,7 @@ class _PageBasedPageRoute<T> extends PageRoute<T> {
 
 abstract class AppRoutes {
   static final GoRouter router = GoRouter(
-    initialLocation: Routes.splash,
+    initialLocation: Routes.onboardingDriver,
     routes: [
       GoRoute(
         path: Routes.main,
@@ -239,6 +239,33 @@ abstract class AppRoutes {
         builder: (BuildContext context, GoRouterState state) {
           return LoginPage();
         },
+      ),
+      GoRoute(
+        path: Routes.onboardingDriver,
+        name: Routes.onboardingDriver,
+        pageBuilder: (context, state) => buildAnimatedPage(
+          key: state.pageKey,
+          child: const OnboardingDriverPage(),
+          animationType: AnimationType.fade,
+        ),
+      ),
+      GoRoute(
+        path: Routes.loginDriver,
+        name: Routes.loginDriver,
+        pageBuilder: (context, state) => buildAnimatedPage(
+          key: state.pageKey,
+          child: const LoginDriverPage(),
+          animationType: AnimationType.slideFromRight,
+        ),
+      ),
+      GoRoute(
+        path: Routes.applyNow,
+        name: Routes.applyNow,
+        pageBuilder: (context, state) => buildAnimatedPage(
+          key: state.pageKey,
+          child: const Apply(),
+          animationType: AnimationType.slideFromRight,
+        ),
       ),
     ],
     redirect: (context, state) async {

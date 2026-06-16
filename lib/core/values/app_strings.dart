@@ -198,6 +198,15 @@ class AppStrings {
 
   static const String token = "token";
   static const String user = "user";
+  static const String driverToken = "driverToken";
+  static const String driverSavedEmail = "driverSavedEmail";
+  static const String driverSavedPassword = "driverSavedPassword";
+
+  // Driver Login
+  static const String driverLoginSuccessfully = "Login successfully";
+  static const String driverLoginError = "Invalid email or password";
+  static const String welcomeToFlowery = "Welcome to\nFlowery rider app";
+  static const String continueButton = "Continue";
 
   // Home
   static const String categories = "Categories";

@@ -14,4 +14,8 @@ abstract class Routes {
   static const String profile = "/profile";
   static const String home = "/home";
   static const String occasionPage = "/occasion";
+  static const String onboardingDriver = "/onboarding-driver";
+  static const String loginDriver = "/login-driver";
+  static const String driverMain = "/driver-main";
+  static const String applyNow = "/apply-now";
 }
