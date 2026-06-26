@@ -2,23 +2,27 @@ import 'dart:async';
 import 'package:equatable/equatable.dart';
 import 'package:flowers_app/config/base_state/base_state.dart';
 import 'package:flowers_app/config/database/cache_helper.dart';
+import 'package:flowers_app/config/fcm/fcm_service.dart';
 import 'package:flowers_app/config/uses_cases/login_params.dart';
 import 'package:flowers_app/core/values/app_strings.dart';
 import 'package:flowers_app/features/login/domain/use_cases/login_use_case.dart';
 import 'package:flowers_app/features/login/domain/use_cases/save_user_use_case.dart';
 import 'package:flowers_app/features/login/presentation/view_model/cubit/login_events.dart';
+import 'package:flowers_app/features/tracking_test/domain/entities/user_entity.dart';
+import 'package:flowers_app/features/tracking_test/domain/use_cases/add_user_use_case.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 
 part 'login_states.dart';
 
-@injectable
+@Injectable()
 class LoginCubit extends Cubit<LoginStates> {
-  LoginCubit(this.loginUseCase, this.saveUserUseCase)
+  LoginCubit(this.loginUseCase, this.saveUserUseCase, this.addUserUseCase)
     : super(const LoginStates());
 
   final LoginUseCase loginUseCase;
   final SaveUserUseCase saveUserUseCase;
+  final AddUserUseCase addUserUseCase;
 
   void doIndented(LoginEvents event) {
     switch (event) {
@@ -34,6 +38,7 @@ class LoginCubit extends Cubit<LoginStates> {
   Future<void> _login(LoginParams params) async {
     emit(state.copyWith(loginState: BaseState.loading()));
     final result = await loginUseCase.call(params);
+    final fcmToken = FCMService().fcmToken;
     result.when(
       success: (response) async {
         if (response != null) {
@@ -47,6 +52,13 @@ class LoginCubit extends Cubit<LoginStates> {
             );
           }
         }
+        await _addUserInFirebase(
+          UserEntity(
+            userId: response?.user?.id.toString() ?? '',
+            fcmToken: fcmToken ?? '',
+            language: params.lang ?? '',
+          ),
+        );
         emit(state.copyWith(loginState: BaseState.success(response)));
       },
       error: (Exception? exception) {
@@ -61,5 +73,9 @@ class LoginCubit extends Cubit<LoginStates> {
 
   Future<void> _showPassword(bool showPassword) async {
     emit(state.copyWith(showPasswordState: BaseState.success(showPassword)));
+  }
+
+  Future<void> _addUserInFirebase(UserEntity userEntity) async {
+    await addUserUseCase.call(userEntity);
   }
 }

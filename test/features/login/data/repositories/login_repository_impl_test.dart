@@ -35,6 +35,7 @@ void main() {
     const tLoginParams = LoginParams(
       email: 'test@test.com',
       password: 'password',
+      lang: "en",
     );
 
     final tLoginResponseModel = LoginResponseModel(

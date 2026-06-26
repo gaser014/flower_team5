@@ -106,6 +106,18 @@ import '../../features/products/domain/use_cases/get_all_products.dart'
     as _i845;
 import '../../features/products/presentation/view_model/cubit/products_cubit.dart'
     as _i593;
+import '../../features/tracking_test/data/data_sources/firestore_service.dart'
+    as _i934;
+import '../../features/tracking_test/data/repositories/tracking_repository_impl.dart'
+    as _i1061;
+import '../../features/tracking_test/domain/repositories/tracking_repository.dart'
+    as _i207;
+import '../../features/tracking_test/domain/use_cases/add_user_use_case.dart'
+    as _i763;
+import '../../features/tracking_test/domain/use_cases/stream_order_use_case.dart'
+    as _i462;
+import '../../features/tracking_test/domain/use_cases/update_order_use_case.dart'
+    as _i953;
 import '../api/app_interceptor.dart' as _i449;
 import '../api/dio_module.dart' as _i784;
 import 'home_module.dart' as _i473;
@@ -118,6 +130,7 @@ extension GetItInjectableX on _i174.GetIt {
   }) {
     final gh = _i526.GetItHelper(this, environment, environmentFilter);
     final dioModule = _$DioModule();
+    gh.factory<_i934.FirestoreService>(() => _i934.FirestoreService());
     gh.singleton<_i361.Dio>(() => dioModule.dio());
     gh.lazySingleton<_i558.FlutterSecureStorage>(
       () => dioModule.secureStorage(),
@@ -157,6 +170,11 @@ extension GetItInjectableX on _i174.GetIt {
         fss: gh<_i558.FlutterSecureStorage>(),
       ),
     );
+    gh.factory<_i207.TrackingRepository>(
+      () => _i1061.TrackingRepositoryImpl(
+        firestoreService: gh<_i934.FirestoreService>(),
+      ),
+    );
     gh.lazySingleton<_i473.HomeModule>(
       () => _i473.HomeModule(gh<_i628.HomeEntity>()),
     );
@@ -181,6 +199,15 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i522.MainProfileRemoteDataSourceImpl(
         gh<_i89.MainProfileApiClient>(),
       ),
+    );
+    gh.factory<_i763.AddUserUseCase>(
+      () => _i763.AddUserUseCase(gh<_i207.TrackingRepository>()),
+    );
+    gh.factory<_i462.StreamOrderUseCase>(
+      () => _i462.StreamOrderUseCase(gh<_i207.TrackingRepository>()),
+    );
+    gh.factory<_i953.UpdateOrderUseCase>(
+      () => _i953.UpdateOrderUseCase(gh<_i207.TrackingRepository>()),
     );
     gh.factory<_i0.HomeRepository>(
       () => _i76.HomeRepositoryImpl(gh<_i969.HomeRemoteDataSourceContract>()),
@@ -251,6 +278,13 @@ extension GetItInjectableX on _i174.GetIt {
         getAllProductsUseCase: gh<_i845.GetAllProductsUseCase>(),
       ),
     );
+    gh.factory<_i753.LoginCubit>(
+      () => _i753.LoginCubit(
+        gh<_i191.LoginUseCase>(),
+        gh<_i71.SaveUserUseCase>(),
+        gh<_i763.AddUserUseCase>(),
+      ),
+    );
     gh.factory<_i60.MainProfileCubit>(
       () => _i60.MainProfileCubit(
         gh<_i818.GetMainProfileUseCase>(),
@@ -260,12 +294,6 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i468.AppFilterTabsCubit>(
       () => _i468.AppFilterTabsCubit(
         getAllAppFilterTabsUseCase: gh<_i313.GetAllAppFilterTabsUseCase>(),
-      ),
-    );
-    gh.factory<_i753.LoginCubit>(
-      () => _i753.LoginCubit(
-        gh<_i191.LoginUseCase>(),
-        gh<_i71.SaveUserUseCase>(),
       ),
     );
     return this;
