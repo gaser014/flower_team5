@@ -29,6 +29,7 @@ class _LoginPageState extends State<LoginPage> {
     return BlocProvider(
       create: (context) => getIt.get<LoginCubit>(),
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
         appBar: AppBar(title: Text(AppStrings.loginTitle)),
         body: LoginPageBody(
           formKey: _formKey,

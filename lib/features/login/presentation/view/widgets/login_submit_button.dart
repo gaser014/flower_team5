@@ -1,5 +1,4 @@
-import 'dart:developer';
-
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flowers_app/config/uses_cases/login_params.dart';
 import 'package:flowers_app/core/routes/routes.dart';
 import 'package:flowers_app/core/values/app_strings.dart';
@@ -54,10 +53,10 @@ class LoginSubmitButton extends StatelessWidget {
                     email: emailController.text,
                     password: passwordController.text,
                     remember: state.rememberMeState.data ?? false,
+                    lang: context.locale.languageCode,
                   ),
                 ),
               );
-              log("++++++++++++${state.rememberMeState.data}");
             }
           },
         );
