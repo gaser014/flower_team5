@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:developer';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flowers_app/core/values/app_colors.dart';
+import 'package:flowers_app/features/tracking_test/domain/entities/user_entity.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:googleapis_auth/auth_io.dart';
@@ -153,12 +154,12 @@ class FCMService {
     if (message.data['screen'] != null) {}
   }
 
-  /// Send a push notification directly from the client to a specific FCM token.
+  /// Send a push notification directly from the client to multiple FCM tokens.
   /// NOTE: This uses the modern FCM HTTP v1 API.
   /// Since the Legacy API is shutting down, you MUST use a Service Account JSON.
   /// ⚠️ IMPORTANT: For production, this logic belongs on your backend!
   Future<void> sendNotification({
-    required String targetFcmToken,
+    required List<FCMTokenEntity> targetFcmTokens,
     required String title,
     required String body,
   }) async {
@@ -207,29 +208,38 @@ class FCMService {
       final url =
           'https://fcm.googleapis.com/v1/projects/$projectId/messages:send';
 
-      // 5. Build the modern HTTP v1 message payload
-      final Map<String, dynamic> data = {
-        'message': {
-          'token': targetFcmToken,
-          'notification': {'title': title, 'body': body},
-          'data': {
-            'click_action': 'FLUTTER_NOTIFICATION_CLICK',
-            'message': 'custom data',
+      for (var tokenData in targetFcmTokens) {
+        final token = tokenData.token;
+        final lang =
+            tokenData.lang; // If you want to use language for translations
+
+        if (token == null) continue;
+
+        // 5. Build the modern HTTP v1 message payload
+        final Map<String, dynamic> data = {
+          'message': {
+            'token': token,
+            'notification': {'title': title, 'body': body},
+            'data': {
+              'click_action': 'FLUTTER_NOTIFICATION_CLICK',
+              'message': 'custom data',
+              'lang': lang ?? 'en',
+            },
           },
-        },
-      };
+        };
 
-      // 6. Send the notification
-      final response = await client.post(
-        Uri.parse(url),
-        headers: {'Content-Type': 'application/json'},
-        body: jsonEncode(data),
-      );
+        // 6. Send the notification
+        final response = await client.post(
+          Uri.parse(url),
+          headers: {'Content-Type': 'application/json'},
+          body: jsonEncode(data),
+        );
 
-      if (response.statusCode == 200) {
-        log('Notification sent successfully to $targetFcmToken');
-      } else {
-        log('Failed to send notification: ${response.body}');
+        if (response.statusCode == 200) {
+          log('Notification sent successfully to $token');
+        } else {
+          log('Failed to send notification to $token: ${response.body}');
+        }
       }
 
       client.close();

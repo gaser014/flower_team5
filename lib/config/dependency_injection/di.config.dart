@@ -112,6 +112,8 @@ import '../../features/tracking_test/data/repositories/tracking_repository_impl.
     as _i1061;
 import '../../features/tracking_test/domain/repositories/tracking_repository.dart'
     as _i207;
+import '../../features/tracking_test/domain/use_cases/add_order_use_case.dart'
+    as _i921;
 import '../../features/tracking_test/domain/use_cases/add_user_use_case.dart'
     as _i763;
 import '../../features/tracking_test/domain/use_cases/stream_order_use_case.dart'
@@ -199,6 +201,9 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i522.MainProfileRemoteDataSourceImpl(
         gh<_i89.MainProfileApiClient>(),
       ),
+    );
+    gh.factory<_i921.AddOrderUseCase>(
+      () => _i921.AddOrderUseCase(gh<_i207.TrackingRepository>()),
     );
     gh.factory<_i763.AddUserUseCase>(
       () => _i763.AddUserUseCase(gh<_i207.TrackingRepository>()),

@@ -45,9 +45,12 @@ class _TrackingTestPageState extends State<TrackingTestPage> {
       // 1. Create Dummy User via Use Case
       final userEntity = UserEntity(
         userId: _dummyUserId,
-        fcmToken: "dummy_token_abc",
-        // Cairo location
-        language: "en",
+        fcmTokens: [
+          FCMTokenEntity(
+            token: "dummy_token_abc",
+            lang: "en",
+          )
+        ],
       );
       await _addUser(userEntity);
 
@@ -101,11 +104,11 @@ class _TrackingTestPageState extends State<TrackingTestPage> {
   Future<void> _sendTestNotification() async {
     log(FCMService().fcmToken.toString(), name: 'FCM_TOKEN');
     try {
-      await FCMService().sendNotification(
-        targetFcmToken: FCMService().fcmToken.toString(),
-        title: "Test Notification",
-        body: "This is a test notification sent directly from the app!",
-      );
+      // await FCMService().sendNotification(
+      //   // targetFcmToken: FCMService().fcmToken.toString(),
+      //   title: "Test Notification",
+      //   body: "This is a test notification sent directly from the app!",
+      // );
 
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Notification sent to this device!')),

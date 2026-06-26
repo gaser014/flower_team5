@@ -1,11 +1,13 @@
 class UserEntity {
   final String userId;
-  final String fcmToken;
-  final String language;
+  final List<FCMTokenEntity> fcmTokens;
 
-  const UserEntity({
-    required this.userId,
-    required this.fcmToken,
-    required this.language,
-  });
+  const UserEntity({required this.userId, required this.fcmTokens});
+}
+
+class FCMTokenEntity {
+  final String token;
+  final String lang;
+
+  const FCMTokenEntity({required this.token, required this.lang});
 }

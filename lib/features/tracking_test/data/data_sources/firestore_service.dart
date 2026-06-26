@@ -20,15 +20,61 @@ class FirestoreService {
   /// Create or update a user document
   Future<void> addUser(UserFirebaseModel userModel) async {
     try {
-      final data = userModel.toJson();
-      data['createdAt'] = FieldValue.serverTimestamp();
-      await _firestore
+      final docRef = _firestore
           .collection(_usersCollection)
-          .doc(userModel.userId)
-          .set(data, SetOptions(merge: true));
+          .doc(userModel.userId);
+      final docSnap = await docRef.get();
+
+      final data = userModel.toJson();
+
+      if (docSnap.exists) {
+        // Remove fcmTokens from data so it doesn't overwrite the existing array
+        final newTokens = data['fcmTokens'] as List<dynamic>? ?? [];
+        data.remove('fcmTokens');
+        data['updatedAt'] = FieldValue.serverTimestamp();
+
+        // Merge other data
+        await docRef.set(data, SetOptions(merge: true));
+
+        // Append tokens safely using arrayUnion
+        if (newTokens.isNotEmpty) {
+          await docRef.update({'fcmTokens': FieldValue.arrayUnion(newTokens)});
+        }
+      } else {
+        data['createdAt'] = FieldValue.serverTimestamp();
+        await docRef.set(data);
+      }
     } catch (e) {
       log(e.toString());
       throw Exception('Failed to add user: $e');
+    }
+  }
+
+  /// Save a device token and language for a user
+  Future<void> saveDeviceToken(String userId, String token, String lang) async {
+    try {
+      final docRef = _firestore.collection(_usersCollection).doc(userId);
+      final docSnap = await docRef.get();
+
+      final tokenData = {'token': token, 'lang': lang};
+
+      if (docSnap.exists) {
+        // User exists, append token
+        await docRef.update({
+          'fcmTokens': FieldValue.arrayUnion([tokenData]),
+          'updatedAt': FieldValue.serverTimestamp(),
+        });
+      } else {
+        // User doesn't exist, create it with this token
+        await docRef.set({
+          'userId': userId,
+          'fcmTokens': [tokenData],
+          'createdAt': FieldValue.serverTimestamp(),
+        });
+      }
+    } catch (e) {
+      log(e.toString());
+      throw Exception('Failed to save device token: $e');
     }
   }
 
