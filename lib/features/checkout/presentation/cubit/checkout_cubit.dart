@@ -1,13 +1,11 @@
+import 'dart:async';
+
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flowers_app/config/base_state/base_state.dart';
-import 'package:flowers_app/config/uses_cases/use_cases.dart';
-import 'package:flowers_app/features/addresses/domain/entities/address_entity.dart';
-import 'package:flowers_app/features/addresses/domain/use_cases/get_addresses.dart';
-import 'package:flowers_app/features/checkout/domain/entities/credit_card_entity.dart';
 import 'package:flowers_app/features/checkout/domain/use_cases/checkout_params.dart';
 import 'package:flowers_app/features/checkout/domain/use_cases/checkout_with_cash_usecase.dart';
 import 'package:flowers_app/features/checkout/domain/use_cases/checkout_with_card_usecase.dart';
+import 'package:flowers_app/features/checkout/domain/use_cases/sync_card_order_usecase.dart';
 import 'package:injectable/injectable.dart';
 
 part 'checkout_event.dart';
@@ -17,12 +15,12 @@ part 'checkout_state.dart';
 class CheckoutCubit extends Cubit<CheckoutState> {
   final CheckoutWithCashUseCase _checkoutWithCashUseCase;
   final CheckoutWithCardUseCase _checkoutWithCardUseCase;
-  final GetAddressesUseCase _getAddressesUseCase;
+  final SyncCardOrderUseCase _syncCardOrderUseCase;
 
   CheckoutCubit(
     this._checkoutWithCashUseCase,
     this._checkoutWithCardUseCase,
-    this._getAddressesUseCase,
+    this._syncCardOrderUseCase,
   ) : super(const CheckoutState());
 
   @override
@@ -32,14 +30,14 @@ class CheckoutCubit extends Cubit<CheckoutState> {
 
   Future<void> doEvent(CheckoutEvent event) async {
     switch (event) {
-      case LoadAddresses():
-        await _loadAddresses();
       case ChangePaymentMethod():
-        emit(state.copyWith(
-          selectedPayment: event.index,
-          clearError: true,
-          paymentUrl: null,
-        ));
+        emit(
+          state.copyWith(
+            selectedPayment: event.index,
+            clearError: true,
+            paymentUrl: null,
+          ),
+        );
       case ToggleGift():
         emit(state.copyWith(isGift: event.value, clearError: true));
       case PlaceOrderWithCash():
@@ -48,24 +46,30 @@ class CheckoutCubit extends Cubit<CheckoutState> {
         await _placeOrderWithCard(event);
       case PaymentCompleted():
         if (event.success) {
-          emit(state.copyWith(
-            checkoutState: const BaseState<CreditCardEntity?>.success(null),
-            paymentUrl: null,
-          ));
-        } else {
-          emit(state.copyWith(
-            checkoutState: BaseState<CreditCardEntity?>.error(
-              Exception('Payment failed'),
+          unawaited(
+            _syncCardOrderUseCase.call(
+              CheckoutParams(
+                street: state.street,
+                phone: state.phone,
+                city: state.city,
+                lat: '0',
+                long: '0',
+              ),
             ),
-          ));
+          );
+          emit(
+            state.copyWith(status: CheckoutStatus.success, paymentUrl: null),
+          );
+        } else {
+          emit(
+            state.copyWith(status: CheckoutStatus.error, errorMessage: null),
+          );
         }
     }
   }
 
   Future<void> _placeOrderWithCash(PlaceOrderWithCash event) async {
-    emit(state.copyWith(
-      checkoutState: const BaseState<CreditCardEntity?>.loading(),
-    ));
+    emit(state.copyWith(status: CheckoutStatus.loading));
 
     final params = CheckoutParams(
       street: event.street,
@@ -79,25 +83,21 @@ class CheckoutCubit extends Cubit<CheckoutState> {
 
     result.when(
       success: (_) {
-        emit(state.copyWith(
-          checkoutState: const BaseState<CreditCardEntity?>.success(null),
-          paymentUrl: null,
-        ));
+        emit(state.copyWith(status: CheckoutStatus.success, paymentUrl: null));
       },
       error: (exception) {
-        emit(state.copyWith(
-          checkoutState: BaseState<CreditCardEntity?>.error(
-            exception ?? Exception('Checkout failed'),
+        emit(
+          state.copyWith(
+            status: CheckoutStatus.error,
+            errorMessage: exception?.toString(),
           ),
-        ));
+        );
       },
     );
   }
 
   Future<void> _placeOrderWithCard(PlaceOrderWithCard event) async {
-    emit(state.copyWith(
-      checkoutState: const BaseState<CreditCardEntity?>.loading(),
-    ));
+    emit(state.copyWith(status: CheckoutStatus.loading));
 
     final params = CheckoutParams(
       street: event.street,
@@ -111,29 +111,22 @@ class CheckoutCubit extends Cubit<CheckoutState> {
 
     result.when(
       success: (data) {
-        emit(state.copyWith(
-          checkoutState: BaseState<CreditCardEntity?>.success(data),
-          paymentUrl: data?.url,
-          successUrl: data?.successUrl,
-        ));
+        emit(
+          state.copyWith(
+            status: CheckoutStatus.paymentPending,
+            paymentUrl: data?.url,
+            successUrl: data?.successUrl,
+          ),
+        );
       },
       error: (exception) {
-        emit(state.copyWith(
-          checkoutState: BaseState<CreditCardEntity?>.error(
-            exception ?? Exception('Card checkout failed'),
+        emit(
+          state.copyWith(
+            status: CheckoutStatus.error,
+            errorMessage: exception?.toString(),
           ),
-        ));
+        );
       },
-    );
-  }
-
-  Future<void> _loadAddresses() async {
-    final result = await _getAddressesUseCase.call(const NoParams());
-    result.when(
-      success: (data) {
-        emit(state.copyWith(addresses: data));
-      },
-      error: (_) {},
     );
   }
 }

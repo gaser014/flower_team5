@@ -11,4 +11,6 @@ abstract interface class CheckoutRepository {
   Future<Result<CreditCardEntity>> checkoutWithCreditCard(
     CheckoutParams params,
   );
+
+  Future<void> syncCardOrder(CheckoutParams params);
 }

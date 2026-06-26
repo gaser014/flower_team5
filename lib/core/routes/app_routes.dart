@@ -234,7 +234,7 @@ class _PageBasedPageRoute<T> extends PageRoute<T> {
 
 abstract class AppRoutes {
   static final GoRouter router = GoRouter(
-    initialLocation: Routes.splash,
+    initialLocation: Routes.checkout,
     routes: [
       GoRoute(
         path: Routes.forgetPassword,
