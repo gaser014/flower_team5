@@ -55,8 +55,9 @@ class LoginCubit extends Cubit<LoginStates> {
         await _addUserInFirebase(
           UserEntity(
             userId: response?.user?.id.toString() ?? '',
-            fcmToken: fcmToken ?? '',
-            language: params.lang ?? '',
+            fcmTokens: fcmToken != null
+                ? [FCMTokenEntity(token: fcmToken, lang: params.lang ?? "en")]
+                : [],
           ),
         );
         emit(state.copyWith(loginState: BaseState.success(response)));
