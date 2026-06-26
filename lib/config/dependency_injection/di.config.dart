@@ -32,6 +32,22 @@ import '../../features/app_filter_tabs/domain/use_cases/get_all_app_filter_tabs.
     as _i313;
 import '../../features/app_filter_tabs/presentation/view_model/cubit/app_filter_tabs_cubit.dart'
     as _i468;
+import '../../features/checkout/api/api_client/checkout_api_client.dart'
+    as _i832;
+import '../../features/checkout/api/data_sources/checkout_remote_data_source_impl.dart'
+    as _i149;
+import '../../features/checkout/data/data_sources/checkout_remote_data_source_contract.dart'
+    as _i486;
+import '../../features/checkout/data/repositories/checkout_repository_impl.dart'
+    as _i949;
+import '../../features/checkout/domain/repositories/checkout_repository.dart'
+    as _i498;
+import '../../features/checkout/domain/use_cases/checkout_with_card_usecase.dart'
+    as _i413;
+import '../../features/checkout/domain/use_cases/checkout_with_cash_usecase.dart'
+    as _i447;
+import '../../features/checkout/presentation/cubit/checkout_cubit.dart'
+    as _i645;
 import '../../features/home/api/api_client/home_api_client.dart' as _i592;
 import '../../features/home/api/datasources/home_remote_data_source_impl.dart'
     as _i796;
@@ -123,6 +139,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i173.AppFilterTabsApiClient>(
       () => _i173.AppFilterTabsApiClient(gh<_i361.Dio>()),
     );
+    gh.factory<_i832.CheckoutApiClient>(
+      () => _i832.CheckoutApiClient(gh<_i361.Dio>()),
+    );
     gh.factory<_i592.HomeApiClient>(() => _i592.HomeApiClient(gh<_i361.Dio>()));
     gh.factory<_i395.LoginApiClient>(
       () => _i395.LoginApiClient(gh<_i361.Dio>()),
@@ -170,10 +189,18 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i0.HomeRepository>(
       () => _i76.HomeRepositoryImpl(gh<_i969.HomeRemoteDataSourceContract>()),
     );
+    gh.factory<_i486.CheckoutRemoteDataSourceContract>(
+      () => _i149.CheckoutRemoteDataSourceImpl(gh<_i832.CheckoutApiClient>()),
+    );
     gh.factory<_i902.LoginRepositoryContract>(
       () => _i1066.LoginRepositoryImpl(
         gh<_i736.LoginRemoteDataSourceContract>(),
         gh<_i325.LoginLocalDataSourceContract>(),
+      ),
+    );
+    gh.factory<_i498.CheckoutRepository>(
+      () => _i949.CheckoutRepositoryImpl(
+        gh<_i486.CheckoutRemoteDataSourceContract>(),
       ),
     );
     gh.factory<_i902.AppFilterTabsRepository>(
@@ -189,6 +216,18 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i1045.ProductsRepositoryImpl(
         productsRemoteDataSourceContract:
             gh<_i106.ProductsRemoteDataSourceContract>(),
+      ),
+    );
+    gh.factory<_i413.CheckoutWithCardUseCase>(
+      () => _i413.CheckoutWithCardUseCase(gh<_i498.CheckoutRepository>()),
+    );
+    gh.factory<_i447.CheckoutWithCashUseCase>(
+      () => _i447.CheckoutWithCashUseCase(gh<_i498.CheckoutRepository>()),
+    );
+    gh.factory<_i645.CheckoutCubit>(
+      () => _i645.CheckoutCubit(
+        gh<_i447.CheckoutWithCashUseCase>(),
+        gh<_i413.CheckoutWithCardUseCase>(),
       ),
     );
     gh.factory<_i488.MainProfileRepositoryContract>(
