@@ -5,12 +5,10 @@ part 'location_model.g.dart';
 
 @JsonSerializable()
 class LocationModel extends LocationEntity {
-  const LocationModel({
-    required super.lat,
-    required super.lng,
-  });
+  const LocationModel({required super.lat, required super.lng});
 
-  factory LocationModel.fromJson(Map<String, dynamic> json) => _$LocationModelFromJson(json);
+  factory LocationModel.fromJson(Map<String, dynamic> json) =>
+      _$LocationModelFromJson(json);
   Map<String, dynamic> toJson() => _$LocationModelToJson(this);
 
   factory LocationModel.fromEntity(LocationEntity entity) {
