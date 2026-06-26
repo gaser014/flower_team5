@@ -226,4 +226,20 @@ class AppStrings {
   static const String cart = "Cart";
   static const String profile = "Profile";
   static const String home = "Home";
+
+  static const String trackOrder = "Track order";
+  static const String orderPlacedSuccessfully =
+      "Your order placed successfully!";
+  static const String preparingYourOrder = "Preparing your order";
+  static const String outForDelivery = "Out for delivery";
+  static const String orderDelivered = "Order delivered";
+  static const String orderCancelled = "Order cancelled";
+  static const String subTotal = "Sub Total";
+  static const String payWithCash = "Pay with cash";
+  static const String showMap = "Show map";
+  static const String items = "Items";
+  static const String driverLocation = "Driver location";
+  static const String locationNotAvailableYet =
+      "Driver location is not available yet";
+  static const String orderNotFound = "Order not found";
 }

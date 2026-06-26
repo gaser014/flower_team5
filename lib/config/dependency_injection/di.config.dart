@@ -9,6 +9,7 @@
 // coverage:ignore-file
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
+import 'package:cloud_firestore/cloud_firestore.dart' as _i974;
 import 'package:dio/dio.dart' as _i361;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart' as _i558;
 import 'package:get_it/get_it.dart' as _i174;
@@ -94,8 +95,21 @@ import '../../features/products/domain/use_cases/get_all_products.dart'
     as _i845;
 import '../../features/products/presentation/view_model/cubit/products_cubit.dart'
     as _i593;
+import '../../features/track_order/data/datasources/track_order_remote_data_source.dart'
+    as _i795;
+import '../../features/track_order/data/datasources/track_order_remote_data_source_impl.dart'
+    as _i767;
+import '../../features/track_order/data/repositories/track_order_repository_impl.dart'
+    as _i317;
+import '../../features/track_order/domain/repositories/track_order_repository.dart'
+    as _i776;
+import '../../features/track_order/domain/use_cases/watch_order_status_use_case.dart'
+    as _i583;
+import '../../features/track_order/presentation/view_model/cubit/track_order_cubit.dart'
+    as _i305;
 import '../api/app_interceptor.dart' as _i449;
 import '../api/dio_module.dart' as _i784;
+import '../firebase/firebase_module.dart' as _i1055;
 import 'home_module.dart' as _i473;
 
 extension GetItInjectableX on _i174.GetIt {
@@ -106,6 +120,7 @@ extension GetItInjectableX on _i174.GetIt {
   }) {
     final gh = _i526.GetItHelper(this, environment, environmentFilter);
     final dioModule = _$DioModule();
+    final firebaseModule = _$FirebaseModule();
     gh.singleton<_i361.Dio>(() => dioModule.dio());
     gh.lazySingleton<_i558.FlutterSecureStorage>(
       () => dioModule.secureStorage(),
@@ -114,6 +129,7 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i161.InternetConnection>(
       () => dioModule.internetConnection(),
     );
+    gh.lazySingleton<_i974.FirebaseFirestore>(() => firebaseModule.firestore);
     gh.factory<_i325.LoginLocalDataSourceContract>(
       () => _i438.LoginLocalDataSourceImpl(),
     );
@@ -144,6 +160,9 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i473.HomeModule>(
       () => _i473.HomeModule(gh<_i628.HomeEntity>()),
+    );
+    gh.factory<_i795.TrackOrderRemoteDataSource>(
+      () => _i767.TrackOrderRemoteDataSourceImpl(gh<_i974.FirebaseFirestore>()),
     );
     gh.lazySingleton<_i759.AuthLocalDataSourceContract>(
       () =>
@@ -185,10 +204,23 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i261.GetHomeUseCase>(
       () => _i261.GetHomeUseCase(gh<_i0.HomeRepository>()),
     );
+    gh.factory<_i776.TrackOrderRepository>(
+      () => _i317.TrackOrderRepositoryImpl(
+        gh<_i795.TrackOrderRemoteDataSource>(),
+      ),
+    );
     gh.factory<_i27.ProductsRepository>(
       () => _i1045.ProductsRepositoryImpl(
         productsRemoteDataSourceContract:
             gh<_i106.ProductsRemoteDataSourceContract>(),
+      ),
+    );
+    gh.factory<_i583.WatchOrderStatusUseCase>(
+      () => _i583.WatchOrderStatusUseCase(gh<_i776.TrackOrderRepository>()),
+    );
+    gh.factory<_i305.TrackOrderCubit>(
+      () => _i305.TrackOrderCubit(
+        watchOrderStatusUseCase: gh<_i583.WatchOrderStatusUseCase>(),
       ),
     );
     gh.factory<_i488.MainProfileRepositoryContract>(
@@ -247,3 +279,5 @@ extension GetItInjectableX on _i174.GetIt {
 }
 
 class _$DioModule extends _i784.DioModule {}
+
+class _$FirebaseModule extends _i1055.FirebaseModule {}

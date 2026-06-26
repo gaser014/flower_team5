@@ -6,6 +6,8 @@ import 'package:flowers_app/core/routes/routes.dart';
 import 'package:flowers_app/features/app_filter_tabs/domain/entities/app_filter_tab_item_entity.dart';
 import 'package:flowers_app/features/login/presentation/view/pages/login_page.dart';
 import 'package:flowers_app/features/products/presentation/view/pages/occasion_page.dart';
+import 'package:flowers_app/features/track_order/presentation/view/pages/track_order_map_page.dart';
+import 'package:flowers_app/features/track_order/presentation/view/pages/track_order_page.dart';
 import 'package:flowers_app/features/spalsh/splash_page.dart';
 import 'package:flowers_app/features/main/presentation/screens/main_view.dart';
 import 'package:flutter/cupertino.dart';
@@ -231,6 +233,31 @@ abstract class AppRoutes {
         name: Routes.splash,
         builder: (BuildContext context, GoRouterState state) {
           return SplashPage();
+        },
+      ),
+      GoRoute(
+        path: Routes.trackOrder,
+        name: Routes.trackOrder,
+        pageBuilder: (context, state) {
+          final orderId = state.extra as String? ?? '';
+          return buildAnimatedPage(
+            key: state.pageKey,
+            child: TrackOrderPage(orderId: orderId),
+            animationType: AnimationType.slideFromRight,
+          );
+        },
+      ),
+      GoRoute(
+        path: Routes.trackOrderMap,
+        name: Routes.trackOrderMap,
+        pageBuilder: (context, state) {
+          final args =
+              state.extra as TrackOrderMapArgs? ?? const TrackOrderMapArgs();
+          return buildAnimatedPage(
+            key: state.pageKey,
+            child: TrackOrderMapPage(args: args),
+            animationType: AnimationType.slideFromRight,
+          );
         },
       ),
       GoRoute(
