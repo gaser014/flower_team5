@@ -3,6 +3,7 @@ import 'package:flowers_app/config/api/end_points.dart';
 import 'package:flowers_app/features/checkout/data/models/request/checkout_request_dto.dart';
 import 'package:flowers_app/features/checkout/data/models/response/cash_on_delivery_dto.dart';
 import 'package:flowers_app/features/checkout/data/models/response/credit_card_dto.dart';
+import 'package:flowers_app/features/checkout/data/models/response/get_orders_dto.dart';
 import 'package:injectable/injectable.dart';
 import 'package:retrofit/retrofit.dart';
 
@@ -23,4 +24,7 @@ abstract class CheckoutApiClient {
   Future<CreditCardDto> checkoutWithCreditCard(
     @Body() CheckoutRequestDto request,
   );
+
+  @GET(EndPoints.ordersPage)
+  Future<GetOrdersDto> getMyOrders();
 }

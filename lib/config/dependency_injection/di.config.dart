@@ -9,6 +9,7 @@
 // coverage:ignore-file
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
+import 'package:cloud_firestore/cloud_firestore.dart' as _i974;
 import 'package:dio/dio.dart' as _i361;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart' as _i558;
 import 'package:get_it/get_it.dart' as _i174;
@@ -36,8 +37,12 @@ import '../../features/checkout/api/api_client/checkout_api_client.dart'
     as _i832;
 import '../../features/checkout/api/data_sources/checkout_remote_data_source_impl.dart'
     as _i149;
+import '../../features/checkout/api/data_sources/order_firestore_data_source_impl.dart'
+    as _i587;
 import '../../features/checkout/data/data_sources/checkout_remote_data_source_contract.dart'
     as _i486;
+import '../../features/checkout/data/data_sources/order_firestore_data_source_contract.dart'
+    as _i631;
 import '../../features/checkout/data/repositories/checkout_repository_impl.dart'
     as _i949;
 import '../../features/checkout/domain/repositories/checkout_repository.dart'
@@ -46,6 +51,8 @@ import '../../features/checkout/domain/use_cases/checkout_with_card_usecase.dart
     as _i413;
 import '../../features/checkout/domain/use_cases/checkout_with_cash_usecase.dart'
     as _i447;
+import '../../features/checkout/domain/use_cases/sync_card_order_usecase.dart'
+    as _i682;
 import '../../features/checkout/presentation/cubit/checkout_cubit.dart'
     as _i645;
 import '../../features/home/api/api_client/home_api_client.dart' as _i592;
@@ -112,6 +119,7 @@ import '../../features/products/presentation/view_model/cubit/products_cubit.dar
     as _i593;
 import '../api/app_interceptor.dart' as _i449;
 import '../api/dio_module.dart' as _i784;
+import '../firebase/firebase_module.dart' as _i1055;
 import 'home_module.dart' as _i473;
 
 extension GetItInjectableX on _i174.GetIt {
@@ -122,6 +130,7 @@ extension GetItInjectableX on _i174.GetIt {
   }) {
     final gh = _i526.GetItHelper(this, environment, environmentFilter);
     final dioModule = _$DioModule();
+    final firebaseModule = _$FirebaseModule();
     gh.singleton<_i361.Dio>(() => dioModule.dio());
     gh.lazySingleton<_i558.FlutterSecureStorage>(
       () => dioModule.secureStorage(),
@@ -130,6 +139,7 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i161.InternetConnection>(
       () => dioModule.internetConnection(),
     );
+    gh.lazySingleton<_i974.FirebaseFirestore>(() => firebaseModule.firestore);
     gh.factory<_i325.LoginLocalDataSourceContract>(
       () => _i438.LoginLocalDataSourceImpl(),
     );
@@ -171,6 +181,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i736.LoginRemoteDataSourceContract>(
       () => _i904.LoginRemoteDataSourceImpl(gh<_i395.LoginApiClient>()),
     );
+    gh.factory<_i631.OrderFirestoreDataSourceContract>(
+      () => _i587.OrderFirestoreDataSourceImpl(gh<_i974.FirebaseFirestore>()),
+    );
     gh.factory<_i823.AppFilterTabsRemoteDataSourceContract>(
       () => _i849.AppFilterTabsRemoteDataSourceImpl(
         apiClient: gh<_i173.AppFilterTabsApiClient>(),
@@ -198,11 +211,6 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i325.LoginLocalDataSourceContract>(),
       ),
     );
-    gh.factory<_i498.CheckoutRepository>(
-      () => _i949.CheckoutRepositoryImpl(
-        gh<_i486.CheckoutRemoteDataSourceContract>(),
-      ),
-    );
     gh.factory<_i902.AppFilterTabsRepository>(
       () => _i539.AppFilterTabsRepositoryImpl(
         appFilterTabsRemoteDataSourceContract:
@@ -216,18 +224,6 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i1045.ProductsRepositoryImpl(
         productsRemoteDataSourceContract:
             gh<_i106.ProductsRemoteDataSourceContract>(),
-      ),
-    );
-    gh.factory<_i413.CheckoutWithCardUseCase>(
-      () => _i413.CheckoutWithCardUseCase(gh<_i498.CheckoutRepository>()),
-    );
-    gh.factory<_i447.CheckoutWithCashUseCase>(
-      () => _i447.CheckoutWithCashUseCase(gh<_i498.CheckoutRepository>()),
-    );
-    gh.factory<_i645.CheckoutCubit>(
-      () => _i645.CheckoutCubit(
-        gh<_i447.CheckoutWithCashUseCase>(),
-        gh<_i413.CheckoutWithCardUseCase>(),
       ),
     );
     gh.factory<_i488.MainProfileRepositoryContract>(
@@ -264,6 +260,13 @@ extension GetItInjectableX on _i174.GetIt {
         getAllProductsUseCase: gh<_i845.GetAllProductsUseCase>(),
       ),
     );
+    gh.factory<_i498.CheckoutRepository>(
+      () => _i949.CheckoutRepositoryImpl(
+        gh<_i486.CheckoutRemoteDataSourceContract>(),
+        gh<_i631.OrderFirestoreDataSourceContract>(),
+        gh<_i759.AuthLocalDataSourceContract>(),
+      ),
+    );
     gh.factory<_i60.MainProfileCubit>(
       () => _i60.MainProfileCubit(
         gh<_i818.GetMainProfileUseCase>(),
@@ -281,8 +284,26 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i71.SaveUserUseCase>(),
       ),
     );
+    gh.factory<_i413.CheckoutWithCardUseCase>(
+      () => _i413.CheckoutWithCardUseCase(gh<_i498.CheckoutRepository>()),
+    );
+    gh.factory<_i447.CheckoutWithCashUseCase>(
+      () => _i447.CheckoutWithCashUseCase(gh<_i498.CheckoutRepository>()),
+    );
+    gh.factory<_i682.SyncCardOrderUseCase>(
+      () => _i682.SyncCardOrderUseCase(gh<_i498.CheckoutRepository>()),
+    );
+    gh.factory<_i645.CheckoutCubit>(
+      () => _i645.CheckoutCubit(
+        gh<_i447.CheckoutWithCashUseCase>(),
+        gh<_i413.CheckoutWithCardUseCase>(),
+        gh<_i682.SyncCardOrderUseCase>(),
+      ),
+    );
     return this;
   }
 }
 
 class _$DioModule extends _i784.DioModule {}
+
+class _$FirebaseModule extends _i1055.FirebaseModule {}

@@ -1,8 +1,11 @@
+import 'dart:async';
+
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flowers_app/features/checkout/domain/use_cases/checkout_params.dart';
 import 'package:flowers_app/features/checkout/domain/use_cases/checkout_with_cash_usecase.dart';
 import 'package:flowers_app/features/checkout/domain/use_cases/checkout_with_card_usecase.dart';
+import 'package:flowers_app/features/checkout/domain/use_cases/sync_card_order_usecase.dart';
 import 'package:injectable/injectable.dart';
 
 part 'checkout_event.dart';
@@ -12,10 +15,12 @@ part 'checkout_state.dart';
 class CheckoutCubit extends Cubit<CheckoutState> {
   final CheckoutWithCashUseCase _checkoutWithCashUseCase;
   final CheckoutWithCardUseCase _checkoutWithCardUseCase;
+  final SyncCardOrderUseCase _syncCardOrderUseCase;
 
   CheckoutCubit(
     this._checkoutWithCashUseCase,
     this._checkoutWithCardUseCase,
+    this._syncCardOrderUseCase,
   ) : super(const CheckoutState());
 
   @override
@@ -26,11 +31,13 @@ class CheckoutCubit extends Cubit<CheckoutState> {
   Future<void> doEvent(CheckoutEvent event) async {
     switch (event) {
       case ChangePaymentMethod():
-        emit(state.copyWith(
-          selectedPayment: event.index,
-          clearError: true,
-          paymentUrl: null,
-        ));
+        emit(
+          state.copyWith(
+            selectedPayment: event.index,
+            clearError: true,
+            paymentUrl: null,
+          ),
+        );
       case ToggleGift():
         emit(state.copyWith(isGift: event.value, clearError: true));
       case PlaceOrderWithCash():
@@ -39,15 +46,24 @@ class CheckoutCubit extends Cubit<CheckoutState> {
         await _placeOrderWithCard(event);
       case PaymentCompleted():
         if (event.success) {
-          emit(state.copyWith(
-            status: CheckoutStatus.success,
-            paymentUrl: null,
-          ));
+          unawaited(
+            _syncCardOrderUseCase.call(
+              CheckoutParams(
+                street: state.street,
+                phone: state.phone,
+                city: state.city,
+                lat: '0',
+                long: '0',
+              ),
+            ),
+          );
+          emit(
+            state.copyWith(status: CheckoutStatus.success, paymentUrl: null),
+          );
         } else {
-          emit(state.copyWith(
-            status: CheckoutStatus.error,
-            errorMessage: null,
-          ));
+          emit(
+            state.copyWith(status: CheckoutStatus.error, errorMessage: null),
+          );
         }
     }
   }
@@ -67,16 +83,15 @@ class CheckoutCubit extends Cubit<CheckoutState> {
 
     result.when(
       success: (_) {
-        emit(state.copyWith(
-          status: CheckoutStatus.success,
-          paymentUrl: null,
-        ));
+        emit(state.copyWith(status: CheckoutStatus.success, paymentUrl: null));
       },
       error: (exception) {
-        emit(state.copyWith(
-          status: CheckoutStatus.error,
-          errorMessage: exception?.toString(),
-        ));
+        emit(
+          state.copyWith(
+            status: CheckoutStatus.error,
+            errorMessage: exception?.toString(),
+          ),
+        );
       },
     );
   }
@@ -96,17 +111,21 @@ class CheckoutCubit extends Cubit<CheckoutState> {
 
     result.when(
       success: (data) {
-        emit(state.copyWith(
-          status: CheckoutStatus.paymentPending,
-          paymentUrl: data?.url,
-          successUrl: data?.successUrl,
-        ));
+        emit(
+          state.copyWith(
+            status: CheckoutStatus.paymentPending,
+            paymentUrl: data?.url,
+            successUrl: data?.successUrl,
+          ),
+        );
       },
       error: (exception) {
-        emit(state.copyWith(
-          status: CheckoutStatus.error,
-          errorMessage: exception?.toString(),
-        ));
+        emit(
+          state.copyWith(
+            status: CheckoutStatus.error,
+            errorMessage: exception?.toString(),
+          ),
+        );
       },
     );
   }
