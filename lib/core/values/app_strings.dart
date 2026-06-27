@@ -250,6 +250,18 @@ abstract class AppStrings {
   static String get trackOrder => 'trackOrder'.tr();
   static String get orderNumber => 'orderNumber'.tr();
 
+  // ── Track Order ───────────────────────────────────────────────────────────
+  static String get orderPlacedSuccessfully => 'orderPlacedSuccessfully'.tr();
+  static String get preparingYourOrder => 'preparingYourOrder'.tr();
+  static String get outForDelivery => 'outForDelivery'.tr();
+  static String get orderDelivered => 'orderDelivered'.tr();
+  static String get orderCancelled => 'orderCancelled'.tr();
+  static String get itemsLabel => 'itemsLabel'.tr();
+  static String get showMap => 'showMap'.tr();
+  static String get payWithCash => 'payWithCash'.tr();
+  static String get payWithCard => 'payWithCard'.tr();
+  static String get orderNotFound => 'orderNotFound'.tr();
+
   // ── Auth — Login ──────────────────────────────────────────────────────────
   static String get loginTitle => 'loginTitle'.tr();
   static String get loginSubtitle => 'loginSubtitle'.tr();

@@ -1,7 +1,7 @@
-import 'package:flowers_app/core/widgets/custom_button.dart';
 import 'package:flowers_app/core/values/app_colors.dart';
 import 'package:flowers_app/core/values/app_font_style.dart';
 import 'package:flowers_app/core/values/app_strings.dart';
+import 'package:flowers_app/core/widgets/custom_button.dart';
 import 'package:flowers_app/features/checkout/presentation/cubit/checkout_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -35,11 +35,15 @@ class CheckoutPriceSection extends StatelessWidget {
             children: [
               Text(
                 AppStrings.subTotal,
-                style: AppFontStyle.regular16(context: context).copyWith(color: AppColors.gray53),
+                style: AppFontStyle.regular16(
+                  context: context,
+                ).copyWith(color: AppColors.gray53),
               ),
               Text(
                 '\$$subtotal',
-                style: AppFontStyle.regular16(context: context).copyWith(color: AppColors.gray53),
+                style: AppFontStyle.regular16(
+                  context: context,
+                ).copyWith(color: AppColors.gray53),
               ),
             ],
           ),
@@ -49,11 +53,15 @@ class CheckoutPriceSection extends StatelessWidget {
             children: [
               Text(
                 AppStrings.deliveryFee,
-                style: AppFontStyle.regular16(context: context).copyWith(color: AppColors.gray53),
+                style: AppFontStyle.regular16(
+                  context: context,
+                ).copyWith(color: AppColors.gray53),
               ),
               Text(
                 '\$$delivery',
-                style: AppFontStyle.regular16(context: context).copyWith(color: AppColors.gray53),
+                style: AppFontStyle.regular16(
+                  context: context,
+                ).copyWith(color: AppColors.gray53),
               ),
             ],
           ),
@@ -65,12 +73,16 @@ class CheckoutPriceSection extends StatelessWidget {
             children: [
               Text(
                 AppStrings.totalPrice,
-                style: AppFontStyle.medium18(context: context).copyWith(color: AppColors.black0C),
+                style: AppFontStyle.medium18(
+                  context: context,
+                ).copyWith(color: AppColors.black0C),
               ),
               const Spacer(),
               Text(
                 '\$$total',
-                style: AppFontStyle.medium18(context: context).copyWith(color: AppColors.black0C),
+                style: AppFontStyle.medium18(
+                  context: context,
+                ).copyWith(color: AppColors.black0C),
               ),
             ],
           ),

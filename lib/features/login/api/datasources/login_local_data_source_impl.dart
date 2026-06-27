@@ -14,6 +14,7 @@ class LoginLocalDataSourceImpl implements LoginLocalDataSourceContract {
       key: AppStrings.user,
       value: jsonEncode(userModel.toJson()),
     );
+
     return userModel;
   }
 

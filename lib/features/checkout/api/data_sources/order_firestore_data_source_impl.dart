@@ -30,6 +30,8 @@ class OrderFirestoreDataSourceImpl implements OrderFirestoreDataSourceContract {
         'name': userName ?? '',
         'address': _buildAddress(order, params),
         'phone': _buildPhone(order, params),
+        'lat': (params?.lat ?? '').toString(),
+        'long': (params?.long ?? '').toString(),
       },
       'items': _buildItems(order),
       'createdAt': FieldValue.serverTimestamp(),
@@ -47,6 +49,7 @@ class OrderFirestoreDataSourceImpl implements OrderFirestoreDataSourceContract {
     final shipping = _shippingAddress(order);
     final street = (shipping['street'] ?? params?.street ?? '').toString();
     final city = (shipping['city'] ?? params?.city ?? '').toString();
+
     final parts = [street, city].where((part) => part.trim().isNotEmpty);
     return parts.join(', ');
   }
