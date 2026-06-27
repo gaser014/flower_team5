@@ -323,10 +323,14 @@ import '../../features/tracking_test/domain/use_cases/add_order_use_case.dart'
     as _i921;
 import '../../features/tracking_test/domain/use_cases/add_user_use_case.dart'
     as _i763;
+import '../../features/tracking_test/domain/use_cases/remove_user_token_use_case.dart'
+    as _i966;
 import '../../features/tracking_test/domain/use_cases/stream_order_use_case.dart'
     as _i462;
 import '../../features/tracking_test/domain/use_cases/update_order_use_case.dart'
     as _i953;
+import '../../features/tracking_test/domain/use_cases/update_user_token_lang_use_case.dart'
+    as _i457;
 import '../api/app_interceptor.dart' as _i449;
 import '../api/dio_module.dart' as _i784;
 import '../firebase/firebase_module.dart' as _i1055;
@@ -534,11 +538,17 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i763.AddUserUseCase>(
       () => _i763.AddUserUseCase(gh<_i207.TrackingRepository>()),
     );
+    gh.factory<_i966.RemoveUserTokenUseCase>(
+      () => _i966.RemoveUserTokenUseCase(gh<_i207.TrackingRepository>()),
+    );
     gh.factory<_i462.StreamOrderUseCase>(
       () => _i462.StreamOrderUseCase(gh<_i207.TrackingRepository>()),
     );
     gh.factory<_i953.UpdateOrderUseCase>(
       () => _i953.UpdateOrderUseCase(gh<_i207.TrackingRepository>()),
+    );
+    gh.factory<_i457.UpdateUserTokenLangUseCase>(
+      () => _i457.UpdateUserTokenLangUseCase(gh<_i207.TrackingRepository>()),
     );
     gh.factory<_i0.HomeRepository>(
       () => _i76.HomeRepositoryImpl(gh<_i969.HomeRemoteDataSourceContract>()),
@@ -739,14 +749,15 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i677.LogoutUseCase>(
       () => _i677.LogoutUseCase(gh<_i1004.LogoutRepository>()),
     );
-    gh.factory<_i60.MainProfileCubit>(
-      () => _i60.MainProfileCubit(
-        gh<_i818.GetMainProfileUseCase>(),
-        gh<_i71.SaveUserUseCase>(),
-      ),
-    );
     gh.factory<_i850.MyOrdersCubit>(
       () => _i850.MyOrdersCubit(gh<_i132.GetMyOrdersUseCase>()),
+    );
+    gh.factory<_i88.LogoutCubit>(
+      () => _i88.LogoutCubit(
+        gh<_i677.LogoutUseCase>(),
+        gh<_i12.GetUserUseCase>(),
+        gh<_i966.RemoveUserTokenUseCase>(),
+      ),
     );
     gh.factory<_i473.AddProductToCartUseCase>(
       () => _i473.AddProductToCartUseCase(repo: gh<_i322.CartRepository>()),
@@ -777,9 +788,6 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i45.SignUpUseCase>(
       () => _i45.SignUpUseCase(gh<_i100.SignUpRepositoryContract>()),
     );
-    gh.factory<_i88.LogoutCubit>(
-      () => _i88.LogoutCubit(gh<_i677.LogoutUseCase>()),
-    );
     gh.factory<_i468.AppFilterTabsCubit>(
       () => _i468.AppFilterTabsCubit(
         getAllAppFilterTabsUseCase: gh<_i313.GetAllAppFilterTabsUseCase>(),
@@ -796,6 +804,14 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i682.SyncCardOrderUseCase>(
       () => _i682.SyncCardOrderUseCase(gh<_i498.CheckoutRepository>()),
+    );
+    gh.factory<_i60.MainProfileCubit>(
+      () => _i60.MainProfileCubit(
+        gh<_i818.GetMainProfileUseCase>(),
+        gh<_i71.SaveUserUseCase>(),
+        gh<_i12.GetUserUseCase>(),
+        gh<_i457.UpdateUserTokenLangUseCase>(),
+      ),
     );
     gh.factory<_i459.ForgetPasswordBloc>(
       () => _i459.ForgetPasswordBloc(

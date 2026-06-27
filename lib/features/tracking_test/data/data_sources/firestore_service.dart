@@ -78,6 +78,61 @@ class FirestoreService {
     }
   }
 
+  /// Remove a device token (regardless of its language) from a user's
+  /// `fcmTokens` array. Used on logout or when notifications are disabled so
+  /// the device stops receiving push notifications.
+  Future<void> removeDeviceToken(String userId, String token) async {
+    try {
+      final docRef = _firestore.collection(_usersCollection).doc(userId);
+      final docSnap = await docRef.get();
+      if (!docSnap.exists) return;
+
+      final tokens = (docSnap.data()?['fcmTokens'] as List<dynamic>?) ?? [];
+      final updatedTokens = tokens
+          .where((t) => !(t is Map && t['token'] == token))
+          .toList();
+
+      await docRef.update({
+        'fcmTokens': updatedTokens,
+        'updatedAt': FieldValue.serverTimestamp(),
+      });
+    } catch (e) {
+      log(e.toString());
+      throw Exception('Failed to remove device token: $e');
+    }
+  }
+
+  /// Update the language stored for a specific device token inside the user's
+  /// `fcmTokens` array. Used when the user changes the app language so push
+  /// notifications are sent in the correct language.
+  Future<void> updateDeviceTokenLang(
+    String userId,
+    String token,
+    String lang,
+  ) async {
+    try {
+      final docRef = _firestore.collection(_usersCollection).doc(userId);
+      final docSnap = await docRef.get();
+      if (!docSnap.exists) return;
+
+      final tokens = (docSnap.data()?['fcmTokens'] as List<dynamic>?) ?? [];
+      final updatedTokens = tokens.map((t) {
+        if (t is Map && t['token'] == token) {
+          return {'token': token, 'lang': lang};
+        }
+        return t;
+      }).toList();
+
+      await docRef.update({
+        'fcmTokens': updatedTokens,
+        'updatedAt': FieldValue.serverTimestamp(),
+      });
+    } catch (e) {
+      log(e.toString());
+      throw Exception('Failed to update device token language: $e');
+    }
+  }
+
   /// Get user data
   Future<UserFirebaseModel?> getUser(String userId) async {
     try {

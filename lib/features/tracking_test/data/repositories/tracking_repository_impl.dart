@@ -19,6 +19,16 @@ class TrackingRepositoryImpl implements TrackingRepository {
   }
 
   @override
+  Future<void> removeUserToken(String userId, String token) {
+    return firestoreService.removeDeviceToken(userId, token);
+  }
+
+  @override
+  Future<void> updateUserTokenLang(String userId, String token, String lang) {
+    return firestoreService.updateDeviceTokenLang(userId, token, lang);
+  }
+
+  @override
   Future<String> addOrder(OrderEntity order) {
     return firestoreService.addOrder(OrderFirebaseModel.fromEntity(order));
   }

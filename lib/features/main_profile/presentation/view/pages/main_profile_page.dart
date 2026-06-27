@@ -32,6 +32,7 @@ class MainProfilePage extends StatelessWidget {
 
   void _showLanguageBottomSheet(BuildContext context) {
     final currentLanguage = _getLanguageString(context);
+    final cubit = context.read<MainProfileCubit>();
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -46,6 +47,8 @@ class MainProfilePage extends StatelessWidget {
             } else {
               context.setLocale(const Locale('en', 'US'));
             }
+            // Sync the chosen language to this device's FCM token in Firebase.
+            cubit.doIndented(ChangeLanguageEvent(code));
           },
         );
       },
