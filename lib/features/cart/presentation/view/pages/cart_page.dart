@@ -6,7 +6,7 @@ import 'package:flowers_app/core/widgets/custom_toast.dart';
 import 'package:flowers_app/features/cart/domain/entities/cart_entity.dart';
 import 'package:flowers_app/features/cart/presentation/view/widgets/cart_empty_widget.dart';
 import 'package:flowers_app/features/cart/presentation/view/widgets/cart_page_with_data.dart';
-import 'package:flowers_app/features/cart/presentation/view/widgets/not_autenthicated_user_widget.dart';
+import 'package:flowers_app/core/widgets/not_authenticated_user_widget.dart';
 import 'package:flowers_app/features/cart/presentation/view_model/cubit/cart_cubit.dart';
 import 'package:flowers_app/features/cart/presentation/view_model/cubit/cart_events.dart';
 import 'package:flowers_app/features/cart/presentation/view_model/cubit/cart_states.dart';
@@ -22,14 +22,14 @@ class CartPage extends StatefulWidget {
 
 class _CartPageState extends State<CartPage>
     with AutomaticKeepAliveClientMixin {
-  StreamSubscription<CartSideEffect>? _sideEffectsSub;
+  StreamSubscription<CartUiNotification>? _sideEffectsSub;
 
   @override
   void initState() {
     super.initState();
     final cubit = context.read<CartCubit>();
     cubit.doIntent(GetCartDataEvent());
-    _sideEffectsSub = cubit.sideEffects.listen(_onSideEffect);
+    _sideEffectsSub = cubit.uiNotifications.listen(_onSideEffect);
   }
 
   @override
@@ -38,10 +38,10 @@ class _CartPageState extends State<CartPage>
     super.dispose();
   }
 
-  void _onSideEffect(CartSideEffect effect) {
+  void _onSideEffect(CartUiNotification effect) {
     if (!mounted) return;
     switch (effect) {
-      case CartSyncFailed():
+      case CartSyncFailedNotification():
         CustomToast.showError(
           context: context,
           title: AppStrings.error,

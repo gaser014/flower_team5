@@ -621,8 +621,8 @@ void main() {
 
         final cubit = buildCubit();
         // Subscribe BEFORE the sync fires so no event is missed.
-        final sideEffects = <CartSideEffect>[];
-        final sub = cubit.sideEffects.listen(sideEffects.add);
+        final sideEffects = <CartUiNotification>[];
+        final sub = cubit.uiNotifications.listen(sideEffects.add);
 
         await cubit.doIntent(GetCartDataEvent());
         cubit.doIntent(IncrementProductEvent(tProductEntity)); // qty → 2
@@ -645,8 +645,8 @@ void main() {
 
         // A side effect should have been emitted.
         expect(sideEffects, hasLength(1));
-        expect(sideEffects.first, isA<CartSyncFailed>());
-        final failed = sideEffects.first as CartSyncFailed;
+        expect(sideEffects.first, isA<CartSyncFailedNotification>());
+        final failed = sideEffects.first as CartSyncFailedNotification;
         expect(failed.productId, tProductId);
         expect(failed.message, 'Out of stock');
 
@@ -781,8 +781,8 @@ void main() {
 
         final cubit = buildCubit();
         // Subscribe BEFORE any sync fires.
-        final sideEffects = <CartSideEffect>[];
-        final sub = cubit.sideEffects.listen(sideEffects.add);
+        final sideEffects = <CartUiNotification>[];
+        final sub = cubit.uiNotifications.listen(sideEffects.add);
 
         await cubit.doIntent(GetCartDataEvent());
         cubit.doIntent(IncrementProductEvent(tProductEntity));
@@ -791,7 +791,7 @@ void main() {
 
         expect(sideEffects, isNotEmpty);
         expect(
-          (sideEffects.first as CartSyncFailed).message,
+          (sideEffects.first as CartSyncFailedNotification).message,
           'Server error msg',
         );
         await sub.cancel();
@@ -809,8 +809,8 @@ void main() {
 
       final cubit = buildCubit();
       // Subscribe BEFORE any sync fires.
-      final sideEffects = <CartSideEffect>[];
-      final sub = cubit.sideEffects.listen(sideEffects.add);
+      final sideEffects = <CartUiNotification>[];
+      final sub = cubit.uiNotifications.listen(sideEffects.add);
 
       await cubit.doIntent(GetCartDataEvent());
       cubit.doIntent(IncrementProductEvent(tProductEntity));
@@ -819,7 +819,7 @@ void main() {
 
       expect(sideEffects, isNotEmpty);
       expect(
-        (sideEffects.first as CartSyncFailed).message,
+        (sideEffects.first as CartSyncFailedNotification).message,
         contains('generic error'),
       );
       await sub.cancel();

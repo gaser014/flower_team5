@@ -94,7 +94,7 @@ class _PriceSummary extends StatelessWidget {
     return Column(
       children: [
         _PriceRow(
-          label: 'Sub Total',
+          label: AppStrings.subTotal,
           value: '\$${subTotal.toStringAsFixed(0)}',
         ),
         const SizedBox(height: 8),

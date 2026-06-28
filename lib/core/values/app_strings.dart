@@ -146,6 +146,7 @@ class AppStrings {
   // Checkout
   static const String deliveryTime = "Delivery Time";
   static const String deliveryFee = "Delivery Fee";
+  static const String subTotal = "Sub Total";
   static const String totalPrice = "Total";
   static const String placeOrder = "Place Order";
   static const String paymentMethod = "Payment method";
