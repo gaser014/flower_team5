@@ -8,6 +8,7 @@ import 'package:flowers_app/features/cart/domain/use_cases/clear_user_cart_use_c
 import 'package:flowers_app/features/cart/domain/use_cases/get_cart_data_use_case.dart';
 import 'package:flowers_app/features/cart/domain/use_cases/remove_product_from_cart_use_case.dart';
 import 'package:flowers_app/features/cart/domain/use_cases/update_product_in_cart_usecase.dart';
+import 'package:flowers_app/features/cart/presentation/view_model/cart_sync_service.dart';
 import 'package:flowers_app/features/cart/presentation/view_model/cubit/cart_cubit.dart';
 import 'package:flowers_app/features/cart/presentation/view_model/cubit/cart_events.dart';
 import 'package:flowers_app/features/cart/presentation/view_model/cubit/cart_states.dart';
@@ -70,10 +71,12 @@ void main() {
 
   CartCubit buildCubit() => CartCubit(
     getCartDataUseCase: mockGetCart,
-    addProductToCartUseCase: mockAddProduct,
-    removeProductFromCartUseCase: mockRemoveProduct,
     clearUserCartUseCase: mockClearCart,
-    updateProductInCartUseCase: mockUpdateProduct,
+    cartSyncService: CartSyncService(
+      addProductToCartUseCase: mockAddProduct,
+      removeProductFromCartUseCase: mockRemoveProduct,
+      updateProductInCartUseCase: mockUpdateProduct,
+    ),
   );
 
   setUp(() {
