@@ -15,7 +15,7 @@ class AddressesRepositoryImpl implements AddressesRepository {
   Future<Result<List<AddressEntity>>> getAddresses() async {
     final result = await addressesRemoteDataSourceContract.getAddresses();
     return result.when(
-      success: (data) => Success(data: data?.toEntities()),
+      success: (data) => Success(data: data?.toEntities() ?? const []),
       error: (exception) => Error(exception: exception),
     );
   }
@@ -28,7 +28,7 @@ class AddressesRepositoryImpl implements AddressesRepository {
       address: AddressDto.fromEntity(address),
     );
     return result.when(
-      success: (data) => Success(data: data?.toEntities()),
+      success: (data) => Success(data: data?.toEntities() ?? const []),
       error: (exception) => Error(exception: exception),
     );
   }
@@ -43,7 +43,7 @@ class AddressesRepositoryImpl implements AddressesRepository {
       address: dto,
     );
     return result.when(
-      success: (data) => Success(data: data?.toEntities()),
+      success: (data) => Success(data: data?.toEntities() ?? const []),
       error: (exception) => Error(exception: exception),
     );
   }
@@ -56,7 +56,7 @@ class AddressesRepositoryImpl implements AddressesRepository {
       addressId: addressId,
     );
     return result.when(
-      success: (data) => Success(data: data?.toEntities()),
+      success: (data) => Success(data: data?.toEntities() ?? const []),
       error: (exception) => Error(exception: exception),
     );
   }

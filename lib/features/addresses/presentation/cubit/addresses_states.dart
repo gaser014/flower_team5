@@ -5,7 +5,7 @@ class AddressesStates extends Equatable {
   final BaseState<List<AddressEntity>> addAddressState;
   final BaseState<List<AddressEntity>> updateAddressState;
   final BaseState<List<AddressEntity>> deleteAddressState;
-  final CityItem? formSelectedCity;
+  final GovernorateItem? formSelectedCity;
   final AreaItem? formSelectedArea;
   final double formSelectedLat;
   final double formSelectedLng;
@@ -26,7 +26,7 @@ class AddressesStates extends Equatable {
     BaseState<List<AddressEntity>>? addAddressState,
     BaseState<List<AddressEntity>>? updateAddressState,
     BaseState<List<AddressEntity>>? deleteAddressState,
-    CityItem? formSelectedCity,
+    GovernorateItem? formSelectedCity,
     AreaItem? formSelectedArea,
     double? formSelectedLat,
     double? formSelectedLng,

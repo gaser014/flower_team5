@@ -117,9 +117,9 @@ void main() {
       final dto = const AddressDto();
       final result = dto.toEntity();
       expect(result.id, isNull);
-      expect(result.street, isNull);
-      expect(result.phone, isNull);
-      expect(result.city, isNull);
+      expect(result.street, '');
+      expect(result.phone, '');
+      expect(result.city, '');
       expect(result.lat, isNull);
       expect(result.long, isNull);
       expect(result.username, isNull);

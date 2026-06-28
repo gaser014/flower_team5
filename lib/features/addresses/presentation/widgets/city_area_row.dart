@@ -8,7 +8,7 @@ import 'package:flowers_app/core/widgets/global/governorate_dropdown_field.dart'
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CityAreaRow extends StatelessWidget {
-  final ValueChanged<CityItem> onCityChanged;
+  final ValueChanged<GovernorateItem> onCityChanged;
   final ValueChanged<AreaItem?> onAreaChanged;
 
   const CityAreaRow({

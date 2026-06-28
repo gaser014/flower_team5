@@ -87,9 +87,9 @@ void main() {
     blocTest<AddressesCubit, AddressesStates>(
       'emits [loading, success] when getAddresses succeeds',
       build: () {
-        when(mockGetAddressesUseCase.call(any)).thenAnswer(
-          (_) async => Success(data: tAddresses),
-        );
+        when(
+          mockGetAddressesUseCase.call(any),
+        ).thenAnswer((_) async => Success(data: tAddresses));
         return cubit;
       },
       act: (cubit) => cubit.doIntent(const GetAddressesEvent()),
@@ -111,7 +111,7 @@ void main() {
     );
 
     blocTest<AddressesCubit, AddressesStates>(
-      'emits [loading, error] when getAddresses returns null data',
+      'emits [loading, success] with empty list when getAddresses returns null data',
       build: () {
         when(mockGetAddressesUseCase.call(any)).thenAnswer(
           (_) async => const Success<List<AddressEntity>>(data: null),
@@ -125,20 +125,26 @@ void main() {
           'getAddressesState.loading',
           true,
         ),
-        isA<AddressesStates>().having(
-          (s) => s.getAddressesState.isError,
-          'getAddressesState.error',
-          true,
-        ),
+        isA<AddressesStates>()
+            .having(
+              (s) => s.getAddressesState.isSuccess,
+              'getAddressesState.success',
+              true,
+            )
+            .having(
+              (s) => s.getAddressesState.data,
+              'getAddressesState.data',
+              isEmpty,
+            ),
       ],
     );
 
     blocTest<AddressesCubit, AddressesStates>(
       'emits [loading, error] when getAddresses fails',
       build: () {
-        when(mockGetAddressesUseCase.call(any)).thenAnswer(
-          (_) async => Error(exception: Exception('Network error')),
-        );
+        when(
+          mockGetAddressesUseCase.call(any),
+        ).thenAnswer((_) async => Error(exception: Exception('Network error')));
         return cubit;
       },
       act: (cubit) => cubit.doIntent(const GetAddressesEvent()),
@@ -159,9 +165,9 @@ void main() {
     blocTest<AddressesCubit, AddressesStates>(
       'should not emit loading when already loading',
       build: () {
-        when(mockGetAddressesUseCase.call(any)).thenAnswer(
-          (_) async => Success(data: tAddresses),
-        );
+        when(
+          mockGetAddressesUseCase.call(any),
+        ).thenAnswer((_) async => Success(data: tAddresses));
         return cubit;
       },
       act: (cubit) async {
@@ -179,9 +185,9 @@ void main() {
     blocTest<AddressesCubit, AddressesStates>(
       'emits [loading, success] when addAddress succeeds',
       build: () {
-        when(mockAddAddressUseCase.call(any)).thenAnswer(
-          (_) async => Success(data: tAddresses),
-        );
+        when(
+          mockAddAddressUseCase.call(any),
+        ).thenAnswer((_) async => Success(data: tAddresses));
         return cubit;
       },
       act: (cubit) => cubit.doIntent(AddAddressEvent(entity: tEntity)),
@@ -203,7 +209,7 @@ void main() {
     );
 
     blocTest<AddressesCubit, AddressesStates>(
-      'emits [loading, error] when addAddress returns null data',
+      'emits [loading, success] with empty list when addAddress returns null data',
       build: () {
         when(mockAddAddressUseCase.call(any)).thenAnswer(
           (_) async => const Success<List<AddressEntity>>(data: null),
@@ -218,8 +224,8 @@ void main() {
           true,
         ),
         isA<AddressesStates>().having(
-          (s) => s.addAddressState.isError,
-          'addAddressState.error',
+          (s) => s.addAddressState.isSuccess,
+          'addAddressState.success',
           true,
         ),
       ],
@@ -228,9 +234,9 @@ void main() {
     blocTest<AddressesCubit, AddressesStates>(
       'emits [loading, error] when addAddress fails',
       build: () {
-        when(mockAddAddressUseCase.call(any)).thenAnswer(
-          (_) async => Error(exception: Exception('Add failed')),
-        );
+        when(
+          mockAddAddressUseCase.call(any),
+        ).thenAnswer((_) async => Error(exception: Exception('Add failed')));
         return cubit;
       },
       act: (cubit) => cubit.doIntent(AddAddressEvent(entity: tEntity)),
@@ -251,9 +257,9 @@ void main() {
     blocTest<AddressesCubit, AddressesStates>(
       'should update getAddressesState on success',
       build: () {
-        when(mockAddAddressUseCase.call(any)).thenAnswer(
-          (_) async => Success(data: tAddresses),
-        );
+        when(
+          mockAddAddressUseCase.call(any),
+        ).thenAnswer((_) async => Success(data: tAddresses));
         return cubit;
       },
       act: (cubit) => cubit.doIntent(AddAddressEvent(entity: tEntity)),
@@ -263,15 +269,17 @@ void main() {
           'addAddressState.loading',
           true,
         ),
-        isA<AddressesStates>().having(
-          (s) => s.addAddressState.isSuccess,
-          'addAddressState.success',
-          true,
-        ).having(
-          (s) => s.getAddressesState.isSuccess,
-          'getAddressesState.success',
-          true,
-        ),
+        isA<AddressesStates>()
+            .having(
+              (s) => s.addAddressState.isSuccess,
+              'addAddressState.success',
+              true,
+            )
+            .having(
+              (s) => s.getAddressesState.isSuccess,
+              'getAddressesState.success',
+              true,
+            ),
       ],
     );
   });
@@ -280,9 +288,9 @@ void main() {
     blocTest<AddressesCubit, AddressesStates>(
       'emits [loading, success] when updateAddress succeeds',
       build: () {
-        when(mockUpdateAddressUseCase.call(any)).thenAnswer(
-          (_) async => Success(data: tAddresses),
-        );
+        when(
+          mockUpdateAddressUseCase.call(any),
+        ).thenAnswer((_) async => Success(data: tAddresses));
         return cubit;
       },
       act: (cubit) => cubit.doIntent(UpdateAddressEvent(entity: tEntity)),
@@ -304,7 +312,7 @@ void main() {
     );
 
     blocTest<AddressesCubit, AddressesStates>(
-      'emits [loading, error] when updateAddress returns null data',
+      'emits [loading, success] with empty list when updateAddress returns null data',
       build: () {
         when(mockUpdateAddressUseCase.call(any)).thenAnswer(
           (_) async => const Success<List<AddressEntity>>(data: null),
@@ -319,8 +327,8 @@ void main() {
           true,
         ),
         isA<AddressesStates>().having(
-          (s) => s.updateAddressState.isError,
-          'updateAddressState.error',
+          (s) => s.updateAddressState.isSuccess,
+          'updateAddressState.success',
           true,
         ),
       ],
@@ -329,9 +337,9 @@ void main() {
     blocTest<AddressesCubit, AddressesStates>(
       'emits [loading, error] when updateAddress fails',
       build: () {
-        when(mockUpdateAddressUseCase.call(any)).thenAnswer(
-          (_) async => Error(exception: Exception('Update failed')),
-        );
+        when(
+          mockUpdateAddressUseCase.call(any),
+        ).thenAnswer((_) async => Error(exception: Exception('Update failed')));
         return cubit;
       },
       act: (cubit) => cubit.doIntent(UpdateAddressEvent(entity: tEntity)),
@@ -354,9 +362,9 @@ void main() {
     blocTest<AddressesCubit, AddressesStates>(
       'emits [loading, success] when deleteAddress succeeds',
       build: () {
-        when(mockDeleteAddressUseCase.call(any)).thenAnswer(
-          (_) async => Success(data: tAddresses),
-        );
+        when(
+          mockDeleteAddressUseCase.call(any),
+        ).thenAnswer((_) async => Success(data: tAddresses));
         return cubit;
       },
       act: (cubit) => cubit.doIntent(const DeleteAddressEvent(id: '1')),
@@ -378,7 +386,7 @@ void main() {
     );
 
     blocTest<AddressesCubit, AddressesStates>(
-      'emits [loading, error] when deleteAddress returns null data',
+      'emits [loading, success] with empty list when deleteAddress returns null data',
       build: () {
         when(mockDeleteAddressUseCase.call(any)).thenAnswer(
           (_) async => const Success<List<AddressEntity>>(data: null),
@@ -393,8 +401,8 @@ void main() {
           true,
         ),
         isA<AddressesStates>().having(
-          (s) => s.deleteAddressState.isError,
-          'deleteAddressState.error',
+          (s) => s.deleteAddressState.isSuccess,
+          'deleteAddressState.success',
           true,
         ),
       ],
@@ -403,9 +411,9 @@ void main() {
     blocTest<AddressesCubit, AddressesStates>(
       'emits [loading, error] when deleteAddress fails',
       build: () {
-        when(mockDeleteAddressUseCase.call(any)).thenAnswer(
-          (_) async => Error(exception: Exception('Delete failed')),
-        );
+        when(
+          mockDeleteAddressUseCase.call(any),
+        ).thenAnswer((_) async => Error(exception: Exception('Delete failed')));
         return cubit;
       },
       act: (cubit) => cubit.doIntent(const DeleteAddressEvent(id: '1')),
@@ -425,31 +433,29 @@ void main() {
   });
 
   group('UpdateFormCityEvent', () {
-    const tCity = CityItem(id: '1', nameEn: 'Cairo', nameAr: 'القاهرة');
+    const tCity = GovernorateItem(id: '1', nameEn: 'Cairo', nameAr: 'القاهرة');
 
     blocTest<AddressesCubit, AddressesStates>(
       'should update formSelectedCity and clear formSelectedArea',
       build: () => cubit,
       act: (cubit) => cubit.doIntent(const UpdateFormCityEvent(city: tCity)),
       expect: () => [
-        isA<AddressesStates>().having(
-          (s) => s.formSelectedCity,
-          'formSelectedCity',
-          tCity,
-        ).having(
-          (s) => s.formSelectedArea,
-          'formSelectedArea is null after city change',
-          isNull,
-        ),
+        isA<AddressesStates>()
+            .having((s) => s.formSelectedCity, 'formSelectedCity', tCity)
+            .having(
+              (s) => s.formSelectedArea,
+              'formSelectedArea is null after city change',
+              isNull,
+            ),
       ],
     );
   });
 
   group('UpdateFormAreaEvent', () {
-    const tCity = CityItem(id: '1', nameEn: 'Cairo', nameAr: 'القاهرة');
+    const tCity = GovernorateItem(id: '1', nameEn: 'Cairo', nameAr: 'القاهرة');
     const tArea = AreaItem(
       id: '1',
-      cityId: '1',
+      governorateId: '1',
       nameEn: 'Downtown',
       nameAr: 'وسط البلد',
     );
@@ -497,9 +503,11 @@ void main() {
         return cubit;
       },
       act: (cubit) async {
-        cubit.doIntent(const UpdateFormCityEvent(
-          city: CityItem(id: '1', nameEn: 'Cairo', nameAr: 'القاهرة'),
-        ));
+        cubit.doIntent(
+          const UpdateFormCityEvent(
+            city: GovernorateItem(id: '1', nameEn: 'Cairo', nameAr: 'القاهرة'),
+          ),
+        );
         cubit.doIntent(const ResetFormEvent());
       },
       expect: () => [
@@ -508,32 +516,36 @@ void main() {
           'formSelectedCity set',
           isNotNull,
         ),
-        isA<AddressesStates>().having(
-          (s) => s.formSelectedCity,
-          'formSelectedCity cleared',
-          isNull,
-        ).having(
-          (s) => s.formSelectedArea,
-          'formSelectedArea cleared',
-          isNull,
-        ).having(
-          (s) => s.formSelectedLat,
-          'formSelectedLat reset',
-          31.04516268641246,
-        ).having(
-          (s) => s.formSelectedLng,
-          'formSelectedLng reset',
-          31.376411453247112,
-        ),
+        isA<AddressesStates>()
+            .having(
+              (s) => s.formSelectedCity,
+              'formSelectedCity cleared',
+              isNull,
+            )
+            .having(
+              (s) => s.formSelectedArea,
+              'formSelectedArea cleared',
+              isNull,
+            )
+            .having(
+              (s) => s.formSelectedLat,
+              'formSelectedLat reset',
+              31.04516268641246,
+            )
+            .having(
+              (s) => s.formSelectedLng,
+              'formSelectedLng reset',
+              31.376411453247112,
+            ),
       ],
     );
   });
 
   group('UpdateFormLocationEvent', () {
-    const tCity = CityItem(id: '1', nameEn: 'Cairo', nameAr: 'القاهرة');
+    const tCity = GovernorateItem(id: '1', nameEn: 'Cairo', nameAr: 'القاهرة');
     const tArea = AreaItem(
       id: '1',
-      cityId: '1',
+      governorateId: '1',
       nameEn: 'Downtown',
       nameAr: 'وسط البلد',
     );
@@ -542,30 +554,18 @@ void main() {
       'should update lat, lng, and city (area cleared when city is set)',
       build: () => cubit,
       act: (cubit) => cubit.doIntent(
-        const UpdateFormLocationEvent(
-          lat: 30.0,
-          lng: 31.0,
-          city: tCity,
-        ),
+        const UpdateFormLocationEvent(lat: 30.0, lng: 31.0, city: tCity),
       ),
       expect: () => [
-        isA<AddressesStates>().having(
-          (s) => s.formSelectedLat,
-          'lat updated',
-          30.0,
-        ).having(
-          (s) => s.formSelectedLng,
-          'lng updated',
-          31.0,
-        ).having(
-          (s) => s.formSelectedCity,
-          'city updated',
-          tCity,
-        ).having(
-          (s) => s.formSelectedArea,
-          'area cleared when city is set',
-          isNull,
-        ),
+        isA<AddressesStates>()
+            .having((s) => s.formSelectedLat, 'lat updated', 30.0)
+            .having((s) => s.formSelectedLng, 'lng updated', 31.0)
+            .having((s) => s.formSelectedCity, 'city updated', tCity)
+            .having(
+              (s) => s.formSelectedArea,
+              'area cleared when city is set',
+              isNull,
+            ),
       ],
     );
 
@@ -573,64 +573,41 @@ void main() {
       'should update lat, lng, and area without city',
       build: () => cubit,
       act: (cubit) => cubit.doIntent(
-        const UpdateFormLocationEvent(
-          lat: 30.0,
-          lng: 31.0,
-          area: tArea,
-        ),
+        const UpdateFormLocationEvent(lat: 30.0, lng: 31.0, area: tArea),
       ),
       expect: () => [
-        isA<AddressesStates>().having(
-          (s) => s.formSelectedLat,
-          'lat updated',
-          30.0,
-        ).having(
-          (s) => s.formSelectedLng,
-          'lng updated',
-          31.0,
-        ).having(
-          (s) => s.formSelectedArea,
-          'area updated',
-          tArea,
-        ),
+        isA<AddressesStates>()
+            .having((s) => s.formSelectedLat, 'lat updated', 30.0)
+            .having((s) => s.formSelectedLng, 'lng updated', 31.0)
+            .having((s) => s.formSelectedArea, 'area updated', tArea),
       ],
     );
 
     blocTest<AddressesCubit, AddressesStates>(
       'should clear area when city is provided',
       build: () => cubit,
-      act: (cubit) => cubit.doIntent(
-        const UpdateFormLocationEvent(city: tCity),
-      ),
+      act: (cubit) =>
+          cubit.doIntent(const UpdateFormLocationEvent(city: tCity)),
       expect: () => [
-        isA<AddressesStates>().having(
-          (s) => s.formSelectedCity,
-          'city updated',
-          tCity,
-        ).having(
-          (s) => s.formSelectedArea,
-          'area cleared when city set',
-          isNull,
-        ),
+        isA<AddressesStates>()
+            .having((s) => s.formSelectedCity, 'city updated', tCity)
+            .having(
+              (s) => s.formSelectedArea,
+              'area cleared when city set',
+              isNull,
+            ),
       ],
     );
 
     blocTest<AddressesCubit, AddressesStates>(
       'should update only lat and lng',
       build: () => cubit,
-      act: (cubit) => cubit.doIntent(
-        const UpdateFormLocationEvent(lat: 30.5, lng: 31.5),
-      ),
+      act: (cubit) =>
+          cubit.doIntent(const UpdateFormLocationEvent(lat: 30.5, lng: 31.5)),
       expect: () => [
-        isA<AddressesStates>().having(
-          (s) => s.formSelectedLat,
-          'lat updated',
-          30.5,
-        ).having(
-          (s) => s.formSelectedLng,
-          'lng updated',
-          31.5,
-        ),
+        isA<AddressesStates>()
+            .having((s) => s.formSelectedLat, 'lat updated', 30.5)
+            .having((s) => s.formSelectedLng, 'lng updated', 31.5),
       ],
     );
   });
@@ -640,9 +617,7 @@ void main() {
       'should reset to initial state',
       build: () => cubit,
       act: (cubit) => cubit.reset(),
-      expect: () => [
-        const AddressesStates(),
-      ],
+      expect: () => [const AddressesStates()],
     );
   });
 
@@ -650,9 +625,9 @@ void main() {
     blocTest<AddressesCubit, AddressesStates>(
       'handles null exception in getAddresses error',
       build: () {
-        when(mockGetAddressesUseCase.call(any)).thenAnswer(
-          (_) async => const Error<List<AddressEntity>>(),
-        );
+        when(
+          mockGetAddressesUseCase.call(any),
+        ).thenAnswer((_) async => const Error<List<AddressEntity>>());
         return cubit;
       },
       act: (cubit) => cubit.doIntent(const GetAddressesEvent()),

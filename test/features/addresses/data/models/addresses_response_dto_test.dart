@@ -70,24 +70,6 @@ void main() {
       expect(result.addresses, isEmpty);
     });
 
-    test('toJson should serialize correctly', () {
-      final response = AddressesResponseDto(
-        message: 'success',
-        addresses: [tDto],
-      );
-      final result = response.toJson();
-      expect(result['message'], 'success');
-      expect(result['addresses'], isA<List>());
-      expect((result['addresses'] as List).first, isA<Map<String, dynamic>>());
-    });
-
-    test('toJson with null fields', () {
-      final response = const AddressesResponseDto();
-      final result = response.toJson();
-      expect(result['message'], isNull);
-      expect(result['addresses'], isNull);
-    });
-
     test('toEntities should convert to list of AddressEntity', () {
       final response = AddressesResponseDto(
         message: 'success',

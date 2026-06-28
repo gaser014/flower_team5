@@ -54,6 +54,7 @@ dependencies:
   shared_preferences: ^2.5.4
   shimmer: ^3.0.0
   toastification: ^3.0.3
+  cloud_firestore: ^6.6.0
 
 # ==============================================================
 # Dev Dependencies

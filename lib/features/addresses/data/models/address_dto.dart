@@ -57,9 +57,9 @@ class AddressDto {
   AddressEntity toEntity() {
     return AddressEntity(
       id: id,
-      street: street,
-      phone: phone,
-      city: city,
+      street: street ?? '',
+      phone: phone ?? '',
+      city: city ?? '',
       lat: lat,
       long: long,
       username: username,

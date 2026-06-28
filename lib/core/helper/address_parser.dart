@@ -40,19 +40,32 @@ ParsedAddress? parseAddressString(String address) {
 }
 
 class MatchedAddress {
-  final CityItem? city;
+  final GovernorateItem? city;
   final AreaItem? area;
   final String street;
 
   const MatchedAddress({this.city, this.area, required this.street});
 }
 
+/// Finds the governorate whose English or Arabic name matches [name].
+/// Lives in the data/helper layer so UI never loads or matches location data.
+Future<GovernorateItem?> matchGovernorateByName(String name) async {
+  if (name.trim().isEmpty) return null;
+  final governorates = await EgyptLocationLoader.loadGovernorates();
+  for (final g in governorates) {
+    if (g.nameEn.toLowerCase() == name.toLowerCase() || g.nameAr == name) {
+      return g;
+    }
+  }
+  return null;
+}
+
 Future<MatchedAddress?> matchAddressFromParsed(ParsedAddress parsed) async {
-  CityItem? matchedCity;
+  GovernorateItem? matchedCity;
   AreaItem? matchedArea;
 
   if (parsed.cityName != null && parsed.cityName!.isNotEmpty) {
-    final cities = await EgyptLocationLoader.loadCities();
+    final cities = await EgyptLocationLoader.loadGovernorates();
     final citiesMatches = cities
         .where(
           (c) =>
@@ -67,7 +80,9 @@ Future<MatchedAddress?> matchAddressFromParsed(ParsedAddress parsed) async {
       parsed.areaName!.isNotEmpty &&
       matchedCity != null) {
     final areas = await EgyptLocationLoader.loadAreas();
-    final cityAreas = areas.where((a) => a.cityId == matchedCity?.id).toList();
+    final cityAreas = areas
+        .where((a) => a.governorateId == matchedCity?.id)
+        .toList();
     final areasMatches = cityAreas
         .where(
           (a) =>

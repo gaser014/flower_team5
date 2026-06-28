@@ -4,8 +4,8 @@ import '../../location_data/egypt_location_loader.dart';
 import 'selection_bottom_sheet.dart';
 
 class GovernorateDropdownField extends StatefulWidget {
-  final CityItem? selectedGovernorate;
-  final ValueChanged<CityItem?> onChanged;
+  final GovernorateItem? selectedGovernorate;
+  final ValueChanged<GovernorateItem?> onChanged;
   final String? validatorText;
   final String? labelText;
   final String? hintText;
@@ -24,10 +24,9 @@ class GovernorateDropdownField extends StatefulWidget {
       _GovernorateDropdownFieldState();
 }
 
-class _GovernorateDropdownFieldState
-    extends State<GovernorateDropdownField> {
+class _GovernorateDropdownFieldState extends State<GovernorateDropdownField> {
   final _controller = TextEditingController();
-  List<CityItem> _governorates = [];
+  List<GovernorateItem> _governorates = [];
   bool _isLoading = false;
 
   @override
@@ -40,8 +39,7 @@ class _GovernorateDropdownFieldState
   @override
   void didUpdateWidget(GovernorateDropdownField oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (oldWidget.selectedGovernorate?.id !=
-        widget.selectedGovernorate?.id) {
+    if (oldWidget.selectedGovernorate?.id != widget.selectedGovernorate?.id) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         if (mounted) {
           _controller.text = widget.selectedGovernorate?.nameEn ?? '';
@@ -58,7 +56,7 @@ class _GovernorateDropdownFieldState
 
   Future<void> _loadGovernorates() async {
     setState(() => _isLoading = true);
-    final cities = await EgyptLocationLoader.loadCities();
+    final cities = await EgyptLocationLoader.loadGovernorates();
     if (mounted) {
       setState(() {
         _governorates = cities;
@@ -93,9 +91,7 @@ class _GovernorateDropdownFieldState
       decoration: InputDecoration(
         labelText: widget.labelText,
         hintText: widget.hintText,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
-        ),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
         suffixIcon: _isLoading
             ? const SizedBox(
                 width: 20,

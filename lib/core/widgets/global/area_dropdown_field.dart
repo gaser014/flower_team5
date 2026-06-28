@@ -41,8 +41,7 @@ class _AreaDropdownFieldState extends State<AreaDropdownField> {
   @override
   void didUpdateWidget(AreaDropdownField oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (oldWidget.selectedGovernorateId !=
-        widget.selectedGovernorateId) {
+    if (oldWidget.selectedGovernorateId != widget.selectedGovernorateId) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         if (mounted) _filter();
       });
@@ -79,14 +78,13 @@ class _AreaDropdownFieldState extends State<AreaDropdownField> {
       _filteredAreas = [];
     } else {
       _filteredAreas = _allAreas
-          .where((a) => a.cityId == widget.selectedGovernorateId)
+          .where((a) => a.governorateId == widget.selectedGovernorateId)
           .toList();
     }
     if (mounted) setState(() {});
   }
 
-  bool get _enabled =>
-      widget.selectedGovernorateId != null && !_isLoading;
+  bool get _enabled => widget.selectedGovernorateId != null && !_isLoading;
 
   void _showBottomSheet() {
     final items = _filteredAreas
@@ -114,9 +112,7 @@ class _AreaDropdownFieldState extends State<AreaDropdownField> {
       decoration: InputDecoration(
         labelText: widget.labelText,
         hintText: widget.hintText,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
-        ),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
         suffixIcon: _isLoading
             ? const SizedBox(
                 width: 20,

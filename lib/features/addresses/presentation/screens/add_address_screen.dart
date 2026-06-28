@@ -40,40 +40,10 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
     _phoneController = TextEditingController(text: edit?.phone ?? '');
     _usernameController = TextEditingController(text: edit?.username ?? '');
 
-    if (edit != null) {
-      _loadLocationDataForEdit(edit);
-    } else {
-      context.read<AddressesCubit>().doIntent(ResetFormEvent());
-    }
+    context.read<AddressesCubit>().doIntent(InitFormEvent(editAddress: edit));
   }
 
-  Future<void> _loadLocationDataForEdit(AddressEntity edit) async {
-    if (edit.city == null) return;
-
-    final cities = await EgyptLocationLoader.loadCities();
-    final matchedCity = cities.firstWhere(
-      (c) =>
-          c.nameEn.toLowerCase() == edit.city!.toLowerCase() ||
-          c.nameAr == edit.city!,
-      orElse: () => const CityItem(id: '', nameEn: '', nameAr: ''),
-    );
-
-    final double? lat = edit.lat != null ? double.tryParse(edit.lat!) : null;
-    final double? lng = edit.long != null ? double.tryParse(edit.long!) : null;
-
-    if (matchedCity.id.isNotEmpty || lat != null || lng != null) {
-      if (!mounted) return;
-      context.read<AddressesCubit>().doIntent(
-        UpdateFormLocationEvent(
-          lat: lat,
-          lng: lng,
-          city: matchedCity.id.isNotEmpty ? matchedCity : null,
-        ),
-      );
-    }
-  }
-
-  void _onCitySelected(CityItem city) {
+  void _onCitySelected(GovernorateItem city) {
     context.read<AddressesCubit>().doIntent(UpdateFormCityEvent(city: city));
   }
 
@@ -97,7 +67,7 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
       final addressString = result.address ?? '';
       final parsed = parseAddressString(addressString);
 
-      CityItem? matchedCity;
+      GovernorateItem? matchedCity;
       AreaItem? matchedArea;
 
       if (parsed != null) {
@@ -187,25 +157,18 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
   }
 
   void _onAddressStateChanged(BuildContext context, AddressesStates state) {
-    final addState = state.addAddressState;
-    final updateState = state.updateAddressState;
+    final opState = _isEditing
+        ? state.updateAddressState
+        : state.addAddressState;
 
-    if (addState.isSuccess) {
+    if (opState.isSuccess) {
       context.showSuccessMessage(
-        state: addState,
+        state: opState,
         massage: context.addressSaved,
         onSuccess: () => context.pop(true),
       );
-    } else if (updateState.isSuccess) {
-      context.showSuccessMessage(
-        state: updateState,
-        massage: context.addressSaved,
-        onSuccess: () => context.pop(true),
-      );
-    } else if (addState.isError) {
-      context.showErrorMessage(addState);
-    } else if (updateState.isError) {
-      context.showErrorMessage(updateState);
+    } else if (opState.isError) {
+      context.showErrorMessage(opState);
     }
   }
 }
