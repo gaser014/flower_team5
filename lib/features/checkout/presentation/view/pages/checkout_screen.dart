@@ -2,8 +2,8 @@ import 'package:flowers_app/config/helper/extensions/base_state/show_error_massa
 import 'package:flowers_app/core/routes/routes.dart';
 import 'package:flowers_app/core/values/app_colors.dart';
 import 'package:flowers_app/core/values/app_strings.dart';
+import 'package:flowers_app/core/widgets/custom_app_bar.dart';
 import 'package:flowers_app/features/checkout/presentation/view/widgets/checkout_address_card.dart';
-import 'package:flowers_app/features/checkout/presentation/view/widgets/checkout_app_bar.dart';
 import 'package:flowers_app/features/checkout/presentation/view/widgets/checkout_delivery_time.dart';
 import 'package:flowers_app/features/checkout/presentation/view/widgets/checkout_gift_section.dart';
 import 'package:flowers_app/features/checkout/presentation/view/widgets/checkout_payment_method.dart';
@@ -75,7 +75,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.grayEA,
-      appBar: CheckoutAppBar(context: context, title: AppStrings.checkoutTitle),
+      appBar: CustomAppBar(title: AppStrings.checkoutTitle),
       body: BlocListener<CheckoutCubit, CheckoutStates>(
         listenWhen: (previous, current) =>
             previous.orderState != current.orderState,

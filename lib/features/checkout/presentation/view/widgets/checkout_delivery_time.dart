@@ -13,38 +13,48 @@ class CheckoutDeliveryTime extends StatelessWidget {
       color: AppColors.whiteF9,
       child: Column(
         spacing: 16,
+        mainAxisAlignment: MainAxisAlignment.end,
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                AppStrings.deliveryTime,
-                style: AppFontStyle.medium18(context: context).copyWith(color: AppColors.black0C),
+                AppStrings.schedule,
+                style: AppFontStyle.medium18(
+                  context: context,
+                ).copyWith(color: AppColors.primerColor),
               ),
               Text(
-                AppStrings.schedule,
-                style: AppFontStyle.medium18(context: context).copyWith(color: AppColors.primerColor),
+                AppStrings.deliveryTime,
+                style: AppFontStyle.medium18(
+                  context: context,
+                ).copyWith(color: AppColors.black0C),
               ),
             ],
           ),
           Row(
             spacing: 4,
+            mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              const Icon(Icons.access_time, size: 24, color: AppColors.black0C),
               Text.rich(
                 TextSpan(
                   children: [
                     TextSpan(
                       text: '${AppStrings.instant}, ',
-                      style: AppFontStyle.medium14(context: context).copyWith(color: AppColors.black0C),
+                      style: AppFontStyle.medium14(
+                        context: context,
+                      ).copyWith(color: AppColors.black0C),
                     ),
                     TextSpan(
                       text: '${AppStrings.arriveBy} 03 Sep 2024, 11:00 AM',
-                      style: AppFontStyle.medium14(context: context).copyWith(color: AppColors.green0C),
+                      style: AppFontStyle.medium14(
+                        context: context,
+                      ).copyWith(color: AppColors.green0C),
                     ),
                   ],
                 ),
               ),
+              const Icon(Icons.access_time, size: 24, color: AppColors.black0C),
             ],
           ),
         ],

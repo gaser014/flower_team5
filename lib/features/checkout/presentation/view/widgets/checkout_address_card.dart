@@ -1,6 +1,7 @@
 import 'package:flowers_app/core/values/app_colors.dart';
 import 'package:flowers_app/core/values/app_font_style.dart';
 import 'package:flowers_app/core/values/app_strings.dart';
+import 'package:flowers_app/core/widgets/custom_button.dart';
 import 'package:flowers_app/features/checkout/domain/entities/checkout_address_entity.dart';
 import 'package:flutter/material.dart';
 
@@ -22,7 +23,7 @@ class CheckoutAddressCard extends StatelessWidget {
       padding: const EdgeInsets.all(16),
       color: AppColors.whiteF9,
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.end,
         spacing: 16,
         children: [
           Text(
@@ -41,25 +42,21 @@ class CheckoutAddressCard extends StatelessWidget {
           SizedBox(
             width: double.infinity,
             height: 36,
-            child: OutlinedButton(
+            child: CustomButton(
+              variant: ButtonVariant.outlined,
               onPressed: () {},
-              style: OutlinedButton.styleFrom(
-                side: const BorderSide(color: AppColors.grayA6),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20),
-                ),
-              ),
+              text: null,
               child: Row(
                 spacing: 4,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Icon(Icons.add, size: 20, color: AppColors.primerColor),
                   Text(
                     AppStrings.addNew,
                     style: AppFontStyle.medium14(
                       context: context,
                     ).copyWith(color: AppColors.primerColor),
                   ),
+                  const Icon(Icons.add, size: 20, color: AppColors.primerColor),
                 ],
               ),
             ),
@@ -102,6 +99,28 @@ class _AddressCard extends StatelessWidget {
         ),
         child: Row(
           children: [
+            const Icon(Icons.edit, color: AppColors.gray53, size: 20),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Text(
+                    title,
+                    style: AppFontStyle.medium16(
+                      context: context,
+                    ).copyWith(color: AppColors.black0C),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    address,
+                    style: AppFontStyle.regular13(
+                      context: context,
+                    ).copyWith(color: AppColors.gray53),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(width: 12),
             Container(
               width: 20,
               height: 20,
@@ -125,28 +144,6 @@ class _AddressCard extends StatelessWidget {
                     )
                   : null,
             ),
-            const SizedBox(width: 12),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    title,
-                    style: AppFontStyle.medium16(
-                      context: context,
-                    ).copyWith(color: AppColors.black0C),
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    address,
-                    style: AppFontStyle.regular13(
-                      context: context,
-                    ).copyWith(color: AppColors.gray53),
-                  ),
-                ],
-              ),
-            ),
-            const Icon(Icons.edit, color: AppColors.gray53, size: 20),
           ],
         ),
       ),

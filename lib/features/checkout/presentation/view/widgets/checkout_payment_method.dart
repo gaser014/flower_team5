@@ -19,7 +19,7 @@ class CheckoutPaymentMethod extends StatelessWidget {
       padding: const EdgeInsets.all(16),
       color: AppColors.whiteF9,
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.end,
         spacing: 16,
         children: [
           Text(
@@ -67,10 +67,6 @@ class _PaymentCard extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
-              title,
-              style: AppFontStyle.medium16(context: context).copyWith(color: AppColors.black0C),
-            ),
             Container(
               width: 20,
               height: 20,
@@ -83,17 +79,22 @@ class _PaymentCard extends StatelessWidget {
               ),
               child: isSelected
                   ? Center(
-                      child: Container(
-                        width: 12,
-                        height: 12,
-                        decoration: const BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: AppColors.primerColor,
-                        ),
-                      ),
-                    )
+                child: Container(
+                  width: 12,
+                  height: 12,
+                  decoration: const BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: AppColors.primerColor,
+                  ),
+                ),
+              )
                   : null,
             ),
+            Text(
+              title,
+              style: AppFontStyle.medium16(context: context).copyWith(color: AppColors.black0C),
+            ),
+
           ],
         ),
       ),
