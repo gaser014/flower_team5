@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 
+import 'package:flowers_app/core/localization_constants/address_constants.dart';
 import 'package:flowers_app/core/values/app_colors.dart';
 
 class MapPreview extends StatelessWidget {
@@ -12,6 +13,7 @@ class MapPreview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final point = latLng;
     return GestureDetector(
       onTap: onTap,
       child: Container(
@@ -22,46 +24,53 @@ class MapPreview extends StatelessWidget {
           border: Border.all(color: AppColors.grayEA),
         ),
         clipBehavior: Clip.antiAlias,
-        child: latLng != null ? _buildMap(context) : _buildEmptyState(context),
+        child: point != null ? _MapView(point: point) : const _MapEmptyState(),
       ),
     );
   }
+}
 
-  Widget _buildMap(BuildContext context) {
-    return Stack(
+class _MapView extends StatelessWidget {
+  final LatLng point;
+
+  const _MapView({required this.point});
+
+  @override
+  Widget build(BuildContext context) {
+    return FlutterMap(
+      options: MapOptions(
+        initialCenter: point,
+        interactionOptions: const InteractionOptions(
+          flags: InteractiveFlag.none,
+        ),
+      ),
       children: [
-        FlutterMap(
-          options: MapOptions(
-            initialCenter: latLng!,
-            interactionOptions: const InteractionOptions(
-              flags: InteractiveFlag.none,
-            ),
-          ),
-          children: [
-            TileLayer(
-              urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-              userAgentPackageName: 'com.flowers_app',
-            ),
-            MarkerLayer(
-              markers: [
-                Marker(
-                  point: latLng!,
-                  child: const Icon(
-                    Icons.location_on,
-                    color: AppColors.primerColor,
-                    size: 36,
-                  ),
-                ),
-              ],
+        TileLayer(
+          urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+          userAgentPackageName: 'com.flowers_app',
+        ),
+        MarkerLayer(
+          markers: [
+            Marker(
+              point: point,
+              child: const Icon(
+                Icons.location_on,
+                color: AppColors.primerColor,
+                size: 36,
+              ),
             ),
           ],
         ),
-        Positioned.fill(child: GestureDetector(onTap: onTap)),
       ],
     );
   }
+}
 
-  Widget _buildEmptyState(BuildContext context) {
+class _MapEmptyState extends StatelessWidget {
+  const _MapEmptyState();
+
+  @override
+  Widget build(BuildContext context) {
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -69,7 +78,7 @@ class MapPreview extends StatelessWidget {
           const Icon(Icons.location_on, size: 48, color: AppColors.primerColor),
           const SizedBox(height: 8),
           Text(
-            'Tap to select location',
+            context.tapToSelectLocation,
             style: TextStyle(
               fontSize: 12,
               color: Theme.of(context).disabledColor,

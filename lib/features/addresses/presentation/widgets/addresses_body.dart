@@ -26,12 +26,6 @@ class _AddressesBodyState extends State<AddressesBody> {
   }
 
   @override
-  void dispose() {
-    _cubit.close();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return BlocBuilder<AddressesCubit, AddressesStates>(
       buildWhen: (previous, current) =>

@@ -23,6 +23,7 @@
         "delete": "Delete",
         "deliver_to": "Deliver to ",
         "no_addresses_yet": "No addresses yet",
-        "add_address_to_start": "Add your first address to get started"
+        "add_address_to_start": "Add your first address to get started",
+        "tap_to_select_location": "Tap to select location"
     }
 }

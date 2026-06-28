@@ -28,4 +28,5 @@ extension AddressConstants on BuildContext {
   String get deliverTo => 'address.deliver_to'.tr();
   String get noAddressesYet => 'address.no_addresses_yet'.tr();
   String get addAddressToStart => 'address.add_address_to_start'.tr();
+  String get tapToSelectLocation => 'address.tap_to_select_location'.tr();
 }

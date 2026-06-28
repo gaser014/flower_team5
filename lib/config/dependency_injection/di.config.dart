@@ -9,6 +9,7 @@
 // coverage:ignore-file
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
+import 'package:cloud_firestore/cloud_firestore.dart' as _i974;
 import 'package:dio/dio.dart' as _i361;
 import 'package:firebase_remote_config/firebase_remote_config.dart' as _i627;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart' as _i558;
@@ -138,6 +139,7 @@ import '../../features/products/presentation/view_model/cubit/products_cubit.dar
     as _i593;
 import '../api/app_interceptor.dart' as _i449;
 import '../api/dio_module.dart' as _i784;
+import '../firebase/firebase_module.dart' as _i1055;
 import 'home_module.dart' as _i473;
 import 'injectable_module.dart' as _i109;
 
@@ -150,6 +152,7 @@ extension GetItInjectableX on _i174.GetIt {
     final gh = _i526.GetItHelper(this, environment, environmentFilter);
     final dioModule = _$DioModule();
     final injectableModule = _$InjectableModule();
+    final firebaseModule = _$FirebaseModule();
     gh.singleton<_i361.Dio>(() => dioModule.dio());
     gh.lazySingleton<_i558.FlutterSecureStorage>(
       () => dioModule.secureStorage(),
@@ -162,6 +165,7 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i627.FirebaseRemoteConfig>(
       () => injectableModule.firebaseRemoteConfig,
     );
+    gh.lazySingleton<_i974.FirebaseFirestore>(() => firebaseModule.firestore);
     gh.factory<_i923.LocationRemoteDataSourceContract>(
       () => _i534.LocationRemoteDataSourceImpl(),
     );
@@ -339,7 +343,7 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i71.SaveUserUseCase>(),
       ),
     );
-    gh.factory<_i181.LocationCubit>(
+    gh.lazySingleton<_i181.LocationCubit>(
       () => _i181.LocationCubit(
         gh<_i742.RequestLocationPermissionUseCase>(),
         gh<_i1026.GetCurrentLocationUseCase>(),
@@ -365,3 +369,5 @@ extension GetItInjectableX on _i174.GetIt {
 class _$DioModule extends _i784.DioModule {}
 
 class _$InjectableModule extends _i109.InjectableModule {}
+
+class _$FirebaseModule extends _i1055.FirebaseModule {}

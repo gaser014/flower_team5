@@ -23,6 +23,7 @@
         "delete": "حذف",
         "deliver_to": "التوصيل إلى ",
         "no_addresses_yet": "لا توجد عناوين بعد",
-        "add_address_to_start": "أضف عنوانك الأول للبدء"
+        "add_address_to_start": "أضف عنوانك الأول للبدء",
+        "tap_to_select_location": "اضغط لتحديد الموقع"
     }
 }

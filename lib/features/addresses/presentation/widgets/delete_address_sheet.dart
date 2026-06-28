@@ -24,6 +24,8 @@ class _DeleteAddressSheetState extends State<DeleteAddressSheet> {
           previous.deleteAddressState.isLoading &&
           !current.deleteAddressState.isLoading,
       listener: (context, state) => context.pop(),
+      buildWhen: (previous, current) =>
+          previous.deleteAddressState != current.deleteAddressState,
       builder: (context, state) {
         final isLoading = state.deleteAddressState.isLoading;
         return Padding(

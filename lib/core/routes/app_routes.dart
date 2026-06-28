@@ -233,7 +233,11 @@ abstract class AppRoutes {
         name: Routes.addresses,
         pageBuilder: (context, state) => buildAnimatedPage(
           key: state.pageKey,
-          child: const AddressesPage(),
+          child: BlocProvider<AddressesCubit>(
+            create: (_) =>
+                getIt<AddressesCubit>()..doIntent(const GetAddressesEvent()),
+            child: const AddressesPage(),
+          ),
           animationType: AnimationType.slideFromRight,
         ),
       ),
