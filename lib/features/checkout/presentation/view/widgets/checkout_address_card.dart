@@ -1,14 +1,17 @@
 import 'package:flowers_app/core/values/app_colors.dart';
 import 'package:flowers_app/core/values/app_font_style.dart';
 import 'package:flowers_app/core/values/app_strings.dart';
+import 'package:flowers_app/features/checkout/domain/entities/checkout_address_entity.dart';
 import 'package:flutter/material.dart';
 
 class CheckoutAddressCard extends StatelessWidget {
+  final List<CheckoutAddressEntity> addresses;
   final int selectedIndex;
   final ValueChanged<int> onChanged;
 
   const CheckoutAddressCard({
     super.key,
+    required this.addresses,
     required this.selectedIndex,
     required this.onChanged,
   });
@@ -24,20 +27,17 @@ class CheckoutAddressCard extends StatelessWidget {
         children: [
           Text(
             AppStrings.deliveryAddress,
-            style: AppFontStyle.medium18(context: context).copyWith(color: AppColors.black0C),
+            style: AppFontStyle.medium18(
+              context: context,
+            ).copyWith(color: AppColors.black0C),
           ),
-          _AddressCard(
-            title: AppStrings.homeLabel,
-            address: '2XVP+XC - Sheikh Zayed',
-            isSelected: selectedIndex == 0,
-            onTap: () => onChanged(0),
-          ),
-          _AddressCard(
-            title: AppStrings.officeLabel,
-            address: '2XVP+XC - Sheikh Zayed',
-            isSelected: selectedIndex == 1,
-            onTap: () => onChanged(1),
-          ),
+          for (var i = 0; i < addresses.length; i++)
+            _AddressCard(
+              title: addresses[i].label,
+              address: addresses[i].address,
+              isSelected: selectedIndex == i,
+              onTap: () => onChanged(i),
+            ),
           SizedBox(
             width: double.infinity,
             height: 36,
@@ -56,7 +56,9 @@ class CheckoutAddressCard extends StatelessWidget {
                   const Icon(Icons.add, size: 20, color: AppColors.primerColor),
                   Text(
                     AppStrings.addNew,
-                    style: AppFontStyle.medium14(context: context).copyWith(color: AppColors.primerColor),
+                    style: AppFontStyle.medium14(
+                      context: context,
+                    ).copyWith(color: AppColors.primerColor),
                   ),
                 ],
               ),
@@ -130,12 +132,16 @@ class _AddressCard extends StatelessWidget {
                 children: [
                   Text(
                     title,
-                    style: AppFontStyle.medium16(context: context).copyWith(color: AppColors.black0C),
+                    style: AppFontStyle.medium16(
+                      context: context,
+                    ).copyWith(color: AppColors.black0C),
                   ),
                   const SizedBox(height: 4),
                   Text(
                     address,
-                    style: AppFontStyle.regular13(context: context).copyWith(color: AppColors.gray53),
+                    style: AppFontStyle.regular13(
+                      context: context,
+                    ).copyWith(color: AppColors.gray53),
                   ),
                 ],
               ),

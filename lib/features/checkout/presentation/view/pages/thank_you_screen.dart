@@ -1,3 +1,4 @@
+import 'package:flowers_app/core/routes/routes.dart';
 import 'package:flowers_app/core/values/app_colors.dart';
 import 'package:flowers_app/core/values/app_font_style.dart';
 import 'package:flowers_app/core/values/app_strings.dart';
@@ -41,15 +42,16 @@ class ThankYouScreen extends StatelessWidget {
               Text(
                 AppStrings.thankYouMessage,
                 textAlign: TextAlign.center,
-                style: AppFontStyle.regular16(context: context)
-                    .copyWith(color: AppColors.gray53),
+                style: AppFontStyle.regular16(
+                  context: context,
+                ).copyWith(color: AppColors.gray53),
               ),
               const Spacer(flex: 2),
               SizedBox(
                 width: double.infinity,
                 height: 50,
                 child: ElevatedButton(
-                  onPressed: () => context.goNamed('main'),
+                  onPressed: () => context.goNamed(Routes.main),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.primerColor,
                     foregroundColor: AppColors.white,

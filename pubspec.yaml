@@ -11,6 +11,7 @@ environment:
 dependencies:
   cached_network_image: ^3.4.1
 
+  cloud_firestore: ^6.6.0
   dio: ^5.9.2
   easy_localization: ^3.0.8
   equatable: ^2.0.8
@@ -49,6 +50,7 @@ dependencies:
   shared_preferences: ^2.5.4
   shimmer: ^3.0.0
   toastification: ^3.0.3
+  webview_flutter: ^4.14.0
 
 # ==============================================================
 # Dev Dependencies

@@ -1,7 +1,7 @@
 import 'package:flowers_app/core/values/app_colors.dart';
 import 'package:flowers_app/core/values/app_font_style.dart';
 import 'package:flowers_app/core/values/app_strings.dart';
-import 'package:flowers_app/features/checkout/presentation/cubit/checkout_cubit.dart';
+import 'package:flowers_app/features/checkout/presentation/view_model/cubit/checkout_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -22,9 +22,8 @@ class CheckoutGiftSection extends StatefulWidget {
 class _CheckoutGiftSectionState extends State<CheckoutGiftSection> {
   @override
   Widget build(BuildContext context) {
-    final isCredit = context.select<CheckoutCubit, int>(
-      (c) => c.state.selectedPayment,
-    ) == 1;
+    final isCredit =
+        context.select<CheckoutCubit, int>((c) => c.state.selectedPayment) == 1;
     final isEnabled = context.select<CheckoutCubit, bool>(
       (c) => c.state.isGift,
     );
@@ -45,8 +44,9 @@ class _CheckoutGiftSectionState extends State<CheckoutGiftSection> {
                   height: 24,
                   child: Switch.adaptive(
                     value: isCredit ? isEnabled : false,
-                    onChanged: (v) =>
-                        context.read<CheckoutCubit>().doEvent(ToggleGift(v)),
+                    onChanged: (v) => context.read<CheckoutCubit>().doIntent(
+                      ToggleGiftEvent(v),
+                    ),
                     activeThumbColor: AppColors.whiteF9,
                     activeTrackColor: AppColors.primerColor,
                     inactiveThumbColor: AppColors.primerColor,
@@ -55,7 +55,9 @@ class _CheckoutGiftSectionState extends State<CheckoutGiftSection> {
                 ),
                 Text(
                   AppStrings.itIsAGift,
-                  style: AppFontStyle.medium18(context: context).copyWith(color: AppColors.black0C),
+                  style: AppFontStyle.medium18(
+                    context: context,
+                  ).copyWith(color: AppColors.black0C),
                 ),
               ],
             ),

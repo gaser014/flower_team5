@@ -11,7 +11,7 @@ part 'checkout_api_client.g.dart';
 
 @Injectable()
 @RestApi()
-abstract class CheckoutApiClient {
+abstract interface class CheckoutApiClient {
   @factoryMethod
   factory CheckoutApiClient(Dio dio) = _CheckoutApiClient;
 

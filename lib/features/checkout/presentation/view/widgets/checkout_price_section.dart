@@ -1,7 +1,7 @@
 import 'package:flowers_app/core/values/app_colors.dart';
 import 'package:flowers_app/core/values/app_font_style.dart';
 import 'package:flowers_app/core/values/app_strings.dart';
-import 'package:flowers_app/features/checkout/presentation/cubit/checkout_cubit.dart';
+import 'package:flowers_app/features/checkout/presentation/view_model/cubit/checkout_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -19,8 +19,8 @@ class CheckoutPriceSection extends StatelessWidget {
   Widget build(BuildContext context) {
     const delivery = 10;
     final total = subtotal + delivery;
-    final status = context.select<CheckoutCubit, CheckoutStatus>(
-      (c) => c.state.status,
+    final isLoading = context.select<CheckoutCubit, bool>(
+      (c) => c.state.orderState.isLoading,
     );
 
     return Container(
@@ -34,11 +34,15 @@ class CheckoutPriceSection extends StatelessWidget {
             children: [
               Text(
                 AppStrings.subtotal,
-                style: AppFontStyle.regular16(context: context).copyWith(color: AppColors.gray53),
+                style: AppFontStyle.regular16(
+                  context: context,
+                ).copyWith(color: AppColors.gray53),
               ),
               Text(
                 '\$$subtotal',
-                style: AppFontStyle.regular16(context: context).copyWith(color: AppColors.gray53),
+                style: AppFontStyle.regular16(
+                  context: context,
+                ).copyWith(color: AppColors.gray53),
               ),
             ],
           ),
@@ -48,11 +52,15 @@ class CheckoutPriceSection extends StatelessWidget {
             children: [
               Text(
                 AppStrings.deliveryFee,
-                style: AppFontStyle.regular16(context: context).copyWith(color: AppColors.gray53),
+                style: AppFontStyle.regular16(
+                  context: context,
+                ).copyWith(color: AppColors.gray53),
               ),
               Text(
                 '\$$delivery',
-                style: AppFontStyle.regular16(context: context).copyWith(color: AppColors.gray53),
+                style: AppFontStyle.regular16(
+                  context: context,
+                ).copyWith(color: AppColors.gray53),
               ),
             ],
           ),
@@ -64,12 +72,16 @@ class CheckoutPriceSection extends StatelessWidget {
             children: [
               Text(
                 AppStrings.totalPrice,
-                style: AppFontStyle.medium18(context: context).copyWith(color: AppColors.black0C),
+                style: AppFontStyle.medium18(
+                  context: context,
+                ).copyWith(color: AppColors.black0C),
               ),
               const Spacer(),
               Text(
                 '\$$total',
-                style: AppFontStyle.medium18(context: context).copyWith(color: AppColors.black0C),
+                style: AppFontStyle.medium18(
+                  context: context,
+                ).copyWith(color: AppColors.black0C),
               ),
             ],
           ),
@@ -77,11 +89,11 @@ class CheckoutPriceSection extends StatelessWidget {
           SizedBox(
             width: double.infinity,
             height: 48,
-            child: switch (status) {
-              CheckoutStatus.loading => const Center(
+            child: switch (isLoading) {
+              true => const Center(
                 child: CircularProgressIndicator(color: AppColors.primerColor),
               ),
-              _ => ElevatedButton(
+              false => ElevatedButton(
                 onPressed: onPlaceOrder,
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.primerColor,
@@ -93,7 +105,9 @@ class CheckoutPriceSection extends StatelessWidget {
                 ),
                 child: Text(
                   AppStrings.placeOrder,
-                  style: AppFontStyle.medium16(context: context).copyWith(color: AppColors.whiteF9),
+                  style: AppFontStyle.medium16(
+                    context: context,
+                  ).copyWith(color: AppColors.whiteF9),
                 ),
               ),
             },

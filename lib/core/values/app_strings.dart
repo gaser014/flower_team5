@@ -155,6 +155,7 @@ class AppStrings {
   static const String paymentSuccessful = "Payment Successful!";
   static const String paymentFailed = "Payment Failed!";
   static const String selectAddress = "Select Address";
+  static const String selectAddressError = "Please select a delivery address";
   static const String paymentMethod = "Payment method";
   static const String cash = "Cash";
   static const String creditCard = "Credit card";
@@ -174,7 +175,8 @@ class AppStrings {
   static const String instant = "Instant";
   static const String orderPlaced = "Order Placed!";
   static const String thankYou = "Thank You!";
-  static const String thankYouMessage = "Your order has been placed successfully.";
+  static const String thankYouMessage =
+      "Your order has been placed successfully.";
   static const String continueShopping = "Continue Shopping";
   static const String paymentCompleted = "Payment Completed";
 
