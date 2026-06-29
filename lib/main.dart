@@ -6,6 +6,7 @@ import 'package:flowers_app/app.dart'as app;
 import 'package:flowers_app/config/database/cache_helper.dart';
 import 'package:flowers_app/config/fcm/fcm_service.dart';
 import 'package:flowers_app/config/helper/bloc_observer.dart';
+import 'package:flowers_app/config/remote_config/remote_config_service.dart';
 import 'package:flowers_app/core/constants/app_constants.dart';
 import 'package:flowers_app/firebase_options.dart';
 import 'package:flutter/material.dart';
@@ -20,6 +21,7 @@ void main() async {
   configureDependencies();
   await AppSharedPreferences.initialSharedPreference();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  await RemoteConfigService.instance.initialize();
   await EasyLocalization.ensureInitialized();
   Bloc.observer = MyBlocObserver();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);

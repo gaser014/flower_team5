@@ -3,6 +3,10 @@ import 'dart:io';
 import 'package:flowers_app/config/dependency_injection/di.dart';
 import 'package:flowers_app/core/data/data_sources/auth_local_data_source.dart';
 import 'package:flowers_app/core/routes/routes.dart';
+import 'package:flowers_app/features/addresses/domain/entities/address_entity.dart';
+import 'package:flowers_app/features/addresses/presentation/cubit/addresses_cubit.dart';
+import 'package:flowers_app/features/addresses/presentation/screens/addresses_page.dart';
+import 'package:flowers_app/features/addresses/presentation/screens/add_address_screen.dart';
 import 'package:flowers_app/features/auth/login/presentation/screens/login_view.dart';
 import 'package:flowers_app/features/auth/sign_up/presentation/screens/sign_up_view.dart';
 import 'package:flowers_app/features/auth/sign_up/presentation/screens/terms_and_conditions_view.dart';
@@ -12,9 +16,7 @@ import 'package:flowers_app/features/products/presentation/view/pages/occasion_p
 import 'package:flowers_app/features/spalsh/splash_page.dart';
 import 'package:flowers_app/features/main/presentation/screens/main_view.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flowers_app/features/spalsh/splash_page.dart';
-
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 final RouteObserver<ModalRoute> routeObserver = RouteObserver<ModalRoute>();
@@ -259,6 +261,38 @@ abstract class AppRoutes {
             key: state.pageKey,
             child: OccasionPage(occasion: occasion),
             animationType: AnimationType.fade,
+          );
+        },
+      ),
+      GoRoute(
+        path: Routes.addresses,
+        name: Routes.addresses,
+        pageBuilder: (context, state) => buildAnimatedPage(
+          key: state.pageKey,
+          child: BlocProvider<AddressesCubit>(
+            create: (_) =>
+                getIt<AddressesCubit>()..doIntent(const GetAddressesEvent()),
+            child: const AddressesPage(),
+          ),
+          animationType: AnimationType.slideFromRight,
+        ),
+      ),
+      GoRoute(
+        path: Routes.addAddress,
+        name: Routes.addAddress,
+        pageBuilder: (context, state) {
+          final Map<String, dynamic> extra =
+              state.extra as Map<String, dynamic>;
+          final editAddress = extra['editAddress'] as AddressEntity?;
+          final cubit = extra['cubit'] as AddressesCubit;
+
+          return buildAnimatedPage(
+            key: state.pageKey,
+            child: BlocProvider.value(
+              value: cubit,
+              child: AddAddressScreen(editAddress: editAddress),
+            ),
+            animationType: AnimationType.slideFromRight,
           );
         },
       ),

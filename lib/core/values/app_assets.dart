@@ -56,6 +56,8 @@ abstract class AppAssets {
   static const String iconsCheckCircle = "assets/icons/check_circle.svg";
   static const String iconsCheckmark = "assets/icons/checkmark.svg";
   static const String iconsClock = "assets/icons/clock.svg";
+  static const String edit = "assets/icons/edit.svg";
+
   static const String iconsCloseCircle = "assets/icons/close-circle.svg";
   static const String iconsClosedEye = "assets/icons/closed_eye.svg";
   static const String iconsConnectionError = "assets/icons/connection_error.svg";
@@ -87,6 +89,7 @@ abstract class AppAssets {
   static const String imagesIcLauncherIos = "assets/images/ic_launcher_ios.png";
   static const String imagesIcLauncherWeb = "assets/images/ic_launcher_web.png";
   static const String locationMarker = "assets/images/location_marker.png";
+  static const String locationMarkerSvg = "assets/icons/location_marker.svg";
   //!======= Splash=============
   static const String logoSplash = "assets/images/flower-bg.png";
   static const String logoTextSplash = "assets/images/flowery-text.png";
