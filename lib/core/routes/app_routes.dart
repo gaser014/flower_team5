@@ -1,10 +1,22 @@
 import 'dart:io';
 
-import 'package:flowers_app/config/api/api_key.dart';
 import 'package:flowers_app/config/dependency_injection/di.dart';
+import 'package:flowers_app/core/data/data_sources/auth_local_data_source.dart';
 import 'package:flowers_app/core/routes/routes.dart';
+import 'package:flowers_app/features/addresses/domain/entities/address_entity.dart';
+import 'package:flowers_app/features/addresses/presentation/cubit/addresses_cubit.dart';
+import 'package:flowers_app/features/addresses/presentation/screens/addresses_page.dart';
+import 'package:flowers_app/features/addresses/presentation/screens/add_address_screen.dart';
+import 'package:flowers_app/features/auth/login/presentation/screens/login_view.dart';
+import 'package:flowers_app/features/auth/sign_up/presentation/screens/sign_up_view.dart';
+import 'package:flowers_app/features/auth/sign_up/presentation/screens/terms_and_conditions_view.dart';
+import 'package:flowers_app/features/app_filter_tabs/domain/entities/app_filter_tab_item_entity.dart';
+import 'package:flowers_app/features/login/presentation/view/pages/login_page.dart';
+import 'package:flowers_app/features/products/presentation/view/pages/occasion_page.dart';
+import 'package:flowers_app/features/spalsh/splash_page.dart';
+import 'package:flowers_app/features/main/presentation/screens/main_view.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../features/forget_password/presentation/view/pages/forget_password_page.dart';
@@ -12,7 +24,6 @@ import '../../features/forget_password/presentation/view_model/bloc/forget_passw
 
 final RouteObserver<ModalRoute> routeObserver = RouteObserver<ModalRoute>();
 
-// Animation Type Enum
 enum AnimationType {
   fade,
   slide,
@@ -25,7 +36,6 @@ enum AnimationType {
   cupertino,
 }
 
-// Custom Page Builder with Animation Support
 Page<T> buildAnimatedPage<T extends Object?>({
   required Widget child,
   required LocalKey key,
@@ -33,7 +43,6 @@ Page<T> buildAnimatedPage<T extends Object?>({
   Duration duration = const Duration(milliseconds: 300),
   Curve curve = Curves.easeInOut,
 }) {
-  // Use Cupertino page for iOS
   if (Platform.isIOS && animationType == AnimationType.cupertino) {
     return CupertinoPage<T>(key: key, child: child);
   }
@@ -55,7 +64,6 @@ Page<T> buildAnimatedPage<T extends Object?>({
   );
 }
 
-// Animation Builder Function
 Widget _getAnimationTransition(
   AnimationType type,
   Animation<double> animation,
@@ -123,7 +131,6 @@ Widget _getAnimationTransition(
   }
 }
 
-// Enhanced Custom Transition Page
 class CustomTransitionPage<T> extends Page<T> {
   const CustomTransitionPage({
     required this.child,
@@ -205,43 +212,135 @@ class _PageBasedPageRoute<T> extends PageRoute<T> {
 
 abstract class AppRoutes {
   static final GoRouter router = GoRouter(
-    initialLocation: Routes.forgetPassword,
+    initialLocation: Routes.register,
     routes: [
       GoRoute(
-        path: Routes.forgetPassword,
-        name: Routes.forgetPassword,
+        path: Routes.login,
+        pageBuilder: (context, state) => buildAnimatedPage(
+          key: state.pageKey,
+          child: const LoginView(),
+          animationType: AnimationType.slideFromRight,
+        ),
+      ),
+      GoRoute(
+        path: Routes.register,
+        pageBuilder: (context, state) => buildAnimatedPage(
+          key: state.pageKey,
+          child: const SignUpView(),
+          animationType: AnimationType.slideFromRight,
+        ),
+      ),
+      GoRoute(
+        path: Routes.termsAndConditions,
+        pageBuilder: (context, state) => buildAnimatedPage(
+          key: state.pageKey,
+          child: const TermsAndConditionsView(),
+          animationType: AnimationType.slideFromRight,
+        ),
+      ),
+      GoRoute(
+        path: Routes.main,
+        pageBuilder: (context, state) => buildAnimatedPage(
+          key: state.pageKey,
+          child: const SignUpView(),
+          animationType: AnimationType.fade,
+        ),
+    initialLocation: Routes.splash,
+    routes: [
+      GoRoute(
+        path: Routes.main,
+        pageBuilder: (context, state) => buildAnimatedPage(
+          key: state.pageKey,
+          child: const MainView(),
+          animationType: AnimationType.fade,
+        ),
+      ),
+      GoRoute(
+        path: Routes.occasionPage,
+        name: Routes.occasionPage,
+        pageBuilder: (context, state) {
+          final occasion = state.extra as AppFilterTabItemEntity?;
+          return buildAnimatedPage(
+            key: state.pageKey,
+            child: OccasionPage(occasion: occasion),
+            animationType: AnimationType.fade,
+          );
+        },
+      ),
+      GoRoute(
+        path: Routes.addresses,
+        name: Routes.addresses,
+        pageBuilder: (context, state) => buildAnimatedPage(
+          key: state.pageKey,
+          child: BlocProvider<AddressesCubit>(
+            create: (_) =>
+                getIt<AddressesCubit>()..doIntent(const GetAddressesEvent()),
+            child: const AddressesPage(),
+          ),
+          animationType: AnimationType.slideFromRight,
+        ),
+      ),
+      GoRoute(
+        path: Routes.addAddress,
+        name: Routes.addAddress,
+        pageBuilder: (context, state) {
+          final Map<String, dynamic> extra =
+              state.extra as Map<String, dynamic>;
+          final editAddress = extra['editAddress'] as AddressEntity?;
+          final cubit = extra['cubit'] as AddressesCubit;
+
+          return buildAnimatedPage(
+            key: state.pageKey,
+            child: BlocProvider.value(
+              value: cubit,
+              child: AddAddressScreen(editAddress: editAddress),
+            ),
+            animationType: AnimationType.slideFromRight,
+          );
+        },
+      ),
+      GoRoute(
+        path: Routes.splash,
+        name: Routes.splash,
         builder: (BuildContext context, GoRouterState state) {
-          return const ForgetPasswordPage();
+          return SplashPage();
+        },
+      ),
+      GoRoute(
+        path: Routes.login,
+        name: Routes.login,
+        builder: (BuildContext context, GoRouterState state) {
+          return LoginPage();
         },
       ),
     ],
     redirect: (context, state) async {
       final currentLocation = state.matchedLocation;
 
-      if (currentLocation == Routes.splash) {
-        return null;
-      }
-
-      final token = await getIt<FlutterSecureStorage>().read(
-        key: APIkeys.accessToken,
-      );
-      final isLoggedIn = token != null && token.isNotEmpty;
       final authRoutes = [
-        // AuthRoutes.accountTypeSelection,
-        // AuthRoutes.phoneNumber,
+        Routes.login,
+        Routes.main,
+        // Routes.register,
+        // Routes.forgetPassword,
+        // Routes.resetPassword,
         // AuthRoutes.otpVerification,
         // AuthRoutes.completeProfile,
         // AuthRoutes.success,
       ];
+      //
+      // if (!isLoggedIn && !authRoutes.contains(currentLocation)) {
+      //   // Redirect to account type selection (start of auth flow)
+      //   return Routes.login;
+      // }
 
-      if (!isLoggedIn && !authRoutes.contains(currentLocation)) {
-        // Redirect to account type selection (start of auth flow)
-        // return AuthRoutes.accountTypeSelection;
-      }
+      if (authRoutes.contains(currentLocation)) {
+        final token = await getIt<AuthLocalDataSourceContract>().getUserToken();
+        final isLoggedIn = token != null && token.isNotEmpty;
 
-      if (isLoggedIn && authRoutes.contains(currentLocation)) {
         // Redirect to home screen
-        // return Routes.home;
+        if (isLoggedIn) {
+          return Routes.main;
+        }
       }
 
       // No redirect needed

@@ -36,6 +36,7 @@ class EmailField extends StatelessWidget {
       validator: validator ?? Validations.validateEmail,
       onFieldSubmitted: onFieldSubmitted,
       autofillHints: const [AutofillHints.email],
+      autovalidateMode: AutovalidateMode.onUserInteraction,
       decoration: InputDecoration(
         labelText: AppStrings.email,
         hintText: AppStrings.enterEmail,

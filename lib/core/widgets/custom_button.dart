@@ -17,6 +17,7 @@ class CustomButton extends StatelessWidget {
   final double radius;
   final double height;
   final ButtonVariant variant;
+  final BorderSide? borderSide;
 
   const CustomButton({
     super.key,
@@ -29,6 +30,7 @@ class CustomButton extends StatelessWidget {
     this.textColor,
     this.width,
     this.height = 48,
+    this.borderSide,
     this.variant = ButtonVariant.filled,
   });
 
@@ -59,6 +61,7 @@ class CustomButton extends StatelessWidget {
       height: height,
       backgroundColor: backgroundColor,
       textColor: textColor,
+      borderSide: borderSide,
     );
   }
 }
@@ -73,6 +76,7 @@ class _FilledButton extends StatelessWidget {
   final Color? backgroundColor;
   final double radius;
   final Color? textColor;
+  final BorderSide? borderSide;
 
   const _FilledButton({
     required this.text,
@@ -84,6 +88,7 @@ class _FilledButton extends StatelessWidget {
     required this.height,
     this.backgroundColor,
     this.textColor,
+    this.borderSide,
   });
 
   @override
@@ -101,6 +106,7 @@ class _FilledButton extends StatelessWidget {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(radius),
           ),
+          side: borderSide,
           elevation: 0,
         ),
         child: isLoading
@@ -148,7 +154,7 @@ class _OutlinedButton extends StatelessWidget {
         onPressed: onPressed,
         style: OutlinedButton.styleFrom(
           foregroundColor: color,
-          side: BorderSide(color: borderColor ?? color, width: 2),
+          side: BorderSide(color: borderColor ?? color, width: 1),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(radius),
           ),
