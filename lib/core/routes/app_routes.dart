@@ -3,6 +3,9 @@ import 'dart:io';
 import 'package:flowers_app/config/dependency_injection/di.dart';
 import 'package:flowers_app/core/data/data_sources/auth_local_data_source.dart';
 import 'package:flowers_app/core/routes/routes.dart';
+import 'package:flowers_app/features/auth/login/presentation/screens/login_view.dart';
+import 'package:flowers_app/features/auth/sign_up/presentation/screens/sign_up_view.dart';
+import 'package:flowers_app/features/auth/sign_up/presentation/screens/terms_and_conditions_view.dart';
 import 'package:flowers_app/features/app_filter_tabs/domain/entities/app_filter_tab_item_entity.dart';
 import 'package:flowers_app/features/login/presentation/view/pages/login_page.dart';
 import 'package:flowers_app/features/products/presentation/view/pages/occasion_page.dart';
@@ -204,6 +207,39 @@ class _PageBasedPageRoute<T> extends PageRoute<T> {
 
 abstract class AppRoutes {
   static final GoRouter router = GoRouter(
+    initialLocation: Routes.register,
+    routes: [
+      GoRoute(
+        path: Routes.login,
+        pageBuilder: (context, state) => buildAnimatedPage(
+          key: state.pageKey,
+          child: const LoginView(),
+          animationType: AnimationType.slideFromRight,
+        ),
+      ),
+      GoRoute(
+        path: Routes.register,
+        pageBuilder: (context, state) => buildAnimatedPage(
+          key: state.pageKey,
+          child: const SignUpView(),
+          animationType: AnimationType.slideFromRight,
+        ),
+      ),
+      GoRoute(
+        path: Routes.termsAndConditions,
+        pageBuilder: (context, state) => buildAnimatedPage(
+          key: state.pageKey,
+          child: const TermsAndConditionsView(),
+          animationType: AnimationType.slideFromRight,
+        ),
+      ),
+      GoRoute(
+        path: Routes.main,
+        pageBuilder: (context, state) => buildAnimatedPage(
+          key: state.pageKey,
+          child: const SignUpView(),
+          animationType: AnimationType.fade,
+        ),
     initialLocation: Routes.splash,
     routes: [
       GoRoute(
