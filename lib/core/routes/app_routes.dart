@@ -6,12 +6,19 @@ import 'package:flowers_app/core/routes/routes.dart';
 import 'package:flowers_app/features/auth/login/presentation/screens/login_view.dart';
 import 'package:flowers_app/features/auth/sign_up/presentation/screens/sign_up_view.dart';
 import 'package:flowers_app/features/auth/sign_up/presentation/screens/terms_and_conditions_view.dart';
+import 'package:flowers_app/features/app_filter_tabs/domain/entities/app_filter_tab_item_entity.dart';
+import 'package:flowers_app/features/login/presentation/view/pages/login_page.dart';
+import 'package:flowers_app/features/products/presentation/view/pages/occasion_page.dart';
+import 'package:flowers_app/features/spalsh/splash_page.dart';
+import 'package:flowers_app/features/main/presentation/screens/main_view.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flowers_app/features/spalsh/splash_page.dart';
+
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:go_router/go_router.dart';
 
 final RouteObserver<ModalRoute> routeObserver = RouteObserver<ModalRoute>();
 
-// Animation Type Enum
 enum AnimationType {
   fade,
   slide,
@@ -24,7 +31,6 @@ enum AnimationType {
   cupertino,
 }
 
-// Custom Page Builder with Animation Support
 Page<T> buildAnimatedPage<T extends Object?>({
   required Widget child,
   required LocalKey key,
@@ -32,7 +38,6 @@ Page<T> buildAnimatedPage<T extends Object?>({
   Duration duration = const Duration(milliseconds: 300),
   Curve curve = Curves.easeInOut,
 }) {
-  // Use Cupertino page for iOS
   if (Platform.isIOS && animationType == AnimationType.cupertino) {
     return CupertinoPage<T>(key: key, child: child);
   }
@@ -54,7 +59,6 @@ Page<T> buildAnimatedPage<T extends Object?>({
   );
 }
 
-// Animation Builder Function
 Widget _getAnimationTransition(
   AnimationType type,
   Animation<double> animation,
@@ -122,7 +126,6 @@ Widget _getAnimationTransition(
   }
 }
 
-// Enhanced Custom Transition Page
 class CustomTransitionPage<T> extends Page<T> {
   const CustomTransitionPage({
     required this.child,
@@ -237,6 +240,41 @@ abstract class AppRoutes {
           child: const SignUpView(),
           animationType: AnimationType.fade,
         ),
+    initialLocation: Routes.splash,
+    routes: [
+      GoRoute(
+        path: Routes.main,
+        pageBuilder: (context, state) => buildAnimatedPage(
+          key: state.pageKey,
+          child: const MainView(),
+          animationType: AnimationType.fade,
+        ),
+      ),
+      GoRoute(
+        path: Routes.occasionPage,
+        name: Routes.occasionPage,
+        pageBuilder: (context, state) {
+          final occasion = state.extra as AppFilterTabItemEntity?;
+          return buildAnimatedPage(
+            key: state.pageKey,
+            child: OccasionPage(occasion: occasion),
+            animationType: AnimationType.fade,
+          );
+        },
+      ),
+      GoRoute(
+        path: Routes.splash,
+        name: Routes.splash,
+        builder: (BuildContext context, GoRouterState state) {
+          return SplashPage();
+        },
+      ),
+      GoRoute(
+        path: Routes.login,
+        name: Routes.login,
+        builder: (BuildContext context, GoRouterState state) {
+          return LoginPage();
+        },
       ),
     ],
     redirect: (context, state) async {
@@ -244,6 +282,7 @@ abstract class AppRoutes {
 
       final authRoutes = [
         Routes.login,
+        Routes.main,
         // Routes.register,
         // Routes.forgetPassword,
         // Routes.resetPassword,

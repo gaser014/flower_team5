@@ -5,7 +5,7 @@ abstract class Routes {
   static const String termsAndConditions = "/terms-and-conditions";
   static const String forgetPassword = "/forget-password";
   static const String changePassword = "/change-password";
-  static const String exams = "/exams";
+  static const String categories = "/categories";
   static const String examDetails = "/exam_details";
   static const String questions = "/questions";
   static const String examScore = "/exam_score";
@@ -13,4 +13,6 @@ abstract class Routes {
   static const String subjects = "/subjects";
   static const String main = "/main";
   static const String profile = "/profile";
+  static const String home = "/home";
+  static const String occasionPage = "/occasion";
 }

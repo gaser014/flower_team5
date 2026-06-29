@@ -87,4 +87,9 @@ abstract class AppAssets {
   static const String imagesIcLauncherIos = "assets/images/ic_launcher_ios.png";
   static const String imagesIcLauncherWeb = "assets/images/ic_launcher_web.png";
   static const String locationMarker = "assets/images/location_marker.png";
+  //!======= Splash=============
+  static const String logoSplash = "assets/images/flower-bg.png";
+  static const String logoTextSplash = "assets/images/flowery-text.png";
+  static const String splashLogo = "assets/images/flower.png";
+  //!=======
 }

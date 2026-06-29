@@ -20,10 +20,14 @@ class AppStrings {
   static const String loadingAccessibilityLabel = "Loading...";
   static const String retryButton = "Retry...";
   static const String invalidCode = "Invalid code";
+  static const String occasion = "Occasion";
+  static const String occasionSubTitle =
+      "Bloom with our exquisite best sellers";
   static const String enterUserName = "Enter first name";
   static const String codeNotReceived = "Didn't receive the code?";
   static const String resendCodeIn = "Resend in {}";
   static const String resend = "Resend";
+  static const String noProductsFound = "No products found";
   static const String enterEmail = "Enter you email";
   static const String password = "Password";
   static const String phoneNumber = "Phone Number";
@@ -90,6 +94,7 @@ class AppStrings {
   static const String appName = "Flowers";
   static const String appSlogan = "The most beautiful flowers to your doorstep";
   static const String tryAgain = "Try again";
+  static const String appTitle = "Flowery";
 
   // Validations
   static const String emailRequired = "Email is required";
@@ -114,6 +119,8 @@ class AppStrings {
   static const String continueAsGuest = "Continue as guest";
   static const String noAccount = "Don't have an account? ";
   static const String signUp = "Sign up";
+  static const String loginSuccessfully = "Login successfully";
+  static const String loginError = "Invalid Phone Number or Password";
 
   // Register
   static const String registerTitle = "Sign up";
@@ -159,6 +166,12 @@ class AppStrings {
   static const String logout = "Logout";
   static const String editProfile = "Edit profile";
   static const String addNewAddress = "Add New Address";
+  static const String notification = "Notification";
+  static const String language = "Language";
+  static const String english = "English";
+  static const String arabic = "العربية";
+  static const String aboutUs = "About us";
+  static const String termsConditions = "Terms & conditions";
 
   // Remaining values from provided dart source
   static const String setPassword1ConditionError =
@@ -195,6 +208,34 @@ class AppStrings {
   static const String somethingWentWrong =
       "Something went wrong, please try again";
 
-  static String questionOf({required int current, required int total}) =>
-      "question $current of $total";
+  static const String token = "token";
+  static const String user = "user";
+
+  // Home
+  static const String categories = "Categories";
+  static const String bestSeller = "Best seller";
+  static const String viewAll = "View All";
+  static const String deliverTo = "Deliver to";
+  static const String egp = "EGP";
+
+  // Category Names
+  static const String flowers = "Flowers";
+  static const String gift = "Gift";
+  static const String card = "Card";
+  static const String jewellery = "Jewellery";
+
+  // Occasion Names
+  static const String wedding = "Wedding";
+  static const String birthday = "Birthday";
+  static const String graduation = "Graduation";
+
+  // Dummy Product Names
+  static const String sunnyProduct = "Sunny";
+  static const String redRosesProduct = "Red roses";
+  static const String springVaseProduct = "Spring vase";
+
+  // Navigation
+  static const String cart = "Cart";
+  static const String profile = "Profile";
+  static const String home = "Home";
 }

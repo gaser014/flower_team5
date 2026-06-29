@@ -34,6 +34,7 @@ import '../../features/auth/sign_up/presentation/cubit/sign_up_cubit.dart'
     as _i809;
 import '../api/app_interceptor.dart' as _i449;
 import '../api/dio_module.dart' as _i784;
+import 'home_module.dart' as _i473;
 
 extension GetItInjectableX on _i174.GetIt {
   // initializes the registration of main-scope dependencies inside of GetIt
@@ -59,6 +60,9 @@ extension GetItInjectableX on _i174.GetIt {
         dio: gh<_i361.Dio>(),
         fss: gh<_i558.FlutterSecureStorage>(),
       ),
+    );
+    gh.lazySingleton<_i473.HomeModule>(
+      () => _i473.HomeModule(gh<_i628.HomeEntity>()),
     );
     gh.lazySingleton<_i759.AuthLocalDataSourceContract>(
       () =>

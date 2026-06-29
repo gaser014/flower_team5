@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
-import 'package:flowers_app/config/api/api_key.dart';
+import 'package:flowers_app/config/database/cache_helper.dart';
 import 'package:flowers_app/config/dependency_injection/di.dart';
+import 'package:flowers_app/core/values/app_strings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:injectable/injectable.dart';
@@ -19,7 +20,9 @@ class AppInterceptors extends Interceptor {
     RequestInterceptorHandler handler,
   ) async {
     options.cancelToken = getIt<CancelToken>();
-    String? authToken = await fss.read(key: APIkeys.accessToken);
+    String? authToken = await AppSharedPreferences.getString(
+      key: AppStrings.token,
+    );
     if (authToken != null && authToken.isNotEmpty) {
       options.headers['Authorization'] = 'Bearer $authToken';
       // options.headers["token"] = authToken;
