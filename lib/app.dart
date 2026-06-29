@@ -2,7 +2,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flowers_app/config/dependency_injection/di.dart';
 import 'package:flowers_app/core/routes/app_routes.dart';
 import 'package:flowers_app/core/theme/app_theme.dart';
-import 'package:flowers_app/features/location/presentation/cubit/location_cubit.dart';
 import 'package:flowers_app/features/main/presentation/view_model/cubit/home_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -18,14 +17,8 @@ class MyApp extends StatelessWidget {
       minTextAdapt: true,
       splitScreenMode: true,
       builder: (context, child) {
-        return MultiBlocProvider(
-          providers: [
-            BlocProvider(create: (context) => getIt.get<HomeCubit>()),
-            BlocProvider(
-              create: (context) =>
-                  getIt.get<LocationCubit>()..initializeHomeLocation(),
-            ),
-          ],
+        return BlocProvider(
+          create: (context) => getIt.get<HomeCubit>(),
           child: MaterialApp.router(
             localizationsDelegates: context.localizationDelegates,
             supportedLocales: context.supportedLocales,
