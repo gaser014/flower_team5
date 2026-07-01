@@ -1,3 +1,4 @@
+import 'package:flowers_app/core/constants/app_constants.dart';
 import 'package:flowers_app/core/values/app_assets.dart';
 import 'package:flowers_app/core/values/app_colors.dart';
 import 'package:flowers_app/core/values/app_font_style.dart';
@@ -23,7 +24,7 @@ class _AppLanguagePageState extends State<AppLanguagePage> {
   bool isNotificationEnabled = true;
 
   String _getLanguageString(BuildContext context) {
-    if (Localizations.localeOf(context).languageCode == 'ar') {
+    if (Localizations.localeOf(context).languageCode == AppConstants.arabicLanguageCode) {
       return AppStrings.arabic;
     }
     return AppStrings.english;
@@ -38,7 +39,7 @@ class _AppLanguagePageState extends State<AppLanguagePage> {
         return LanguageBottomSheet(
           initialLanguage: _getLanguageString(context),
           onLanguageSelected: (newLanguage) {
-            String code = newLanguage == AppStrings.arabic ? 'ar' : 'en';
+            String code = newLanguage == AppStrings.arabic ? AppConstants.arabicLanguageCode : AppConstants.englishLanguageCode;
             HomeCubit.get(context).changeLanguage(context, code);
           },
         );
