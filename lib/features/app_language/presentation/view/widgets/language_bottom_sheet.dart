@@ -1,3 +1,4 @@
+import 'package:flowers_app/config/helper/enum/app_language_enum.dart';
 import 'package:flowers_app/core/values/app_colors.dart';
 import 'package:flowers_app/core/values/app_font_style.dart';
 import 'package:flowers_app/core/values/app_strings.dart';
@@ -5,8 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
 class LanguageBottomSheet extends StatefulWidget {
-  final String initialLanguage;
-  final ValueChanged<String> onLanguageSelected;
+  final AppLanguageEnum initialLanguage;
+  final ValueChanged<AppLanguageEnum> onLanguageSelected;
 
   const LanguageBottomSheet({
     super.key,
@@ -19,7 +20,7 @@ class LanguageBottomSheet extends StatefulWidget {
 }
 
 class _LanguageBottomSheetState extends State<LanguageBottomSheet> {
-  late String selectedLanguage;
+  late AppLanguageEnum selectedLanguage;
 
   @override
   void initState() {
@@ -49,16 +50,16 @@ class _LanguageBottomSheetState extends State<LanguageBottomSheet> {
             ),
           ),
           const Gap(16),
-          _buildLanguageOption(AppStrings.arabic),
+          _buildLanguageOption(AppLanguageEnum.arabic),
           const Gap(16),
-          _buildLanguageOption(AppStrings.english),
+          _buildLanguageOption(AppLanguageEnum.english),
           const Gap(24),
         ],
       ),
     );
   }
 
-  Widget _buildLanguageOption(String language) {
+  Widget _buildLanguageOption(AppLanguageEnum language) {
     bool isSelected = selectedLanguage == language;
 
     return GestureDetector(
@@ -83,7 +84,7 @@ class _LanguageBottomSheetState extends State<LanguageBottomSheet> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              language,
+              language.text,
               style: AppFontStyle.semiBold14(context: context).copyWith(
                 color: AppColors.black,
               ),

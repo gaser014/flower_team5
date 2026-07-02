@@ -1,3 +1,4 @@
+import 'package:flowers_app/config/helper/enum/app_language_enum.dart';
 import 'package:flowers_app/core/constants/app_constants.dart';
 import 'package:flowers_app/core/values/app_assets.dart';
 import 'package:flowers_app/core/values/app_colors.dart';
@@ -23,13 +24,6 @@ class AppLanguagePage extends StatefulWidget {
 class _AppLanguagePageState extends State<AppLanguagePage> {
   bool isNotificationEnabled = true;
 
-  String _getLanguageString(BuildContext context) {
-    if (Localizations.localeOf(context).languageCode == AppConstants.arabicLanguageCode) {
-      return AppStrings.arabic;
-    }
-    return AppStrings.english;
-  }
-
   void _showLanguageBottomSheet(BuildContext context) {
     showModalBottomSheet(
       context: context,
@@ -37,10 +31,9 @@ class _AppLanguagePageState extends State<AppLanguagePage> {
       backgroundColor: Colors.transparent,
       builder: (_) {
         return LanguageBottomSheet(
-          initialLanguage: _getLanguageString(context),
+          initialLanguage: AppLanguageEnum.fromLocale(context),
           onLanguageSelected: (newLanguage) {
-            String code = newLanguage == AppStrings.arabic ? AppConstants.arabicLanguageCode : AppConstants.englishLanguageCode;
-            HomeCubit.get(context).changeLanguage(context, code);
+            HomeCubit.get(context).changeLanguage(context, newLanguage.code);
           },
         );
       },
@@ -208,7 +201,7 @@ class _AppLanguagePageState extends State<AppLanguagePage> {
             BlocBuilder<HomeCubit, HomeStates>(
               builder: (context, state) {
                 return Text(
-                  _getLanguageString(context),
+                  AppLanguageEnum.fromLocale(context).text,
                   style: AppFontStyle.regular12(
                     context: context,
                   ).copyWith(color: AppColors.primerColor),
