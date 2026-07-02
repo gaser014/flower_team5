@@ -1,4 +1,4 @@
-import 'package:flowers_app/config/helper/enum/app_language_enum.dart';
+import 'package:flowers_app/config/helper/extensions/context_extension.dart';
 import 'package:flowers_app/core/values/app_assets.dart';
 import 'package:flowers_app/core/values/app_colors.dart';
 import 'package:flowers_app/core/values/app_font_style.dart';
@@ -13,74 +13,50 @@ import 'package:flowers_app/features/app_language/presentation/view_model/cubit/
 import 'package:flowers_app/features/app_language/presentation/view_model/cubit/app_language_states.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class AppLanguagePage extends StatefulWidget {
+class AppLanguagePage extends StatelessWidget {
   const AppLanguagePage({super.key});
-
-  @override
-  State<AppLanguagePage> createState() => _AppLanguagePageState();
-}
-
-class _AppLanguagePageState extends State<AppLanguagePage> {
-  bool isNotificationEnabled = true;
-
-  void _showLanguageBottomSheet(BuildContext context) {
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      backgroundColor: Colors.transparent,
-      builder: (_) {
-        return LanguageBottomSheet(
-          initialLanguage: AppLanguageEnum.fromLocale(context),
-          onLanguageSelected: (newLanguage) {
-            HomeCubit.get(context).changeLanguage(context, newLanguage.code);
-          },
-        );
-      },
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.whiteF9,
-      appBar: _buildAppBar(context),
-      body: SingleChildScrollView(
+      appBar: AppBar(
+        title: Row(
+          children: [
+            SvgPicture.asset(AppAssets.iconsFlower, height: 24),
+            const Gap(8),
+            Text(
+              AppStrings.appTitle,
+              style: AppFontStyle.bold20(
+                context: context,
+              ).copyWith(color: AppColors.primerColor),
+            ),
+          ],
+        ),
+        actions: const [_NotificationBadge()],
+      ),
+      body: const SingleChildScrollView(
         child: Column(
           children: [
-            const Gap(32),
-            const ProfileHeader(),
-            const Gap(32),
-            _buildSettingsList(context),
-            const Gap(32),
-            _buildVersionInfo(context),
-            const Gap(32),
+            Gap(32),
+            ProfileHeader(),
+            Gap(32),
+            _SettingsList(),
+            Gap(32),
+            _VersionInfo(),
+            Gap(32),
           ],
         ),
       ),
     );
   }
+}
 
-  PreferredSizeWidget _buildAppBar(BuildContext context) {
-    return AppBar(
-      backgroundColor: AppColors.whiteF9,
-      elevation: 0,
-      title: Row(
-        children: [
-          SvgPicture.asset(AppAssets.iconsFlower, height: 24),
-          const Gap(8),
-          Text(
-            AppStrings.appTitle,
-            style: AppFontStyle.bold20(
-              context: context,
-            ).copyWith(color: AppColors.primerColor),
-          ),
-        ],
-      ),
-      actions: [_buildNotificationBadge(context)],
-    );
-  }
+class _NotificationBadge extends StatelessWidget {
+  const _NotificationBadge();
 
-  Widget _buildNotificationBadge(BuildContext context) {
+  @override
+  Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: Stack(
@@ -116,8 +92,20 @@ class _AppLanguagePageState extends State<AppLanguagePage> {
       ),
     );
   }
+}
 
-  Widget _buildSettingsList(BuildContext context) {
+class _SettingsList extends StatefulWidget {
+  const _SettingsList();
+
+  @override
+  State<_SettingsList> createState() => _SettingsListState();
+}
+
+class _SettingsListState extends State<_SettingsList> {
+  bool isNotificationEnabled = true;
+
+  @override
+  Widget build(BuildContext context) {
     return Column(
       children: [
         Container(
@@ -150,7 +138,7 @@ class _AppLanguagePageState extends State<AppLanguagePage> {
           color: AppColors.white,
           child: Column(
             children: [
-              _buildLanguageTile(context),
+              const _LanguageTile(),
               ProfileMenuItem(title: AppStrings.aboutUs, onTap: () {}),
               ProfileMenuItem(
                 title: AppStrings.termsAndConditions,
@@ -172,8 +160,29 @@ class _AppLanguagePageState extends State<AppLanguagePage> {
       ],
     );
   }
+}
 
-  Widget _buildLanguageTile(BuildContext context) {
+class _LanguageTile extends StatelessWidget {
+  const _LanguageTile();
+
+  void _showLanguageBottomSheet(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (_) {
+        return LanguageBottomSheet(
+          initialLanguage: context.appLanguage,
+          onLanguageSelected: (newLanguage) {
+            HomeCubit.get(context).changeLanguage(context, newLanguage.code);
+          },
+        );
+      },
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return InkWell(
       onTap: () => _showLanguageBottomSheet(context),
       child: Padding(
@@ -200,7 +209,7 @@ class _AppLanguagePageState extends State<AppLanguagePage> {
             BlocBuilder<HomeCubit, HomeStates>(
               builder: (context, state) {
                 return Text(
-                  AppLanguageEnum.fromLocale(context).text,
+                  context.appLanguage.text,
                   style: AppFontStyle.regular12(
                     context: context,
                   ).copyWith(color: AppColors.primerColor),
@@ -218,8 +227,13 @@ class _AppLanguagePageState extends State<AppLanguagePage> {
       ),
     );
   }
+}
 
-  Widget _buildVersionInfo(BuildContext context) {
+class _VersionInfo extends StatelessWidget {
+  const _VersionInfo();
+
+  @override
+  Widget build(BuildContext context) {
     return Text(
       'v 6.3.0 - (446)',
       style: AppFontStyle.regular12(

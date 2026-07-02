@@ -28,6 +28,14 @@ class _LanguageBottomSheetState extends State<LanguageBottomSheet> {
     selectedLanguage = widget.initialLanguage;
   }
 
+  void _handleLanguageTap(AppLanguageEnum language) {
+    setState(() {
+      selectedLanguage = language;
+    });
+    widget.onLanguageSelected(language);
+    Navigator.pop(context); // Close the bottom sheet after selection
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -50,26 +58,39 @@ class _LanguageBottomSheetState extends State<LanguageBottomSheet> {
             ),
           ),
           const Gap(16),
-          _buildLanguageOption(AppLanguageEnum.arabic),
+          _LanguageOption(
+            language: AppLanguageEnum.arabic,
+            isSelected: selectedLanguage == AppLanguageEnum.arabic,
+            onTap: _handleLanguageTap,
+          ),
           const Gap(16),
-          _buildLanguageOption(AppLanguageEnum.english),
+          _LanguageOption(
+            language: AppLanguageEnum.english,
+            isSelected: selectedLanguage == AppLanguageEnum.english,
+            onTap: _handleLanguageTap,
+          ),
           const Gap(24),
         ],
       ),
     );
   }
+}
 
-  Widget _buildLanguageOption(AppLanguageEnum language) {
-    bool isSelected = selectedLanguage == language;
+class _LanguageOption extends StatelessWidget {
+  final AppLanguageEnum language;
+  final bool isSelected;
+  final ValueChanged<AppLanguageEnum> onTap;
 
+  const _LanguageOption({
+    required this.language,
+    required this.isSelected,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        setState(() {
-          selectedLanguage = language;
-        });
-        widget.onLanguageSelected(language);
-        Navigator.pop(context); // Close the bottom sheet after selection
-      },
+      onTap: () => onTap(language),
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
         decoration: BoxDecoration(
