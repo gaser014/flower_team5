@@ -2,7 +2,7 @@ import 'package:flowers_app/core/widgets/pagination_grid_view.dart';
 import 'package:flowers_app/features/products/domain/entities/product_entity.dart';
 import 'package:flowers_app/features/products/domain/entities/products_params.dart';
 import 'package:flowers_app/features/products/presentation/view/widgets/empty_products_widget.dart';
-import 'package:flowers_app/features/products/presentation/view/widgets/product_card.dart';
+import 'package:flowers_app/core/widgets/product_card.dart';
 import 'package:flowers_app/features/products/presentation/view/widgets/products_shimmer.dart';
 import 'package:flowers_app/features/products/presentation/view_model/cubit/products_cubit.dart';
 import 'package:flutter/material.dart';
@@ -35,13 +35,6 @@ class _ProductsBodyState extends State<ProductsBody> {
           isLoadingMore: ps.isLoadingMore,
           isAlwaysScrollable: true,
           hasMore: ps.hasMore,
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            childAspectRatio: 0.75,
-            crossAxisSpacing: 16,
-            mainAxisSpacing: 16,
-            mainAxisExtent: 250,
-          ),
           onLoadMore: () => cubit.doIntent(
             LoadMoreProductsEvent(
               params:

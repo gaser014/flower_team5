@@ -6,7 +6,8 @@ sealed class AppFilterTabsEvents {
 
 class GetAllAppFilterTabsEvent extends AppFilterTabsEvents {
   final AppFilterTabsParams? params;
-  const GetAllAppFilterTabsEvent({this.params});
+  final AppFilterTabItemEntity? selectedTabFilter;
+  const GetAllAppFilterTabsEvent({this.params, this.selectedTabFilter});
 }
 
 class LoadMoreAppFilterTabsEvent extends AppFilterTabsEvents {

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flowers_app/config/uses_cases/login_params.dart';
 import 'package:flowers_app/core/routes/routes.dart';
 import 'package:flowers_app/core/values/app_strings.dart';
@@ -28,7 +30,7 @@ class LoginSubmitButton extends StatelessWidget {
           previous.loginState != current.loginState,
       listener: (context, state) {
         if (state.loginState.isSuccess) {
-          context.go(Routes.splash);
+          context.go(Routes.main);
           CustomToast(
             context: context,
             message: AppStrings.loginSuccessfully,
@@ -38,7 +40,8 @@ class LoginSubmitButton extends StatelessWidget {
         }
       },
       buildWhen: (previous, current) =>
-          previous.loginState != current.loginState,
+          previous.loginState != current.loginState ||
+          previous.rememberMeState != current.rememberMeState,
       builder: (context, state) {
         return CustomButton(
           text: AppStrings.loginTitle,
@@ -54,6 +57,7 @@ class LoginSubmitButton extends StatelessWidget {
                   ),
                 ),
               );
+              log("++++++++++++${state.rememberMeState.data}");
             }
           },
         );
