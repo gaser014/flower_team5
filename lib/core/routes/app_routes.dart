@@ -310,6 +310,27 @@ abstract class AppRoutes {
           return LoginPage();
         },
       ),
+      GoRoute(
+        path: Routes.bestSeller,
+        name: Routes.bestSeller,
+        pageBuilder: (context, state) => buildAnimatedPage(
+          key: state.pageKey,
+          child: const BestSellerPage(),
+          animationType: AnimationType.slideFromRight,
+        ),
+      ),
+      GoRoute(
+        path: Routes.productDetails,
+        name: Routes.productDetails,
+        pageBuilder: (context, state) {
+          final product = state.extra as ProductEntity;
+          return buildAnimatedPage(
+            key: state.pageKey,
+            child: ProductDetailsPage(product: product),
+            animationType: AnimationType.fade,
+          );
+        },
+      ),
     ],
     redirect: (context, state) async {
       final currentLocation = state.matchedLocation;

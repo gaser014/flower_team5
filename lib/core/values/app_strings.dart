@@ -110,6 +110,10 @@ class AppStrings {
   static const String phoneRequired = "Phone number is required";
   static const String pinRequired = "Verification code is required";
 
+  // Best Seller
+  static const String bestSeller = "Best Seller";
+  static const String bestSellerSubtitle = "Find your favorite products";
+
   // Login
   static const String loginTitle = "Login";
   static const String loginSubtitle = "Welcome back! Please login to continue";
@@ -139,11 +143,21 @@ class AppStrings {
   static const String accountCreatedSuccessfully =
       "Account created successfully";
 
+  // Product
+  static const String currencyEGP = "EGP";
+  static const String allPricesIncludeTax = "All prices include tax";
+  static const String productHeroTag = "product_";
+
   // Product Details
   static const String inStock = "In stock";
   static const String description = "Description";
   static const String bouquetInclude = "Bouquet include";
   static const String addToCart = "Add to cart";
+
+  // API Query Parameters
+  static const String queryPage = "page";
+  static const String queryLimit = "limit";
+  static const String queryId = "id";
 
   // Cart
   static const String cartTitle = "Cart";
