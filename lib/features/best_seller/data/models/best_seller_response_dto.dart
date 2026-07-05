@@ -1,5 +1,6 @@
 import 'package:flowers_app/config/base_response/entity/base_pagination_entity.dart';
 import 'package:flowers_app/config/base_response/entity/meta_entity.dart';
+import 'package:flowers_app/core/entities/product_entity.dart';
 import 'package:flowers_app/features/best_seller/data/models/product_model.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -11,20 +12,17 @@ class BestSellerResponseDto {
   @JsonKey(name: 'bestSeller')
   final List<ProductModel>? bestSellers;
 
-  const BestSellerResponseDto({
-    this.message,
-    this.bestSellers,
-  });
+  const BestSellerResponseDto({this.message, this.bestSellers});
 
   factory BestSellerResponseDto.fromJson(Map<String, dynamic> json) =>
       _$BestSellerResponseDtoFromJson(json);
 
   Map<String, dynamic> toJson() => _$BestSellerResponseDtoToJson(this);
 
-  BasePaginationEntity<ProductModel> toEntity() {
-    return BasePaginationEntity<ProductModel>(
+  BasePaginationEntity<ProductEntity> toEntity() {
+    return BasePaginationEntity<ProductEntity>(
       meta: const MetaEntity.empty(),
-      data: bestSellers ?? [],
+      data: bestSellers?.map((model) => model.toEntity()).toList() ?? [],
     );
   }
 }

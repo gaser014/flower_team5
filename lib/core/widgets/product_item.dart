@@ -1,5 +1,7 @@
+import 'package:flowers_app/core/theme/app_theme.dart';
 import 'package:flowers_app/core/values/app_colors.dart';
 import 'package:flowers_app/core/values/app_font_style.dart';
+import 'package:flowers_app/core/values/app_strings.dart';
 import 'package:flowers_app/core/widgets/custom_cached_image.dart';
 import 'package:flowers_app/core/entities/product_entity.dart';
 import 'package:flutter/material.dart';
@@ -33,7 +35,7 @@ class ProductItem extends StatelessWidget {
             Stack(
               children: [
                 Hero(
-                  tag: 'product_${product.id}',
+                  tag: '${AppStrings.productHeroTag}${product.id}',
                   child: ClipRRect(
                     borderRadius: BorderRadius.vertical(top: Radius.circular(16.r)),
                     child: CustomCachedImage(
@@ -79,7 +81,7 @@ class ProductItem extends StatelessWidget {
                   Row(
                     children: [
                       Text(
-                        'EGP ${product.price.toStringAsFixed(0)}',
+                        '${AppStrings.currencyEGP} ${product.price.toStringAsFixed(0)}',
                         style: AppFontStyle.semiBold16(context: context).copyWith(
                           color: AppColors.primerColor,
                         ),
@@ -87,7 +89,7 @@ class ProductItem extends StatelessWidget {
                       if (product.originalPrice != null) ...[
                         Gap(8.w),
                         Text(
-                          product.originalPrice!.toStringAsFixed(0),
+                          product.originalPrice?.toStringAsFixed(0) ?? '',
                           style: AppFontStyle.regular12(context: context).copyWith(
                             color: AppColors.grayA6,
                             decoration: TextDecoration.lineThrough,
@@ -101,22 +103,14 @@ class ProductItem extends StatelessWidget {
                     width: double.infinity,
                     child: ElevatedButton(
                       onPressed: () {}, // TODO: Add to cart
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColors.primerColor,
-                        foregroundColor: AppColors.white,
-                        padding: EdgeInsets.symmetric(vertical: 8.h),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10.r),
-                        ),
-                        elevation: 0,
-                      ),
+                      style: AppTheme.addToCartButtonStyle(context),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Icon(Icons.shopping_cart_outlined, size: 16.sp),
                           Gap(4.w),
                           Text(
-                            'Add to cart',
+                            AppStrings.addToCart,
                             style: AppFontStyle.medium14(context: context),
                           ),
                         ],

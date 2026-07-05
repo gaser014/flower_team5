@@ -131,11 +131,21 @@ class AppStrings {
       "By creating an account, you agree to our ";
   static const String termsConditionsPart2 = "Terms & Conditions";
 
+  // Product
+  static const String currencyEGP = "EGP";
+  static const String allPricesIncludeTax = "All prices include tax";
+  static const String productHeroTag = "product_";
+
   // Product Details
   static const String inStock = "In stock";
   static const String description = "Description";
   static const String bouquetInclude = "Bouquet include";
   static const String addToCart = "Add to cart";
+
+  // API Query Parameters
+  static const String queryPage = "page";
+  static const String queryLimit = "limit";
+  static const String queryId = "id";
 
   // Cart
   static const String cartTitle = "Cart";
