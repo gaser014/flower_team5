@@ -1,7 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 
 import '../values/app_assets.dart';
@@ -10,6 +10,7 @@ import '../values/app_font_style.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
+  final String? subTitle;
   final bool centerTitle;
   final EdgeInsetsGeometry? padding;
   final bool showBackButton;
@@ -23,6 +24,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     required this.title,
     this.centerTitle = false,
     this.padding,
+    this.subTitle,
     this.showBackButton = true,
     this.onBackPressed,
     this.backgroundColor,
@@ -42,11 +44,21 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       titleSpacing: shouldShowBack ? 4 : 16,
       leading: shouldShowBack ? _BackButton(onPressed: onBackPressed) : null,
       leadingWidth: shouldShowBack && !isRTL ? 40 : 0,
-      title: Text(
-        title,
-        style: AppFontStyle.medium20(
-          context: context,
-        ).copyWith(color: titleColor ?? AppColors.black0C),
+      title: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            title,
+            style: AppFontStyle.medium20(
+              context: context,
+            ).copyWith(color: titleColor ?? AppColors.black0C),
+          ),
+          if (subTitle?.isNotEmpty ?? false)
+            Text(
+              subTitle ?? '',
+              style: AppFontStyle.medium13().copyWith(color: AppColors.gray53),
+            ),
+        ],
       ),
       actions: actions,
     );
@@ -73,10 +85,7 @@ class _BackButton extends StatelessWidget {
           AppAssets.arrowBack,
           width: 20,
           height: 20,
-          colorFilter: const ColorFilter.mode(
-            AppColors.black0C,
-            BlendMode.srcIn,
-          ),
+          color: AppColors.black0C,
           fit: BoxFit.scaleDown,
         ),
       ),

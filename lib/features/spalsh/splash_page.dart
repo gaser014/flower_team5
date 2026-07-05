@@ -66,7 +66,7 @@ class _SplashPageState extends State<SplashPage>
           if (token == null) {
             context.go(Routes.login);
           } else {
-            context.go(Routes.login);
+            context.go(Routes.main);
           }
         }
       }

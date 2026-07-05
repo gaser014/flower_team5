@@ -20,10 +20,14 @@ class AppStrings {
   static const String loadingAccessibilityLabel = "Loading...";
   static const String retryButton = "Retry...";
   static const String invalidCode = "Invalid code";
+  static const String occasion = "Occasion";
+  static const String occasionSubTitle =
+      "Bloom with our exquisite best sellers";
   static const String enterUserName = "Enter first name";
   static const String codeNotReceived = "Didn't receive the code?";
   static const String resendCodeIn = "Resend in {}";
   static const String resend = "Resend";
+  static const String noProductsFound = "No products found";
   static const String enterEmail = "Enter you email";
   static const String password = "Password";
   static const String phoneNumber = "Phone Number";
@@ -124,12 +128,20 @@ class AppStrings {
 
   // Register
   static const String registerTitle = "Sign up";
+  static const String confirmPassword = "Confirm password";
+  static const String firstName = "First name";
+  static const String firstNameHint = "Enter first name";
+  static const String lastName = "Last name";
+  static const String lastNameHint = "Enter last name";
   static const String genderLabel = "Gender";
   static const String maleLabel = "Male";
   static const String femaleLabel = "Female";
+  static const String termsAndConditionsView =  'By creating an account, you agree to use the application in a lawful manner, provide accurate information, and respect all applicable rules. We may update these terms from time to time, and your continued use of the app means you accept those updates.';
   static const String termsConditionsPart1 =
       "By creating an account, you agree to our ";
   static const String termsConditionsPart2 = "Terms & Conditions";
+  static const String accountCreatedSuccessfully =
+      "Account created successfully";
 
   // Product
   static const String currencyEGP = "EGP";
@@ -168,6 +180,12 @@ class AppStrings {
   static const String logout = "Logout";
   static const String editProfile = "Edit profile";
   static const String addNewAddress = "Add New Address";
+  static const String notification = "Notification";
+  static const String language = "Language";
+  static const String english = "English";
+  static const String arabic = "العربية";
+  static const String aboutUs = "About us";
+  static const String termsConditions = "Terms & conditions";
 
   // Remaining values from provided dart source
   static const String setPassword1ConditionError =
@@ -180,13 +198,17 @@ class AppStrings {
       "Add a special character to make it more secure";
   static const String setPassword5ConditionError =
       "Password should be between 6 and 30 characters";
-  static const String confirmPassword = "Please confirm your password";
+  static const String pleaseConfirmYourPassword =
+      "Please confirm your password";
   static const String confirmPasswordInvalid =
       "Passwords don't match, please try again";
   static const String phoneInvalid = "Please enter a valid phone number";
+  static const String alreadyHaveAnAccount = "Already have an account?";
   static const String nameRequired = "Please enter your name";
   static const String pinInvalid = "Please enter a valid PIN";
   static const String profileImage = "Please add a profile image";
+  static const String anUnexpectedErrorOccurred =
+      "An unexpected error occurred";
   static const String usernameInvalid =
       "Username can only contain letters, numbers, dots and underscores";
   static const String username = "Username";
@@ -203,6 +225,31 @@ class AppStrings {
   static const String token = "token";
   static const String user = "user";
 
-  static String questionOf({required int current, required int total}) =>
-      "question $current of $total";
+  // Home
+  static const String categories = "Categories";
+  static const String bestSeller = "Best seller";
+  static const String viewAll = "View All";
+  static const String deliverTo = "Deliver to";
+  static const String egp = "EGP";
+
+  // Category Names
+  static const String flowers = "Flowers";
+  static const String gift = "Gift";
+  static const String card = "Card";
+  static const String jewellery = "Jewellery";
+
+  // Occasion Names
+  static const String wedding = "Wedding";
+  static const String birthday = "Birthday";
+  static const String graduation = "Graduation";
+
+  // Dummy Product Names
+  static const String sunnyProduct = "Sunny";
+  static const String redRosesProduct = "Red roses";
+  static const String springVaseProduct = "Spring vase";
+
+  // Navigation
+  static const String cart = "Cart";
+  static const String profile = "Profile";
+  static const String home = "Home";
 }
