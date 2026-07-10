@@ -14,7 +14,7 @@ class CartEmptyWidget extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          SvgPicture.asset(AppAssets.emptyCartIcon, width: 160, height: 160),
+          SvgPicture.asset(AppAssets.iconsCart, width: 160, height: 160),
           const SizedBox(height: 12),
           Text(
             AppStrings.emptyCart,

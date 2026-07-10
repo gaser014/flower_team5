@@ -136,7 +136,8 @@ class AppStrings {
   static const String genderLabel = "Gender";
   static const String maleLabel = "Male";
   static const String femaleLabel = "Female";
-  static const String termsAndConditionsView =  'By creating an account, you agree to use the application in a lawful manner, provide accurate information, and respect all applicable rules. We may update these terms from time to time, and your continued use of the app means you accept those updates.';
+  static const String termsAndConditionsView =
+      'By creating an account, you agree to use the application in a lawful manner, provide accurate information, and respect all applicable rules. We may update these terms from time to time, and your continued use of the app means you accept those updates.';
   static const String termsConditionsPart1 =
       "By creating an account, you agree to our ";
   static const String termsConditionsPart2 = "Terms & Conditions";
@@ -256,7 +257,6 @@ class AppStrings {
 
   // Home
   static const String categories = "Categories";
-  static const String bestSeller = "Best seller";
   static const String viewAll = "View All";
   static const String deliverTo = "Deliver to";
   static const String egp = "EGP";

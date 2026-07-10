@@ -88,7 +88,7 @@ class AddressCard extends StatelessWidget {
               children: [
                 if (onDelete != null)
                   _ActionIcon(
-                    asset: AppAssets.deleteTrash,
+                    asset: AppAssets.iconsDelete,
                     onPressed: onDelete!,
                   ),
                 const SizedBox(width: 4),

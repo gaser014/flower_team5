@@ -7,10 +7,10 @@ import 'package:flowers_app/features/addresses/domain/entities/address_entity.da
 import 'package:flowers_app/features/addresses/presentation/cubit/addresses_cubit.dart';
 import 'package:flowers_app/features/addresses/presentation/screens/addresses_page.dart';
 import 'package:flowers_app/features/addresses/presentation/screens/add_address_screen.dart';
-import 'package:flowers_app/features/auth/login/presentation/screens/login_view.dart';
 import 'package:flowers_app/features/auth/sign_up/presentation/screens/sign_up_view.dart';
 import 'package:flowers_app/features/auth/sign_up/presentation/screens/terms_and_conditions_view.dart';
 import 'package:flowers_app/features/app_filter_tabs/domain/entities/app_filter_tab_item_entity.dart';
+import 'package:flowers_app/features/best_seller/presentation/view/pages/best_seller_page.dart';
 import 'package:flowers_app/features/checkout/presentation/view_model/cubit/checkout_cubit.dart';
 import 'package:flowers_app/features/checkout/presentation/view/pages/checkout_screen.dart';
 import 'package:flowers_app/features/checkout/presentation/view/pages/payment_web_view_screen.dart';
@@ -18,7 +18,9 @@ import 'package:flowers_app/features/checkout/presentation/view/pages/thank_you_
 import 'package:flowers_app/features/spalsh/splash_page.dart';
 import 'package:flowers_app/features/login/presentation/view/pages/login_page.dart';
 import 'package:flowers_app/features/products/presentation/view/pages/occasion_page.dart';
+import 'package:flowers_app/features/product_details/presentation/view/pages/product_details_page.dart';
 import 'package:flowers_app/features/main/presentation/screens/main_view.dart';
+import 'package:flowers_app/core/entities/product_entity.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -213,18 +215,20 @@ class _PageBasedPageRoute<T> extends PageRoute<T> {
 
 abstract class AppRoutes {
   static final GoRouter router = GoRouter(
-    initialLocation: Routes.register,
+    initialLocation: Routes.splash,
     routes: [
       GoRoute(
         path: Routes.login,
+        name: Routes.login,
         pageBuilder: (context, state) => buildAnimatedPage(
           key: state.pageKey,
-          child: const LoginView(),
+          child: const LoginPage(),
           animationType: AnimationType.slideFromRight,
         ),
       ),
       GoRoute(
         path: Routes.register,
+        name: Routes.register,
         pageBuilder: (context, state) => buildAnimatedPage(
           key: state.pageKey,
           child: const SignUpView(),
@@ -233,6 +237,7 @@ abstract class AppRoutes {
       ),
       GoRoute(
         path: Routes.termsAndConditions,
+        name: Routes.termsAndConditions,
         pageBuilder: (context, state) => buildAnimatedPage(
           key: state.pageKey,
           child: const TermsAndConditionsView(),
@@ -241,15 +246,7 @@ abstract class AppRoutes {
       ),
       GoRoute(
         path: Routes.main,
-        pageBuilder: (context, state) => buildAnimatedPage(
-          key: state.pageKey,
-          child: const SignUpView(),
-          animationType: AnimationType.fade,
-        ),
-    initialLocation: Routes.splash,
-    routes: [
-      GoRoute(
-        path: Routes.main,
+        name: Routes.main,
         pageBuilder: (context, state) => buildAnimatedPage(
           key: state.pageKey,
           child: const MainView(),
@@ -303,6 +300,10 @@ abstract class AppRoutes {
             key: state.pageKey,
             child: PaymentWebViewScreen(url: url, successUrl: successUrl),
             animationType: AnimationType.fade,
+          );
+        },
+      ),
+      GoRoute(
         path: Routes.addresses,
         name: Routes.addresses,
         pageBuilder: (context, state) => buildAnimatedPage(
@@ -339,13 +340,6 @@ abstract class AppRoutes {
         name: Routes.splash,
         builder: (BuildContext context, GoRouterState state) {
           return SplashPage();
-        },
-      ),
-      GoRoute(
-        path: Routes.login,
-        name: Routes.login,
-        builder: (BuildContext context, GoRouterState state) {
-          return LoginPage();
         },
       ),
       GoRoute(

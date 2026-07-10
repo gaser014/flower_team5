@@ -20,5 +20,5 @@ class ProductDetailsResponseDto {
 
   Map<String, dynamic> toJson() => _$ProductDetailsResponseDtoToJson(this);
 
-  ProductEntity toEntity() => product!;
+  ProductEntity toEntity() => product!.toEntity();
 }
