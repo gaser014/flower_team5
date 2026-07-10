@@ -3,6 +3,13 @@ import 'dart:io';
 import 'package:flowers_app/config/dependency_injection/di.dart';
 import 'package:flowers_app/core/data/data_sources/auth_local_data_source.dart';
 import 'package:flowers_app/core/routes/routes.dart';
+import 'package:flowers_app/features/addresses/domain/entities/address_entity.dart';
+import 'package:flowers_app/features/addresses/presentation/cubit/addresses_cubit.dart';
+import 'package:flowers_app/features/addresses/presentation/screens/addresses_page.dart';
+import 'package:flowers_app/features/addresses/presentation/screens/add_address_screen.dart';
+import 'package:flowers_app/features/auth/login/presentation/screens/login_view.dart';
+import 'package:flowers_app/features/auth/sign_up/presentation/screens/sign_up_view.dart';
+import 'package:flowers_app/features/auth/sign_up/presentation/screens/terms_and_conditions_view.dart';
 import 'package:flowers_app/features/app_filter_tabs/domain/entities/app_filter_tab_item_entity.dart';
 import 'package:flowers_app/features/checkout/presentation/view_model/cubit/checkout_cubit.dart';
 import 'package:flowers_app/features/checkout/presentation/view/pages/checkout_screen.dart';
@@ -206,7 +213,40 @@ class _PageBasedPageRoute<T> extends PageRoute<T> {
 
 abstract class AppRoutes {
   static final GoRouter router = GoRouter(
-    initialLocation: Routes.checkout,
+    initialLocation: Routes.register,
+    routes: [
+      GoRoute(
+        path: Routes.login,
+        pageBuilder: (context, state) => buildAnimatedPage(
+          key: state.pageKey,
+          child: const LoginView(),
+          animationType: AnimationType.slideFromRight,
+        ),
+      ),
+      GoRoute(
+        path: Routes.register,
+        pageBuilder: (context, state) => buildAnimatedPage(
+          key: state.pageKey,
+          child: const SignUpView(),
+          animationType: AnimationType.slideFromRight,
+        ),
+      ),
+      GoRoute(
+        path: Routes.termsAndConditions,
+        pageBuilder: (context, state) => buildAnimatedPage(
+          key: state.pageKey,
+          child: const TermsAndConditionsView(),
+          animationType: AnimationType.slideFromRight,
+        ),
+      ),
+      GoRoute(
+        path: Routes.main,
+        pageBuilder: (context, state) => buildAnimatedPage(
+          key: state.pageKey,
+          child: const SignUpView(),
+          animationType: AnimationType.fade,
+        ),
+    initialLocation: Routes.splash,
     routes: [
       GoRoute(
         path: Routes.main,
@@ -263,6 +303,34 @@ abstract class AppRoutes {
             key: state.pageKey,
             child: PaymentWebViewScreen(url: url, successUrl: successUrl),
             animationType: AnimationType.fade,
+        path: Routes.addresses,
+        name: Routes.addresses,
+        pageBuilder: (context, state) => buildAnimatedPage(
+          key: state.pageKey,
+          child: BlocProvider<AddressesCubit>(
+            create: (_) =>
+                getIt<AddressesCubit>()..doIntent(const GetAddressesEvent()),
+            child: const AddressesPage(),
+          ),
+          animationType: AnimationType.slideFromRight,
+        ),
+      ),
+      GoRoute(
+        path: Routes.addAddress,
+        name: Routes.addAddress,
+        pageBuilder: (context, state) {
+          final Map<String, dynamic> extra =
+              state.extra as Map<String, dynamic>;
+          final editAddress = extra['editAddress'] as AddressEntity?;
+          final cubit = extra['cubit'] as AddressesCubit;
+
+          return buildAnimatedPage(
+            key: state.pageKey,
+            child: BlocProvider.value(
+              value: cubit,
+              child: AddAddressScreen(editAddress: editAddress),
+            ),
+            animationType: AnimationType.slideFromRight,
           );
         },
       ),
@@ -278,6 +346,27 @@ abstract class AppRoutes {
         name: Routes.login,
         builder: (BuildContext context, GoRouterState state) {
           return LoginPage();
+        },
+      ),
+      GoRoute(
+        path: Routes.bestSeller,
+        name: Routes.bestSeller,
+        pageBuilder: (context, state) => buildAnimatedPage(
+          key: state.pageKey,
+          child: const BestSellerPage(),
+          animationType: AnimationType.slideFromRight,
+        ),
+      ),
+      GoRoute(
+        path: Routes.productDetails,
+        name: Routes.productDetails,
+        pageBuilder: (context, state) {
+          final product = state.extra as ProductEntity;
+          return buildAnimatedPage(
+            key: state.pageKey,
+            child: ProductDetailsPage(product: product),
+            animationType: AnimationType.fade,
+          );
         },
       ),
     ],

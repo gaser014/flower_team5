@@ -1,7 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 
 import '../values/app_assets.dart';
@@ -35,7 +35,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     final canPop = context.canPop();
-    final shouldShowBack = showBackButton && canPop;
+    final shouldShowBack = showBackButton && (canPop || onBackPressed != null);
     final isRTL = Directionality.of(context) == TextDirection.rtl;
     return AppBar(
       backgroundColor: backgroundColor ?? Colors.transparent,
