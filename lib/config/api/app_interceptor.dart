@@ -24,7 +24,8 @@ class AppInterceptors extends Interceptor {
       key: AppStrings.token,
     );
     if (authToken != null && authToken.isNotEmpty) {
-      options.headers['Authorization'] = 'Bearer $authToken';
+      options.headers['Authorization'] =
+          'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiNjlmOWFkM2Y2YmJhZjE1ODhiYmRjYzE1Iiwicm9sZSI6InVzZXIiLCJpYXQiOjE3ODI0NjY3NDZ9.PpYUHHMpvs9ABXFtWw4_hrgru62XCdWIJeX7hEbw6Gk';
       // options.headers["token"] = authToken;
     }
     super.onRequest(options, handler);

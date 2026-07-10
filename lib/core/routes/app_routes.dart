@@ -11,9 +11,13 @@ import 'package:flowers_app/features/auth/login/presentation/screens/login_view.
 import 'package:flowers_app/features/auth/sign_up/presentation/screens/sign_up_view.dart';
 import 'package:flowers_app/features/auth/sign_up/presentation/screens/terms_and_conditions_view.dart';
 import 'package:flowers_app/features/app_filter_tabs/domain/entities/app_filter_tab_item_entity.dart';
+import 'package:flowers_app/features/checkout/presentation/view_model/cubit/checkout_cubit.dart';
+import 'package:flowers_app/features/checkout/presentation/view/pages/checkout_screen.dart';
+import 'package:flowers_app/features/checkout/presentation/view/pages/payment_web_view_screen.dart';
+import 'package:flowers_app/features/checkout/presentation/view/pages/thank_you_screen.dart';
+import 'package:flowers_app/features/spalsh/splash_page.dart';
 import 'package:flowers_app/features/login/presentation/view/pages/login_page.dart';
 import 'package:flowers_app/features/products/presentation/view/pages/occasion_page.dart';
-import 'package:flowers_app/features/spalsh/splash_page.dart';
 import 'package:flowers_app/features/main/presentation/screens/main_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -265,6 +269,40 @@ abstract class AppRoutes {
         },
       ),
       GoRoute(
+        path: Routes.checkout,
+        name: Routes.checkout,
+        pageBuilder: (context, state) {
+          final subtotal = state.extra as int? ?? 0;
+          return buildAnimatedPage(
+            key: state.pageKey,
+            child: BlocProvider(
+              create: (_) => getIt<CheckoutCubit>(),
+              child: CheckoutScreen(subtotal: subtotal),
+            ),
+            animationType: AnimationType.slideFromRight,
+          );
+        },
+      ),
+      GoRoute(
+        path: Routes.thankYou,
+        name: Routes.thankYou,
+        pageBuilder: (context, state) => buildAnimatedPage(
+          key: state.pageKey,
+          child: const ThankYouScreen(),
+          animationType: AnimationType.fade,
+        ),
+      ),
+      GoRoute(
+        path: Routes.paymentWebView,
+        name: Routes.paymentWebView,
+        pageBuilder: (context, state) {
+          final args = state.extra as Map<String, dynamic>? ?? {};
+          final url = args['url'] as String? ?? '';
+          final successUrl = args['successUrl'] as String?;
+          return buildAnimatedPage(
+            key: state.pageKey,
+            child: PaymentWebViewScreen(url: url, successUrl: successUrl),
+            animationType: AnimationType.fade,
         path: Routes.addresses,
         name: Routes.addresses,
         pageBuilder: (context, state) => buildAnimatedPage(
