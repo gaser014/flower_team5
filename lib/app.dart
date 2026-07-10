@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flowers_app/config/dependency_injection/di.dart';
 import 'package:flowers_app/core/routes/app_routes.dart';
 import 'package:flowers_app/core/theme/app_theme.dart';
+import 'package:flowers_app/features/cart/presentation/view_model/cubit/cart_cubit.dart';
 import 'package:flowers_app/features/main/presentation/view_model/cubit/home_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -17,8 +18,11 @@ class MyApp extends StatelessWidget {
       minTextAdapt: true,
       splitScreenMode: true,
       builder: (context, child) {
-        return BlocProvider(
-          create: (context) => getIt.get<HomeCubit>(),
+        return MultiBlocProvider(
+          providers: [
+            BlocProvider<HomeCubit>(create: (_) => getIt<HomeCubit>()),
+            BlocProvider<CartCubit>(create: (_) => getIt<CartCubit>()),
+          ],
           child: MaterialApp.router(
             localizationsDelegates: context.localizationDelegates,
             supportedLocales: context.supportedLocales,

@@ -57,6 +57,26 @@ import '../../features/app_filter_tabs/domain/use_cases/get_all_app_filter_tabs.
     as _i313;
 import '../../features/app_filter_tabs/presentation/view_model/cubit/app_filter_tabs_cubit.dart'
     as _i468;
+import '../../features/cart/api/api_client/cart_api_client.dart' as _i673;
+import '../../features/cart/api/datasources/cart_remote_data_source_impl.dart'
+    as _i210;
+import '../../features/cart/data/datasources/cart_remote_data_source_contract.dart'
+    as _i258;
+import '../../features/cart/data/repositories/cart_repository_impl.dart'
+    as _i642;
+import '../../features/cart/domain/repositories/cart_repository.dart' as _i322;
+import '../../features/cart/domain/use_cases/add_product_to_cart_use_case.dart'
+    as _i473;
+import '../../features/cart/domain/use_cases/clear_user_cart_use_case.dart'
+    as _i314;
+import '../../features/cart/domain/use_cases/get_cart_data_use_case.dart'
+    as _i254;
+import '../../features/cart/domain/use_cases/remove_product_from_cart_use_case.dart'
+    as _i24;
+import '../../features/cart/domain/use_cases/update_product_in_cart_usecase.dart'
+    as _i774;
+import '../../features/cart/presentation/view_model/cubit/cart_cubit.dart'
+    as _i323;
 import '../../features/home/api/api_client/home_api_client.dart' as _i592;
 import '../../features/home/api/datasources/home_remote_data_source_impl.dart'
     as _i796;
@@ -222,6 +242,15 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i809.SignUpCubit>(
       () => _i809.SignUpCubit(gh<_i45.SignUpUseCase>()),
+    );
+    gh.lazySingleton<_i323.CartCubit>(
+      () => _i323.CartCubit(
+        getCartDataUseCase: gh<_i254.GetCartDataUseCase>(),
+        addProductToCartUseCase: gh<_i473.AddProductToCartUseCase>(),
+        removeProductFromCartUseCase: gh<_i24.RemoveProductFromCartUseCase>(),
+        clearUserCartUseCase: gh<_i314.ClearUserCartUseCase>(),
+        updateProductInCartUseCase: gh<_i774.UpdateProductInCartUsecase>(),
+      ),
     );
     return this;
   }
