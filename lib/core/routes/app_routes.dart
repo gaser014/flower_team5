@@ -215,7 +215,7 @@ class _PageBasedPageRoute<T> extends PageRoute<T> {
 
 abstract class AppRoutes {
   static final GoRouter router = GoRouter(
-    initialLocation: Routes.splash,
+    initialLocation: Routes.main,
     routes: [
       GoRoute(
         path: Routes.login,
@@ -364,37 +364,36 @@ abstract class AppRoutes {
         },
       ),
     ],
-    redirect: (context, state) async {
-      final currentLocation = state.matchedLocation;
+    // redirect: (context, state) async {
+    //   final currentLocation = state.matchedLocation;
 
-      final authRoutes = [
-        Routes.login,
-        Routes.main,
-        // Routes.register,
-        // Routes.forgetPassword,
-        // Routes.resetPassword,
-        // AuthRoutes.otpVerification,
-        // AuthRoutes.completeProfile,
-        // AuthRoutes.success,
-      ];
+    //   final authRoutes = [
+    //     Routes.login,
+    //     // Routes.register,
+    //     // Routes.forgetPassword,
+    //     // Routes.resetPassword,
+    //     // AuthRoutes.otpVerification,
+    //     // AuthRoutes.completeProfile,
+    //     // AuthRoutes.success,
+    //   ];
       //
       // if (!isLoggedIn && !authRoutes.contains(currentLocation)) {
       //   // Redirect to account type selection (start of auth flow)
       //   return Routes.login;
       // }
 
-      if (authRoutes.contains(currentLocation)) {
-        final token = await getIt<AuthLocalDataSourceContract>().getUserToken();
-        final isLoggedIn = token != null && token.isNotEmpty;
+    //   if (authRoutes.contains(currentLocation)) {
+    //     final token = await getIt<AuthLocalDataSourceContract>().getUserToken();
+    //     final isLoggedIn = token != null && token.isNotEmpty;
 
-        // Redirect to home screen
-        if (isLoggedIn) {
-          return Routes.main;
-        }
-      }
+    //     // Redirect to home screen
+    //     if (isLoggedIn) {
+    //       return Routes.main;
+    //     }
+    //   }
 
-      // No redirect needed
-      return null;
-    },
+    //   // No redirect needed
+    //   return null;
+    // },
   );
 }

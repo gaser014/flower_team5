@@ -19,23 +19,25 @@ class FilterTab extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: !isSelected ? onTap : null,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        spacing: 6,
-        children: [
-          _Label(label: label, isSelected: isSelected),
-          Container(
-            height: 3,
+      child: IntrinsicWidth(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          spacing: 6,
+          children: [
+            _Label(label: label, isSelected: isSelected),
+            Container(
+              height: 3,
             decoration: BoxDecoration(
-              color: isSelected ? AppColors.primerColor : AppColors.grayA6,
-              borderRadius: BorderRadius.only(
+              color: isSelected ? AppColors.primerColor : Colors.transparent,
+              borderRadius: const BorderRadius.only(
                 topLeft: Radius.circular(100),
                 topRight: Radius.circular(100),
               ),
             ),
-            child: _Label(label: label, isSelected: isSelected),
           ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -66,23 +68,25 @@ class FilterTabShimmer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        spacing: 6,
-        children: [
-          CustomShimmerContainer(height: 24, width: 64),
-          Container(
-            height: 3,
-            decoration: BoxDecoration(
+      child: IntrinsicWidth(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          spacing: 6,
+          children: [
+            const CustomShimmerContainer(height: 24, width: 64),
+            Container(
+              height: 3,
+            decoration: const BoxDecoration(
               color: AppColors.grayA6,
               borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(100),
                 topRight: Radius.circular(100),
               ),
             ),
-            child: CustomShimmerContainer(height: 24, width: 64),
           ),
-        ],
+          ],
+        ),
       ),
     );
   }
