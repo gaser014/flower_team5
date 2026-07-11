@@ -1,4 +1,4 @@
-import 'package:flowers_app/core/entities/product_entity.dart';
+import 'package:flowers_app/features/products/domain/entities/product_entity.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'product_model.g.dart';
@@ -38,14 +38,12 @@ class ProductModel {
   Map<String, dynamic> toJson() => _$ProductModelToJson(this);
 
   ProductEntity toEntity() => ProductEntity(
-        id: id ?? '',
-        name: name ?? '',
-        image: image ?? '',
-        price: price ?? 0,
-        originalPrice: originalPrice,
-        discountPercentage: discountPercentage,
-        description: description,
-        status: status,
-        bouquetInclude: bouquetInclude,
-      );
+    id: id,
+    title: name,
+    imgCover: image,
+    priceAfterDiscount: price,
+    price: originalPrice,
+    discount: discountPercentage?.toDouble(),
+    description: description,
+  );
 }

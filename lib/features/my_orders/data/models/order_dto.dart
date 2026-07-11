@@ -66,7 +66,7 @@ class OrderDto {
       totalPrice: totalPrice,
       paymentType: paymentType,
       isPaid: isPaid,
-      isDelivered: isDelivered,
+      isDelivered: state == 'completed' || (isDelivered ?? false),
       state: state,
       createdAt: createdAt,
       updatedAt: updatedAt,

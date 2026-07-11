@@ -31,17 +31,26 @@ class OrderNotificationService {
   }) async {
     if (orderId.isEmpty) return;
     try {
-      final driverId = await _resolveDriverId(orderId);
+      // Read the order doc once to resolve the driver id and the order number.
+      final orderSnap = await _firestore
+          .collection(_ordersCollection)
+          .doc(orderId)
+          .get();
+      final orderData = orderSnap.data();
+      final driverId = _driverIdFrom(orderData);
       if (driverId == null || driverId.isEmpty) {
         log('No driver id found for order $orderId', name: _logName);
         return;
       }
+      final resolvedOrderNumber = orderNumber.isNotEmpty
+          ? orderNumber
+          : (orderData?['orderNumber'] ?? '').toString();
 
       // Always persist the notification (stores KEYS, not translated text).
       await _addNotification(
         recipientId: driverId,
         orderId: orderId,
-        orderNumber: orderNumber,
+        orderNumber: resolvedOrderNumber,
       );
 
       final tokens = await _driverTokens(driverId);
@@ -53,13 +62,16 @@ class OrderNotificationService {
       await FCMService().sendNotification(
         targetFcmTokens: tokens,
         // English fallback for the system tray; the driver app re-translates
-        // from the keys in `data` when it handles the message.
+        // from the keys in `data` (with the order number) when it handles it.
         title: NotificationKeys.deliveredByCustomerTitle.tr(),
-        body: NotificationKeys.deliveredByCustomer.tr(),
+        body: NotificationKeys.deliveredByCustomer.tr(
+          namedArgs: {'orderNumber': resolvedOrderNumber},
+        ),
+        // The data payload is what lets the driver app update the order live.
         data: {
           'type': 'order_status',
           'orderId': orderId,
-          'orderNumber': orderNumber,
+          'orderNumber': resolvedOrderNumber,
           'status': 'delivered',
           'titleKey': NotificationKeys.deliveredByCustomerTitle,
           'bodyKey': NotificationKeys.deliveredByCustomer,
@@ -95,12 +107,7 @@ class OrderNotificationService {
     });
   }
 
-  Future<String?> _resolveDriverId(String orderId) async {
-    final snapshot = await _firestore
-        .collection(_ordersCollection)
-        .doc(orderId)
-        .get();
-    final data = snapshot.data();
+  String? _driverIdFrom(Map<String, dynamic>? data) {
     if (data == null) return null;
     final driver = data['driver'];
     if (driver is Map && driver['id'] != null) {

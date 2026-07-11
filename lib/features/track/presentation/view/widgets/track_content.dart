@@ -1,6 +1,8 @@
+import 'package:flowers_app/core/routes/routes.dart';
 import 'package:flowers_app/core/values/app_colors.dart';
 import 'package:flowers_app/core/values/app_font_style.dart';
 import 'package:flowers_app/core/values/app_strings.dart';
+import 'package:flowers_app/features/order_tracking/domain/entities/order_tracking_args.dart';
 import 'package:flowers_app/features/track/domain/entities/track_order_entity.dart';
 import 'package:flowers_app/features/track/presentation/view/widgets/track_arrival_header.dart';
 import 'package:flowers_app/features/track/presentation/view/widgets/track_bottom_buttons.dart';
@@ -10,6 +12,7 @@ import 'package:flowers_app/features/track/presentation/view/widgets/track_timel
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 
 /// The main tracking layout shown once an order has been resolved. Rebuilds
 /// automatically as the cubit emits fresh snapshots from Firebase.
@@ -39,7 +42,16 @@ class TrackContent extends StatelessWidget {
           ),
         ),
         Gap(10.h),
-        TrackBottomButtons(status: order.status),
+        TrackBottomButtons(
+          status: order.status,
+          onPressed: () => context.push(
+            Routes.orderTracking,
+            extra: OrderTrackingArgs(
+              orderId: order.id,
+              orderNumber: order.orderNumber,
+            ),
+          ),
+        ),
         Gap(20.h),
       ],
     );

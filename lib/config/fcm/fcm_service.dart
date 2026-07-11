@@ -6,7 +6,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flowers_app/config/fcm/fcm_user_entity.dart';
 import 'package:flowers_app/core/values/app_colors.dart';
-import 'package:flowers_app/features/tracking_test/domain/entities/user_entity.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:googleapis_auth/auth_io.dart';
@@ -188,14 +187,25 @@ class FCMService {
 
     // Prefer localization keys from the data payload so the notification shows
     // in THIS device's language, regardless of the sender's locale.
+    // Only treat the value as a key when it looks like a dot-notation key
+    // (e.g. "notifications.order_picked"). If the driver app sent already-
+    // translated text, fall back to the notification payload directly.
     final data = message.data;
     final titleKey = (data['titleKey'] ?? '').toString();
     final bodyKey = (data['bodyKey'] ?? '').toString();
-    final title = titleKey.isNotEmpty ? titleKey.tr() : notification?.title;
-    final body = bodyKey.isNotEmpty ? bodyKey.tr() : notification?.body;
+
+    bool _isTranslationKey(String value) =>
+        value.isNotEmpty && value.contains('.');
+
+    final title = _isTranslationKey(titleKey)
+        ? titleKey.tr()
+        : (notification?.title ?? (titleKey.isNotEmpty ? titleKey : null));
+    final body = _isTranslationKey(bodyKey)
+        ? bodyKey.tr()
+        : (notification?.body ?? (bodyKey.isNotEmpty ? bodyKey : null));
 
     if (title == null && body == null) return;
-
+    log('Showing local notification: title=$title body=$body');
     await _localNotifications.show(
       id: (notification?.hashCode ?? DateTime.now().millisecondsSinceEpoch),
       title: title,
@@ -219,93 +229,6 @@ class FCMService {
     required String title,
     required String body,
     Map<String, String> data = const {},
-  }) async {
-    if (targetFcmTokens.isEmpty) {
-      log('sendNotification: no target tokens');
-      return;
-    }
-    try {
-      final String projectId = dotenv.env['FCM_PROJECT_ID'] ?? '';
-      final String privateKeyId = dotenv.env['FCM_PRIVATE_KEY_ID'] ?? '';
-      final String privateKey = (dotenv.env['FCM_PRIVATE_KEY'] ?? '')
-          .replaceAll('\\n', '\n');
-      final String clientEmail = dotenv.env['FCM_CLIENT_EMAIL'] ?? '';
-      final String clientId = dotenv.env['FCM_CLIENT_ID'] ?? '';
-      final String clientX509CertUrl =
-          dotenv.env['FCM_CLIENT_X509_CERT_URL'] ?? '';
-
-      if (projectId.isEmpty || privateKey.isEmpty || clientEmail.isEmpty) {
-        log('sendNotification: missing FCM service account env values');
-        return;
-      }
-
-      final String serviceAccountJsonString = jsonEncode({
-        "type": "service_account",
-        "project_id": projectId,
-        "private_key_id": privateKeyId,
-        "private_key": privateKey,
-        "client_email": clientEmail,
-        "client_id": clientId,
-        "auth_uri": "https://accounts.google.com/o/oauth2/auth",
-        "token_uri": "https://oauth2.googleapis.com/token",
-        "auth_provider_x509_cert_url":
-            "https://www.googleapis.com/oauth2/v1/certs",
-        "client_x509_cert_url": clientX509CertUrl,
-        "universe_domain": "googleapis.com",
-      });
-
-      final accountCredentials = ServiceAccountCredentials.fromJson(
-        serviceAccountJsonString,
-      );
-      final scopes = ['https://www.googleapis.com/auth/firebase.messaging'];
-      final client = await clientViaServiceAccount(accountCredentials, scopes);
-
-      final url =
-          'https://fcm.googleapis.com/v1/projects/$projectId/messages:send';
-
-      for (final tokenData in targetFcmTokens) {
-        final token = tokenData.token;
-        if (token.isEmpty) continue;
-
-        final payload = {
-          'message': {
-            'token': token,
-            'notification': {'title': title, 'body': body},
-            'data': {
-              'click_action': 'FLUTTER_NOTIFICATION_CLICK',
-              'lang': tokenData.lang,
-              ...data,
-            },
-          },
-        };
-
-        final response = await client.post(
-          Uri.parse(url),
-          headers: {'Content-Type': 'application/json'},
-          body: jsonEncode(payload),
-        );
-
-        if (response.statusCode == 200) {
-          log('Notification sent successfully to $token');
-        } else {
-          log('Failed to send notification to $token: ${response.body}');
-        }
-      }
-
-      client.close();
-    } catch (e) {
-      log('Error sending notification: $e');
-    }
-  }
-
-  /// Send a push notification directly from the client to multiple FCM tokens.
-  /// NOTE: This uses the modern FCM HTTP v1 API.
-  /// Since the Legacy API is shutting down, you MUST use a Service Account JSON.
-  /// ⚠️ IMPORTANT: For production, this logic belongs on your backend!
-  Future<void> sendNotification({
-    required List<FCMTokenEntity> targetFcmTokens,
-    required String title,
-    required String body,
   }) async {
     try {
       // 1. Go to Firebase Console -> Project Settings -> Service Accounts
@@ -354,20 +277,20 @@ class FCMService {
 
       for (var tokenData in targetFcmTokens) {
         final token = tokenData.token;
-        final lang =
-            tokenData.lang; // If you want to use language for translations
+        final lang = tokenData.lang;
 
-        if (token == null) continue;
+        if (token.isEmpty) continue;
 
-        // 5. Build the modern HTTP v1 message payload
-        final Map<String, dynamic> data = {
+        // 5. Build the modern HTTP v1 message payload. The `data` block carries
+        // the order-status keys so the receiver can update live.
+        final Map<String, dynamic> payload = {
           'message': {
             'token': token,
             'notification': {'title': title, 'body': body},
             'data': {
               'click_action': 'FLUTTER_NOTIFICATION_CLICK',
-              'message': 'custom data',
-              'lang': lang ?? 'en',
+              'lang': lang,
+              ...data,
             },
           },
         };
@@ -376,7 +299,7 @@ class FCMService {
         final response = await client.post(
           Uri.parse(url),
           headers: {'Content-Type': 'application/json'},
-          body: jsonEncode(data),
+          body: jsonEncode(payload),
         );
 
         if (response.statusCode == 200) {

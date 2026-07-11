@@ -67,6 +67,12 @@ class TrackRemoteDataSourceImpl implements TrackRemoteDataSourceContract {
     }
   }
 
+  /// Pure notification-driven status updates for [orderId].
+  ///
+  /// The driver app puts the new `status` directly in the FCM push payload, so
+  /// we surface it immediately without any Firestore read. This is the reliable
+  /// path: as long as the push arrives, the status advances (a Firestore read
+  /// could fail on rules/network and silently stall the update).
   @override
   Stream<TrackOrderModel> watchOrder({required String orderId}) {
     if (orderId.isEmpty) return const Stream.empty();
@@ -76,34 +82,19 @@ class TrackRemoteDataSourceImpl implements TrackRemoteDataSourceContract {
     final subscription = _fcmService.orderStatusStream
         .where((push) => push.orderId == orderId)
         .listen(
-          (push) async {
+          (push) {
             log(
               'FCM push → watchOrder: orderId=$orderId status=${push.status}',
               name: _logName,
             );
-            try {
-              final snapshot = await _orders.doc(orderId).get();
-              final data = snapshot.data();
-              if (data != null) {
-                controller.add(TrackOrderModel.fromFirestore(orderId, data));
-              } else {
-                // Firestore doc not ready yet — emit a minimal model so the
-                // UI can still reflect the new status immediately.
-                controller.add(
-                  TrackOrderModel.fromFirestore(orderId, {
-                    'orderId': orderId,
-                    'status': push.status,
-                  }),
-                );
-              }
-            } catch (e, s) {
-              log(
-                'watchOrder fetch failed for orderId=$orderId',
-                name: _logName,
-                error: e,
-                stackTrace: s,
-              );
-            }
+            controller.add(
+              TrackOrderModel.fromFirestore(orderId, {
+                'orderId': orderId,
+                'status': push.status,
+                if (push.orderNumber.isNotEmpty)
+                  'orderNumber': push.orderNumber,
+              }),
+            );
           },
           onError: (Object e, StackTrace s) {
             log(

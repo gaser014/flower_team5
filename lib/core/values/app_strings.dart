@@ -181,41 +181,6 @@ abstract class AppStrings {
   static String get addToCart => 'addToCart'.tr();
   static String get itemAddedSuccess => 'itemAddedSuccess'.tr();
 
-  // Checkout
-  static const String checkoutTitle = "Checkout";
-  static const String deliveryTime = "Delivery time";
-  static const String deliveryFee = "Delivery Fee";
-  static const String subtotal = "Sub Total";
-  static const String totalPrice = "Total";
-  static const String placeOrder = "Place order";
-  static const String schedule = "Schedule";
-  static const String arriveBy = "Arrive by";
-  static const String paymentSuccessful = "Payment Successful!";
-  static const String paymentFailed = "Payment Failed!";
-  static const String selectAddress = "Select Address";
-  static const String paymentMethod = "Payment method";
-  static const String cash = "Cash";
-  static const String creditCard = "Credit card";
-  static const String shippingAddress = "Shipping Address";
-  static const String deliveryAddress = "Delivery address";
-  static const String cashOnDelivery = "Cash on delivery";
-  static const String sendAsGift = "Send as a gift";
-  static const String itIsAGift = "It is a gift";
-  static const String receiverName = "Receiver Name";
-  static const String receiverPhone = "Receiver Phone";
-  static const String nameLabel = "Name";
-  static const String enterNameHint = "Enter the name";
-  static const String enterPhoneHint = "Enter the phone number";
-  static const String homeLabel = "Home";
-  static const String officeLabel = "Office";
-  static const String addNew = "Add new";
-  static const String instant = "Instant";
-  static const String orderPlaced = "Order Placed!";
-  static const String thankYou = "Thank You!";
-  static const String thankYouMessage = "Your order has been placed successfully.";
-  static const String continueShopping = "Continue Shopping";
-  static const String paymentCompleted = "Payment Completed";
-
   // ── Home ──────────────────────────────────────────────────────────────────
   static String get home => 'home'.tr();
   static String get categories => 'categories'.tr();
@@ -244,17 +209,13 @@ abstract class AppStrings {
   // ── Navigation ────────────────────────────────────────────────────────────
   static String get cart => 'cart'.tr();
   static String get profile => 'profile'.tr();
-  // Home
-  static const String categories = "Categories";
-  static const String viewAll = "View All";
-  static const String deliverTo = "Deliver to";
-  static const String egp = "EGP";
   // ── Cart ──────────────────────────────────────────────────────────────────
   static String get cartTitle => 'cartTitle'.tr();
   static String get checkout => 'checkout'.tr();
   static String get emptyCart => 'emptyCart'.tr();
 
   // ── Checkout ──────────────────────────────────────────────────────────────
+  static String get checkoutTitle => 'checkoutTitle'.tr();
   static String get deliveryTime => 'deliveryTime'.tr();
   static String get schedule => 'schedule'.tr();
   static String get arriveBy => 'arriveBy'.tr();
@@ -282,6 +243,7 @@ abstract class AppStrings {
   static String get orderPlaced => 'orderPlaced'.tr();
   static String get thankYouMessage => 'thankYouMessage'.tr();
   static String get continueShopping => 'continueShopping'.tr();
+  static String get selectAddressError => 'selectAddressError'.tr();
   static String get active => 'active'.tr();
   static String get completed => 'completed'.tr();
   static String get noActiveOrders => 'noActiveOrders'.tr();
@@ -400,19 +362,14 @@ abstract class AppStrings {
   static String get noAddressesYet => 'no_addresses_yet'.tr();
   static String get addAddressToStart => 'add_address_to_start'.tr();
 
-  // Track Order
-  static const String trackOrder = "Track Order";
+  // Track Order — const values used in const widget contexts
   static const String estimatedArrival = "Estimated arrival";
   static const String deliveryHero = "Delivery Hero";
-  static const String showMap = "Show Map";
-  static const String orderDelivered = "Order Delivered";
   static const String receivedOrder = "Order Received";
   static const String preparingOrder = "Preparing Order";
-  static const String outForDelivery = "Out for Delivery";
   static const String statusDelivered = "Delivered";
   static const String orderDetails = "Order Details";
   static const String noTrackedOrder = "No order to track yet";
-  static const String orderCancelled = "Order Cancelled";
   static const String waitingForDriver = "Waiting for a delivery hero";
   static const String orderNumberLabel = "Order";
   static const String calculatingArrival = "Calculating arrival time";

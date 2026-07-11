@@ -3,7 +3,7 @@ import 'package:flowers_app/core/values/app_colors.dart';
 import 'package:flowers_app/core/values/app_font_style.dart';
 import 'package:flowers_app/core/values/app_strings.dart';
 import 'package:flowers_app/core/widgets/custom_cached_image.dart';
-import 'package:flowers_app/core/entities/product_entity.dart';
+import 'package:flowers_app/features/products/domain/entities/product_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
@@ -12,11 +12,7 @@ class ProductItem extends StatelessWidget {
   final ProductEntity product;
   final VoidCallback onTap;
 
-  const ProductItem({
-    super.key,
-    required this.product,
-    required this.onTap,
-  });
+  const ProductItem({super.key, required this.product, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -35,32 +31,37 @@ class ProductItem extends StatelessWidget {
             Stack(
               children: [
                 Hero(
-                  tag: '${AppStrings.productHeroTag}${product.id}',
+                  tag: 'product-hero-${product.id}',
                   child: ClipRRect(
-                    borderRadius: BorderRadius.vertical(top: Radius.circular(16.r)),
+                    borderRadius: BorderRadius.vertical(
+                      top: Radius.circular(16.r),
+                    ),
                     child: CustomCachedImage(
-                      imagePath: product.image,
+                      imagePath: product.imgCover ?? '',
                       height: 180.h,
                       width: double.infinity,
                       fit: BoxFit.cover,
                     ),
                   ),
                 ),
-                if (product.discountPercentage != null)
+                if (product.discount != null && product.discount! > 0)
                   Positioned(
                     top: 8.h,
                     right: 8.w,
                     child: Container(
-                      padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 8.w,
+                        vertical: 4.h,
+                      ),
                       decoration: BoxDecoration(
                         color: AppColors.green0C.withValues(alpha: 0.9),
                         borderRadius: BorderRadius.circular(8.r),
                       ),
                       child: Text(
-                        '${product.discountPercentage}%',
-                        style: AppFontStyle.medium12(context: context).copyWith(
-                          color: AppColors.white,
-                        ),
+                        '${product.discount}%',
+                        style: AppFontStyle.medium12(
+                          context: context,
+                        ).copyWith(color: AppColors.white),
                       ),
                     ),
                   ),
@@ -72,7 +73,7 @@ class ProductItem extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    product.name,
+                    product.title ?? '',
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: AppFontStyle.medium16(context: context),
@@ -81,19 +82,21 @@ class ProductItem extends StatelessWidget {
                   Row(
                     children: [
                       Text(
-                        '${AppStrings.currencyEGP} ${product.price.toStringAsFixed(0)}',
-                        style: AppFontStyle.semiBold16(context: context).copyWith(
-                          color: AppColors.primerColor,
-                        ),
+                        '${AppStrings.egp} ${(product.priceAfterDiscount ?? product.price ?? 0).toStringAsFixed(0)}',
+                        style: AppFontStyle.semiBold16(
+                          context: context,
+                        ).copyWith(color: AppColors.primerColor),
                       ),
-                      if (product.originalPrice != null) ...[
+                      if (product.priceAfterDiscount != null &&
+                          product.price != null) ...[
                         Gap(8.w),
                         Text(
-                          product.originalPrice?.toStringAsFixed(0) ?? '',
-                          style: AppFontStyle.regular12(context: context).copyWith(
-                            color: AppColors.grayA6,
-                            decoration: TextDecoration.lineThrough,
-                          ),
+                          product.price?.toStringAsFixed(0) ?? '',
+                          style: AppFontStyle.regular12(context: context)
+                              .copyWith(
+                                color: AppColors.grayA6,
+                                decoration: TextDecoration.lineThrough,
+                              ),
                         ),
                       ],
                     ],

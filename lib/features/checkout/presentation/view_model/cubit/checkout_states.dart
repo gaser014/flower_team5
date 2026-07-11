@@ -11,7 +11,7 @@ class CheckoutStates extends Equatable {
     this.orderState = const BaseState.initial(),
     this.selectedPayment = 0,
     this.isGift = false,
-    this.addresses = CheckoutAddressFixtures.addresses,
+    this.addresses = const [],
     this.selectedAddressIndex = 0,
   });
 

@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:equatable/equatable.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flowers_app/config/base_state/base_state.dart';
 import 'package:flowers_app/core/values/app_strings.dart';
 import 'package:flowers_app/features/track/domain/entities/track_order_entity.dart';
@@ -22,7 +23,7 @@ part 'track_states.dart';
 /// location change automatically flows into [TrackStates.orderState] — no
 /// polling and no manual refresh needed.
 @injectable
-class TrackCubit extends Cubit<TrackStates> {
+class TrackCubit extends Cubit<TrackStates> with WidgetsBindingObserver {
   final GetOrderUseCase _getOrderUseCase;
   final WatchOrderUseCase _watchOrderUseCase;
   final MarkDeliveredUseCase _markDeliveredUseCase;
@@ -40,10 +41,35 @@ class TrackCubit extends Cubit<TrackStates> {
        _markDeliveredUseCase = markDeliveredUseCase,
        _saveLastTrackedOrderUseCase = saveLastTrackedOrderUseCase,
        _getLastTrackedOrderUseCase = getLastTrackedOrderUseCase,
-       super(const TrackStates());
+       super(const TrackStates()) {
+    // FCM `onMessage` only fires in the foreground, so a status change that
+    // arrived while the app was backgrounded would be missed. Re-fetch the
+    // order whenever the app resumes to reconcile any missed pushes.
+    WidgetsBinding.instance.addObserver(this);
+  }
 
   StreamSubscription<TrackOrderEntity>? _orderSub;
   String? _orderId;
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) _refreshOrder();
+  }
+
+  /// Silent re-fetch (no loading state) used to reconcile missed FCM pushes.
+  Future<void> _refreshOrder() async {
+    final orderId = _orderId;
+    if (orderId == null || orderId.isEmpty) return;
+    final result = await _getOrderUseCase(orderId);
+    result.when(
+      success: (data) {
+        if (data != null) {
+          emit(state.copyWith(orderState: BaseState.success(data)));
+        }
+      },
+      error: (_) {},
+    );
+  }
 
   @override
   void emit(TrackStates state) {
@@ -121,9 +147,19 @@ class TrackCubit extends Cubit<TrackStates> {
   }
 
   void _onOrderUpdated(OrderUpdatedEvent event) {
+    final incoming = event.order;
     // Ignore stale updates from a previous order id.
-    if (event.order.id != _orderId && _orderId != null) return;
-    emit(state.copyWith(orderState: BaseState.success(event.order)));
+    if (_orderId != null && incoming.id.isNotEmpty && incoming.id != _orderId) {
+      return;
+    }
+
+    // The push carries only the new status. Merge it onto the already-loaded
+    // order so we keep the driver, store, items, etc. instead of wiping them.
+    final current = state.orderState.data;
+    final merged = current == null
+        ? incoming
+        : current.copyWith(status: incoming.status);
+    emit(state.copyWith(orderState: BaseState.success(merged)));
   }
 
   void _onTrackError(TrackErrorEvent event) {
@@ -149,8 +185,21 @@ class TrackCubit extends Cubit<TrackStates> {
 
     final result = await _markDeliveredUseCase(orderId);
     result.when(
-      success: (_) =>
-          emit(state.copyWith(deliverState: const BaseState.success(null))),
+      success: (_) {
+        // No FCM push is sent to the customer for their OWN action, so update
+        // the tracked order locally right away instead of waiting for a push.
+        final current = state.orderState.data;
+        emit(
+          state.copyWith(
+            deliverState: const BaseState.success(null),
+            orderState: current != null
+                ? BaseState.success(
+                    current.copyWith(status: TrackOrderStatus.delivered),
+                  )
+                : null,
+          ),
+        );
+      },
       error: (exception) => emit(
         state.copyWith(
           deliverState: BaseState.error(
@@ -168,6 +217,7 @@ class TrackCubit extends Cubit<TrackStates> {
 
   @override
   Future<void> close() {
+    WidgetsBinding.instance.removeObserver(this);
     _orderSub?.cancel();
     return super.close();
   }

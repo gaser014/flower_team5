@@ -1,3 +1,6 @@
+import 'dart:developer';
+
+import 'package:flowers_app/config/api/api_key.dart';
 import 'package:flowers_app/config/database/cache_helper.dart';
 import 'package:flowers_app/core/routes/routes.dart';
 import 'package:flowers_app/core/values/app_assets.dart';
@@ -65,9 +68,17 @@ class _SplashPageState extends State<SplashPage>
         String? token = await AppSharedPreferences.getString(
           key: AppStrings.token,
         );
-
+        bool remember =
+            await AppSharedPreferences.getBool(key: APIkeys.rememberMe) ??
+            false;
+        log("==" * 50);
+        log("Token: $token");
+        log("Remember Me: $remember");
         if (mounted) {
-          if (token == null) {
+          if (token == null || !remember) {
+            log(
+              "Token is null or remember me is false, navigating to login page",
+            );
             context.go(Routes.login);
           } else {
             context.go(Routes.main);

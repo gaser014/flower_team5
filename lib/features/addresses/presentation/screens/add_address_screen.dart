@@ -167,16 +167,8 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
         massage: AppStrings.addressSaved,
         onSuccess: () => context.pop(true),
       );
-    } else if (updateState.isSuccess) {
-      context.showSuccessMessage(
-        state: updateState,
-        massage: AppStrings.addressSaved,
-        onSuccess: () => context.pop(true),
-      );
-    } else if (addState.isError) {
-      context.showErrorMessage(addState);
-    } else if (updateState.isError) {
-      context.showErrorMessage(updateState);
+    } else if (opState.isError) {
+      context.showErrorMessage(opState);
     }
   }
 }

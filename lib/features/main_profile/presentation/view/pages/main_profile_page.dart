@@ -116,13 +116,7 @@ class MainProfilePage extends StatelessWidget {
                             ProfileMenuItemWidget(
                               title: AppStrings.myOrders,
                               onTap: () {
-                                context.push(
-                                  Routes.orderTracking,
-                                  extra: OrderTrackingArgs(
-                                    orderNumber: "123973",
-                                    orderId: "6a4fbe7f3be1266dec7a8951",
-                                  ),
-                                );
+                                context.push(Routes.myOrders);
                               },
                               trailing: const Icon(
                                 Icons.chevron_right,

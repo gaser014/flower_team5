@@ -21,7 +21,7 @@ class TrackingMapBackButton extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.all(8),
           child: Transform.flip(
-            flipX: !isRTL,
+            flipX: true,
             child: SvgPicture.asset(
               AppAssets.arrowBack,
               width: 20,

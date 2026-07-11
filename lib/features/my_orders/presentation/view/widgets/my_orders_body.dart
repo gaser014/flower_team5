@@ -17,7 +17,9 @@ class MyOrdersPageBody extends StatelessWidget {
       builder: (context, state) {
         if (state.ordersState.isLoading) return const MyOrdersLoading();
         if (state.ordersState.isError) {
-          return MyOrdersError(message: state.ordersState.exception?.toString());
+          return MyOrdersError(
+            message: state.ordersState.exception?.toString(),
+          );
         }
         return _buildTabs(state.ordersState.data ?? []);
       },
@@ -25,8 +27,8 @@ class MyOrdersPageBody extends StatelessWidget {
   }
 
   Widget _buildTabs(List<OrderEntity> orders) {
-    final active = orders.where((o) => o.state == 'pending').toList();
-    final completed = orders.where((o) => o.state != 'pending').toList();
+    final active = orders.where((o) => o.isDelivered == false).toList();
+    final completed = orders.where((o) => o.isDelivered == true).toList();
 
     return DefaultTabController(
       length: 2,

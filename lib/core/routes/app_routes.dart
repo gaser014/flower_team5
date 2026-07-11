@@ -2,12 +2,9 @@ import 'dart:developer';
 import 'dart:io';
 import 'package:flowers_app/features/best_seller/presentation/view/pages/best_seller_page.dart';
 import 'package:flowers_app/features/product_details/presentation/view/pages/product_details_page.dart';
-import 'package:flowers_app/core/entities/product_entity.dart';
+import 'package:flowers_app/features/products/domain/entities/product_entity.dart';
 import 'package:flowers_app/features/main/presentation/screens/main_view.dart';
-import 'package:flowers_app/features/track/presentation/view/pages/track_page.dart';
-import 'package:flowers_app/features/track/presentation/view/pages/track_map_page.dart';
-import 'package:flowers_app/features/track/presentation/view_model/cubit/track_cubit.dart';
-import 'package:flowers_app/features/main/presentation/screens/main_view.dart';
+import 'package:flowers_app/features/spalsh/splash_page.dart';
 import 'package:flowers_app/features/track/presentation/view/pages/track_page.dart';
 import 'package:flowers_app/features/track/presentation/view/pages/track_map_page.dart';
 import 'package:flowers_app/features/track/presentation/view_model/cubit/track_cubit.dart';
@@ -24,39 +21,27 @@ import 'package:flowers_app/features/addresses/presentation/screens/add_address_
 import 'package:flowers_app/features/auth/sign_up/presentation/screens/sign_up_view.dart';
 import 'package:flowers_app/features/auth/sign_up/presentation/screens/terms_and_conditions_view.dart';
 import 'package:flowers_app/features/app_filter_tabs/domain/entities/app_filter_tab_item_entity.dart';
-import 'package:flowers_app/features/best_seller/presentation/view/pages/best_seller_page.dart';
-import 'package:flowers_app/features/checkout/presentation/cubit/checkout_cubit.dart';
-import 'package:flowers_app/features/checkout/presentation/screens/checkout_screen.dart';
-import 'package:flowers_app/features/checkout/presentation/screens/payment_web_view_screen.dart';
+import 'package:flowers_app/features/checkout/presentation/view_model/cubit/checkout_cubit.dart';
+import 'package:flowers_app/features/checkout/presentation/view/pages/checkout_screen.dart';
 import 'package:flowers_app/features/checkout/presentation/screens/thank_you_screen.dart';
 import 'package:flowers_app/features/edit_profile/presentation/view/pages/change_password_page.dart';
 import 'package:flowers_app/features/edit_profile/presentation/view/pages/edit_profile_page.dart';
-
 import 'package:flowers_app/features/order_tracking/domain/entities/order_tracking_args.dart';
 import 'package:flowers_app/features/order_tracking/presentation/view/pages/order_tracking_page.dart';
 import 'package:flowers_app/features/forget_password/presentation/view_model/bloc/forget_password_bloc.dart';
 import 'package:flowers_app/features/login/presentation/view/pages/login_page.dart';
 import 'package:flowers_app/features/logout/presentation/view/pages/profile_page.dart';
-import 'package:flowers_app/features/main/presentation/screens/main_view.dart';
 import 'package:flowers_app/features/main/presentation/view/profile_settings_page.dart';
 import 'package:flowers_app/features/my_orders/presentation/view/pages/my_orders_page.dart';
 import 'package:flowers_app/features/notifications/presentation/view/pages/notifications_page.dart';
-import 'package:flowers_app/features/product_details/presentation/view/pages/product_details_page.dart';
 import 'package:flowers_app/features/products/presentation/view/pages/occasion_page.dart';
-import 'package:flowers_app/features/product_details/presentation/view/pages/product_details_page.dart';
-import 'package:flowers_app/features/main/presentation/screens/main_view.dart';
-import 'package:flowers_app/core/entities/product_entity.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:flowers_app/features/auth/sign_up/presentation/screens/sign_up_view.dart';
-import 'package:flowers_app/features/auth/sign_up/presentation/screens/terms_and_conditions_view.dart';
 
 import '../../features/forget_password/presentation/view/pages/forget_password_page.dart';
 import '../../features/forget_password/presentation/view/pages/verify_code_page.dart';
 import '../../features/forget_password/presentation/view/pages/reset_password_page.dart';
-import 'package:flowers_app/features/products/domain/entities/product_entity.dart';
 
 final RouteObserver<ModalRoute> routeObserver = RouteObserver<ModalRoute>();
 
@@ -81,7 +66,6 @@ Page<T> buildAnimatedPage<T extends Object?>({
   Duration duration = const Duration(milliseconds: 300),
   Curve curve = Curves.easeInOut,
 }) {
-  // Use Cupertino page for iOS
   if (Platform.isIOS && animationType == AnimationType.cupertino) {
     return CupertinoPage<T>(key: key, child: child);
   }
@@ -103,7 +87,6 @@ Page<T> buildAnimatedPage<T extends Object?>({
   );
 }
 
-// Animation Builder Function
 Widget _getAnimationTransition(
   AnimationType type,
   Animation<double> animation,
@@ -171,7 +154,6 @@ Widget _getAnimationTransition(
   }
 }
 
-// Enhanced Custom Transition Page
 class CustomTransitionPage<T> extends Page<T> {
   const CustomTransitionPage({
     required this.child,
@@ -255,13 +237,20 @@ abstract class AppRoutes {
   static final GoRouter router = GoRouter(
     initialLocation: Routes.splash,
     routes: [
-    GoRoute(
-    path: Routes.forgetPassword,
-    name: Routes.forgetPassword,
-    builder: (BuildContext context, GoRouterState state) {
-      return const ForgetPasswordPage();
-    },
-  ),
+      GoRoute(
+        path: Routes.forgetPassword,
+        name: Routes.forgetPassword,
+        builder: (BuildContext context, GoRouterState state) {
+          return const ForgetPasswordPage();
+        },
+      ),
+      GoRoute(
+        path: Routes.splash,
+        name: Routes.splash,
+        builder: (BuildContext context, GoRouterState state) {
+          return const SplashPage();
+        },
+      ),
       GoRoute(
         path: Routes.login,
         name: Routes.login,
@@ -283,7 +272,6 @@ abstract class AppRoutes {
       GoRoute(
         path: Routes.bestSeller,
         name: Routes.bestSeller,
-        name: Routes.termsAndConditions,
         pageBuilder: (context, state) => buildAnimatedPage(
           key: state.pageKey,
           child: const BestSellerPage(),
@@ -295,7 +283,10 @@ abstract class AppRoutes {
         name: Routes.main,
         pageBuilder: (context, state) => buildAnimatedPage(
           key: state.pageKey,
-          child: const MainView(),
+          child: KeyedSubtree(
+            key: ValueKey(context.locale),
+            child: const MainView(),
+          ),
           animationType: AnimationType.fade,
         ),
       ),
@@ -303,7 +294,7 @@ abstract class AppRoutes {
         path: Routes.productDetails,
         name: Routes.productDetails,
         pageBuilder: (context, state) {
-          final product = state.extra as ProductEntity;
+          final product = state.extra as ProductEntity?;
           return buildAnimatedPage(
             key: state.pageKey,
             child: ProductDetailsPage(product: product),
@@ -359,17 +350,11 @@ abstract class AppRoutes {
       GoRoute(
         path: Routes.thankYou,
         name: Routes.thankYou,
-        pageBuilder: (context, state) {
-          final args = state.extra as Map<String, dynamic>? ?? const {};
-          return buildAnimatedPage(
-            key: state.pageKey,
-            child: ThankYouScreen(
-              orderId: args['orderId'] as String?,
-              orderNumber: args['orderNumber'] as String?,
-            ),
-            animationType: AnimationType.fade,
-          );
-        },
+        pageBuilder: (context, state) => buildAnimatedPage(
+          key: state.pageKey,
+          child: const ThankYouScreen(),
+          animationType: AnimationType.fade,
+        ),
       ),
       GoRoute(
         path: Routes.orderTracking,
@@ -384,20 +369,6 @@ abstract class AppRoutes {
         },
       ),
       GoRoute(
-        path: Routes.paymentWebView,
-        name: Routes.paymentWebView,
-        pageBuilder: (context, state) {
-          final args = state.extra as Map<String, dynamic>? ?? {};
-          final url = args['url'] as String? ?? '';
-          final successUrl = args['successUrl'] as String?;
-          return buildAnimatedPage(
-            key: state.pageKey,
-            child: PaymentWebViewScreen(url: url, successUrl: successUrl),
-            animationType: AnimationType.fade,
-          );
-        },
-      ),
-      GoRoute(
         path: Routes.addresses,
         name: Routes.addresses,
         pageBuilder: (context, state) => buildAnimatedPage(
@@ -407,72 +378,6 @@ abstract class AppRoutes {
                 getIt<AddressesCubit>()..doIntent(const GetAddressesEvent()),
             child: const AddressesPage(),
           ),
-          animationType: AnimationType.slideFromRight,
-        ),
-      ),
-      GoRoute(
-        path: Routes.addAddress,
-        name: Routes.addAddress,
-        pageBuilder: (context, state) {
-          final Map<String, dynamic> extra =
-              state.extra as Map<String, dynamic>;
-          final editAddress = extra['editAddress'] as AddressEntity?;
-          final cubit = extra['cubit'] as AddressesCubit;
-
-          return buildAnimatedPage(
-            key: state.pageKey,
-            child: BlocProvider.value(
-              value: cubit,
-              child: AddAddressScreen(editAddress: editAddress),
-            ),
-            animationType: AnimationType.slideFromRight,
-          );
-        },
-      ),
-      GoRoute(
-        path: Routes.checkout,
-        name: Routes.checkout,
-        pageBuilder: (context, state) {
-          final subtotal = state.extra as int? ?? 0;
-          return buildAnimatedPage(
-            key: state.pageKey,
-            child: BlocProvider(
-              create: (_) => getIt<CheckoutCubit>(),
-              child: CheckoutScreen(subtotal: subtotal),
-            ),
-            animationType: AnimationType.slideFromRight,
-          );
-        },
-      ),
-      GoRoute(
-        path: Routes.thankYou,
-        name: Routes.thankYou,
-        pageBuilder: (context, state) => buildAnimatedPage(
-          key: state.pageKey,
-          child: const ThankYouScreen(),
-          animationType: AnimationType.fade,
-        ),
-      ),
-      GoRoute(
-        path: Routes.paymentWebView,
-        name: Routes.paymentWebView,
-        pageBuilder: (context, state) {
-          final args = state.extra as Map<String, dynamic>? ?? {};
-          final url = args['url'] as String? ?? '';
-          final successUrl = args['successUrl'] as String?;
-          return buildAnimatedPage(
-            key: state.pageKey,
-            child: PaymentWebViewScreen(url: url, successUrl: successUrl),
-            animationType: AnimationType.fade,
-          );
-        },
-      ),
-      GoRoute(
-        path: Routes.addresses,
-        name: Routes.addresses,
-        pageBuilder: (context, state) => buildAnimatedPage(
-          key: state.pageKey,
-          child: const AddressesPage(),
           animationType: AnimationType.slideFromRight,
         ),
       ),
@@ -514,14 +419,6 @@ abstract class AppRoutes {
         },
       ),
       GoRoute(
-        path: Routes.register,
-        pageBuilder: (context, state) => buildAnimatedPage(
-          key: state.pageKey,
-          child: const SignUpView(),
-          animationType: AnimationType.slideFromRight,
-        ),
-      ),
-      GoRoute(
         path: Routes.editProfile,
         name: Routes.editProfile,
         builder: (BuildContext context, GoRouterState state) {
@@ -537,30 +434,12 @@ abstract class AppRoutes {
       ),
       GoRoute(
         path: Routes.termsAndConditions,
+        name: Routes.termsAndConditions,
         pageBuilder: (context, state) => buildAnimatedPage(
           key: state.pageKey,
           child: const TermsAndConditionsView(),
           animationType: AnimationType.slideFromRight,
         ),
-      ),
-      GoRoute(
-        path: Routes.main,
-        name: Routes.main,
-        pageBuilder: (context, state) => buildAnimatedPage(
-          key: state.pageKey,
-          child: KeyedSubtree(
-            key: ValueKey(context.locale),
-            child: const MainView(),
-          ),
-          animationType: AnimationType.fade,
-        ),
-      ),
-      GoRoute(
-        path: Routes.login,
-        name: Routes.login,
-        builder: (BuildContext context, GoRouterState state) {
-          return LoginPage();
-        },
       ),
       GoRoute(
         path: Routes.myOrders,
@@ -574,27 +453,6 @@ abstract class AppRoutes {
         name: Routes.notifications,
         builder: (BuildContext context, GoRouterState state) {
           return NotificationsPage();
-        },
-      ),
-      GoRoute(
-        path: Routes.bestSeller,
-        name: Routes.bestSeller,
-        pageBuilder: (context, state) => buildAnimatedPage(
-          key: state.pageKey,
-          child: const BestSellerPage(),
-          animationType: AnimationType.slideFromRight,
-        ),
-      ),
-      GoRoute(
-        path: Routes.productDetails,
-        name: Routes.productDetails,
-        pageBuilder: (context, state) {
-          final product = state.extra as ProductEntity?;
-          return buildAnimatedPage(
-            key: state.pageKey,
-            child: ProductDetailsPage(product: product),
-            animationType: AnimationType.fade,
-          );
         },
       ),
       GoRoute(
@@ -617,63 +475,48 @@ abstract class AppRoutes {
           );
         },
       ),
-      GoRoute(
-        path: Routes.trackMap,
-        name: Routes.trackMap,
-        pageBuilder: (context, state) {
-          final existingCubit = state.extra is TrackCubit
-              ? state.extra as TrackCubit
-              : null;
-          final child = existingCubit != null
-              ? BlocProvider<TrackCubit>.value(
-                  value: existingCubit,
-                  child: const TrackMapPage(),
-                )
-              : BlocProvider<TrackCubit>(
-                  create: (_) =>
-                      getIt<TrackCubit>()
-                        ..doIntent(const ResumeTrackingEvent()),
-                  child: const TrackMapPage(),
-                );
-          return buildAnimatedPage(
-            key: state.pageKey,
-            child: child,
-            animationType: AnimationType.slideFromBottom,
-          );
-        },
-      ),
+      // GoRoute(
+      //   path: Routes.trackMap,
+      //   name: Routes.trackMap,
+      //   pageBuilder: (context, state) {
+      //     final existingCubit = state.extra is TrackCubit
+      //         ? state.extra as TrackCubit
+      //         : null;
+      //     final child = existingCubit != null
+      //         ? BlocProvider<TrackCubit>.value(
+      //             value: existingCubit,
+      //             child: const TrackMapPage(),
+      //           )
+      //         : BlocProvider<TrackCubit>(
+      //             create: (_) =>
+      //                 getIt<TrackCubit>()
+      //                   ..doIntent(const ResumeTrackingEvent()),
+      //             child: const TrackMapPage(),
+      //           );
+      //     return buildAnimatedPage(
+      //       key: state.pageKey,
+      //       child: child,
+      //       animationType: AnimationType.slideFromBottom,
+      //     );
+      //   },
+      // ),
     ],
-    redirect: (context, state) async {
-      final currentLocation = state.matchedLocation;
-
-      final authRoutes = [
-        Routes.login,
-        // Routes.register,
-        // Routes.forgetPassword,
-        // Routes.resetPassword,
-        // AuthRoutes.otpVerification,
-        // AuthRoutes.completeProfile,
-        // AuthRoutes.success,
-      ];
-      //
-      // if (!isLoggedIn && !authRoutes.contains(currentLocation)) {
-      //   // Redirect to account type selection (start of auth flow)
-      //   return Routes.login;
-      // }
-
-      if (authRoutes.contains(currentLocation)) {
-        final token = await getIt<AuthLocalDataSourceContract>().getUserToken();
-        log('Auth Token: $token');
-        final isLoggedIn = token != null && token.isNotEmpty;
-
-        // Redirect to home screen
-        if (isLoggedIn) {
-          return Routes.main;
-        }
-      }
-
-      // No redirect needed
-      return null;
-    },
+    // redirect: (context, state) async {
+    //   final currentLocation = state.matchedLocation;
+    //
+    //   final authRoutes = [Routes.login];
+    //
+    //   if (authRoutes.contains(currentLocation)) {
+    //     final token = await getIt<AuthLocalDataSourceContract>().getUserToken();
+    //     log('Auth Token: $token');
+    //     final isLoggedIn = token != null && token.isNotEmpty;
+    //
+    //     if (isLoggedIn) {
+    //       return Routes.main;
+    //     }
+    //   }
+    //
+    //   return null;
+    // },
   );
 }

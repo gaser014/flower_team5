@@ -4,7 +4,8 @@ import 'package:flowers_app/core/values/app_strings.dart';
 import 'package:flutter/material.dart';
 
 class OrderItemTrackButton extends StatelessWidget {
-  const OrderItemTrackButton({super.key});
+  final VoidCallback? onPressed;
+  const OrderItemTrackButton({super.key, this.onPressed});
 
   @override
   Widget build(BuildContext context) {
@@ -12,7 +13,7 @@ class OrderItemTrackButton extends StatelessWidget {
       width: double.infinity,
       height: 30,
       child: ElevatedButton(
-        onPressed: () {},
+        onPressed: onPressed,
         style: ElevatedButton.styleFrom(
           backgroundColor: AppColors.primerColor,
           foregroundColor: AppColors.whiteF9,
@@ -24,8 +25,9 @@ class OrderItemTrackButton extends StatelessWidget {
         ),
         child: Text(
           AppStrings.trackOrder,
-          style: AppFontStyle.medium13(context: context)
-              .copyWith(color: AppColors.whiteF9),
+          style: AppFontStyle.medium13(
+            context: context,
+          ).copyWith(color: AppColors.whiteF9),
         ),
       ),
     );

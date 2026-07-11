@@ -1,6 +1,6 @@
 import 'package:flowers_app/config/base_response/entity/base_pagination_entity.dart';
 import 'package:flowers_app/config/base_response/entity/meta_entity.dart';
-import 'package:flowers_app/core/entities/product_entity.dart';
+import 'package:flowers_app/features/products/domain/entities/product_entity.dart';
 import 'package:flowers_app/features/products/data/models/product_dto.dart';
 import 'package:flowers_app/features/products/data/models/product_dto.dart';
 import 'package:flowers_app/features/products/domain/entities/product_entity.dart';

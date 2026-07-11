@@ -97,6 +97,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                 onChanged: (v) => context.read<CheckoutCubit>().doIntent(
                   SelectAddressEvent(v),
                 ),
+                onShowAllAddresses: () => context.pushNamed(Routes.addresses),
               ),
               CheckoutPaymentMethod(
                 selectedIndex: context.select<CheckoutCubit, int>(
@@ -107,7 +108,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                 ),
               ),
               CheckoutGiftSection(
-                nameController: _receiverNameController,
+                usernameController: _receiverNameController,
                 phoneController: _receiverPhoneController,
               ),
               CheckoutPriceSection(

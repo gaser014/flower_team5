@@ -18,8 +18,13 @@ import 'package:go_router/go_router.dart';
 /// confirmation.
 class TrackBottomButtons extends StatelessWidget {
   final TrackOrderStatus status;
+  final VoidCallback onPressed;
 
-  const TrackBottomButtons({super.key, required this.status});
+  const TrackBottomButtons({
+    super.key,
+    required this.status,
+    required this.onPressed,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -27,12 +32,12 @@ class TrackBottomButtons extends StatelessWidget {
     final isDelivered = status.isDelivered;
 
     if (!canConfirm && !isDelivered) {
-      return const _ShowMapButton(fullWidth: true);
+      return _ShowMapButton(fullWidth: true, onPressed: onPressed);
     }
 
     return Row(
       children: [
-        const Expanded(child: _ShowMapButton()),
+        Expanded(child: _ShowMapButton(onPressed: onPressed)),
         Gap(10.w),
         Expanded(
           child: isDelivered
@@ -46,8 +51,8 @@ class TrackBottomButtons extends StatelessWidget {
 
 class _ShowMapButton extends StatelessWidget {
   final bool fullWidth;
-
-  const _ShowMapButton({this.fullWidth = false});
+  final VoidCallback onPressed;
+  const _ShowMapButton({this.fullWidth = false, required this.onPressed});
 
   @override
   Widget build(BuildContext context) {
@@ -55,8 +60,7 @@ class _ShowMapButton extends StatelessWidget {
       width: fullWidth ? double.infinity : null,
       height: 50.h,
       child: ElevatedButton(
-        onPressed: () =>
-            context.push(Routes.trackMap, extra: context.read<TrackCubit>()),
+        onPressed: onPressed,
         style: ElevatedButton.styleFrom(
           backgroundColor: AppColors.primerColor,
           shape: RoundedRectangleBorder(

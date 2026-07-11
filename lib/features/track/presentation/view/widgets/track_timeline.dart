@@ -10,7 +10,7 @@ class TrackTimeline extends StatelessWidget {
 
   const TrackTimeline({super.key, required this.step});
 
-  static const _titles = [
+  static final _titles = [
     AppStrings.receivedOrder,
     AppStrings.preparingOrder,
     AppStrings.outForDelivery,

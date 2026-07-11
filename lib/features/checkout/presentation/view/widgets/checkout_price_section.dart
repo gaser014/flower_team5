@@ -21,7 +21,7 @@ class CheckoutPriceSection extends StatelessWidget {
     const delivery = 10;
     final total = subtotal + delivery;
     final isLoading = context.select<CheckoutCubit, bool>(
-      (c) => c.state.checkoutState.isLoading,
+      (c) => c.state.orderState.isLoading,
     );
 
     return Container(
@@ -51,12 +51,6 @@ class CheckoutPriceSection extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                '\$$delivery',
-                style: AppFontStyle.regular16(
-                  context: context,
-                ).copyWith(color: AppColors.gray53),
-              ),
               Text(
                 AppStrings.deliveryFee,
                 style: AppFontStyle.regular16(
@@ -98,11 +92,6 @@ class CheckoutPriceSection extends StatelessWidget {
             onPressed: onPlaceOrder,
             text: AppStrings.placeOrder,
             isLoading: isLoading,
-          CustomButton(
-            text: AppStrings.placeOrder,
-            onPressed: onPlaceOrder,
-            isLoading: isLoading,
-
           ),
         ],
       ),

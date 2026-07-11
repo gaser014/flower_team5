@@ -1,20 +1,13 @@
-import 'package:flowers_app/config/dependency_injection/di.dart';
-import 'package:flowers_app/core/routes/routes.dart';
 import 'package:flowers_app/core/values/app_colors.dart';
 import 'package:flowers_app/core/values/app_font_style.dart';
 import 'package:flowers_app/core/values/app_strings.dart';
 import 'package:flowers_app/core/widgets/custom_button.dart';
-import 'package:flowers_app/features/addresses/domain/entities/address_entity.dart';
-import 'package:flowers_app/features/addresses/presentation/cubit/addresses_cubit.dart';
-import 'package:flowers_app/features/checkout/presentation/cubit/checkout_cubit.dart';
+import 'package:flowers_app/features/checkout/domain/entities/checkout_address_entity.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 
 class CheckoutAddressCard extends StatelessWidget {
   final List<CheckoutAddressEntity> addresses;
   final int selectedIndex;
-  final List<AddressEntity> addresses;
   final ValueChanged<int> onChanged;
   final VoidCallback onShowAllAddresses;
 
@@ -22,16 +15,12 @@ class CheckoutAddressCard extends StatelessWidget {
     super.key,
     required this.addresses,
     required this.selectedIndex,
-    required this.addresses,
     required this.onChanged,
     required this.onShowAllAddresses,
   });
 
   @override
   Widget build(BuildContext context) {
-    final displayAddresses = addresses.take(3).toList();
-    final showAll = addresses.length > 3;
-
     return Container(
       padding: const EdgeInsets.all(16),
       color: AppColors.whiteF9,
@@ -57,19 +46,23 @@ class CheckoutAddressCard extends StatelessWidget {
             height: 36,
             child: CustomButton(
               variant: ButtonVariant.outlined,
-              onPressed: () {},
+              onPressed: onShowAllAddresses,
               text: null,
               child: Row(
                 spacing: 4,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    AppStrings.addNew,
+                    AppStrings.showAllAddresses,
                     style: AppFontStyle.medium14(
                       context: context,
                     ).copyWith(color: AppColors.primerColor),
                   ),
-                  const Icon(Icons.add, size: 20, color: AppColors.primerColor),
+                  const Icon(
+                    Icons.list,
+                    size: 20,
+                    color: AppColors.primerColor,
+                  ),
                 ],
               ),
             ),
@@ -77,10 +70,6 @@ class CheckoutAddressCard extends StatelessWidget {
         ],
       ),
     );
-  }
-
-  int _indexOf(AddressEntity addr) {
-    return addresses.indexOf(addr);
   }
 }
 
@@ -116,28 +105,6 @@ class _AddressCard extends StatelessWidget {
         ),
         child: Row(
           children: [
-            const Icon(Icons.edit, color: AppColors.gray53, size: 20),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Text(
-                    title,
-                    style: AppFontStyle.medium16(
-                      context: context,
-                    ).copyWith(color: AppColors.black0C),
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    address,
-                    style: AppFontStyle.regular13(
-                      context: context,
-                    ).copyWith(color: AppColors.gray53),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(width: 12),
             Container(
               width: 20,
               height: 20,
@@ -182,7 +149,8 @@ class _AddressCard extends StatelessWidget {
                 ],
               ),
             ),
-            // const Icon(Icons.edit, color: AppColors.gray53, size: 20),
+            const SizedBox(width: 12),
+            const Icon(Icons.edit, color: AppColors.gray53, size: 20),
           ],
         ),
       ),
