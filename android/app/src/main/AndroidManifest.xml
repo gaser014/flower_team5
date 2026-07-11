@@ -18,6 +18,12 @@
         android:label="flowers_app"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
+        <!-- Google Maps SDK key. Injected via the ${MAPS_API_KEY} manifest
+             placeholder, which build.gradle.kts reads from the project's .env
+             (google_map_key), falling back to local.properties (MAPS_API_KEY). -->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="${MAPS_API_KEY}" />
         <activity
             android:name=".MainActivity"
             android:exported="true"

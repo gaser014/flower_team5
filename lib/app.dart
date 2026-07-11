@@ -3,6 +3,7 @@ import 'package:flowers_app/config/dependency_injection/di.dart';
 import 'package:flowers_app/core/routes/app_routes.dart';
 import 'package:flowers_app/core/theme/app_theme.dart';
 import 'package:flowers_app/features/cart/presentation/view_model/cubit/cart_cubit.dart';
+import 'package:flowers_app/features/location/presentation/cubit/location_cubit.dart';
 import 'package:flowers_app/features/main/presentation/view_model/cubit/home_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -22,6 +23,9 @@ class MyApp extends StatelessWidget {
           providers: [
             BlocProvider<HomeCubit>(create: (_) => getIt<HomeCubit>()),
             BlocProvider<CartCubit>(create: (_) => getIt<CartCubit>()),
+            BlocProvider<LocationCubit>(
+              create: (_) => getIt<LocationCubit>()..initializeHomeLocation(),
+            ),
           ],
           child: MaterialApp.router(
             localizationsDelegates: context.localizationDelegates,

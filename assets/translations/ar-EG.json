@@ -25,5 +25,22 @@
         "no_addresses_yet": "لا توجد عناوين بعد",
         "add_address_to_start": "أضف عنوانك الأول للبدء",
         "tap_to_select_location": "اضغط لتحديد الموقع"
+    },
+    "order_tracking": {
+        "title": "تتبع الطلب",
+        "track_order": "تتبع الطلب",
+        "estimated_arrival": "وقت الوصول المتوقع",
+        "delivery_hero": "هو بطل التوصيل الخاص بك اليوم",
+        "order_details": "تفاصيل الطلب",
+        "calculating": "جاري حساب وقت الوصول…",
+        "route_unavailable": "تعذر تحميل المسار. يرجى التحقق من اتصالك.",
+        "flowery": "فلاوري",
+        "your_location": "المنزل",
+        "your_driver": "السائق",
+        "waiting_for_driver": "في انتظار تعيين سائق",
+        "driver_arrived_title": "وصل السائق",
+        "driver_arrived_message": "طلبك في موقعك. استمتع بالورود!",
+        "arrived": "وصل",
+        "got_it": "حسناً"
     }
 }

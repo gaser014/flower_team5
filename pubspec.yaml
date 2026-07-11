@@ -23,6 +23,7 @@ dependencies:
     sdk: flutter
   flutter_bloc: ^9.1.1
   flutter_cache_manager: ^3.4.1
+  flutter_dotenv: ^6.0.1
   flutter_local_notifications: ^20.1.0
   flutter_screenutil: ^5.9.3
   flutter_secure_storage: ^10.0.0
@@ -84,6 +85,7 @@ flutter:
     - assets/icons/
     - assets/translations/
     - assets/json/
+    - .env
 
   # ---------- Fonts ----------
   fonts:

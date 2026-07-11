@@ -191,6 +191,21 @@ import '../../features/main_profile/domain/use_cases/get_main_profile_use_case.d
     as _i818;
 import '../../features/main_profile/presentation/view_model/cubit/main_profile_cubit.dart'
     as _i60;
+import '../../features/order_tracking/api/directions_api_client.dart' as _i29;
+import '../../features/order_tracking/api/order_tracking_firestore_data_source.dart'
+    as _i641;
+import '../../features/order_tracking/data/datasources/order_tracking_remote_data_source_contract.dart'
+    as _i49;
+import '../../features/order_tracking/data/repositories/order_tracking_repository_impl.dart'
+    as _i632;
+import '../../features/order_tracking/domain/repositories/order_tracking_repository.dart'
+    as _i578;
+import '../../features/order_tracking/domain/use_cases/get_order_route_use_case.dart'
+    as _i812;
+import '../../features/order_tracking/domain/use_cases/watch_order_tracking_use_case.dart'
+    as _i884;
+import '../../features/order_tracking/presentation/view_model/cubit/order_tracking_cubit.dart'
+    as _i657;
 import '../../features/product_details/api/api_client/product_details_api_client.dart'
     as _i327;
 import '../../features/product_details/api/datasources/product_details_remote_data_source_impl.dart'
@@ -252,6 +267,9 @@ extension GetItInjectableX on _i174.GetIt {
       () => injectableModule.firebaseRemoteConfig,
     );
     gh.lazySingleton<_i974.FirebaseFirestore>(() => firebaseModule.firestore);
+    gh.lazySingleton<_i29.DirectionsApiClient>(
+      () => _i29.DirectionsApiClient(),
+    );
     gh.factory<_i923.LocationRemoteDataSourceContract>(
       () => _i534.LocationRemoteDataSourceImpl(),
     );
@@ -329,6 +347,10 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i736.LoginRemoteDataSourceContract>(
       () => _i904.LoginRemoteDataSourceImpl(gh<_i395.LoginApiClient>()),
     );
+    gh.factory<_i49.OrderTrackingRemoteDataSourceContract>(
+      () =>
+          _i641.OrderTrackingFirestoreDataSource(gh<_i974.FirebaseFirestore>()),
+    );
     gh.factory<_i258.CartRemoteDataSourceContract>(
       () => _i210.CartRemoteDataSourceImpl(
         cartApiClient: gh<_i673.CartApiClient>(),
@@ -398,6 +420,12 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i759.AuthLocalDataSourceContract>(),
       ),
     );
+    gh.factory<_i578.OrderTrackingRepository>(
+      () => _i632.OrderTrackingRepositoryImpl(
+        gh<_i49.OrderTrackingRemoteDataSourceContract>(),
+        gh<_i29.DirectionsApiClient>(),
+      ),
+    );
     gh.factory<_i902.AppFilterTabsRepository>(
       () => _i539.AppFilterTabsRepositoryImpl(
         appFilterTabsRemoteDataSourceContract:
@@ -431,6 +459,13 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i642.CartRepositoryImpl(
         cartRemoteDataSourceContract: gh<_i258.CartRemoteDataSourceContract>(),
       ),
+    );
+    gh.factory<_i812.GetOrderRouteUseCase>(
+      () => _i812.GetOrderRouteUseCase(gh<_i578.OrderTrackingRepository>()),
+    );
+    gh.factory<_i884.WatchOrderTrackingUseCase>(
+      () =>
+          _i884.WatchOrderTrackingUseCase(gh<_i578.OrderTrackingRepository>()),
     );
     gh.factory<_i413.CheckoutWithCardUseCase>(
       () => _i413.CheckoutWithCardUseCase(gh<_i498.CheckoutRepository>()),
@@ -555,6 +590,12 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i90.GetProductDetailsUseCase>(
       () => _i90.GetProductDetailsUseCase(gh<_i88.ProductDetailsRepository>()),
+    );
+    gh.factory<_i657.OrderTrackingCubit>(
+      () => _i657.OrderTrackingCubit(
+        gh<_i884.WatchOrderTrackingUseCase>(),
+        gh<_i812.GetOrderRouteUseCase>(),
+      ),
     );
     gh.factory<_i820.ProductDetailsCubit>(
       () => _i820.ProductDetailsCubit(gh<_i90.GetProductDetailsUseCase>()),

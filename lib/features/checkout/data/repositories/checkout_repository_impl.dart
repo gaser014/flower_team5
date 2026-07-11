@@ -39,6 +39,7 @@ class CheckoutRepositoryImpl implements CheckoutRepository {
           data: CashOnDeliveryEntity(
             error: data?.error,
             message: data?.message,
+            orderId: data?.orderId,
             orderNumber: data?.orderNumber,
             paymentType: data?.paymentType,
           ),

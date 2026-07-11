@@ -15,6 +15,8 @@ import 'package:flowers_app/features/checkout/presentation/view_model/cubit/chec
 import 'package:flowers_app/features/checkout/presentation/view/pages/checkout_screen.dart';
 import 'package:flowers_app/features/checkout/presentation/view/pages/payment_web_view_screen.dart';
 import 'package:flowers_app/features/checkout/presentation/view/pages/thank_you_screen.dart';
+import 'package:flowers_app/features/order_tracking/domain/entities/order_tracking_args.dart';
+import 'package:flowers_app/features/order_tracking/presentation/view/pages/order_tracking_page.dart';
 import 'package:flowers_app/features/spalsh/splash_page.dart';
 import 'package:flowers_app/features/login/presentation/view/pages/login_page.dart';
 import 'package:flowers_app/features/products/presentation/view/pages/occasion_page.dart';
@@ -283,11 +285,29 @@ abstract class AppRoutes {
       GoRoute(
         path: Routes.thankYou,
         name: Routes.thankYou,
-        pageBuilder: (context, state) => buildAnimatedPage(
-          key: state.pageKey,
-          child: const ThankYouScreen(),
-          animationType: AnimationType.fade,
-        ),
+        pageBuilder: (context, state) {
+          final args = state.extra as Map<String, dynamic>? ?? const {};
+          return buildAnimatedPage(
+            key: state.pageKey,
+            child: ThankYouScreen(
+              orderId: args['orderId'] as String?,
+              orderNumber: args['orderNumber'] as String?,
+            ),
+            animationType: AnimationType.fade,
+          );
+        },
+      ),
+      GoRoute(
+        path: Routes.orderTracking,
+        name: Routes.orderTracking,
+        pageBuilder: (context, state) {
+          final args = state.extra as OrderTrackingArgs?;
+          return buildAnimatedPage(
+            key: state.pageKey,
+            child: OrderTrackingPage(args: args ?? const OrderTrackingArgs()),
+            animationType: AnimationType.slideFromRight,
+          );
+        },
       ),
       GoRoute(
         path: Routes.paymentWebView,

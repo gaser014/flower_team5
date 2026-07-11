@@ -4,6 +4,7 @@ class CheckoutResultEntity extends Equatable {
   final bool requiresPayment;
   final String? paymentUrl;
   final String? successUrl;
+  final String? orderId;
   final String? orderNumber;
   final String? message;
 
@@ -11,6 +12,7 @@ class CheckoutResultEntity extends Equatable {
     this.requiresPayment = false,
     this.paymentUrl,
     this.successUrl,
+    this.orderId,
     this.orderNumber,
     this.message,
   });
@@ -20,6 +22,7 @@ class CheckoutResultEntity extends Equatable {
     requiresPayment,
     paymentUrl,
     successUrl,
+    orderId,
     orderNumber,
     message,
   ];

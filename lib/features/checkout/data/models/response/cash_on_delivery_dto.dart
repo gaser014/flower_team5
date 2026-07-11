@@ -1,6 +1,7 @@
 class CashOnDeliveryDto {
   final String? error;
   final String? message;
+  final String? orderId;
   final String? orderNumber;
   final String? paymentType;
   final Map<String, dynamic>? order;
@@ -8,6 +9,7 @@ class CashOnDeliveryDto {
   CashOnDeliveryDto({
     this.error,
     this.message,
+    this.orderId,
     this.orderNumber,
     this.paymentType,
     this.order,
@@ -20,6 +22,7 @@ class CashOnDeliveryDto {
     return CashOnDeliveryDto(
       error: json['error'],
       message: json['message'],
+      orderId: (order?['_id'] ?? order?['id'])?.toString(),
       orderNumber: order?['orderNumber']?.toString(),
       paymentType: order?['paymentType']?.toString(),
       order: order,

@@ -67,7 +67,10 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
         );
       }
     } else {
-      context.pushReplacementNamed(Routes.thankYou);
+      context.pushReplacementNamed(
+        Routes.thankYou,
+        extra: {'orderId': result?.orderId, 'orderNumber': result?.orderNumber},
+      );
     }
   }
 

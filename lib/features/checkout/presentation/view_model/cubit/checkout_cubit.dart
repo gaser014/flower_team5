@@ -104,6 +104,7 @@ class CheckoutCubit extends Cubit<CheckoutStates> {
           orderState: BaseState.success(
             CheckoutResultEntity(
               requiresPayment: false,
+              orderId: data?.orderId,
               orderNumber: data?.orderNumber,
               message: data?.message,
             ),

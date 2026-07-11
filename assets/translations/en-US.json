@@ -25,5 +25,22 @@
         "no_addresses_yet": "No addresses yet",
         "add_address_to_start": "Add your first address to get started",
         "tap_to_select_location": "Tap to select location"
+    },
+    "order_tracking": {
+        "title": "Track order",
+        "track_order": "Track order",
+        "estimated_arrival": "Estimated arrival",
+        "delivery_hero": "Is your delivery hero for today",
+        "order_details": "Order details",
+        "calculating": "Calculating arrival time…",
+        "route_unavailable": "Couldn't load the route. Please check your connection.",
+        "flowery": "Flowery",
+        "your_location": "Home",
+        "your_driver": "Your driver",
+        "waiting_for_driver": "Waiting for a driver to be assigned",
+        "driver_arrived_title": "Your driver has arrived",
+        "driver_arrived_message": "Your order is at your location. Enjoy your flowers!",
+        "arrived": "Arrived",
+        "got_it": "Got it"
     }
 }
