@@ -3,6 +3,6 @@ import 'package:injectable/injectable.dart';
 
 @lazySingleton
 class HomeModule {
-  final HomeEntity? homeData;
-  HomeModule(this.homeData);
+  HomeEntity? homeData;
+  HomeModule();
 }
