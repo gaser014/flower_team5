@@ -19,6 +19,22 @@ import 'package:internet_connection_checker_plus/internet_connection_checker_plu
     as _i161;
 import 'package:logger/logger.dart' as _i974;
 
+import '../../categories/api/api_client/categories_api_client.dart' as _i688;
+import '../../categories/api/datasources/categories_local_data_source_impl.dart'
+    as _i1003;
+import '../../categories/api/datasources/categories_remote_data_source_impl.dart'
+    as _i147;
+import '../../categories/data/datasources/categories_local_data_source_contract.dart'
+    as _i772;
+import '../../categories/data/datasources/categories_remote_data_source_contract.dart'
+    as _i930;
+import '../../categories/data/repositories/categories_repository_impl.dart'
+    as _i601;
+import '../../categories/domain/repositories/categories_repository.dart'
+    as _i897;
+import '../../categories/domain/use_cases/get_all_categories.dart' as _i307;
+import '../../categories/presentation/view_model/cubit/categories_cubit.dart'
+    as _i219;
 import '../../core/api/datasources/auth_local_data_source_impl.dart' as _i424;
 import '../../core/data/data_sources/auth_local_data_source.dart' as _i759;
 import '../../features/addresses/api/api_client/addresses_api_client.dart'
@@ -136,7 +152,6 @@ import '../../features/home/data/datasources/home_remote_data_source_contract.da
     as _i969;
 import '../../features/home/data/repositories/home_repository_impl.dart'
     as _i76;
-import '../../features/home/domain/entities/home_entity.dart' as _i628;
 import '../../features/home/domain/repositories/home_repository.dart' as _i0;
 import '../../features/home/domain/use_cases/get_home_use_case.dart' as _i261;
 import '../../features/location/api/data_sources/location_local_data_source_impl.dart'
@@ -247,6 +262,7 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i161.InternetConnection>(
       () => dioModule.internetConnection(),
     );
+    gh.lazySingleton<_i473.HomeModule>(() => _i473.HomeModule());
     gh.lazySingleton<_i974.Logger>(() => injectableModule.logger);
     gh.lazySingleton<_i627.FirebaseRemoteConfig>(
       () => injectableModule.firebaseRemoteConfig,
@@ -263,6 +279,9 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i47.ProductsLocalDataSourceContract>(
       () => _i1032.ProductsLocalDataSourceImpl(),
+    );
+    gh.lazySingleton<_i688.CategoriesApiClient>(
+      () => _i688.CategoriesApiClient(gh<_i361.Dio>()),
     );
     gh.lazySingleton<_i567.AddressesApiClient>(
       () => _i567.AddressesApiClient(gh<_i361.Dio>()),
@@ -304,14 +323,14 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i399.AddressesLocalDataSourceContract>(
       () => _i75.AddressesLocalDataSourceImpl(),
     );
+    gh.lazySingleton<_i772.CategoriesLocalDataSourceContract>(
+      () => _i1003.CategoriesLocalDataSourceImpl(),
+    );
     gh.singleton<_i449.AppInterceptors>(
       () => _i449.AppInterceptors(
         dio: gh<_i361.Dio>(),
         fss: gh<_i558.FlutterSecureStorage>(),
       ),
-    );
-    gh.lazySingleton<_i473.HomeModule>(
-      () => _i473.HomeModule(gh<_i628.HomeEntity>()),
     );
     gh.lazySingleton<_i332.LocationRepository>(
       () => _i115.LocationRepositoryImpl(
@@ -389,6 +408,11 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i1066.LoginRepositoryImpl(
         gh<_i736.LoginRemoteDataSourceContract>(),
         gh<_i325.LoginLocalDataSourceContract>(),
+      ),
+    );
+    gh.lazySingleton<_i930.CategoriesRemoteDataSourceContract>(
+      () => _i147.CategoriesRemoteDataSourceImpl(
+        apiClient: gh<_i688.CategoriesApiClient>(),
       ),
     );
     gh.factory<_i498.CheckoutRepository>(
@@ -507,6 +531,12 @@ extension GetItInjectableX on _i174.GetIt {
         getAllProductsUseCase: gh<_i845.GetAllProductsUseCase>(),
       ),
     );
+    gh.lazySingleton<_i897.CategoriesRepository>(
+      () => _i601.CategoriesRepositoryImpl(
+        categoriesRemoteDataSourceContract:
+            gh<_i930.CategoriesRemoteDataSourceContract>(),
+      ),
+    );
     gh.factory<_i60.MainProfileCubit>(
       () => _i60.MainProfileCubit(
         gh<_i818.GetMainProfileUseCase>(),
@@ -547,6 +577,9 @@ extension GetItInjectableX on _i174.GetIt {
         getAllAppFilterTabsUseCase: gh<_i313.GetAllAppFilterTabsUseCase>(),
       ),
     );
+    gh.lazySingleton<_i307.GetAllCategoriesUseCase>(
+      () => _i307.GetAllCategoriesUseCase(gh<_i897.CategoriesRepository>()),
+    );
     gh.factory<_i753.LoginCubit>(
       () => _i753.LoginCubit(
         gh<_i191.LoginUseCase>(),
@@ -568,6 +601,11 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i809.SignUpCubit>(
       () => _i809.SignUpCubit(gh<_i45.SignUpUseCase>()),
+    );
+    gh.factory<_i219.CategoriesCubit>(
+      () => _i219.CategoriesCubit(
+        getAllCategoriesUseCase: gh<_i307.GetAllCategoriesUseCase>(),
+      ),
     );
     gh.lazySingleton<_i323.CartCubit>(
       () => _i323.CartCubit(
