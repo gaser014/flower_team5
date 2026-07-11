@@ -17,4 +17,8 @@ abstract class Routes {
   static const String occasionPage = "/occasion";
   static const String addresses = "/addresses";
   static const String addAddress = "/add-address";
+  static const String bestSeller = "/best-seller";
+  static const String productDetails = "/product-details";
+  static const String track = "/track";
+  static const String trackMap = "/track-map";
 }

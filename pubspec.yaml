@@ -26,9 +26,11 @@ dependencies:
   flutter_local_notifications: ^20.1.0
   flutter_screenutil: ^5.9.3
   flutter_secure_storage: ^10.0.0
+  flutter_dotenv: ^6.0.1
   flutter_map: ^8.3.0
   flutter_svg: ^2.2.3
   gap: ^3.0.1
+  googleapis_auth: ^2.3.2
   geocoding: ^4.0.0
   geolocator: ^14.0.2
   get_it: ^9.2.1
@@ -79,6 +81,7 @@ flutter:
 
   # ---------- Assets ----------
   assets:
+    - .env
     - assets/images/
     - assets/icons/
     - assets/translations/

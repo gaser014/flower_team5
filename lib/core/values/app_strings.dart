@@ -136,7 +136,8 @@ class AppStrings {
   static const String genderLabel = "Gender";
   static const String maleLabel = "Male";
   static const String femaleLabel = "Female";
-  static const String termsAndConditionsView =  'By creating an account, you agree to use the application in a lawful manner, provide accurate information, and respect all applicable rules. We may update these terms from time to time, and your continued use of the app means you accept those updates.';
+  static const String termsAndConditionsView =
+      'By creating an account, you agree to use the application in a lawful manner, provide accurate information, and respect all applicable rules. We may update these terms from time to time, and your continued use of the app means you accept those updates.';
   static const String termsConditionsPart1 =
       "By creating an account, you agree to our ";
   static const String termsConditionsPart2 = "Terms & Conditions";
@@ -227,7 +228,6 @@ class AppStrings {
 
   // Home
   static const String categories = "Categories";
-  static const String bestSeller = "Best seller";
   static const String viewAll = "View All";
   static const String deliverTo = "Deliver to";
   static const String egp = "EGP";
@@ -252,4 +252,25 @@ class AppStrings {
   static const String cart = "Cart";
   static const String profile = "Profile";
   static const String home = "Home";
+
+  // Track Order
+  static const String trackOrder = "Track Order";
+  static const String estimatedArrival = "Estimated arrival";
+  static const String deliveryHero = "Delivery Hero";
+  static const String showMap = "Show Map";
+  static const String orderDelivered = "Order Delivered";
+  static const String receivedOrder = "Order Received";
+  static const String preparingOrder = "Preparing Order";
+  static const String outForDelivery = "Out for Delivery";
+  static const String statusDelivered = "Delivered";
+  static const String orderDetails = "Order Details";
+  static const String noTrackedOrder = "No order to track yet";
+  static const String orderCancelled = "Order Cancelled";
+  static const String waitingForDriver = "Waiting for a delivery hero";
+  static const String orderNumberLabel = "Order";
+  static const String calculatingArrival = "Calculating arrival time";
+  static const String confirmDelivery = "Confirm Delivery";
+  static const String orderDeliveredTitle = "Order Delivered";
+  static const String orderDeliveredByCustomerBody =
+      "The customer confirmed receiving the order";
 }

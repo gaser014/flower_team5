@@ -10,15 +10,12 @@ class ProductDetailsResponseDto {
   @JsonKey(name: 'product')
   final ProductModel? product;
 
-  const ProductDetailsResponseDto({
-    this.message,
-    this.product,
-  });
+  const ProductDetailsResponseDto({this.message, this.product});
 
   factory ProductDetailsResponseDto.fromJson(Map<String, dynamic> json) =>
       _$ProductDetailsResponseDtoFromJson(json);
 
   Map<String, dynamic> toJson() => _$ProductDetailsResponseDtoToJson(this);
 
-  ProductEntity toEntity() => product!;
+  ProductEntity toEntity() => product! as ProductEntity;
 }

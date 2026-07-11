@@ -1,8 +1,12 @@
+import 'dart:convert';
 import 'dart:developer';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flowers_app/config/fcm/fcm_user_entity.dart';
 import 'package:flowers_app/core/values/app_colors.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:googleapis_auth/auth_io.dart';
 
 bool isFCMInitialized = false;
 
@@ -149,5 +153,92 @@ class FCMService {
     log('Message data: ${message.data}');
 
     if (message.data['screen'] != null) {}
+  }
+
+  /// Send a push notification directly from the client to multiple FCM tokens
+  /// using the FCM HTTP v1 API and a Service Account loaded from `.env`.
+  /// ⚠️ For production this logic belongs on your backend.
+  Future<void> sendNotification({
+    required List<FCMTokenEntity> targetFcmTokens,
+    required String title,
+    required String body,
+    Map<String, String> data = const {},
+  }) async {
+    if (targetFcmTokens.isEmpty) {
+      log('sendNotification: no target tokens');
+      return;
+    }
+    try {
+      final String projectId = dotenv.env['FCM_PROJECT_ID'] ?? '';
+      final String privateKeyId = dotenv.env['FCM_PRIVATE_KEY_ID'] ?? '';
+      final String privateKey = (dotenv.env['FCM_PRIVATE_KEY'] ?? '')
+          .replaceAll('\\n', '\n');
+      final String clientEmail = dotenv.env['FCM_CLIENT_EMAIL'] ?? '';
+      final String clientId = dotenv.env['FCM_CLIENT_ID'] ?? '';
+      final String clientX509CertUrl =
+          dotenv.env['FCM_CLIENT_X509_CERT_URL'] ?? '';
+
+      if (projectId.isEmpty || privateKey.isEmpty || clientEmail.isEmpty) {
+        log('sendNotification: missing FCM service account env values');
+        return;
+      }
+
+      final String serviceAccountJsonString = jsonEncode({
+        "type": "service_account",
+        "project_id": projectId,
+        "private_key_id": privateKeyId,
+        "private_key": privateKey,
+        "client_email": clientEmail,
+        "client_id": clientId,
+        "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+        "token_uri": "https://oauth2.googleapis.com/token",
+        "auth_provider_x509_cert_url":
+            "https://www.googleapis.com/oauth2/v1/certs",
+        "client_x509_cert_url": clientX509CertUrl,
+        "universe_domain": "googleapis.com",
+      });
+
+      final accountCredentials = ServiceAccountCredentials.fromJson(
+        serviceAccountJsonString,
+      );
+      final scopes = ['https://www.googleapis.com/auth/firebase.messaging'];
+      final client = await clientViaServiceAccount(accountCredentials, scopes);
+
+      final url =
+          'https://fcm.googleapis.com/v1/projects/$projectId/messages:send';
+
+      for (final tokenData in targetFcmTokens) {
+        final token = tokenData.token;
+        if (token.isEmpty) continue;
+
+        final payload = {
+          'message': {
+            'token': token,
+            'notification': {'title': title, 'body': body},
+            'data': {
+              'click_action': 'FLUTTER_NOTIFICATION_CLICK',
+              'lang': tokenData.lang,
+              ...data,
+            },
+          },
+        };
+
+        final response = await client.post(
+          Uri.parse(url),
+          headers: {'Content-Type': 'application/json'},
+          body: jsonEncode(payload),
+        );
+
+        if (response.statusCode == 200) {
+          log('Notification sent successfully to $token');
+        } else {
+          log('Failed to send notification to $token: ${response.body}');
+        }
+      }
+
+      client.close();
+    } catch (e) {
+      log('Error sending notification: $e');
+    }
   }
 }

@@ -7,14 +7,17 @@ import 'package:flowers_app/features/addresses/domain/entities/address_entity.da
 import 'package:flowers_app/features/addresses/presentation/cubit/addresses_cubit.dart';
 import 'package:flowers_app/features/addresses/presentation/screens/addresses_page.dart';
 import 'package:flowers_app/features/addresses/presentation/screens/add_address_screen.dart';
-import 'package:flowers_app/features/auth/login/presentation/screens/login_view.dart';
-import 'package:flowers_app/features/auth/sign_up/presentation/screens/sign_up_view.dart';
-import 'package:flowers_app/features/auth/sign_up/presentation/screens/terms_and_conditions_view.dart';
 import 'package:flowers_app/features/app_filter_tabs/domain/entities/app_filter_tab_item_entity.dart';
+import 'package:flowers_app/features/best_seller/presentation/view/pages/best_seller_page.dart';
 import 'package:flowers_app/features/login/presentation/view/pages/login_page.dart';
+import 'package:flowers_app/features/product_details/presentation/view/pages/product_details_page.dart';
+import 'package:flowers_app/core/entities/product_entity.dart';
 import 'package:flowers_app/features/products/presentation/view/pages/occasion_page.dart';
 import 'package:flowers_app/features/spalsh/splash_page.dart';
 import 'package:flowers_app/features/main/presentation/screens/main_view.dart';
+import 'package:flowers_app/features/track/presentation/view/pages/track_page.dart';
+import 'package:flowers_app/features/track/presentation/view/pages/track_map_page.dart';
+import 'package:flowers_app/features/track/presentation/view_model/cubit/track_cubit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -209,39 +212,6 @@ class _PageBasedPageRoute<T> extends PageRoute<T> {
 
 abstract class AppRoutes {
   static final GoRouter router = GoRouter(
-    initialLocation: Routes.register,
-    routes: [
-      GoRoute(
-        path: Routes.login,
-        pageBuilder: (context, state) => buildAnimatedPage(
-          key: state.pageKey,
-          child: const LoginView(),
-          animationType: AnimationType.slideFromRight,
-        ),
-      ),
-      GoRoute(
-        path: Routes.register,
-        pageBuilder: (context, state) => buildAnimatedPage(
-          key: state.pageKey,
-          child: const SignUpView(),
-          animationType: AnimationType.slideFromRight,
-        ),
-      ),
-      GoRoute(
-        path: Routes.termsAndConditions,
-        pageBuilder: (context, state) => buildAnimatedPage(
-          key: state.pageKey,
-          child: const TermsAndConditionsView(),
-          animationType: AnimationType.slideFromRight,
-        ),
-      ),
-      GoRoute(
-        path: Routes.main,
-        pageBuilder: (context, state) => buildAnimatedPage(
-          key: state.pageKey,
-          child: const SignUpView(),
-          animationType: AnimationType.fade,
-        ),
     initialLocation: Routes.splash,
     routes: [
       GoRoute(
@@ -323,11 +293,56 @@ abstract class AppRoutes {
         path: Routes.productDetails,
         name: Routes.productDetails,
         pageBuilder: (context, state) {
-          final product = state.extra as ProductEntity;
+          final product = state.extra as ProductEntity?;
           return buildAnimatedPage(
             key: state.pageKey,
             child: ProductDetailsPage(product: product),
             animationType: AnimationType.fade,
+          );
+        },
+      ),
+      GoRoute(
+        path: Routes.track,
+        name: Routes.track,
+        pageBuilder: (context, state) {
+          final orderId = state.extra is String ? state.extra as String : '';
+          return buildAnimatedPage(
+            key: state.pageKey,
+            child: BlocProvider<TrackCubit>(
+              create: (_) => getIt<TrackCubit>()
+                ..doIntent(
+                  orderId.isEmpty
+                      ? const ResumeTrackingEvent()
+                      : StartTrackingEvent(orderId: orderId),
+                ),
+              child: const TrackPage(),
+            ),
+            animationType: AnimationType.slideFromRight,
+          );
+        },
+      ),
+      GoRoute(
+        path: Routes.trackMap,
+        name: Routes.trackMap,
+        pageBuilder: (context, state) {
+          final existingCubit = state.extra is TrackCubit
+              ? state.extra as TrackCubit
+              : null;
+          final child = existingCubit != null
+              ? BlocProvider<TrackCubit>.value(
+                  value: existingCubit,
+                  child: const TrackMapPage(),
+                )
+              : BlocProvider<TrackCubit>(
+                  create: (_) =>
+                      getIt<TrackCubit>()
+                        ..doIntent(const ResumeTrackingEvent()),
+                  child: const TrackMapPage(),
+                );
+          return buildAnimatedPage(
+            key: state.pageKey,
+            child: child,
+            animationType: AnimationType.slideFromBottom,
           );
         },
       ),
