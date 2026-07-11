@@ -45,7 +45,7 @@ class HomeCubit extends Cubit<HomeState> {
           getIt.unregister<HomeModule>();
         }
 
-        getIt.registerSingleton<HomeModule>(HomeModule(homeModel));
+        getIt.registerSingleton<HomeModule>(HomeModule()..homeData = homeModel);
         emit(state.copyWith(getAllHomeDataState: BaseState.success(homeModel)));
       },
       error: (exception) {

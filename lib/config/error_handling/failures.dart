@@ -36,6 +36,8 @@ class ServerFailure extends Failures {
         return ServerFailure(errorMessage: AppStrings.connectionError);
       case DioExceptionType.unknown:
         return ServerFailure(errorMessage: AppStrings.unknownError);
+      case DioExceptionType.transformTimeout:
+        return ServerFailure(errorMessage: AppStrings.unknownError);
     }
   }
 

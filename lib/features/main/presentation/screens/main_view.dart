@@ -1,4 +1,4 @@
-import 'package:flowers_app/categories/presentation/view/categories_view.dart';
+import 'package:flowers_app/features/categories/presentation/view/categories_view.dart';
 import 'package:flowers_app/core/values/app_assets.dart';
 import 'package:flowers_app/core/values/app_colors.dart';
 import 'package:flowers_app/core/values/app_strings.dart';

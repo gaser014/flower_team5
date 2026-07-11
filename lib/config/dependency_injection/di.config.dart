@@ -19,21 +19,21 @@ import 'package:internet_connection_checker_plus/internet_connection_checker_plu
     as _i161;
 import 'package:logger/logger.dart' as _i974;
 
-import '../../categories/api/api_client/categories_api_client.dart' as _i688;
-import '../../categories/api/datasources/categories_local_data_source_impl.dart'
+import '../../features/categories/api/api_client/categories_api_client.dart' as _i688;
+import '../../features/categories/api/datasources/categories_local_data_source_impl.dart'
     as _i1003;
-import '../../categories/api/datasources/categories_remote_data_source_impl.dart'
+import '../../features/categories/api/datasources/categories_remote_data_source_impl.dart'
     as _i147;
-import '../../categories/data/datasources/categories_local_data_source_contract.dart'
+import '../../features/categories/data/datasources/categories_local_data_source_contract.dart'
     as _i772;
-import '../../categories/data/datasources/categories_remote_data_source_contract.dart'
+import '../../features/categories/data/datasources/categories_remote_data_source_contract.dart'
     as _i930;
-import '../../categories/data/repositories/categories_repository_impl.dart'
+import '../../features/categories/data/repositories/categories_repository_impl.dart'
     as _i601;
-import '../../categories/domain/repositories/categories_repository.dart'
+import '../../features/categories/domain/repositories/categories_repository.dart'
     as _i897;
-import '../../categories/domain/use_cases/get_all_categories.dart' as _i307;
-import '../../categories/presentation/view_model/cubit/categories_cubit.dart'
+import '../../features/categories/domain/use_cases/get_all_categories.dart' as _i307;
+import '../../features/categories/presentation/view_model/cubit/categories_cubit.dart'
     as _i219;
 import '../../core/api/datasources/auth_local_data_source_impl.dart' as _i424;
 import '../../core/data/data_sources/auth_local_data_source.dart' as _i759;

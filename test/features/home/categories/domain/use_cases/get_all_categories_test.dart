@@ -1,10 +1,10 @@
 import 'package:flowers_app/config/base_response/entity/base_pagination_entity.dart';
 import 'package:flowers_app/config/base_response/entity/meta_entity.dart';
 import 'package:flowers_app/config/base_response/result.dart';
-import 'package:flowers_app/categories/domain/entities/categories_params.dart';
-import 'package:flowers_app/categories/domain/entities/category_entity.dart';
-import 'package:flowers_app/categories/domain/repositories/categories_repository.dart';
-import 'package:flowers_app/categories/domain/use_cases/get_all_categories.dart';
+import 'package:flowers_app/features/categories/domain/entities/categories_params.dart';
+import 'package:flowers_app/features/categories/domain/entities/category_entity.dart';
+import 'package:flowers_app/features/categories/domain/repositories/categories_repository.dart';
+import 'package:flowers_app/features/categories/domain/use_cases/get_all_categories.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';

@@ -2,7 +2,7 @@ import 'package:flowers_app/core/values/app_assets.dart';
 import 'package:flowers_app/core/values/app_colors.dart';
 import 'package:flowers_app/core/values/app_font_style.dart';
 import 'package:flowers_app/core/values/app_strings.dart';
-import 'package:flowers_app/features/products/presentation/view/widgets/product_card.dart';
+import 'package:flowers_app/core/widgets/product_card.dart';
 import 'package:flowers_app/features/products/presentation/view/widgets/product_card_shimmer.dart';
 import 'widgets/categories_tap_bar.dart';
 import '../view_model/cubit/categories_cubit.dart' hide UpdateSortByEvent;
