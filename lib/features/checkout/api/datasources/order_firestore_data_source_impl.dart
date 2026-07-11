@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flowers_app/features/checkout/data/data_sources/order_firestore_data_source_contract.dart';
+import 'package:flowers_app/features/checkout/data/datasources/order_firestore_data_source_contract.dart';
 import 'package:flowers_app/features/checkout/domain/use_cases/checkout_params.dart';
 import 'package:injectable/injectable.dart';
 

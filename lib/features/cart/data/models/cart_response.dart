@@ -13,7 +13,7 @@ class CartResponse {
 
   final String? message;
   final num? numOfCartItems;
-  final Cart? cart;
+  final CartData? cart;
 
   factory CartResponse.fromJson(Map<String, dynamic> json) =>
       _$CartResponseFromJson(json);
@@ -35,8 +35,8 @@ class CartResponse {
 }
 
 @JsonSerializable(createToJson: false)
-class Cart {
-  Cart({
+class CartData {
+  CartData({
     required this.id,
     required this.user,
     required this.cartItems,
@@ -59,7 +59,8 @@ class Cart {
   @JsonKey(name: '__v')
   final num? v;
 
-  factory Cart.fromJson(Map<String, dynamic> json) => _$CartFromJson(json);
+  factory CartData.fromJson(Map<String, dynamic> json) =>
+      _$CartDataFromJson(json);
 }
 
 @JsonSerializable(createToJson: false)

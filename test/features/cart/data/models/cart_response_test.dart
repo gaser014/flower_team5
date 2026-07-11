@@ -44,16 +44,17 @@ void main() {
     id: id,
   );
 
-  Cart buildCart({List<CartItem>? items, num? totalPrice = 300}) => Cart(
-    id: 'cart-1',
-    user: 'user-1',
-    cartItems: items,
-    appliedCoupons: [],
-    totalPrice: totalPrice,
-    createdAt: null,
-    updatedAt: null,
-    v: 0,
-  );
+  CartData buildCart({List<CartItem>? items, num? totalPrice = 300}) =>
+      CartData(
+        id: 'cart-1',
+        user: 'user-1',
+        cartItems: items,
+        appliedCoupons: [],
+        totalPrice: totalPrice,
+        createdAt: null,
+        updatedAt: null,
+        v: 0,
+      );
 
   group('CartResponse.toCartEntity()', () {
     test('maps cart items to CartEntity correctly', () {
@@ -328,7 +329,7 @@ void main() {
       final map =
           (json.decode(fullJson) as Map<String, dynamic>)['cart']
               as Map<String, dynamic>;
-      final cart = Cart.fromJson(map);
+      final cart = CartData.fromJson(map);
 
       expect(cart.id, 'cart-1');
       expect(cart.user, 'user-1');

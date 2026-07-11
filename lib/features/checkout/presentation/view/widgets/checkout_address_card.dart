@@ -12,6 +12,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 class CheckoutAddressCard extends StatelessWidget {
+  final List<CheckoutAddressEntity> addresses;
   final int selectedIndex;
   final List<AddressEntity> addresses;
   final ValueChanged<int> onChanged;
@@ -19,6 +20,7 @@ class CheckoutAddressCard extends StatelessWidget {
 
   const CheckoutAddressCard({
     super.key,
+    required this.addresses,
     required this.selectedIndex,
     required this.addresses,
     required this.onChanged,
@@ -34,7 +36,7 @@ class CheckoutAddressCard extends StatelessWidget {
       padding: const EdgeInsets.all(16),
       color: AppColors.whiteF9,
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.end,
         spacing: 16,
         children: [
           Text(
@@ -43,34 +45,34 @@ class CheckoutAddressCard extends StatelessWidget {
               context: context,
             ).copyWith(color: AppColors.black0C),
           ),
-          ...displayAddresses.asMap().entries.map((entry) {
-            final addr = entry.value;
-            return _AddressCard(
-              title: addr.username ?? '',
-              address: addr.street ?? '',
-              isSelected: _indexOf(addr) == selectedIndex,
-              onTap: () => onChanged(_indexOf(addr)),
-            );
-          }),
-          CustomButton(
-            text: showAll ? AppStrings.showAllAddresses : AppStrings.addNew,
-            onPressed: showAll
-                ? onShowAllAddresses
-                : () {
-                    final cubit = context.read<CheckoutCubit>();
-                    context.pushNamed(
-                      Routes.addAddress,
-                      extra: <String, dynamic>{
-                        'editAddress': null,
-                        'cubit': getIt<AddressesCubit>(),
-                      },
-                    ).then((_) => cubit.doEvent(const LoadAddresses()));
-                  },
-            variant: ButtonVariant.outlined,
-            radius: 20,
-
-            textColor: AppColors.primerColor,
-            backgroundColor: AppColors.grayA6,
+          for (var i = 0; i < addresses.length; i++)
+            _AddressCard(
+              title: addresses[i].label,
+              address: addresses[i].address,
+              isSelected: selectedIndex == i,
+              onTap: () => onChanged(i),
+            ),
+          SizedBox(
+            width: double.infinity,
+            height: 36,
+            child: CustomButton(
+              variant: ButtonVariant.outlined,
+              onPressed: () {},
+              text: null,
+              child: Row(
+                spacing: 4,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    AppStrings.addNew,
+                    style: AppFontStyle.medium14(
+                      context: context,
+                    ).copyWith(color: AppColors.primerColor),
+                  ),
+                  const Icon(Icons.add, size: 20, color: AppColors.primerColor),
+                ],
+              ),
+            ),
           ),
         ],
       ),
@@ -114,6 +116,28 @@ class _AddressCard extends StatelessWidget {
         ),
         child: Row(
           children: [
+            const Icon(Icons.edit, color: AppColors.gray53, size: 20),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Text(
+                    title,
+                    style: AppFontStyle.medium16(
+                      context: context,
+                    ).copyWith(color: AppColors.black0C),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    address,
+                    style: AppFontStyle.regular13(
+                      context: context,
+                    ).copyWith(color: AppColors.gray53),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(width: 12),
             Container(
               width: 20,
               height: 20,

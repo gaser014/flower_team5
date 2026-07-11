@@ -21,6 +21,8 @@ import 'package:flowers_app/features/addresses/domain/entities/address_entity.da
 import 'package:flowers_app/features/addresses/presentation/cubit/addresses_cubit.dart';
 import 'package:flowers_app/features/addresses/presentation/screens/addresses_page.dart';
 import 'package:flowers_app/features/addresses/presentation/screens/add_address_screen.dart';
+import 'package:flowers_app/features/auth/sign_up/presentation/screens/sign_up_view.dart';
+import 'package:flowers_app/features/auth/sign_up/presentation/screens/terms_and_conditions_view.dart';
 import 'package:flowers_app/features/app_filter_tabs/domain/entities/app_filter_tab_item_entity.dart';
 import 'package:flowers_app/features/best_seller/presentation/view/pages/best_seller_page.dart';
 import 'package:flowers_app/features/checkout/presentation/cubit/checkout_cubit.dart';
@@ -29,6 +31,9 @@ import 'package:flowers_app/features/checkout/presentation/screens/payment_web_v
 import 'package:flowers_app/features/checkout/presentation/screens/thank_you_screen.dart';
 import 'package:flowers_app/features/edit_profile/presentation/view/pages/change_password_page.dart';
 import 'package:flowers_app/features/edit_profile/presentation/view/pages/edit_profile_page.dart';
+
+import 'package:flowers_app/features/order_tracking/domain/entities/order_tracking_args.dart';
+import 'package:flowers_app/features/order_tracking/presentation/view/pages/order_tracking_page.dart';
 import 'package:flowers_app/features/forget_password/presentation/view_model/bloc/forget_password_bloc.dart';
 import 'package:flowers_app/features/login/presentation/view/pages/login_page.dart';
 import 'package:flowers_app/features/logout/presentation/view/pages/profile_page.dart';
@@ -38,7 +43,9 @@ import 'package:flowers_app/features/my_orders/presentation/view/pages/my_orders
 import 'package:flowers_app/features/notifications/presentation/view/pages/notifications_page.dart';
 import 'package:flowers_app/features/product_details/presentation/view/pages/product_details_page.dart';
 import 'package:flowers_app/features/products/presentation/view/pages/occasion_page.dart';
-import 'package:flowers_app/features/spalsh/splash_page.dart';
+import 'package:flowers_app/features/product_details/presentation/view/pages/product_details_page.dart';
+import 'package:flowers_app/features/main/presentation/screens/main_view.dart';
+import 'package:flowers_app/core/entities/product_entity.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -248,20 +255,48 @@ abstract class AppRoutes {
   static final GoRouter router = GoRouter(
     initialLocation: Routes.splash,
     routes: [
+    GoRoute(
+    path: Routes.forgetPassword,
+    name: Routes.forgetPassword,
+    builder: (BuildContext context, GoRouterState state) {
+      return const ForgetPasswordPage();
+    },
+  ),
       GoRoute(
-        path: Routes.forgetPassword,
-        name: Routes.forgetPassword,
-        builder: (BuildContext context, GoRouterState state) {
-          return const ForgetPasswordPage();
-        },
+        path: Routes.login,
+        name: Routes.login,
+        pageBuilder: (context, state) => buildAnimatedPage(
+          key: state.pageKey,
+          child: const LoginPage(),
+          animationType: AnimationType.slideFromRight,
+        ),
+      ),
+      GoRoute(
+        path: Routes.register,
+        name: Routes.register,
+        pageBuilder: (context, state) => buildAnimatedPage(
+          key: state.pageKey,
+          child: const SignUpView(),
+          animationType: AnimationType.slideFromRight,
+        ),
       ),
       GoRoute(
         path: Routes.bestSeller,
         name: Routes.bestSeller,
+        name: Routes.termsAndConditions,
         pageBuilder: (context, state) => buildAnimatedPage(
           key: state.pageKey,
           child: const BestSellerPage(),
           animationType: AnimationType.slideFromRight,
+        ),
+      ),
+      GoRoute(
+        path: Routes.main,
+        name: Routes.main,
+        pageBuilder: (context, state) => buildAnimatedPage(
+          key: state.pageKey,
+          child: const MainView(),
+          animationType: AnimationType.fade,
         ),
       ),
       GoRoute(
@@ -302,6 +337,62 @@ abstract class AppRoutes {
           return buildAnimatedPage(
             key: state.pageKey,
             child: OccasionPage(occasion: occasion),
+            animationType: AnimationType.fade,
+          );
+        },
+      ),
+      GoRoute(
+        path: Routes.checkout,
+        name: Routes.checkout,
+        pageBuilder: (context, state) {
+          final subtotal = state.extra as int? ?? 0;
+          return buildAnimatedPage(
+            key: state.pageKey,
+            child: BlocProvider(
+              create: (_) => getIt<CheckoutCubit>(),
+              child: CheckoutScreen(subtotal: subtotal),
+            ),
+            animationType: AnimationType.slideFromRight,
+          );
+        },
+      ),
+      GoRoute(
+        path: Routes.thankYou,
+        name: Routes.thankYou,
+        pageBuilder: (context, state) {
+          final args = state.extra as Map<String, dynamic>? ?? const {};
+          return buildAnimatedPage(
+            key: state.pageKey,
+            child: ThankYouScreen(
+              orderId: args['orderId'] as String?,
+              orderNumber: args['orderNumber'] as String?,
+            ),
+            animationType: AnimationType.fade,
+          );
+        },
+      ),
+      GoRoute(
+        path: Routes.orderTracking,
+        name: Routes.orderTracking,
+        pageBuilder: (context, state) {
+          final args = state.extra as OrderTrackingArgs?;
+          return buildAnimatedPage(
+            key: state.pageKey,
+            child: OrderTrackingPage(args: args ?? const OrderTrackingArgs()),
+            animationType: AnimationType.slideFromRight,
+          );
+        },
+      ),
+      GoRoute(
+        path: Routes.paymentWebView,
+        name: Routes.paymentWebView,
+        pageBuilder: (context, state) {
+          final args = state.extra as Map<String, dynamic>? ?? {};
+          final url = args['url'] as String? ?? '';
+          final successUrl = args['successUrl'] as String?;
+          return buildAnimatedPage(
+            key: state.pageKey,
+            child: PaymentWebViewScreen(url: url, successUrl: successUrl),
             animationType: AnimationType.fade,
           );
         },

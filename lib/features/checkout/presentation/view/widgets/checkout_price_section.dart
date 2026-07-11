@@ -2,7 +2,7 @@ import 'package:flowers_app/core/values/app_colors.dart';
 import 'package:flowers_app/core/values/app_font_style.dart';
 import 'package:flowers_app/core/values/app_strings.dart';
 import 'package:flowers_app/core/widgets/custom_button.dart';
-import 'package:flowers_app/features/checkout/presentation/cubit/checkout_cubit.dart';
+import 'package:flowers_app/features/checkout/presentation/view_model/cubit/checkout_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -52,6 +52,12 @@ class CheckoutPriceSection extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
+                '\$$delivery',
+                style: AppFontStyle.regular16(
+                  context: context,
+                ).copyWith(color: AppColors.gray53),
+              ),
+              Text(
                 AppStrings.deliveryFee,
                 style: AppFontStyle.regular16(
                   context: context,
@@ -70,6 +76,7 @@ class CheckoutPriceSection extends StatelessWidget {
             child: Divider(color: AppColors.gray53),
           ),
           Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
                 AppStrings.totalPrice,
@@ -88,10 +95,14 @@ class CheckoutPriceSection extends StatelessWidget {
           ),
           const SizedBox(height: 44),
           CustomButton(
+            onPressed: onPlaceOrder,
+            text: AppStrings.placeOrder,
+            isLoading: isLoading,
+          CustomButton(
             text: AppStrings.placeOrder,
             onPressed: onPlaceOrder,
             isLoading: isLoading,
-            height: 48,
+
           ),
         ],
       ),

@@ -15,16 +15,28 @@ class CheckoutDeliveryTime extends StatelessWidget {
         spacing: 16,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            AppStrings.deliveryTime,
-            style: AppFontStyle.medium18(
-              context: context,
-            ).copyWith(color: AppColors.black0C),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                AppStrings.schedule,
+                style: AppFontStyle.medium18(
+                  context: context,
+                ).copyWith(color: AppColors.primerColor),
+              ),
+              Text(
+                AppStrings.deliveryTime,
+                style: AppFontStyle.medium18(
+                  context: context,
+                ).copyWith(color: AppColors.black0C),
+              ),
+            ],
           ),
+
           Row(
             spacing: 4,
+            mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              const Icon(Icons.access_time, size: 24, color: AppColors.black0C),
               Text.rich(
                 TextSpan(
                   children: [
@@ -43,6 +55,7 @@ class CheckoutDeliveryTime extends StatelessWidget {
                   ],
                 ),
               ),
+              const Icon(Icons.access_time, size: 24, color: AppColors.black0C),
             ],
           ),
         ],

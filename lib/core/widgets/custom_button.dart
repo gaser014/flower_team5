@@ -7,7 +7,7 @@ import '../values/app_font_style.dart';
 enum ButtonVariant { filled, outlined }
 
 class CustomButton extends StatelessWidget {
-  final String text;
+  final String? text;
   final VoidCallback? onPressed;
   final bool isLoading;
   final bool isEnabled;
@@ -16,6 +16,7 @@ class CustomButton extends StatelessWidget {
   final double? width;
   final double radius;
   final double? height;
+  final Widget? child;
   final ButtonVariant variant;
   final BorderSide? borderSide;
 
@@ -30,6 +31,7 @@ class CustomButton extends StatelessWidget {
     this.textColor,
     this.width,
     this.height,
+    this.child,
     this.borderSide,
     this.variant = ButtonVariant.filled,
   });
@@ -40,7 +42,7 @@ class CustomButton extends StatelessWidget {
 
     if (variant == ButtonVariant.outlined) {
       return _OutlinedButton(
-        text: text,
+        text: text ?? '',
         onPressed: enabled ? onPressed : null,
         isLoading: isLoading,
         width: width,
@@ -48,11 +50,12 @@ class CustomButton extends StatelessWidget {
         radius: radius,
         textColor: textColor,
         borderColor: backgroundColor,
+        child: child,
       );
     }
 
     return _FilledButton(
-      text: text,
+      text: text ?? '',
       onPressed: enabled ? onPressed : null,
       isLoading: isLoading,
       enabled: enabled,
@@ -62,6 +65,7 @@ class CustomButton extends StatelessWidget {
       backgroundColor: backgroundColor,
       textColor: textColor,
       borderSide: borderSide,
+      child: child,
     );
   }
 }
@@ -77,6 +81,7 @@ class _FilledButton extends StatelessWidget {
   final double radius;
   final Color? textColor;
   final BorderSide? borderSide;
+  final Widget? child;
 
   const _FilledButton({
     required this.text,
@@ -89,6 +94,7 @@ class _FilledButton extends StatelessWidget {
     this.backgroundColor,
     this.textColor,
     this.borderSide,
+    this.child,
   });
 
   @override
@@ -111,12 +117,13 @@ class _FilledButton extends StatelessWidget {
         ),
         child: isLoading
             ? const _LoadingIndicator()
-            : Text(
-                text,
-                style: AppFontStyle.medium18(
-                  context: context,
-                ).copyWith(color: textColor ?? AppColors.white),
-              ),
+            : child ??
+                  Text(
+                    text,
+                    style: AppFontStyle.medium18(
+                      context: context,
+                    ).copyWith(color: textColor ?? AppColors.white),
+                  ),
       ),
     );
   }
@@ -131,6 +138,7 @@ class _OutlinedButton extends StatelessWidget {
   final double radius;
   final Color? textColor;
   final Color? borderColor;
+  final Widget? child;
 
   const _OutlinedButton({
     required this.text,
@@ -141,6 +149,7 @@ class _OutlinedButton extends StatelessWidget {
     required this.radius,
     this.textColor,
     this.borderColor,
+    this.child,
   });
 
   @override
@@ -161,12 +170,13 @@ class _OutlinedButton extends StatelessWidget {
         ),
         child: isLoading
             ? _LoadingIndicator(color: color)
-            : Text(
-                text,
-                style: AppFontStyle.medium18(
-                  context: context,
-                ).copyWith(color: color),
-              ),
+            : child ??
+                  Text(
+                    text,
+                    style: AppFontStyle.medium18(
+                      context: context,
+                    ).copyWith(color: color),
+                  ),
       ),
     );
   }

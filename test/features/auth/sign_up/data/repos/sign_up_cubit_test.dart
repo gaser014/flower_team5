@@ -43,13 +43,14 @@ void main() {
 
     test('togglePasswordVisibility should update the state', () {
       final initialVisibility = signUpCubit.state.isPasswordVisible;
-      signUpCubit.doIntent(TogglePasswordVisibilityEvent());
+      signUpCubit.doIntent(const TogglePasswordVisibilityEvent());
       expect(signUpCubit.state.isPasswordVisible, !initialVisibility);
     });
 
     test('toggleConfirmPasswordVisibility should update the state', () {
       final initialVisibility = signUpCubit.state.isConfirmPasswordVisible;
       signUpCubit.doIntent(ToggleConfirmPasswordVisibilityEvent());
+      signUpCubit.doIntent(const ToggleConfirmPasswordVisibilityEvent());
       expect(signUpCubit.state.isConfirmPasswordVisible, !initialVisibility);
     });
   });

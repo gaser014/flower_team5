@@ -1,7 +1,11 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flowers_app/config/dependency_injection/di.dart';
 import 'package:flowers_app/core/routes/routes.dart';
+import 'package:flowers_app/core/routes/app_routes.dart';
+import 'package:flowers_app/core/routes/routes.dart';
 import 'package:flowers_app/core/values/app_strings.dart';
+import 'package:flowers_app/features/order_tracking/domain/entities/order_tracking_args.dart';
+
 import 'package:flowers_app/features/app_language/presentation/view/widgets/language_bottom_sheet.dart';
 import 'package:flowers_app/features/logout/presentation/view/widgets/logout_button_widget.dart';
 import 'package:flutter/material.dart';
@@ -111,7 +115,15 @@ class MainProfilePage extends StatelessWidget {
                             ),
                             ProfileMenuItemWidget(
                               title: AppStrings.myOrders,
-                              onTap: () => context.push(Routes.myOrders),
+                              onTap: () {
+                                context.push(
+                                  Routes.orderTracking,
+                                  extra: OrderTrackingArgs(
+                                    orderNumber: "123973",
+                                    orderId: "6a4fbe7f3be1266dec7a8951",
+                                  ),
+                                );
+                              },
                               trailing: const Icon(
                                 Icons.chevron_right,
                                 color: AppColors.gray7D,

@@ -8,6 +8,7 @@ import 'package:flowers_app/features/cart/domain/use_cases/clear_user_cart_use_c
 import 'package:flowers_app/features/cart/domain/use_cases/get_cart_data_use_case.dart';
 import 'package:flowers_app/features/cart/domain/use_cases/remove_product_from_cart_use_case.dart';
 import 'package:flowers_app/features/cart/domain/use_cases/update_product_in_cart_usecase.dart';
+import 'package:flowers_app/features/cart/presentation/view_model/cart_sync_service.dart';
 import 'package:flowers_app/features/cart/presentation/view_model/cubit/cart_cubit.dart';
 import 'package:flowers_app/features/cart/presentation/view_model/cubit/cart_events.dart';
 import 'package:flowers_app/features/cart/presentation/view_model/cubit/cart_states.dart';
@@ -70,10 +71,12 @@ void main() {
 
   CartCubit buildCubit() => CartCubit(
     getCartDataUseCase: mockGetCart,
-    addProductToCartUseCase: mockAddProduct,
-    removeProductFromCartUseCase: mockRemoveProduct,
     clearUserCartUseCase: mockClearCart,
-    updateProductInCartUseCase: mockUpdateProduct,
+    cartSyncService: CartSyncService(
+      addProductToCartUseCase: mockAddProduct,
+      removeProductFromCartUseCase: mockRemoveProduct,
+      updateProductInCartUseCase: mockUpdateProduct,
+    ),
   );
 
   setUp(() {
@@ -621,8 +624,8 @@ void main() {
 
         final cubit = buildCubit();
         // Subscribe BEFORE the sync fires so no event is missed.
-        final sideEffects = <CartSideEffect>[];
-        final sub = cubit.sideEffects.listen(sideEffects.add);
+        final sideEffects = <CartUiNotification>[];
+        final sub = cubit.uiNotifications.listen(sideEffects.add);
 
         await cubit.doIntent(GetCartDataEvent());
         cubit.doIntent(IncrementProductEvent(tProductEntity)); // qty → 2
@@ -645,8 +648,8 @@ void main() {
 
         // A side effect should have been emitted.
         expect(sideEffects, hasLength(1));
-        expect(sideEffects.first, isA<CartSyncFailed>());
-        final failed = sideEffects.first as CartSyncFailed;
+        expect(sideEffects.first, isA<CartSyncFailedNotification>());
+        final failed = sideEffects.first as CartSyncFailedNotification;
         expect(failed.productId, tProductId);
         expect(failed.message, 'Out of stock');
 
@@ -781,8 +784,8 @@ void main() {
 
         final cubit = buildCubit();
         // Subscribe BEFORE any sync fires.
-        final sideEffects = <CartSideEffect>[];
-        final sub = cubit.sideEffects.listen(sideEffects.add);
+        final sideEffects = <CartUiNotification>[];
+        final sub = cubit.uiNotifications.listen(sideEffects.add);
 
         await cubit.doIntent(GetCartDataEvent());
         cubit.doIntent(IncrementProductEvent(tProductEntity));
@@ -791,7 +794,7 @@ void main() {
 
         expect(sideEffects, isNotEmpty);
         expect(
-          (sideEffects.first as CartSyncFailed).message,
+          (sideEffects.first as CartSyncFailedNotification).message,
           'Server error msg',
         );
         await sub.cancel();
@@ -809,8 +812,8 @@ void main() {
 
       final cubit = buildCubit();
       // Subscribe BEFORE any sync fires.
-      final sideEffects = <CartSideEffect>[];
-      final sub = cubit.sideEffects.listen(sideEffects.add);
+      final sideEffects = <CartUiNotification>[];
+      final sub = cubit.uiNotifications.listen(sideEffects.add);
 
       await cubit.doIntent(GetCartDataEvent());
       cubit.doIntent(IncrementProductEvent(tProductEntity));
@@ -819,7 +822,7 @@ void main() {
 
       expect(sideEffects, isNotEmpty);
       expect(
-        (sideEffects.first as CartSyncFailed).message,
+        (sideEffects.first as CartSyncFailedNotification).message,
         contains('generic error'),
       );
       await sub.cancel();

@@ -23,9 +23,8 @@ class MyApp extends StatelessWidget {
           providers: [
             BlocProvider(create: (context) => getIt.get<HomeCubit>()),
             BlocProvider<CartCubit>(create: (_) => getIt<CartCubit>()),
-            BlocProvider(
-              create: (context) =>
-                  getIt.get<LocationCubit>()..initializeHomeLocation(),
+            BlocProvider<LocationCubit>(
+              create: (_) => getIt<LocationCubit>()..initializeHomeLocation(),
             ),
           ],
           child: MaterialApp.router(

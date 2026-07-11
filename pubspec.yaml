@@ -60,6 +60,7 @@ dependencies:
   shared_preferences: ^2.5.4
   shimmer: ^3.0.0
   toastification: ^3.0.3
+  webview_flutter: ^4.14.0
   cloud_firestore: ^6.6.0
   url_launcher: ^6.3.2
   webview_flutter: ^4.14.0
@@ -91,6 +92,7 @@ flutter:
     - assets/icons/
     - assets/translations/
     - assets/json/
+    - .env
 
   # ---------- Fonts ----------
   fonts:

@@ -6,6 +6,7 @@ import 'package:flowers_app/features/addresses/presentation/widgets/address_text
 import 'package:flowers_app/features/checkout/presentation/cubit/checkout_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flowers_app/core/widgets/text_field/user_name_field.dart';
 
 class CheckoutGiftSection extends StatefulWidget {
   final TextEditingController usernameController;
@@ -36,18 +37,24 @@ class _CheckoutGiftSectionState extends State<CheckoutGiftSection> {
       padding: const EdgeInsets.all(16),
       color: AppColors.whiteF9,
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+
         spacing: 16,
         children: [
-          Row(
+          Row(mainAxisAlignment: MainAxisAlignment.end,
             spacing: 8,
             children: [
-              SizedBox(
+              Text(
+                  AppStrings.itIsAGift,
+                  style: AppFontStyle.medium18(
+                    context: context,
+                  ).copyWith(color: AppColors.black0C),
+                ),SizedBox(
                 height: 24,
                 child: Switch.adaptive(
                   value: isEnabled,
                   onChanged: (v) =>
-                      context.read<CheckoutCubit>().doEvent(ToggleGift(v)),
+                      context.read<CheckoutCubit>().doIntent(
+                      ToggleGiftEvent(v),),
                   activeThumbColor: AppColors.whiteF9,
                   activeTrackColor: AppColors.primerColor,
                   inactiveThumbColor: AppColors.primerColor,
@@ -55,6 +62,44 @@ class _CheckoutGiftSectionState extends State<CheckoutGiftSection> {
                     alpha: .1,
                   ),
                 ),
+              ],
+            ),
+            UserNameField(controller: widget.nameController),
+            SizedBox(
+              height: 56,
+              child: TextField(
+                controller: widget.phoneController,
+                keyboardType: TextInputType.phone,
+                decoration: InputDecoration(
+                  labelText: AppStrings.phoneNumber,
+                  hintText: AppStrings.enterPhoneHint,
+                  labelStyle: const TextStyle(
+                    color: AppColors.gray53,
+                    fontSize: 12,
+                    fontWeight: FontWeight.w400,
+                  ),
+                  hintStyle: const TextStyle(
+                    color: AppColors.grayA6,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w400,
+                  ),
+                  floatingLabelBehavior: FloatingLabelBehavior.always,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(4),
+                    borderSide: const BorderSide(color: AppColors.gray53),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(4),
+                    borderSide: const BorderSide(color: AppColors.gray53),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(4),
+                    borderSide: const BorderSide(color: AppColors.gray53),
+                  ),
+                  contentPadding: const EdgeInsets.fromLTRB(16, 4, 16, 4),
+                ),
+              ),
+            ),
               ),
               Text(
                 AppStrings.itIsAGift,

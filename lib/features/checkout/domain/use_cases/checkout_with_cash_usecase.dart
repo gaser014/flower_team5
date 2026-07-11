@@ -4,12 +4,16 @@ import 'package:flowers_app/features/checkout/domain/repositories/checkout_repos
 import 'package:flowers_app/features/checkout/domain/use_cases/checkout_params.dart';
 import 'package:injectable/injectable.dart';
 
+import '../../../../config/uses_cases/use_cases.dart';
+
 @injectable
-class CheckoutWithCashUseCase {
+class CheckoutWithCashUseCase
+    extends UseCase<CashOnDeliveryEntity, CheckoutParams> {
   final CheckoutRepository _repository;
 
   CheckoutWithCashUseCase(this._repository);
 
+  @override
   Future<Result<CashOnDeliveryEntity>> call(CheckoutParams params) {
     return _repository.checkoutWithCashOnDelivery(params);
   }

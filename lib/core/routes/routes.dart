@@ -35,4 +35,6 @@ abstract class Routes {
   static const String productDetails = "/product-details";
   static const String track = "/track";
   static const String trackMap = "/track-map";
+  static const String orderTracking = "/order-tracking";
+
 }
