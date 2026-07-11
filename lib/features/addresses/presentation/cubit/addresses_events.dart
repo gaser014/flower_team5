@@ -24,7 +24,7 @@ class DeleteAddressEvent extends AddressesEvents {
 }
 
 class UpdateFormCityEvent extends AddressesEvents {
-  final CityItem city;
+  final GovernorateItem city;
   const UpdateFormCityEvent({required this.city});
 }
 
@@ -37,11 +37,16 @@ class ResetFormEvent extends AddressesEvents {
   const ResetFormEvent();
 }
 
+ class InitFormEvent extends AddressesEvents {
+  final AddressEntity? editAddress;
+  const InitFormEvent({this.editAddress});
+}
+
 class UpdateFormLocationEvent extends AddressesEvents {
   final double? lat;
   final double? lng;
   final String? street;
-  final CityItem? city;
+  final GovernorateItem? city;
   final AreaItem? area;
   const UpdateFormLocationEvent({
     this.lat,

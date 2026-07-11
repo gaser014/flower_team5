@@ -15,13 +15,6 @@ class AddressesResponseDto {
     );
   }
 
-  Map<String, dynamic> toJson() {
-    return {
-      'message': message,
-      'addresses': addresses?.map((e) => e.toJson()).toList(),
-    };
-  }
-
   List<AddressEntity> toEntities() {
     return addresses?.map((dto) => dto.toEntity()).toList() ?? [];
   }

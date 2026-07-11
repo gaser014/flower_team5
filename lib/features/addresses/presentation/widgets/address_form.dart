@@ -18,7 +18,7 @@ class AddressForm extends StatefulWidget {
   final TextEditingController streetController;
   final TextEditingController phoneController;
   final TextEditingController usernameController;
-  final ValueChanged<CityItem> onCityChanged;
+  final ValueChanged<GovernorateItem> onCityChanged;
   final ValueChanged<AreaItem?> onAreaChanged;
   final VoidCallback onPickLocation;
   final VoidCallback onSubmit;

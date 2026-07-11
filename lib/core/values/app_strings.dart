@@ -209,7 +209,11 @@ abstract class AppStrings {
   // ── Navigation ────────────────────────────────────────────────────────────
   static String get cart => 'cart'.tr();
   static String get profile => 'profile'.tr();
-
+  // Home
+  static const String categories = "Categories";
+  static const String viewAll = "View All";
+  static const String deliverTo = "Deliver to";
+  static const String egp = "EGP";
   // ── Cart ──────────────────────────────────────────────────────────────────
   static String get cartTitle => 'cartTitle'.tr();
   static String get checkout => 'checkout'.tr();
@@ -360,4 +364,25 @@ abstract class AppStrings {
   // static String get deliverTo => 'deliver_to'.tr();
   static String get noAddressesYet => 'no_addresses_yet'.tr();
   static String get addAddressToStart => 'add_address_to_start'.tr();
+
+  // Track Order
+  static const String trackOrder = "Track Order";
+  static const String estimatedArrival = "Estimated arrival";
+  static const String deliveryHero = "Delivery Hero";
+  static const String showMap = "Show Map";
+  static const String orderDelivered = "Order Delivered";
+  static const String receivedOrder = "Order Received";
+  static const String preparingOrder = "Preparing Order";
+  static const String outForDelivery = "Out for Delivery";
+  static const String statusDelivered = "Delivered";
+  static const String orderDetails = "Order Details";
+  static const String noTrackedOrder = "No order to track yet";
+  static const String orderCancelled = "Order Cancelled";
+  static const String waitingForDriver = "Waiting for a delivery hero";
+  static const String orderNumberLabel = "Order";
+  static const String calculatingArrival = "Calculating arrival time";
+  static const String confirmDelivery = "Confirm Delivery";
+  static const String orderDeliveredTitle = "Order Delivered";
+  static const String orderDeliveredByCustomerBody =
+      "The customer confirmed receiving the order";
 }

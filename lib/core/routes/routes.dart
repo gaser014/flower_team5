@@ -29,4 +29,10 @@ abstract class Routes {
   static const String thankYou = "/thank-you";
   static const String paymentWebView = "/payment-webview";
   static const String profileSettings = "/profile-settings";
+  static const String addresses = "/addresses";
+  static const String addAddress = "/add-address";
+  static const String bestSeller = "/best-seller";
+  static const String productDetails = "/product-details";
+  static const String track = "/track";
+  static const String trackMap = "/track-map";
 }

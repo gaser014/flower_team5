@@ -2,6 +2,8 @@ import 'package:equatable/equatable.dart';
 import 'package:flowers_app/config/base_state/base_state.dart';
 import 'package:flowers_app/config/uses_cases/use_cases.dart';
 import 'package:flowers_app/core/location_data/egypt_location_loader.dart';
+import 'package:flowers_app/core/helper/address_parser.dart';
+import 'package:flowers_app/core/values/app_strings.dart';
 import 'package:flowers_app/features/addresses/domain/entities/address_entity.dart';
 import 'package:flowers_app/features/addresses/domain/use_cases/get_addresses.dart';
 import 'package:flowers_app/features/addresses/domain/use_cases/add_address.dart';
@@ -45,6 +47,7 @@ class AddressesCubit extends Cubit<AddressesStates> {
     UpdateFormCityEvent e => _onUpdateFormCity(e),
     UpdateFormAreaEvent e => _onUpdateFormArea(e),
     ResetFormEvent _ => resetForm(),
+    InitFormEvent e => _initForm(e),
     UpdateFormLocationEvent e => _onUpdateFormLocation(e),
   };
 
@@ -54,28 +57,17 @@ class AddressesCubit extends Cubit<AddressesStates> {
     emit(state.copyWith(getAddressesState: const BaseState.loading()));
 
     final result = await _getAddressesUseCase(NoParams());
-
     result.when(
-      success: (data) {
-        if (data != null) {
-          emit(state.copyWith(getAddressesState: BaseState.success(data)));
-        } else {
-          emit(
-            state.copyWith(
-              getAddressesState: BaseState.error(Exception('No data received')),
-            ),
-          );
-        }
-      },
-      error: (exception) {
-        emit(
-          state.copyWith(
-            getAddressesState: BaseState.error(
-              exception ?? Exception('Unknown error'),
-            ),
+      success: (data) => emit(
+        state.copyWith(getAddressesState: BaseState.success(data ?? const [])),
+      ),
+      error: (exception) => emit(
+        state.copyWith(
+          getAddressesState: BaseState.error(
+            exception ?? Exception(AppStrings.somethingWentWrong),
           ),
-        );
-      },
+        ),
+      ),
     );
   }
 
@@ -85,33 +77,23 @@ class AddressesCubit extends Cubit<AddressesStates> {
     emit(state.copyWith(addAddressState: const BaseState.loading()));
 
     final result = await _addAddressUseCase(event.entity);
-
     result.when(
       success: (data) {
-        if (data != null) {
-          emit(
-            state.copyWith(
-              addAddressState: BaseState.success(data),
-              getAddressesState: BaseState.success(data),
-            ),
-          );
-        } else {
-          emit(
-            state.copyWith(
-              addAddressState: BaseState.error(Exception('No data received')),
-            ),
-          );
-        }
-      },
-      error: (exception) {
+        final addresses = data ?? const <AddressEntity>[];
         emit(
           state.copyWith(
-            addAddressState: BaseState.error(
-              exception ?? Exception('Unknown error'),
-            ),
+            addAddressState: BaseState.success(addresses),
+            getAddressesState: BaseState.success(addresses),
           ),
         );
       },
+      error: (exception) => emit(
+        state.copyWith(
+          addAddressState: BaseState.error(
+            exception ?? Exception(AppStrings.somethingWentWrong),
+          ),
+        ),
+      ),
     );
   }
 
@@ -121,35 +103,23 @@ class AddressesCubit extends Cubit<AddressesStates> {
     emit(state.copyWith(updateAddressState: const BaseState.loading()));
 
     final result = await _updateAddressUseCase(event.entity);
-
     result.when(
       success: (data) {
-        if (data != null) {
-          emit(
-            state.copyWith(
-              updateAddressState: BaseState.success(data),
-              getAddressesState: BaseState.success(data),
-            ),
-          );
-        } else {
-          emit(
-            state.copyWith(
-              updateAddressState: BaseState.error(
-                Exception('No data received'),
-              ),
-            ),
-          );
-        }
-      },
-      error: (exception) {
+        final addresses = data ?? const <AddressEntity>[];
         emit(
           state.copyWith(
-            updateAddressState: BaseState.error(
-              exception ?? Exception('Unknown error'),
-            ),
+            updateAddressState: BaseState.success(addresses),
+            getAddressesState: BaseState.success(addresses),
           ),
         );
       },
+      error: (exception) => emit(
+        state.copyWith(
+          updateAddressState: BaseState.error(
+            exception ?? Exception(AppStrings.somethingWentWrong),
+          ),
+        ),
+      ),
     );
   }
 
@@ -159,35 +129,23 @@ class AddressesCubit extends Cubit<AddressesStates> {
     emit(state.copyWith(deleteAddressState: const BaseState.loading()));
 
     final result = await _deleteAddressUseCase.call(event.id);
-
     result.when(
       success: (data) {
-        if (data != null) {
-          emit(
-            state.copyWith(
-              deleteAddressState: BaseState.success(data),
-              getAddressesState: BaseState.success(data),
-            ),
-          );
-        } else {
-          emit(
-            state.copyWith(
-              deleteAddressState: BaseState.error(
-                Exception('No data received'),
-              ),
-            ),
-          );
-        }
-      },
-      error: (exception) {
+        final addresses = data ?? const <AddressEntity>[];
         emit(
           state.copyWith(
-            deleteAddressState: BaseState.error(
-              exception ?? Exception('Unknown error'),
-            ),
+            deleteAddressState: BaseState.success(addresses),
+            getAddressesState: BaseState.success(addresses),
           ),
         );
       },
+      error: (exception) => emit(
+        state.copyWith(
+          deleteAddressState: BaseState.error(
+            exception ?? Exception(AppStrings.somethingWentWrong),
+          ),
+        ),
+      ),
     );
   }
 
@@ -220,6 +178,34 @@ class AddressesCubit extends Cubit<AddressesStates> {
         clearFormSelectedCity: true,
         clearFormSelectedLat: true,
         clearFormSelectedLng: true,
+      ),
+    );
+  }
+
+  Future<void> _initForm(InitFormEvent event) async {
+    final edit = event.editAddress;
+    if (edit == null) {
+      resetForm();
+      return;
+    }
+
+    final governorate = edit.city == null
+        ? null
+        : await matchGovernorateByName(edit.city!);
+    final lat = edit.lat != null ? double.tryParse(edit.lat!) : null;
+    final lng = edit.long != null ? double.tryParse(edit.long!) : null;
+
+    if (governorate == null && lat == null && lng == null) {
+      resetForm();
+      return;
+    }
+
+    emit(
+      state.copyWith(
+        formSelectedCity: governorate,
+        formSelectedLat: lat,
+        formSelectedLng: lng,
+        clearFormSelectedArea: true,
       ),
     );
   }

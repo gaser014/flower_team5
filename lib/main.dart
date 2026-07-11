@@ -2,7 +2,7 @@ import 'dart:ui';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
-import 'package:flowers_app/app.dart';
+import 'package:flowers_app/app.dart' as app;
 import 'package:flowers_app/config/database/cache_helper.dart';
 import 'package:flowers_app/config/fcm/fcm_service.dart';
 import 'package:flowers_app/config/helper/bloc_observer.dart';
@@ -12,12 +12,14 @@ import 'package:flowers_app/firebase_options.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'config/dependency_injection/di.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 //flutter pub run build_runner build --delete-conflicting-outputs
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await dotenv.load(fileName: ".env");
   configureDependencies();
   await AppSharedPreferences.initialSharedPreference();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
@@ -52,7 +54,7 @@ void main() async {
       supportedLocales: const [Locale('en', 'US'), Locale('ar', 'EG')],
       path: AppConstants.translationPath,
       fallbackLocale: const Locale('ar', 'EG'),
-      child: const MyApp(),
+      child: const app.MyApp(),
     ),
   );
 

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flowers_app/config/remote_config/remote_config_service.dart';
 import 'package:flowers_app/config/uses_cases/use_cases.dart';
@@ -10,7 +12,7 @@ import 'package:flowers_app/features/location/domain/use_cases/request_location_
 import 'package:flowers_app/features/location/presentation/cubit/location_states.dart';
 import 'package:injectable/injectable.dart';
 
-@injectable
+@lazySingleton
 class LocationCubit extends Cubit<LocationState> {
   final RequestLocationPermissionUseCase _requestLocationPermissionUseCase;
   final GetCurrentLocationUseCase _getCurrentLocationUseCase;
@@ -26,27 +28,27 @@ class LocationCubit extends Cubit<LocationState> {
 
   /// Initialize home location on app start
   Future<void> initializeHomeLocation() async {
-    print('🌍 [LocationCubit] Initializing home location...');
+    log('🌍 [LocationCubit] Initializing home location...');
     emit(LocationLoading());
 
-    print('🔵 [LocationCubit] Requesting location permission...');
+    log('🔵 [LocationCubit] Requesting location permission...');
     final permissionResult = await _requestLocationPermissionUseCase(
       const NoParams(),
     );
 
     permissionResult.when(
       success: (isGranted) async {
-        print('🔵 [LocationCubit] Permission result: $isGranted');
+        log('🔵 [LocationCubit] Permission result: $isGranted');
         if (isGranted == true) {
-          print('🟢 [LocationCubit] Permission granted, handling...');
+          log('🟢 [LocationCubit] Permission granted, handling...');
           await _handleLocationPermissionGranted();
         } else {
-          print('🔴 [LocationCubit] Permission denied, handling...');
+          log('🔴 [LocationCubit] Permission denied, handling...');
           await _handleLocationPermissionDenied();
         }
       },
       error: (exception) {
-        print('🔴 [LocationCubit] Permission error: $exception');
+        log('🔴 [LocationCubit] Permission error: $exception');
         emit(LocationError(message: exception?.toString() ?? 'Unknown error'));
       },
     );
@@ -54,18 +56,18 @@ class LocationCubit extends Cubit<LocationState> {
 
   /// Handle case when location permission is granted
   Future<void> _handleLocationPermissionGranted() async {
-    print('🟢 [LocationCubit] Handling permission granted...');
+    log('🟢 [LocationCubit] Handling permission granted...');
     final locationResult = await _getCurrentLocationUseCase(const NoParams());
 
     locationResult.when(
       success: (currentLocation) async {
         if (currentLocation == null) {
-          print('🔴 [LocationCubit] Failed to get current location');
+          log('🔴 [LocationCubit] Failed to get current location');
           emit(const LocationError(message: 'Failed to get current location'));
           return;
         }
 
-        print(
+        log(
           '🟢 [LocationCubit] Got current location: ${currentLocation.latitude}, ${currentLocation.longitude}',
         );
 
@@ -73,12 +75,12 @@ class LocationCubit extends Cubit<LocationState> {
 
         addressesResult.when(
           success: (addresses) async {
-            print(
+            log(
               '🔵 [LocationCubit] Retrieved addresses from API: ${addresses?.length ?? 0}',
             );
 
             if (addresses == null || addresses.isEmpty) {
-              print(
+              log(
                 '🟡 [LocationCubit] No addresses from API, trying Firebase Remote Config...',
               );
               await _handleNoAddressesFound();
@@ -95,7 +97,7 @@ class LocationCubit extends Cubit<LocationState> {
             nearestAddressResult.when(
               success: (nearestAddress) {
                 if (nearestAddress != null) {
-                  print(
+                  log(
                     '🟢 [LocationCubit] Selected nearest address: ${nearestAddress.street}',
                   );
                   emit(
@@ -106,14 +108,14 @@ class LocationCubit extends Cubit<LocationState> {
                     ),
                   );
                 } else {
-                  print('🟡 [LocationCubit] No valid addresses found');
+                  log('🟡 [LocationCubit] No valid addresses found');
                   emit(
                     const LocationEmpty(message: 'No valid addresses found'),
                   );
                 }
               },
               error: (exception) {
-                print(
+                log(
                   '🔴 [LocationCubit] Error finding nearest address: $exception',
                 );
                 emit(
@@ -125,7 +127,7 @@ class LocationCubit extends Cubit<LocationState> {
             );
           },
           error: (exception) {
-            print('🔴 [LocationCubit] Error getting addresses: $exception');
+            log('🔴 [LocationCubit] Error getting addresses: $exception');
             emit(
               LocationError(message: exception?.toString() ?? 'Unknown error'),
             );
@@ -133,7 +135,7 @@ class LocationCubit extends Cubit<LocationState> {
         );
       },
       error: (exception) {
-        print('🔴 [LocationCubit] Error getting location: $exception');
+        log('🔴 [LocationCubit] Error getting location: $exception');
         emit(LocationError(message: exception?.toString() ?? 'Unknown error'));
       },
     );
@@ -141,13 +143,11 @@ class LocationCubit extends Cubit<LocationState> {
 
   /// Handle case when no addresses found (fallback to Firebase Remote Config)
   Future<void> _handleNoAddressesFound() async {
-    print('🔵 [LocationCubit] Handling no addresses found...');
+    log('🔵 [LocationCubit] Handling no addresses found...');
 
     // Try to get address from Firebase Remote Config
     final remoteConfigAddress = RemoteConfigService.instance.address;
-    print(
-      '🔵 [LocationCubit] Address from Remote Config: $remoteConfigAddress',
-    );
+    log('🔵 [LocationCubit] Address from Remote Config: $remoteConfigAddress');
 
     if (remoteConfigAddress != null && remoteConfigAddress.isNotEmpty) {
       try {
@@ -155,7 +155,7 @@ class LocationCubit extends Cubit<LocationState> {
         final addressDto = AddressDto.fromJson(remoteConfigAddress);
         final addressEntity = addressDto.toEntity();
 
-        print(
+        log(
           '🟢 [LocationCubit] Using address from Remote Config: ${addressEntity.street}, ${addressEntity.city}',
         );
 
@@ -168,23 +168,21 @@ class LocationCubit extends Cubit<LocationState> {
         );
         return;
       } catch (e) {
-        print('🔴 [LocationCubit] Error parsing Remote Config address: $e');
+        log('🔴 [LocationCubit] Error parsing Remote Config address: $e');
       }
     }
 
-    print('🟡 [LocationCubit] No address in Remote Config');
+    log('🟡 [LocationCubit] No address in Remote Config');
     emit(const LocationEmpty(message: 'No saved addresses found'));
   }
 
   /// Handle case when location permission is denied
   Future<void> _handleLocationPermissionDenied() async {
-    print('🔴 [LocationCubit] Handling permission denied...');
+    log('🔴 [LocationCubit] Handling permission denied...');
 
     // Try to get address from Firebase Remote Config first
     final remoteConfigAddress = RemoteConfigService.instance.address;
-    print(
-      '🔵 [LocationCubit] Address from Remote Config: $remoteConfigAddress',
-    );
+    log('🔵 [LocationCubit] Address from Remote Config: $remoteConfigAddress');
 
     if (remoteConfigAddress != null && remoteConfigAddress.isNotEmpty) {
       try {
@@ -192,7 +190,7 @@ class LocationCubit extends Cubit<LocationState> {
         final addressDto = AddressDto.fromJson(remoteConfigAddress);
         final addressEntity = addressDto.toEntity();
 
-        print(
+        log(
           '🟢 [LocationCubit] Using address from Remote Config: ${addressEntity.street}, ${addressEntity.city}',
         );
 
@@ -205,7 +203,7 @@ class LocationCubit extends Cubit<LocationState> {
         );
         return;
       } catch (e) {
-        print('🔴 [LocationCubit] Error parsing Remote Config address: $e');
+        log('🔴 [LocationCubit] Error parsing Remote Config address: $e');
       }
     }
 
@@ -214,11 +212,11 @@ class LocationCubit extends Cubit<LocationState> {
 
     addressesResult.when(
       success: (addresses) {
-        print(
+        log(
           '🔵 [LocationCubit] Retrieved addresses from API: ${addresses?.length ?? 0}',
         );
         if (addresses == null || addresses.isEmpty) {
-          print('🟡 [LocationCubit] No saved addresses found');
+          log('🟡 [LocationCubit] No saved addresses found');
           emit(
             const LocationEmpty(
               message: 'No saved addresses. Please add an address first.',
@@ -228,7 +226,7 @@ class LocationCubit extends Cubit<LocationState> {
         }
 
         // Use first address as fallback
-        print('🟡 [LocationCubit] Using first address from API');
+        log('🟡 [LocationCubit] Using first address from API');
         emit(
           LocationLoaded(
             selectedAddress: addresses.first,
@@ -238,7 +236,7 @@ class LocationCubit extends Cubit<LocationState> {
         );
       },
       error: (exception) {
-        print('🔴 [LocationCubit] Error getting addresses: $exception');
+        log('🔴 [LocationCubit] Error getting addresses: $exception');
         emit(LocationError(message: exception?.toString() ?? 'Unknown error'));
       },
     );

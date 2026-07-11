@@ -230,6 +230,16 @@ class AppTheme {
     tabBarTheme: const TabBarThemeData(indicatorColor: AppColors.primerColor),
   );
 
+  static ButtonStyle addToCartButtonStyle(BuildContext context) => ElevatedButton.styleFrom(
+        backgroundColor: AppColors.primerColor,
+        foregroundColor: AppColors.white,
+        padding: EdgeInsets.symmetric(vertical: 8.h),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.r),
+        ),
+        elevation: 0,
+      );
+
   static ThemeData darkTheme = ThemeData(
     brightness: Brightness.dark,
     useMaterial3: true,
