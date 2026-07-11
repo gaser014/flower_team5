@@ -1,6 +1,8 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flowers_app/config/fcm/fcm_user_entity.dart';
 import 'package:flowers_app/core/values/app_colors.dart';
@@ -13,6 +15,39 @@ bool isFCMInitialized = false;
 @pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {}
 
+/// Parsed order-status push sent by the driver app on every status change.
+/// The `data` map sent by the driver contains:
+///   type: 'order_status', orderId, orderNumber, status, titleKey, bodyKey
+class OrderStatusPush {
+  final String orderId;
+  final String orderNumber;
+  final String status;
+  final String titleKey;
+  final String bodyKey;
+
+  const OrderStatusPush({
+    required this.orderId,
+    required this.status,
+    this.orderNumber = '',
+    this.titleKey = '',
+    this.bodyKey = '',
+  });
+
+  static OrderStatusPush? fromData(Map<String, dynamic> data) {
+    if ((data['type'] ?? '').toString() != 'order_status') return null;
+    final orderId = (data['orderId'] ?? '').toString();
+    final status = (data['status'] ?? '').toString();
+    if (orderId.isEmpty || status.isEmpty) return null;
+    return OrderStatusPush(
+      orderId: orderId,
+      status: status,
+      orderNumber: (data['orderNumber'] ?? '').toString(),
+      titleKey: (data['titleKey'] ?? '').toString(),
+      bodyKey: (data['bodyKey'] ?? '').toString(),
+    );
+  }
+}
+
 class FCMService {
   static final FCMService _instance = FCMService._internal();
   factory FCMService() => _instance;
@@ -24,6 +59,13 @@ class FCMService {
 
   String? _fcmToken;
   String? get fcmToken => _fcmToken;
+
+  /// Broadcasts every incoming order-status push to interested listeners (e.g.
+  /// the track data source). Listeners filter by orderId themselves.
+  final StreamController<OrderStatusPush> _orderStatusController =
+      StreamController<OrderStatusPush>.broadcast();
+  Stream<OrderStatusPush> get orderStatusStream =>
+      _orderStatusController.stream;
 
   /// Initialize FCM and set up all notification handlers
   Future<void> initialize() async {
@@ -40,13 +82,11 @@ class FCMService {
     // Get and store FCM token (unique device identifier)
     _fcmToken = await _firebaseMessaging.getToken();
     log('FCM Token: $_fcmToken');
-    // Send this token to your backend server to send notifications
 
     // Listen for token refresh (happens when app reinstalled, data cleared, etc.)
     _firebaseMessaging.onTokenRefresh.listen((newToken) {
       _fcmToken = newToken;
       log('FCM Token refreshed: $newToken');
-      // Update token on your server
     });
 
     // Set up background message handler
@@ -70,11 +110,9 @@ class FCMService {
 
   /// Initialize local notifications plugin
   Future<void> _initializeLocalNotifications() async {
-    // Android notification icon (place in android/app/src/main/res/drawable/)
     const AndroidInitializationSettings androidSettings =
         AndroidInitializationSettings('@mipmap/ic_launcher');
 
-    // iOS notification settings
     const DarwinInitializationSettings iosSettings =
         DarwinInitializationSettings();
 
@@ -83,15 +121,13 @@ class FCMService {
       iOS: iosSettings,
     );
 
-    // Initialize with callback for when notification is tapped
     await _localNotifications.initialize(settings: initSettings);
 
-    // Create notification channel for Android
     const AndroidNotificationChannel channel = AndroidNotificationChannel(
-      'high_importance_channel', // Must match AndroidManifest
+      'high_importance_channel',
       'High Importance Notifications',
       description: 'This channel is used for important notifications',
-      importance: Importance.high, // Shows as heads-up notification
+      importance: Importance.high,
       playSound: true,
       enableVibration: true,
     );
@@ -106,12 +142,24 @@ class FCMService {
   /// Handle messages when app is in FOREGROUND
   void _handleForegroundMessage(RemoteMessage message) {
     showLocalNotification(message);
+    _emitOrderStatus(message);
+  }
+
+  /// Parse an order-status data payload and broadcast it to [orderStatusStream].
+  void _emitOrderStatus(RemoteMessage message) {
+    final push = OrderStatusPush.fromData(message.data);
+    if (push != null && !_orderStatusController.isClosed) {
+      log(
+        'Order status push: orderId=${push.orderId} status=${push.status}',
+        name: 'FCMService',
+      );
+      _orderStatusController.add(push);
+    }
   }
 
   /// Display local notification
   Future<void> showLocalNotification(RemoteMessage message) async {
     RemoteNotification? notification = message.notification;
-    // AndroidNotification? android = message.notification?.android;
     const AndroidNotificationDetails androidNotificationDetails =
         AndroidNotificationDetails(
           'high_importance_channel',
@@ -136,23 +184,30 @@ class FCMService {
       android: androidNotificationDetails,
       iOS: darwinNotificationDetails,
     );
-    if (notification != null) {
-      await _localNotifications.show(
-        id: notification.hashCode, // Unique notification ID
-        title: notification.title,
-        body: notification.body,
-        notificationDetails: notificationDetails,
-        payload: message.data.toString(), // Pass data for tap handling
-      );
-    }
+
+    // Prefer localization keys from the data payload so the notification shows
+    // in THIS device's language, regardless of the sender's locale.
+    final data = message.data;
+    final titleKey = (data['titleKey'] ?? '').toString();
+    final bodyKey = (data['bodyKey'] ?? '').toString();
+    final title = titleKey.isNotEmpty ? titleKey.tr() : notification?.title;
+    final body = bodyKey.isNotEmpty ? bodyKey.tr() : notification?.body;
+
+    if (title == null && body == null) return;
+
+    await _localNotifications.show(
+      id: (notification?.hashCode ?? DateTime.now().millisecondsSinceEpoch),
+      title: title,
+      body: body,
+      notificationDetails: notificationDetails,
+      payload: message.data.toString(),
+    );
   }
 
   /// Handle notification tap (from background or terminated state)
   void _handleNotificationTap(RemoteMessage message) {
-    log('Notification tapped!');
-    log('Message data: ${message.data}');
-
-    if (message.data['screen'] != null) {}
+    log('Notification tapped — data: ${message.data}');
+    _emitOrderStatus(message);
   }
 
   /// Send a push notification directly from the client to multiple FCM tokens

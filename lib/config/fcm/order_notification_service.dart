@@ -1,9 +1,10 @@
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flowers_app/config/fcm/fcm_service.dart';
 import 'package:flowers_app/config/fcm/fcm_user_entity.dart';
-import 'package:flowers_app/core/values/app_strings.dart';
+import 'package:flowers_app/core/values/notification_keys.dart';
 import 'package:injectable/injectable.dart';
 
 /// Sends order-status push notifications from the customer app to the driver.
@@ -19,6 +20,7 @@ class OrderNotificationService {
 
   static const String _ordersCollection = 'orders';
   static const String _usersCollection = 'users';
+  static const String _notificationsCollection = 'notifications';
   static const String _logName = 'OrderNotificationService';
 
   /// Notify the driver assigned to [orderId] that the customer confirmed
@@ -35,21 +37,32 @@ class OrderNotificationService {
         return;
       }
 
+      // Always persist the notification (stores KEYS, not translated text).
+      await _addNotification(
+        recipientId: driverId,
+        orderId: orderId,
+        orderNumber: orderNumber,
+      );
+
       final tokens = await _driverTokens(driverId);
       if (tokens.isEmpty) {
         log('No FCM tokens found for driver $driverId', name: _logName);
         return;
       }
 
-      final label = orderNumber.isNotEmpty ? ' #$orderNumber' : '';
       await FCMService().sendNotification(
         targetFcmTokens: tokens,
-        title: AppStrings.orderDeliveredTitle,
-        body: '${AppStrings.orderDeliveredByCustomerBody}$label',
+        // English fallback for the system tray; the driver app re-translates
+        // from the keys in `data` when it handles the message.
+        title: NotificationKeys.deliveredByCustomerTitle.tr(),
+        body: NotificationKeys.deliveredByCustomer.tr(),
         data: {
           'type': 'order_status',
           'orderId': orderId,
+          'orderNumber': orderNumber,
           'status': 'delivered',
+          'titleKey': NotificationKeys.deliveredByCustomerTitle,
+          'bodyKey': NotificationKeys.deliveredByCustomer,
         },
       );
     } catch (e, s) {
@@ -60,6 +73,26 @@ class OrderNotificationService {
         stackTrace: s,
       );
     }
+  }
+
+  Future<void> _addNotification({
+    required String recipientId,
+    String orderId = '',
+    String orderNumber = '',
+  }) async {
+    if (recipientId.isEmpty) return;
+    await _firestore.collection(_notificationsCollection).add({
+      'recipientId': recipientId,
+      'recipientType': 'driver',
+      'type': 'order_status',
+      'orderId': orderId,
+      'orderNumber': orderNumber,
+      'status': 'delivered',
+      'titleKey': NotificationKeys.deliveredByCustomerTitle,
+      'bodyKey': NotificationKeys.deliveredByCustomer,
+      'read': false,
+      'createdAt': FieldValue.serverTimestamp(),
+    });
   }
 
   Future<String?> _resolveDriverId(String orderId) async {

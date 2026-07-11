@@ -1,23 +1,37 @@
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flowers_app/config/base_response/result.dart';
 import 'package:flowers_app/config/error_handling/failures.dart';
+import 'package:flowers_app/config/fcm/fcm_service.dart';
 import 'package:flowers_app/core/values/app_strings.dart';
 import 'package:flowers_app/features/track/data/datasources/track_remote_data_source_contract.dart';
 import 'package:flowers_app/features/track/data/models/track_order_model.dart';
 import 'package:flowers_app/features/track/domain/entities/track_order_entity.dart';
 import 'package:injectable/injectable.dart';
 
-/// Reads the order tracking document from Firebase Firestore. The driver app
-/// (track_flowers_app) keeps `orders/{orderId}` up to date with the latest
-/// status and driver location; this data source exposes it to the customer app.
+/// Reads order tracking data from Firebase Firestore, driven entirely by FCM
+/// push notifications — no persistent Firestore listeners are opened.
+///
+/// Both [watchOrder] and [watchUserOrder] work the same way:
+///   1. Subscribe to [FCMService.orderStatusStream].
+///   2. Filter pushes by [orderId].
+///   3. On each matching push, do a single Firestore `get()` to retrieve the
+///      full up-to-date document and emit it on the stream.
+///
+/// This keeps the app battery- and bandwidth-friendly: the Firestore connection
+/// is opened only when there is actually something new to fetch.
 @LazySingleton(as: TrackRemoteDataSourceContract)
 class TrackRemoteDataSourceImpl implements TrackRemoteDataSourceContract {
   final FirebaseFirestore _firestore;
+  final FCMService _fcmService;
 
-  TrackRemoteDataSourceImpl({required FirebaseFirestore firestore})
-    : _firestore = firestore;
+  TrackRemoteDataSourceImpl({
+    required FirebaseFirestore firestore,
+    required FCMService fcmService,
+  }) : _firestore = firestore,
+       _fcmService = fcmService;
 
   static const String _ordersCollection = 'orders';
   static const String _usersCollection = 'users';
@@ -26,13 +40,14 @@ class TrackRemoteDataSourceImpl implements TrackRemoteDataSourceContract {
   CollectionReference<Map<String, dynamic>> get _orders =>
       _firestore.collection(_ordersCollection);
 
-  /// `users/{userId}/orders` — the subcollection the driver app writes to via
-  /// `OrderTrackingService.setUserOrder` on every status change.
-  CollectionReference<Map<String, dynamic>> _userOrders(String userId) =>
-      _firestore
-          .collection(_usersCollection)
-          .doc(userId)
-          .collection(_ordersCollection);
+  DocumentReference<Map<String, dynamic>> _userOrderDoc(
+    String userId,
+    String orderId,
+  ) => _firestore
+      .collection(_usersCollection)
+      .doc(userId)
+      .collection(_ordersCollection)
+      .doc(orderId);
 
   @override
   Future<Result<TrackOrderModel>> getOrder({required String orderId}) async {
@@ -55,30 +70,123 @@ class TrackRemoteDataSourceImpl implements TrackRemoteDataSourceContract {
   @override
   Stream<TrackOrderModel> watchOrder({required String orderId}) {
     if (orderId.isEmpty) return const Stream.empty();
-    return _orders
-        .doc(orderId)
-        .snapshots()
-        .where((snapshot) => snapshot.data() != null)
-        .map(
-          (snapshot) =>
-              TrackOrderModel.fromFirestore(orderId, snapshot.data()!),
+
+    final controller = StreamController<TrackOrderModel>.broadcast();
+
+    final subscription = _fcmService.orderStatusStream
+        .where((push) => push.orderId == orderId)
+        .listen(
+          (push) async {
+            log(
+              'FCM push → watchOrder: orderId=$orderId status=${push.status}',
+              name: _logName,
+            );
+            try {
+              final snapshot = await _orders.doc(orderId).get();
+              final data = snapshot.data();
+              if (data != null) {
+                controller.add(TrackOrderModel.fromFirestore(orderId, data));
+              } else {
+                // Firestore doc not ready yet — emit a minimal model so the
+                // UI can still reflect the new status immediately.
+                controller.add(
+                  TrackOrderModel.fromFirestore(orderId, {
+                    'orderId': orderId,
+                    'status': push.status,
+                  }),
+                );
+              }
+            } catch (e, s) {
+              log(
+                'watchOrder fetch failed for orderId=$orderId',
+                name: _logName,
+                error: e,
+                stackTrace: s,
+              );
+            }
+          },
+          onError: (Object e, StackTrace s) {
+            log(
+              'watchOrder stream error',
+              name: _logName,
+              error: e,
+              stackTrace: s,
+            );
+          },
         );
+
+    controller.onCancel = () {
+      subscription.cancel();
+      controller.close();
+    };
+
+    return controller.stream;
   }
 
+  /// Listens to FCM push notifications for status changes on [orderId].
+  ///
+  /// Each time the driver app pushes a `type: 'order_status'` notification for
+  /// this order, we do a single Firestore read of `users/{userId}/orders/{orderId}`
+  /// to get the full, up-to-date document and emit it on the stream.
+  ///
+  /// This avoids a persistent Firestore listener — updates are push-driven.
   @override
   Stream<TrackOrderModel> watchUserOrder({
     required String userId,
     required String orderId,
   }) {
     if (userId.isEmpty || orderId.isEmpty) return const Stream.empty();
-    return _userOrders(userId)
-        .doc(orderId)
-        .snapshots()
-        .where((snapshot) => snapshot.data() != null)
-        .map(
-          (snapshot) =>
-              TrackOrderModel.fromFirestore(orderId, snapshot.data()!),
+
+    final controller = StreamController<TrackOrderModel>.broadcast();
+
+    final subscription = _fcmService.orderStatusStream
+        .where((push) => push.orderId == orderId)
+        .listen(
+          (push) async {
+            log(
+              'FCM order-status push received: orderId=$orderId status=${push.status}',
+              name: _logName,
+            );
+            try {
+              final snapshot = await _userOrderDoc(userId, orderId).get();
+              final data = snapshot.data();
+              if (data != null) {
+                controller.add(TrackOrderModel.fromFirestore(orderId, data));
+              } else {
+                // Document not yet written — emit a minimal model with just
+                // the status from the push so the UI can update immediately.
+                controller.add(
+                  TrackOrderModel.fromFirestore(orderId, {
+                    'orderId': orderId,
+                    'status': push.status,
+                  }),
+                );
+              }
+            } catch (e, s) {
+              log(
+                'watchUserOrder fetch failed for orderId=$orderId',
+                name: _logName,
+                error: e,
+                stackTrace: s,
+              );
+            }
+          },
+          onError: (Object e, StackTrace s) {
+            log(
+              'watchUserOrder stream error',
+              name: _logName,
+              error: e,
+              stackTrace: s,
+            );
+          },
         );
+
+    controller.onCancel = () {
+      subscription.cancel();
+      controller.close();
+    };
+
+    return controller.stream;
   }
 
   @override

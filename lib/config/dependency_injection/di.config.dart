@@ -206,6 +206,7 @@ import '../../features/track/presentation/view_model/cubit/track_cubit.dart'
     as _i7;
 import '../api/app_interceptor.dart' as _i449;
 import '../api/dio_module.dart' as _i784;
+import '../fcm/fcm_service.dart' as _i178;
 import '../fcm/order_notification_service.dart' as _i560;
 import '../firebase/firebase_module.dart' as _i1055;
 import 'home_module.dart' as _i473;
@@ -233,6 +234,7 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i627.FirebaseRemoteConfig>(
       () => injectableModule.firebaseRemoteConfig,
     );
+    gh.lazySingleton<_i178.FCMService>(() => injectableModule.fcmService);
     gh.lazySingleton<_i974.FirebaseFirestore>(() => firebaseModule.firestore);
     gh.factory<_i923.LocationRemoteDataSourceContract>(
       () => _i534.LocationRemoteDataSourceImpl(),
@@ -313,6 +315,7 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i732.TrackRemoteDataSourceContract>(
       () => _i978.TrackRemoteDataSourceImpl(
         firestore: gh<_i974.FirebaseFirestore>(),
+        fcmService: gh<_i178.FCMService>(),
       ),
     );
     gh.factory<_i1026.GetCurrentLocationUseCase>(
