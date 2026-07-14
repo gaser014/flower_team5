@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 abstract class AppUrls {
   static final Uri aboutUs = Uri.parse(
