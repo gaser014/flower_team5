@@ -22,8 +22,11 @@ import 'package:flowers_app/features/product_details/presentation/view/pages/pro
 import 'package:flowers_app/features/reset_password/presentation/view/pages/reset_password_page.dart';
 import 'package:flowers_app/features/main/presentation/screens/main_view.dart';
 import 'package:flowers_app/core/entities/product_entity.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flowers_app/features/app_language/presentation/view/pages/app_language_page.dart';
+import 'package:flowers_app/features/app_language/presentation/view_model/cubit/app_language_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:go_router/go_router.dart';
 
 final RouteObserver<ModalRoute> routeObserver = RouteObserver<ModalRoute>();
@@ -216,7 +219,7 @@ class _PageBasedPageRoute<T> extends PageRoute<T> {
 
 abstract class AppRoutes {
   static final GoRouter router = GoRouter(
-    initialLocation: Routes.main,
+    initialLocation: Routes.appLanguage,
     routes: [
       GoRoute(
         path: Routes.login,
@@ -259,6 +262,7 @@ abstract class AppRoutes {
         ),
       ),
       GoRoute(
+
         path: Routes.occasionPage,
         name: Routes.occasionPage,
         pageBuilder: (context, state) {
@@ -365,6 +369,16 @@ abstract class AppRoutes {
             key: state.pageKey,
             child: ProductDetailsPage(product: product),
             animationType: AnimationType.fade,
+          );
+        },
+      ),
+      GoRoute(
+        path: Routes.appLanguage,
+        name: Routes.appLanguage,
+        builder: (BuildContext context, GoRouterState state) {
+          return BlocProvider(
+            create: (context) => getIt<HomeCubit>(),
+            child: const AppLanguagePage(),
           );
         },
       ),

@@ -1,0 +1,138 @@
+import 'package:flowers_app/config/helper/enum/app_language_enum.dart';
+import 'package:flowers_app/core/values/app_colors.dart';
+import 'package:flowers_app/core/values/app_font_style.dart';
+import 'package:flowers_app/core/values/app_strings.dart';
+import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
+
+class LanguageBottomSheet extends StatefulWidget {
+  final AppLanguageEnum initialLanguage;
+  final ValueChanged<AppLanguageEnum> onLanguageSelected;
+
+  const LanguageBottomSheet({
+    super.key,
+    required this.initialLanguage,
+    required this.onLanguageSelected,
+  });
+
+  @override
+  State<LanguageBottomSheet> createState() => _LanguageBottomSheetState();
+}
+
+class _LanguageBottomSheetState extends State<LanguageBottomSheet> {
+  late AppLanguageEnum selectedLanguage;
+
+  @override
+  void initState() {
+    super.initState();
+    selectedLanguage = widget.initialLanguage;
+  }
+
+  void _handleLanguageTap(AppLanguageEnum language) {
+    setState(() {
+      selectedLanguage = language;
+    });
+    widget.onLanguageSelected(language);
+    Navigator.pop(context); // Close the bottom sheet after selection
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: const BoxDecoration(
+        color: AppColors.white,
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(24),
+          topRight: Radius.circular(24),
+        ),
+      ),
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            AppStrings.changeLanguage,
+            style: AppFontStyle.bold18(context: context).copyWith(
+              color: AppColors.primerColor,
+            ),
+          ),
+          const Gap(16),
+          _LanguageOption(
+            language: AppLanguageEnum.arabic,
+            isSelected: selectedLanguage == AppLanguageEnum.arabic,
+            onTap: _handleLanguageTap,
+          ),
+          const Gap(16),
+          _LanguageOption(
+            language: AppLanguageEnum.english,
+            isSelected: selectedLanguage == AppLanguageEnum.english,
+            onTap: _handleLanguageTap,
+          ),
+          const Gap(24),
+        ],
+      ),
+    );
+  }
+}
+
+class _LanguageOption extends StatelessWidget {
+  final AppLanguageEnum language;
+  final bool isSelected;
+  final ValueChanged<AppLanguageEnum> onTap;
+
+  const _LanguageOption({
+    required this.language,
+    required this.isSelected,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () => onTap(language),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+        decoration: BoxDecoration(
+          color: AppColors.white,
+          border: Border.all(
+            color: AppColors.grayA6.withOpacity(0.3),
+            width: 1,
+          ),
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              language.text,
+              style: AppFontStyle.semiBold14(context: context).copyWith(
+                color: AppColors.black,
+              ),
+            ),
+            Container(
+              width: 20,
+              height: 20,
+              padding: const EdgeInsets.all(2),
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                border: Border.all(
+                  color: AppColors.primerColor,
+                  width: 1.5,
+                ),
+              ),
+              child: isSelected
+                  ? Container(
+                      decoration: const BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: AppColors.primerColor,
+                      ),
+                    )
+                  : const SizedBox.shrink(),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}

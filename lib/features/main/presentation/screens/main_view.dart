@@ -9,6 +9,9 @@ import 'package:flowers_app/features/main/presentation/screens/profile_appbar.da
 import 'package:flowers_app/features/main/presentation/view_model/cubit/home_cubit.dart';
 import 'package:flowers_app/features/main/presentation/view_model/cubit/home_events.dart';
 import 'package:flowers_app/features/main_profile/presentation/view/pages/main_profile_page.dart';
+import 'package:flowers_app/features/home/presentation/screens/home_view.dart';
+import 'package:flowers_app/features/app_language/presentation/view/pages/app_language_page.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';

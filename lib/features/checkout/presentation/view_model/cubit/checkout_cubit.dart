@@ -26,7 +26,7 @@ class CheckoutCubit extends Cubit<CheckoutStates> {
     this._checkoutWithCashUseCase,
     this._checkoutWithCardUseCase,
     this._syncCardOrderUseCase,
-  ) : super(const CheckoutStates());
+  ) : super(CheckoutStates(addresses: CheckoutAddressFixtures.addresses));
 
   @override
   void emit(CheckoutStates state) {

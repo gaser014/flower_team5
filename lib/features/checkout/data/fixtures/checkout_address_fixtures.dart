@@ -6,7 +6,7 @@ import 'package:flowers_app/features/checkout/domain/entities/checkout_address_e
 /// Coordinates are real so the checkout request carries a valid location
 /// instead of the (0,0) `withoutLocation` fallback.
 abstract final class CheckoutAddressFixtures {
-  static const List<CheckoutAddressEntity> addresses = [
+  static final List<CheckoutAddressEntity> addresses = [
     CheckoutAddressEntity(
       id: 'home',
       label: AppStrings.homeLabel,
@@ -17,7 +17,7 @@ abstract final class CheckoutAddressFixtures {
       lat: '30.0254',
       long: '30.9707',
     ),
-    CheckoutAddressEntity(
+     CheckoutAddressEntity(
       id: 'office',
       label: AppStrings.officeLabel,
       address: 'Plot 12 - 6th of October',

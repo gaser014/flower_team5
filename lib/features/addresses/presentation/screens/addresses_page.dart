@@ -8,9 +8,9 @@ class AddressesPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
       appBar: CustomAppBar(title: AppStrings.savedAddresses),
-      body: SafeArea(child: AddressesBody()),
+      body: const SafeArea(child: AddressesBody()),
     );
   }
 }

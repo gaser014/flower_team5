@@ -48,10 +48,10 @@ void main() async {
 
   runApp(
     EasyLocalization(
-      startLocale: const Locale('en', 'US'),
-      supportedLocales: const [Locale('en', 'US'), Locale('ar', 'EG')],
+      startLocale: AppConstants.englishLocale,
+      supportedLocales: const [AppConstants.englishLocale, AppConstants.arabicLocale],
       path: AppConstants.translationPath,
-      fallbackLocale: const Locale('ar', 'EG'),
+      fallbackLocale: AppConstants.arabicLocale,
       child: const app.MyApp(),
     ),
   );
