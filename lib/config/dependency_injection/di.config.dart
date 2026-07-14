@@ -194,6 +194,8 @@ import '../../features/login/domain/use_cases/login_use_case.dart' as _i191;
 import '../../features/login/domain/use_cases/save_user_token_use_case.dart'
     as _i140;
 import '../../features/login/domain/use_cases/save_user_use_case.dart' as _i71;
+import '../../features/login/presentation/view_model/cubit/login_cubit.dart'
+    as _i753;
 import '../../features/logout/api/api_client/logout_api_client.dart' as _i1048;
 import '../../features/logout/api/datasources/logout_remote_data_source_impl.dart'
     as _i930;
@@ -604,6 +606,13 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i60.MainProfileCubit(
         gh<_i818.GetMainProfileUseCase>(),
         gh<_i71.SaveUserUseCase>(),
+      ),
+    );
+    gh.factory<_i753.LoginCubit>(
+      () => _i753.LoginCubit(
+        gh<_i191.LoginUseCase>(),
+        gh<_i71.SaveUserUseCase>(),
+        gh<_i140.SaveUserTokenUseCase>(),
       ),
     );
     gh.factory<_i473.AddProductToCartUseCase>(
