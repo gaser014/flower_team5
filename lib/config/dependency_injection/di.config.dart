@@ -19,22 +19,6 @@ import 'package:internet_connection_checker_plus/internet_connection_checker_plu
     as _i161;
 import 'package:logger/logger.dart' as _i974;
 
-import '../../features/categories/api/api_client/categories_api_client.dart' as _i688;
-import '../../features/categories/api/datasources/categories_local_data_source_impl.dart'
-    as _i1003;
-import '../../features/categories/api/datasources/categories_remote_data_source_impl.dart'
-    as _i147;
-import '../../features/categories/data/datasources/categories_local_data_source_contract.dart'
-    as _i772;
-import '../../features/categories/data/datasources/categories_remote_data_source_contract.dart'
-    as _i930;
-import '../../features/categories/data/repositories/categories_repository_impl.dart'
-    as _i601;
-import '../../features/categories/domain/repositories/categories_repository.dart'
-    as _i897;
-import '../../features/categories/domain/use_cases/get_all_categories.dart' as _i307;
-import '../../features/categories/presentation/view_model/cubit/categories_cubit.dart'
-    as _i219;
 import '../../core/api/datasources/auth_local_data_source_impl.dart' as _i424;
 import '../../core/data/data_sources/auth_local_data_source.dart' as _i759;
 import '../../features/addresses/api/api_client/addresses_api_client.dart'
@@ -123,6 +107,24 @@ import '../../features/cart/presentation/view_model/cart_sync_service.dart'
     as _i143;
 import '../../features/cart/presentation/view_model/cubit/cart_cubit.dart'
     as _i323;
+import '../../features/categories/api/api_client/categories_api_client.dart'
+    as _i612;
+import '../../features/categories/api/datasources/categories_local_data_source_impl.dart'
+    as _i575;
+import '../../features/categories/api/datasources/categories_remote_data_source_impl.dart'
+    as _i740;
+import '../../features/categories/data/datasources/categories_local_data_source_contract.dart'
+    as _i641;
+import '../../features/categories/data/datasources/categories_remote_data_source_contract.dart'
+    as _i234;
+import '../../features/categories/data/repositories/categories_repository_impl.dart'
+    as _i245;
+import '../../features/categories/domain/repositories/categories_repository.dart'
+    as _i488;
+import '../../features/categories/domain/use_cases/get_all_categories.dart'
+    as _i63;
+import '../../features/categories/presentation/view_model/cubit/categories_cubit.dart'
+    as _i806;
 import '../../features/checkout/api/api_client/checkout_api_client.dart'
     as _i832;
 import '../../features/checkout/api/datasources/checkout_remote_data_source_impl.dart'
@@ -280,14 +282,17 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i47.ProductsLocalDataSourceContract>(
       () => _i1032.ProductsLocalDataSourceImpl(),
     );
-    gh.lazySingleton<_i688.CategoriesApiClient>(
-      () => _i688.CategoriesApiClient(gh<_i361.Dio>()),
+    gh.lazySingleton<_i641.CategoriesLocalDataSourceContract>(
+      () => _i575.CategoriesLocalDataSourceImpl(),
     );
     gh.lazySingleton<_i567.AddressesApiClient>(
       () => _i567.AddressesApiClient(gh<_i361.Dio>()),
     );
     gh.lazySingleton<_i173.AppFilterTabsApiClient>(
       () => _i173.AppFilterTabsApiClient(gh<_i361.Dio>()),
+    );
+    gh.lazySingleton<_i612.CategoriesApiClient>(
+      () => _i612.CategoriesApiClient(gh<_i361.Dio>()),
     );
     gh.factory<_i429.SignUpApiClient>(
       () => _i429.SignUpApiClient(gh<_i361.Dio>()),
@@ -322,9 +327,6 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i399.AddressesLocalDataSourceContract>(
       () => _i75.AddressesLocalDataSourceImpl(),
-    );
-    gh.lazySingleton<_i772.CategoriesLocalDataSourceContract>(
-      () => _i1003.CategoriesLocalDataSourceImpl(),
     );
     gh.singleton<_i449.AppInterceptors>(
       () => _i449.AppInterceptors(
@@ -404,15 +406,15 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i85.CheckoutRemoteDataSourceContract>(
       () => _i551.CheckoutRemoteDataSourceImpl(gh<_i832.CheckoutApiClient>()),
     );
+    gh.lazySingleton<_i234.CategoriesRemoteDataSourceContract>(
+      () => _i740.CategoriesRemoteDataSourceImpl(
+        apiClient: gh<_i612.CategoriesApiClient>(),
+      ),
+    );
     gh.factory<_i902.LoginRepositoryContract>(
       () => _i1066.LoginRepositoryImpl(
         gh<_i736.LoginRemoteDataSourceContract>(),
         gh<_i325.LoginLocalDataSourceContract>(),
-      ),
-    );
-    gh.lazySingleton<_i930.CategoriesRemoteDataSourceContract>(
-      () => _i147.CategoriesRemoteDataSourceImpl(
-        apiClient: gh<_i688.CategoriesApiClient>(),
       ),
     );
     gh.factory<_i498.CheckoutRepository>(
@@ -526,15 +528,18 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i679.HomeCubit>(
       () => _i679.HomeCubit(gh<_i261.GetHomeUseCase>()),
     );
+    gh.lazySingleton<_i488.CategoriesRepository>(
+      () => _i245.CategoriesRepositoryImpl(
+        categoriesRemoteDataSourceContract:
+            gh<_i234.CategoriesRemoteDataSourceContract>(),
+      ),
+    );
+    gh.lazySingleton<_i63.GetAllCategoriesUseCase>(
+      () => _i63.GetAllCategoriesUseCase(gh<_i488.CategoriesRepository>()),
+    );
     gh.factory<_i593.ProductsCubit>(
       () => _i593.ProductsCubit(
         getAllProductsUseCase: gh<_i845.GetAllProductsUseCase>(),
-      ),
-    );
-    gh.lazySingleton<_i897.CategoriesRepository>(
-      () => _i601.CategoriesRepositoryImpl(
-        categoriesRemoteDataSourceContract:
-            gh<_i930.CategoriesRemoteDataSourceContract>(),
       ),
     );
     gh.factory<_i60.MainProfileCubit>(
@@ -577,9 +582,6 @@ extension GetItInjectableX on _i174.GetIt {
         getAllAppFilterTabsUseCase: gh<_i313.GetAllAppFilterTabsUseCase>(),
       ),
     );
-    gh.lazySingleton<_i307.GetAllCategoriesUseCase>(
-      () => _i307.GetAllCategoriesUseCase(gh<_i897.CategoriesRepository>()),
-    );
     gh.factory<_i753.LoginCubit>(
       () => _i753.LoginCubit(
         gh<_i191.LoginUseCase>(),
@@ -588,6 +590,11 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i90.GetProductDetailsUseCase>(
       () => _i90.GetProductDetailsUseCase(gh<_i88.ProductDetailsRepository>()),
+    );
+    gh.factory<_i806.CategoriesCubit>(
+      () => _i806.CategoriesCubit(
+        getAllCategoriesUseCase: gh<_i63.GetAllCategoriesUseCase>(),
+      ),
     );
     gh.factory<_i820.ProductDetailsCubit>(
       () => _i820.ProductDetailsCubit(gh<_i90.GetProductDetailsUseCase>()),
@@ -601,11 +608,6 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i809.SignUpCubit>(
       () => _i809.SignUpCubit(gh<_i45.SignUpUseCase>()),
-    );
-    gh.factory<_i219.CategoriesCubit>(
-      () => _i219.CategoriesCubit(
-        getAllCategoriesUseCase: gh<_i307.GetAllCategoriesUseCase>(),
-      ),
     );
     gh.lazySingleton<_i323.CartCubit>(
       () => _i323.CartCubit(

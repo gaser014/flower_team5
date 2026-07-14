@@ -216,6 +216,7 @@ class AppStrings {
   static const String arabic = "العربية";
   static const String aboutUs = "About us";
   static const String termsConditions = "Terms & conditions";
+  static const String termsAndConditions = "Terms & conditions";
 
   // Remaining values from provided dart source
   static const String setPassword1ConditionError =
