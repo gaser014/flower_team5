@@ -26,7 +26,6 @@ import 'package:flowers_app/features/app_language/presentation/view/pages/app_la
 import 'package:flowers_app/features/app_language/presentation/view_model/cubit/app_language_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:go_router/go_router.dart';
 
 final RouteObserver<ModalRoute> routeObserver = RouteObserver<ModalRoute>();
@@ -262,7 +261,6 @@ abstract class AppRoutes {
         ),
       ),
       GoRoute(
-
         path: Routes.occasionPage,
         name: Routes.occasionPage,
         pageBuilder: (context, state) {
@@ -348,7 +346,7 @@ abstract class AppRoutes {
         path: Routes.splash,
         name: Routes.splash,
         builder: (BuildContext context, GoRouterState state) {
-          return SplashPage();
+          return const SplashPage();
         },
       ),
       GoRoute(

@@ -46,7 +46,7 @@ class _ListViewSeparated extends StatelessWidget {
   final Widget? Function(BuildContext, int)? itemBuilder;
   final int itemCount;
 
-  const _ListViewSeparated({super.key, this.itemBuilder, this.itemCount = 8});
+  const _ListViewSeparated({this.itemBuilder, this.itemCount = 8});
 
   @override
   Widget build(BuildContext context) {

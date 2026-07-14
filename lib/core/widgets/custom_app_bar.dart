@@ -85,7 +85,7 @@ class _BackButton extends StatelessWidget {
           AppAssets.arrowBack,
           width: 20,
           height: 20,
-          color: AppColors.black0C,
+          colorFilter: const ColorFilter.mode(AppColors.black0C, BlendMode.srcIn),
           fit: BoxFit.scaleDown,
         ),
       ),
