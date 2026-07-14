@@ -240,6 +240,16 @@ import '../../features/products/domain/use_cases/get_all_products.dart'
     as _i845;
 import '../../features/products/presentation/view_model/cubit/products_cubit.dart'
     as _i593;
+import '../../features/reset_password/api/api_client/reset_password_api_client.dart'
+    as _i801;
+import '../../features/reset_password/data/repositories/reset_password_repository_impl.dart'
+    as _i854;
+import '../../features/reset_password/domain/repositories/reset_password_repository.dart'
+    as _i833;
+import '../../features/reset_password/domain/use_cases/reset_password_use_case.dart'
+    as _i572;
+import '../../features/reset_password/presentation/view_model/cubit/reset_password_cubit.dart'
+    as _i1008;
 import '../api/app_interceptor.dart' as _i449;
 import '../api/dio_module.dart' as _i784;
 import '../firebase/firebase_module.dart' as _i1055;
@@ -317,6 +327,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i41.ProductsApiClient>(
       () => _i41.ProductsApiClient(gh<_i361.Dio>()),
     );
+    gh.factory<_i801.ResetPasswordApiClient>(
+      () => _i801.ResetPasswordApiClient(gh<_i361.Dio>()),
+    );
     gh.factory<_i969.HomeRemoteDataSourceContract>(
       () => _i796.HomeRemoteDataSourceImpl(gh<_i592.HomeApiClient>()),
     );
@@ -333,6 +346,10 @@ extension GetItInjectableX on _i174.GetIt {
         dio: gh<_i361.Dio>(),
         fss: gh<_i558.FlutterSecureStorage>(),
       ),
+    );
+    gh.factory<_i833.ResetPasswordRepositoryContract>(
+      () =>
+          _i854.ResetPasswordRepositoryImpl(gh<_i801.ResetPasswordApiClient>()),
     );
     gh.lazySingleton<_i332.LocationRepository>(
       () => _i115.LocationRepositoryImpl(
@@ -409,6 +426,11 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i234.CategoriesRemoteDataSourceContract>(
       () => _i740.CategoriesRemoteDataSourceImpl(
         apiClient: gh<_i612.CategoriesApiClient>(),
+      ),
+    );
+    gh.factory<_i572.ResetPasswordUseCase>(
+      () => _i572.ResetPasswordUseCase(
+        gh<_i833.ResetPasswordRepositoryContract>(),
       ),
     );
     gh.factory<_i902.LoginRepositoryContract>(
@@ -541,6 +563,9 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i593.ProductsCubit(
         getAllProductsUseCase: gh<_i845.GetAllProductsUseCase>(),
       ),
+    );
+    gh.factory<_i1008.ResetPasswordCubit>(
+      () => _i1008.ResetPasswordCubit(gh<_i572.ResetPasswordUseCase>()),
     );
     gh.factory<_i60.MainProfileCubit>(
       () => _i60.MainProfileCubit(

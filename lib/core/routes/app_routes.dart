@@ -19,6 +19,7 @@ import 'package:flowers_app/features/spalsh/splash_page.dart';
 import 'package:flowers_app/features/login/presentation/view/pages/login_page.dart';
 import 'package:flowers_app/features/products/presentation/view/pages/occasion_page.dart';
 import 'package:flowers_app/features/product_details/presentation/view/pages/product_details_page.dart';
+import 'package:flowers_app/features/reset_password/presentation/view/pages/reset_password_page.dart';
 import 'package:flowers_app/features/main/presentation/screens/main_view.dart';
 import 'package:flowers_app/core/entities/product_entity.dart';
 import 'package:flutter/cupertino.dart';
@@ -243,6 +244,10 @@ abstract class AppRoutes {
           child: const TermsAndConditionsView(),
           animationType: AnimationType.slideFromRight,
         ),
+      ),
+      GoRoute(
+        path: '/reset-password',
+        builder: (context, state) => const ResetPasswordPage(),
       ),
       GoRoute(
         path: Routes.main,

@@ -57,30 +57,46 @@ class _PasswordFieldState extends State<PasswordField> {
     super.didUpdateWidget(oldWidget);
   }
 
+  void _toggleVisibility() {
+    setState(() {
+      isObscure = !isObscure;
+    });
+    widget.toggleVisibility?.call();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return TextFormField(
-      controller: widget.controller,
-      focusNode: widget.focusNode,
-      enabled: widget.enabled,
-      obscureText: widget.obscureText,
-      keyboardType: TextInputType.visiblePassword,
-      obscuringCharacter: '★',
-      autovalidateMode: AutovalidateMode.onUserInteraction,
-
-      textInputAction: widget.textInputAction ?? TextInputAction.done,
-      inputFormatters: AppInputFormatters.strongPassword,
-      validator: widget.validator ?? Validations.validateLoginPassword,
-      onFieldSubmitted: widget.onFieldSubmitted,
-      autofillHints: const [AutofillHints.password],
-      style: widget.obscureText
-          ? const TextStyle(letterSpacing: 2, color: AppColors.grayA6)
-          : null,
-      decoration: InputDecoration(
-        suffixIcon: widget.suffixIcon,
-        labelText: widget.labelText ?? AppStrings.password,
-        hintText: AppStrings.passwordHint,
-        hintStyle: AppFontStyle.regular14().copyWith(color: AppColors.grayA6),
+    return Directionality(
+      textDirection: TextDirection.ltr,
+      child: TextFormField(
+        controller: widget.controller,
+        focusNode: widget.focusNode,
+        enabled: widget.enabled,
+        obscureText: isObscure,
+        keyboardType: TextInputType.visiblePassword,
+        obscuringCharacter: '★',
+        autovalidateMode: AutovalidateMode.onUserInteraction,
+        textInputAction: widget.textInputAction ?? TextInputAction.done,
+        inputFormatters: AppInputFormatters.strongPassword,
+        validator: widget.validator ?? Validations.validateLoginPassword,
+        onFieldSubmitted: widget.onFieldSubmitted,
+        autofillHints: const [AutofillHints.password],
+        style: isObscure
+            ? const TextStyle(letterSpacing: 2, color: AppColors.grayA6)
+            : null,
+        decoration: InputDecoration(
+          suffixIcon: widget.suffixIcon ?? 
+              IconButton(
+                icon: Icon(
+                  isObscure ? Icons.visibility_off : Icons.visibility,
+                  color: AppColors.grayA6,
+                ),
+                onPressed: _toggleVisibility,
+              ),
+          labelText: widget.labelText ?? AppStrings.password,
+          hintText: widget.hintText ?? AppStrings.passwordHint,
+          hintStyle: AppFontStyle.regular14().copyWith(color: AppColors.grayA6),
+        ),
       ),
     );
   }
